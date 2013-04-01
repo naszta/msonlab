@@ -65,7 +65,7 @@ namespace zgraph
 		virtual bool is_adjacent(const string& source, const string& target) const = 0;
 		virtual vector< shared_ptr<BNode> > get_dependencies(const shared_ptr<BNode>& node) const = 0;
 		virtual vector< shared_ptr<BNode> > get_neighbours(const shared_ptr<BNode>& node) const = 0;
-		virtual vector< shared_ptr<BNode> > get_all_nodes() = 0;
+		virtual vector< shared_ptr<BNode> > get_all_nodes() const = 0;
 		virtual void erase_node(const BNode& node) = 0;
 		virtual void erase_edge(const BNode& source, const BNode& target) = 0;
 		virtual int size() const = 0;
@@ -96,7 +96,7 @@ namespace zgraph
 	};
 
 	template<class NodeValue>
-	void IGraphAlgorithms<NodeValue>::print_graph(ostream& out, const BGraph& graph)
+	void IGraphAlgorithms<NodeValue>::print_graph(ostream& out, const IGraph<NodeValue>& graph)
 	{
 		vector< shared_ptr<BNode> > nodes = graph.get_all_nodes();
 		map< shared_ptr<BNode>, int > nodemap;

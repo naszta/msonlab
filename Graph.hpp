@@ -27,6 +27,7 @@ namespace zgraph
 {
 	//using namespace boost;
 	using boost::shared_ptr;
+	using boost::optional;
 	using std::for_each;
 	using std::map;
 	using std::make_pair;
@@ -71,7 +72,7 @@ namespace zgraph
 		bool is_adjacent(const string& source, const string& target) const;
 		vector<ptr_Node> get_dependencies(const ptr_Node& node) const;
 		vector<ptr_Node> get_neighbours(const ptr_Node& node) const;
-		vector<ptr_Node> get_all_nodes();
+		vector<ptr_Node> get_all_nodes() const;
 		void erase_node(const BNode&);
 		void erase_edge(const BNode&, const BNode&);
 		int size() const;
@@ -420,7 +421,7 @@ namespace zgraph
 
 	// gets all the nodes in the graph
 	template<class NodeValue>
-	vector< shared_ptr< INode<NodeValue> > > Graph<NodeValue>::get_all_nodes()
+	vector< shared_ptr< INode<NodeValue> > > Graph<NodeValue>::get_all_nodes() const
 	{
 		return this->nodes;
 	}
