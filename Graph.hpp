@@ -112,16 +112,16 @@ namespace zgraph
 	template<class NodeValue>
 	Graph<NodeValue>::Graph(const Graph<NodeValue>& graph) : edge_count(graph.edge_count)
 	{
-		this->resize(this->capacity);
-		vector< ptr_Node >::iterator it;
-		for(it = graph.nodes.begin(); it != graph.nodes.end(); i++)
+		this->resize(graph.capacity);
+		vector< ptr_Node >::const_iterator it;
+		for(it = graph.nodes.begin(); it != graph.nodes.end(); ++it)
 		{
 			this->add_node(*(*it));
 		}
 
-		for(int i = 0; i < graph.matrix.size(); i++)
+		for(unsigned i = 0; i < graph.matrix.size(); i++)
 		{
-			for(int j = 0; j < graph.matrix[i].size; ++j)
+			for(unsigned j = 0; j < graph.matrix[i].size(); j++)
 			{
 				this->matrix[i][j] = graph.matrix[i][j];
 			}
@@ -197,46 +197,6 @@ namespace zgraph
 		}
 
 		out << "}";
-
-		// collecting labels
-		//char ** labels = new char*[this->size()];
-		//for (unsigned i = 0; i < this->nodes.size(); ++i)
-		//{
-		//	string label = this->nodes[i]->get_label();
-		//	labels[i] = new char[label.size()+1];
-		//	labels[i][label.size()] = 0;
-		//	memcpy(labels[i], label.c_str(), label.size());
-		//}
-
-		//// collecting edges
-		//vector< pair<int, int> > edges;
-		//for(unsigned i = 0; i < this->matrix.size(); ++i)
-		//{
-		//	for(unsigned j = 0; j < this->matrix[i].size(); ++j)
-		//	{
-		//		if (this->matrix[i][j])
-		//		{
-		//			edges.push_back(make_pair(i,j));
-		//		}
-		//	}
-		//}
-
-		//vector<int> weights(this->edge_count, 1);
-
-		// typedef adjacency_list< vecS, vecS, directedS, 
-		//	  property< vertex_color_t, default_color_type >,
-		//	  property< edge_weight_t, int >
-		//	> GVGraph;
-		// GVGraph g(&edges[0], &edges[0]+this->edge_count, &weights[0], this->size());
-
-		// write_graphviz(out, g, make_label_writer(labels));
-
-		// for (unsigned i = 0; i < this->nodes.size(); ++i)
-		// {
-		//	 delete[] labels[i];
-		// }
-
-		// delete[] labels;
 	}
 
 	//

@@ -10,6 +10,7 @@
 //
 
 #include <boost/shared_ptr.hpp>
+#include <iostream>
 #include <ostream>
 #include <istream>
 #include <string>
@@ -37,6 +38,7 @@ namespace zgraph
 		Node(string label);
 		Node(string label, const NodeValue& nv);
 		Node(const INode<NodeValue>& node);
+		Node(const Node<NodeValue>& node);
 
 		void set_label(const string& nl);
 		string get_label() const;
@@ -45,9 +47,9 @@ namespace zgraph
 		shared_ptr<NodeValue> operator()(vector< shared_ptr<NodeValue> >);
 		~Node() {}
 
-		Node<NodeValue>& operator=(Node<NodeValue>& node);
-		bool operator==(const Node<NodeValue>& other) const;
-		bool operator!=(const Node<NodeValue>& other) const;
+		Node<NodeValue>& operator=(const INode<NodeValue>& node);
+		bool operator==(const INode<NodeValue>& other) const;
+		bool operator!=(const INode<NodeValue>& other) const;
 
 		template<class NodeValue>
 		friend ostream &operator<<(ostream &out, const Node<NodeValue> &node);
@@ -73,6 +75,13 @@ namespace zgraph
 	// copy constructor
 	template<class NodeValue>
 	Node<NodeValue>::Node(const INode<NodeValue>& node) : label(node.get_label())
+	{
+		shared_ptr<NodeValue> val(new NodeValue(node.get_value()));
+		this->value.swap(val);
+	}
+
+	template<class NodeValue>
+	Node<NodeValue>::Node(const Node<NodeValue>& node) : label(node.get_label())
 	{
 		shared_ptr<NodeValue> val(new NodeValue(node.get_value()));
 		this->value.swap(val);
@@ -127,28 +136,30 @@ namespace zgraph
 
 	// operators
 	template<class NodeValue>
-	Node<NodeValue>& Node<NodeValue>::operator=(Node<NodeValue>& base)
+	Node<NodeValue>& Node<NodeValue>::operator=(const INode<NodeValue>& base)
 	{
-		shared_ptr<NodeValue> v(new NodeValue(*base.value));
+		shared_ptr<NodeValue> v(new NodeValue(base.get_value()));
+
+		std::cout << "bumba\n";
 
 		this->value.swap(v);
-		this->label = base.label;
+		this->label = base.get_label();
 
 		return *this;
 	}
 
 	// comparing nodes by label
 	template<class NodeValue>
-	bool Node<NodeValue>::operator==(const Node<NodeValue>& other) const
+	bool Node<NodeValue>::operator==(const INode<NodeValue>& other) const
 	{
-		return this->label.compare(other.label) == 0;
+		return this->get_label().compare(other.get_label()) == 0;
 	}
 
 	// comparing nodes by label
 	template<class NodeValue>
-	bool Node<NodeValue>::operator!=(const Node<NodeValue>& other) const
+	bool Node<NodeValue>::operator!=(const INode<NodeValue>& other) const
 	{
-		return this->label.compare(other.label) != 0;
+		return this->get_label().compare(other.get_label()) != 0;
 	}
 
 	// write node value to stream
