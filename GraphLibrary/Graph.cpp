@@ -5,47 +5,47 @@ namespace msonlab
 {
 	Graph::Graph()
 	{
-
+		throw Exceptions::NotImplementedException("Graph default constructor");
 	}
 
 	Graph::Graph(const Graph& other)
 	{
-
+		throw Exceptions::NotImplementedException("Graph copy constructor");
 	}
 
 	bool Graph::addNode(Node::nPtr toAdd)
 	{
-		return false;
+		throw Exceptions::NotImplementedException("Graph::addNode function");
 	}
 
 	bool Graph::addEdge(Edge::ePtr toAdd)
 	{
-		return false;
+		throw Exceptions::NotImplementedException("Graph::addEdge function");
 	}
 
 	size_t Graph::numberOfNodes() const
 	{
-		return 0;
+		throw Exceptions::NotImplementedException("Graph::numberOfNodes function");
 	}
 
 	size_t Graph::numberOfEdges() const
 	{
-		return 0;
+		throw Exceptions::NotImplementedException("Graph::numberOfEdges function");
 	}
 
 	size_t Graph::numberOfOutputs() const
 	{
-		return 0;
+		throw Exceptions::NotImplementedException("Graph::numberOfOutputs function");
 	}
 
 	bool Graph::importGraph(std::istream &in) const
 	{
-		return false;
+		throw Exceptions::NotImplementedException("Graph::importGraph function");
 	}
 
 	bool Graph::exportGraph(std::ostream &out) const
 	{
-		return false;
+		throw Exceptions::NotImplementedException("Graph::exportGraph function");
 	}
 
 

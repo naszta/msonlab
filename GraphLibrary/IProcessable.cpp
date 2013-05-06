@@ -5,31 +5,31 @@ namespace msonlab
 {
 	bool IProcessable::registerParameter()
 	{
-		return false;
+		throw Exceptions::NotImplementedException("IProcessable::registerParameter function");
 	}
 
 	bool IProcessable::isReady() const
 	{
-		return false;
+		throw Exceptions::NotImplementedException("IProcessable::isReady function");
 	}
 
 	unsigned int IProcessable::getId() const
 	{
-		return id;
+		throw Exceptions::NotImplementedException("IProcessable::getId function");
 	}
 
 	wchar_t IProcessable::getLabel() const
 	{
-		return label;
+		throw Exceptions::NotImplementedException("IProcessable::getLabel function");
 	}
 
 	Types::DataType IProcessable::getValue() const
 	{
-		return value;
+		throw Exceptions::NotImplementedException("IProcessable::getValue function");
 	}
 
 	bool IProcessable::operator==(const IProcessable& other) const
 	{
-		return false;
+		throw Exceptions::NotImplementedException("IProcessable::operator== function");
 	}
 }
