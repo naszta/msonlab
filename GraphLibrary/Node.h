@@ -10,6 +10,8 @@ namespace msonlab
 		IProcessable::pVect predecessors;
 		IProcessable::pVect successors;
 
+		int paramCount;
+
 	public:
 		typedef boost::shared_ptr<Node> nPtr;
 
@@ -18,7 +20,10 @@ namespace msonlab
 		Node(unsigned int _id, wchar_t _label, Types::DataType _value);
 		Node(const Node& other);
 
-		bool process();
+		bool registerParameter();
+
+		virtual bool process();
+		virtual bool isReady() const;
 
 		IProcessable::pVect getPredecessors() const;
 		IProcessable::pVect getSuccessors() const;

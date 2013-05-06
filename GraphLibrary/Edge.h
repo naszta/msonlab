@@ -11,6 +11,7 @@ namespace msonlab
 		Node::nPtr from;
 		Node::nPtr to;
 
+		bool paramReady;
 	public:
 		typedef boost::shared_ptr<Edge> ePtr;
 		typedef vector<boost::shared_ptr<Edge>> eVect;
@@ -18,7 +19,10 @@ namespace msonlab
 		Edge(unsigned int _id, wchar_t _label, Types::DataType _value, Node::nPtr _from, Node::nPtr _to);
 		Edge(const Edge& other);
 
-		bool process();
+		bool registerParameter();
+
+		virtual bool process();
+		virtual bool isReady() const;
 
 		Node::nPtr opposite(Node::nPtr x);
 

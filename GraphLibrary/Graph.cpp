@@ -1,11 +1,13 @@
 #pragma once
 #include "Graph.h"
 
+
 namespace msonlab
 {
 	Graph::Graph()
 	{
-		throw Exceptions::NotImplementedException("Graph default constructor");
+		nodes.clear();
+		edges.clear();
 	}
 
 	Graph::Graph(const Graph& other)
@@ -15,22 +17,55 @@ namespace msonlab
 
 	bool Graph::addNode(Node::nPtr toAdd)
 	{
-		throw Exceptions::NotImplementedException("Graph::addNode function");
+		msonlab::IProcessable::pVect::iterator it;
+		it = std::find(nodes.begin(),nodes.end(),toAdd);
+
+		if (it != nodes.end())
+			return false;
+
+		it = nodes.insert(nodes.end(),toAdd);
+
+		if (*it == toAdd)
+			return true;
+		else
+		{
+			throw Exceptions::FailedToAddNodeException("Failed to add the node to the graph!");
+			return false;
+		}
 	}
 
 	bool Graph::addEdge(Edge::ePtr toAdd)
 	{
-		throw Exceptions::NotImplementedException("Graph::addEdge function");
+		msonlab::IProcessable::pVect::iterator it;
+		it = std::find(edges.begin(),edges.end(),toAdd);
+
+		if (it != edges.end())
+			return false;
+
+		msonlab::Node::nPtr fromNode = (*toAdd).getFrom();
+		addNode(fromNode);
+		msonlab::Node::nPtr toNode = (*toAdd).getTo();
+		addNode(toNode);
+
+		it = edges.insert(edges.end(),toAdd);
+
+		if (*it == toAdd)
+			return true;
+		else
+		{
+			throw Exceptions::FailedToAddEdgeException("Failed to add the edge to the graph!");
+			return false;
+		}
 	}
 
 	size_t Graph::numberOfNodes() const
 	{
-		throw Exceptions::NotImplementedException("Graph::numberOfNodes function");
+		return nodes.size();
 	}
 
 	size_t Graph::numberOfEdges() const
 	{
-		throw Exceptions::NotImplementedException("Graph::numberOfEdges function");
+		return edges.size();
 	}
 
 	size_t Graph::numberOfOutputs() const

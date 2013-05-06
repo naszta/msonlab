@@ -3,6 +3,7 @@
 #include <boost\shared_ptr.hpp>
 #include <boost\variant\variant.hpp>
 #include <iostream>
+#include <algorithm>
 
 
 using std::vector;
@@ -12,18 +13,40 @@ namespace msonlab
 
 	namespace Types
 	{
-		typedef boost::variant<int> DataType;
+		typedef boost::variant<int,wchar_t> DataType;
 
 	}
 
 	namespace Exceptions
 	{
+
 		struct NotImplementedException
 		{
-			const char* functionName;
-			NotImplementedException(const char* _functionName) : functionName(_functionName){}
+			const char* msg;
+			NotImplementedException(const char* _msg) 
+				: msg(_msg){}
 		};
 
+		struct FailedToAddNodeException
+		{
+			const char* msg;
+			FailedToAddNodeException(const char* _msg) 
+				: msg(_msg){}
+		};
+
+		struct NotPartOfEdgeException
+		{
+			const char* msg;
+			NotPartOfEdgeException(const char* _msg) 
+				: msg(_msg){}
+		};
+
+		struct FailedToAddEdgeException
+		{
+			const char* msg;
+			FailedToAddEdgeException(const char* _msg) 
+				: msg(_msg){}
+		};
 
 	}
 }

@@ -7,23 +7,23 @@ namespace msonlab
 
 	class IProcessable
 	{
-	private:
+	protected:
 		unsigned int id;
 		wchar_t label;
 
 		Types::DataType value;
 
-		int paramCount;
-
 	public:
 		typedef boost::shared_ptr<IProcessable> pPtr;
 		typedef vector<boost::shared_ptr<IProcessable>> pVect;
 
+		IProcessable(unsigned int _id, wchar_t _label, Types::DataType _value);
+		IProcessable();
 
-		bool registerParameter();
-		bool isReady() const;
+		virtual bool registerParameter() = 0;
 
 		virtual bool process() = 0;
+		virtual bool isReady() const = 0;
 
 		unsigned int getId() const;
 		wchar_t getLabel() const;

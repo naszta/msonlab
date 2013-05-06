@@ -3,33 +3,33 @@
 
 namespace msonlab
 {
-	bool IProcessable::registerParameter()
-	{
-		throw Exceptions::NotImplementedException("IProcessable::registerParameter function");
+	IProcessable::IProcessable(unsigned int _id, wchar_t _label, Types::DataType _value)
+		: id(_id), label(_label), value(_value)
+	{ 
 	}
 
-	bool IProcessable::isReady() const
-	{
-		throw Exceptions::NotImplementedException("IProcessable::isReady function");
-	}
+	IProcessable::IProcessable() { };
 
 	unsigned int IProcessable::getId() const
 	{
-		throw Exceptions::NotImplementedException("IProcessable::getId function");
+		return id;
 	}
 
 	wchar_t IProcessable::getLabel() const
 	{
-		throw Exceptions::NotImplementedException("IProcessable::getLabel function");
+		return label;
 	}
 
 	Types::DataType IProcessable::getValue() const
 	{
-		throw Exceptions::NotImplementedException("IProcessable::getValue function");
+		return value;
 	}
 
 	bool IProcessable::operator==(const IProcessable& other) const
 	{
-		throw Exceptions::NotImplementedException("IProcessable::operator== function");
+		if (id == other.id && label == other.label && value == other.value)
+			return true;
+		else
+			return false;
 	}
 }

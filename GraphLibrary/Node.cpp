@@ -4,8 +4,8 @@
 namespace msonlab
 {
 	Node::Node(unsigned int _id, wchar_t _label, Types::DataType _value)
+		: IProcessable(_id, _label, _value), paramCount(0)
 	{
-		throw Exceptions::NotImplementedException("Node constructor");
 	}
 
 	Node::Node(const Node& other)
@@ -13,19 +13,34 @@ namespace msonlab
 		throw Exceptions::NotImplementedException("Node copy constructor");
 	}
 
+	bool Node::registerParameter()
+	{
+		++paramCount;
+
+		return true;
+	}
+
 	bool Node::process()
 	{
 		throw Exceptions::NotImplementedException("Node::process function");
 	}
 
+	bool Node::isReady() const
+	{
+		if (predecessors.size() == paramCount)
+			return true;
+		else
+			return false;
+	}
+
 	IProcessable::pVect Node::getPredecessors() const
 	{
-		throw Exceptions::NotImplementedException("Node::getPredecessors function");
+		return predecessors;
 	}
 
 	IProcessable::pVect Node::getSuccessors() const
 	{
-		throw Exceptions::NotImplementedException("Node::getSuccessors function");
+		return successors;
 	}
 
 	Node::PlaceEnum Node::getPlace() const
