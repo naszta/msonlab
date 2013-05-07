@@ -23,7 +23,7 @@ namespace msonlab
 		bool registerParameter();
 
 		virtual bool process();
-		virtual bool isReady() const;
+		virtual bool isReadyForProcess() const;
 
 		IProcessable::pVect getPredecessors() const;
 		IProcessable::pVect getSuccessors() const;

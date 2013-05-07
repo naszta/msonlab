@@ -25,7 +25,7 @@ namespace msonlab
 		throw Exceptions::NotImplementedException("Node::process function");
 	}
 
-	bool Node::isReady() const
+	bool Node::isReadyForProcess() const
 	{
 		if (predecessors.size() == paramCount)
 			return true;

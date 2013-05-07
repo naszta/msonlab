@@ -19,6 +19,12 @@ namespace msonlab
 
 	namespace Exceptions
 	{
+		struct GeneralErrorException
+		{
+			const char* msg;
+			GeneralErrorException(const char* _msg) 
+				: msg(_msg){}
+		};
 
 		struct NotImplementedException
 		{
@@ -47,6 +53,21 @@ namespace msonlab
 			FailedToAddEdgeException(const char* _msg) 
 				: msg(_msg){}
 		};
+
+		struct ResultStillNotReadyException
+		{
+			const char* msg;
+			ResultStillNotReadyException(const char* _msg) 
+				: msg(_msg){}
+		};
+
+		struct StillNotReadyForProcessException
+		{
+			const char* msg;
+			StillNotReadyForProcessException(const char* _msg) 
+				: msg(_msg){}
+		};
+
 
 	}
 }

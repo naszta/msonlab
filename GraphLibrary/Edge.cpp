@@ -22,10 +22,21 @@ namespace msonlab
 
 	bool Edge::process()
 	{
-		throw Exceptions::NotImplementedException("Edge::process function");
+		if (isReadyForProcess())
+		{
+			if (setProcessed((*from).getResultValue()))
+				return true;
+			else
+				throw msonlab::Exceptions::GeneralErrorException("Error while setting the result of processing on this processable element!");
+		}
+		else
+		{
+			throw msonlab::Exceptions::StillNotReadyForProcessException("This processable element is not yet ready for processing!");
+			return false;
+		}
 	}
 
-	bool Edge::isReady() const
+	bool Edge::isReadyForProcess() const
 	{
 		return paramReady;
 	}

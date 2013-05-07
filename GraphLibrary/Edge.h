@@ -22,7 +22,7 @@ namespace msonlab
 		bool registerParameter();
 
 		virtual bool process();
-		virtual bool isReady() const;
+		virtual bool isReadyForProcess() const;
 
 		Node::nPtr opposite(Node::nPtr x);
 

@@ -13,6 +13,11 @@ namespace msonlab
 
 		Types::DataType value;
 
+		bool processed;
+		Types::DataType resultValue;
+
+		bool setProcessed(msonlab::Types::DataType _resultValue);
+
 	public:
 		typedef boost::shared_ptr<IProcessable> pPtr;
 		typedef vector<boost::shared_ptr<IProcessable>> pVect;
@@ -23,11 +28,13 @@ namespace msonlab
 		virtual bool registerParameter() = 0;
 
 		virtual bool process() = 0;
-		virtual bool isReady() const = 0;
+		virtual bool isReadyForProcess() const = 0;
+		bool isProcessed() const;
 
 		unsigned int getId() const;
 		wchar_t getLabel() const;
 		Types::DataType getValue() const;
+		Types::DataType getResultValue() const;
 
 		bool operator==(const IProcessable& other) const;
 	};

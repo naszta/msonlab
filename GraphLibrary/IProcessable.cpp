@@ -3,12 +3,31 @@
 
 namespace msonlab
 {
+	// protected
+
+	bool IProcessable::setProcessed(msonlab::Types::DataType _resultValue)
+	{
+		resultValue = _resultValue;
+		processed = true;
+
+		return true;
+	}
+
+
+
+	// public 
+
 	IProcessable::IProcessable(unsigned int _id, wchar_t _label, Types::DataType _value)
 		: id(_id), label(_label), value(_value)
 	{ 
 	}
 
 	IProcessable::IProcessable() { };
+
+	bool IProcessable::isProcessed() const
+	{
+		return processed;
+	}
 
 	unsigned int IProcessable::getId() const
 	{
@@ -24,6 +43,15 @@ namespace msonlab
 	{
 		return value;
 	}
+
+	Types::DataType IProcessable::getResultValue() const
+	{
+		if (isProcessed())
+			return resultValue;
+		else
+			throw msonlab::Exceptions::ResultStillNotReadyException("Result for this processable element still not available!");
+	}
+	
 
 	bool IProcessable::operator==(const IProcessable& other) const
 	{
