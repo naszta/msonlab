@@ -50,7 +50,11 @@ namespace msonlab
 		it = edges.insert(edges.end(),toAdd);
 
 		if (*it == toAdd)
+		{
+			(*fromNode).registerSuccessor(toAdd);
+			(*toNode).registerPredecessor(toAdd);
 			return true;
+		}
 		else
 		{
 			throw Exceptions::FailedToAddEdgeException("Failed to add the edge to the graph!");
@@ -68,11 +72,6 @@ namespace msonlab
 		return edges.size();
 	}
 
-	size_t Graph::numberOfOutputs() const
-	{
-		throw Exceptions::NotImplementedException("Graph::numberOfOutputs function");
-	}
-
 	bool Graph::importGraph(std::istream &in) const
 	{
 		throw Exceptions::NotImplementedException("Graph::importGraph function");
@@ -82,6 +81,37 @@ namespace msonlab
 	{
 		throw Exceptions::NotImplementedException("Graph::exportGraph function");
 	}
+
+	IProcessable::pVect Graph::getInputNodes() const
+	{
+		IProcessable::pVect retVal;
+
+		IProcessable::pVect::const_iterator it = nodes.begin();
+		while (it != nodes.end())
+		{
+			if ((*(*it)).getPlace() == IProcessable::Input)
+				retVal.insert(retVal.end(),(*it));
+
+			++it;
+		}
+		return retVal;
+	}
+
+	IProcessable::pVect Graph::getOutputNodes() const
+	{
+		IProcessable::pVect retVal;
+
+		IProcessable::pVect::const_iterator it = nodes.begin();
+		while (it != nodes.end())
+		{
+			if ((*(*it)).getPlace() == IProcessable::Output)
+				retVal.insert(retVal.end(),(*it));
+
+			++it;
+		}
+		return retVal;
+	}
+
 
 
 }

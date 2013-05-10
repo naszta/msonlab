@@ -13,6 +13,12 @@ namespace msonlab
 		return true;
 	}
 
+	bool IProcessable::clearProcessed()
+	{
+		// resultValue = default
+		processed = false;
+		return true;
+	}
 
 
 	// public 
@@ -27,6 +33,12 @@ namespace msonlab
 	bool IProcessable::isProcessed() const
 	{
 		return processed;
+	}
+
+	bool IProcessable::resetProcessingState()
+	{
+		clearProcessed();
+		return true;
 	}
 
 	unsigned int IProcessable::getId() const
@@ -52,6 +64,10 @@ namespace msonlab
 			throw msonlab::Exceptions::ResultStillNotReadyException("Result for this processable element still not available!");
 	}
 	
+	IProcessable::PlaceEnum IProcessable::getPlace() const
+	{
+		return IProcessable::Inside;
+	}
 
 	bool IProcessable::operator==(const IProcessable& other) const
 	{

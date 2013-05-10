@@ -20,25 +20,38 @@ namespace msonlab
 		return true;
 	}
 
-	bool Edge::process()
+	IProcessable::pVect Edge::process()
 	{
 		if (isReadyForProcess())
 		{
 			if (setProcessed((*from).getResultValue()))
-				return true;
+			{
+				IProcessable::pVect retVal;
+				
+				if((*to).registerParameter())
+					retVal.insert(retVal.begin(),to);
+
+				return retVal;
+			}
 			else
 				throw msonlab::Exceptions::GeneralErrorException("Error while setting the result of processing on this processable element!");
 		}
 		else
 		{
 			throw msonlab::Exceptions::StillNotReadyForProcessException("This processable element is not yet ready for processing!");
-			return false;
 		}
 	}
 
 	bool Edge::isReadyForProcess() const
 	{
 		return paramReady;
+	}
+
+	bool Edge::resetProcessingState()
+	{
+		IProcessable::resetProcessingState();
+		paramReady = false;
+		return true;
 	}
 
 	Node::nPtr Edge::opposite(Node::nPtr x)

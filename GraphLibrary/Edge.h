@@ -7,7 +7,7 @@ namespace msonlab
 {
 	class Edge : public IProcessable
 	{
-	private:
+	protected:
 		Node::nPtr from;
 		Node::nPtr to;
 
@@ -21,13 +21,15 @@ namespace msonlab
 
 		bool registerParameter();
 
-		virtual bool process();
+		virtual IProcessable::pVect process();
 		virtual bool isReadyForProcess() const;
+		virtual bool resetProcessingState();
 
 		Node::nPtr opposite(Node::nPtr x);
 
 		Node::nPtr getFrom() const;
 		Node::nPtr getTo() const;
+
 	};
 
 }

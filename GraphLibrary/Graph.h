@@ -14,6 +14,8 @@ namespace msonlab
 		IProcessable::pVect edges;
 
 	public:
+		typedef boost::shared_ptr<Graph> gPtr;
+
 		Graph();
 		Graph(const Graph& other);
 
@@ -22,10 +24,12 @@ namespace msonlab
 
 		size_t numberOfNodes() const;
 		size_t numberOfEdges() const;
-		size_t numberOfOutputs() const;
 
 		bool importGraph(std::istream &in) const;
 		bool exportGraph(std::ostream &out) const;
+
+		IProcessable::pVect getInputNodes() const;
+		IProcessable::pVect getOutputNodes() const;
 	};
 
 }

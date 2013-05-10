@@ -17,24 +17,30 @@ namespace msonlab
 		Types::DataType resultValue;
 
 		bool setProcessed(msonlab::Types::DataType _resultValue);
+		bool clearProcessed();
 
 	public:
 		typedef boost::shared_ptr<IProcessable> pPtr;
 		typedef vector<boost::shared_ptr<IProcessable>> pVect;
+
+		enum PlaceEnum {Input, Inside, Output};
 
 		IProcessable(unsigned int _id, wchar_t _label, Types::DataType _value);
 		IProcessable();
 
 		virtual bool registerParameter() = 0;
 
-		virtual bool process() = 0;
+		virtual IProcessable::pVect process() = 0;
 		virtual bool isReadyForProcess() const = 0;
 		bool isProcessed() const;
+		virtual bool resetProcessingState();
 
 		unsigned int getId() const;
 		wchar_t getLabel() const;
 		Types::DataType getValue() const;
 		Types::DataType getResultValue() const;
+
+		virtual PlaceEnum getPlace() const;
 
 		bool operator==(const IProcessable& other) const;
 	};
