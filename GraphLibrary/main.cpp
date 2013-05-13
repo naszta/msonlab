@@ -6,6 +6,7 @@
 #include "NodeMultiply.h"
 #include "NodeSquareRoot.h"
 #include "BFSIterator.h"
+#include "GraphAlgorithms.h"
 
 #include <fstream>
 
@@ -105,16 +106,27 @@ void main(void)
 	msonlab::Node::nVect inputs = qeGraph.getInputNodes();
 	msonlab::Node::nVect outputs = qeGraph.getOutputNodes();
 
-	msonlab::BFSIterator itr (msonlab::Graph::gPtr (new msonlab::Graph(qeGraph)));
-	for(;itr.hasMoreNode();++itr)
+	msonlab::Graph::gPtr ptrGraph (new msonlab::Graph(qeGraph));
+	msonlab::BFSIterator itr (ptrGraph);
+	itr.setStartNode(add_bb_minus4ac);
+	for(;itr.hasMoreNode(); ++itr)
 	{
 		std::cout << (*itr)->getLabel() << " " << (*itr)->getId() << std::endl;
 	}
 
+	msonlab::IProcessable::nSet changed;
+	changed.insert(constNumber_2);
+	changed.insert(add_bb_minus4ac);
+	msonlab::IProcessable::nSet needed;
+	needed.insert(y1);
+	needed.insert(multiply_minus_squareRoot_bb_minus4ac);
+	msonlab::GraphAlgorithms ga;
+	msonlab::Graph::gPtr changedGraph = ga.getChangedGraph(ptrGraph, changed, needed);
+
 	std::ofstream file;
 	file.open("graph.gv");
 
-	qeGraph.exportGraph(file);
+	changedGraph->exportGraph(file);
 
 	file.close();
 

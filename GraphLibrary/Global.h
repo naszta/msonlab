@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include <set>
 #include <boost\shared_ptr.hpp>
 #include <boost\variant\variant.hpp>
 #include <iostream>

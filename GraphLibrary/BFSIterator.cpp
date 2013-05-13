@@ -40,12 +40,22 @@ namespace msonlab
 		{
 			if (node == end || toVisit.empty())
 			{
-				node = end;
-				return false;
+				if (this->inputNodes.size() > 0)
+				{
+					this->node = this->inputNodes.front();
+					this->inputNodes.pop();
+				}
+				else
+				{
+					this->node = this->end;
+					return false;
+				}
 			}
-
-			node = toVisit.front();
-			toVisit.pop();
+			else 
+			{
+				this->node = this->toVisit.front();
+				this->toVisit.pop();
+			}
 		}
 
 		// add node to visited

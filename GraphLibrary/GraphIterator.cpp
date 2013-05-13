@@ -9,15 +9,15 @@ namespace msonlab
 		this->end = g->iteratorEnd;
 
 		// adding input nodes to the queue.
-		IProcessable::nVect inputNodes = g->getInputNodes();
-		if (inputNodes.size() > 0)
+		IProcessable::nVect inputNodesVect = g->getInputNodes();
+		if (inputNodesVect.size() > 0)
 		{
-			IProcessable::nVect::iterator it = inputNodes.begin();
+			IProcessable::nVect::iterator it = inputNodesVect.begin();
 			this->node = *it;
 			++it; // can skip first from the queue
-			for (; it != inputNodes.end(); ++it)
+			for (; it != inputNodesVect.end(); ++it)
 			{
-				this->toVisit.push(*it);
+				this->inputNodes.push(*it);
 			}
 		}
 		else
@@ -38,6 +38,8 @@ namespace msonlab
 		std::swap(this->toVisit, emptyQueue);
 		std::set<IProcessable::nPtr> emptySet;
 		std::swap(this->visited, emptySet);
+		emptyQueue = std::queue<IProcessable::nPtr>();
+		std::swap(this->inputNodes, emptyQueue);
 
 		return true;
 	}
@@ -64,7 +66,8 @@ namespace msonlab
 	{
 		// adding neighbours to visited set
 		IProcessable::eVect::iterator it;
-		for (it = node->getPredecessors().begin(); it != node->getPredecessors().end(); ++it)
+		IProcessable::eVect edges = node->getPredecessors();
+		for (it = edges.begin(); it != edges.end(); ++it)
 		{
 			if (visited.count((*it)->getTo()) == 0)
 			{

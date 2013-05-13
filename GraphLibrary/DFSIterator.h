@@ -14,16 +14,16 @@ namespace msonlab
 	/*
 	* Class iterates over the Graph as BFS.
 	*/
-	class BFSIterator : public GraphIterator
+	class DFSIterator : public GraphIterator
 	{
 		// This method chooses the next node and steps there
 		virtual bool moveNext();
 	public:
-		BFSIterator(Graph::gPtr g);
-		BFSIterator(BFSIterator& it);
-		BFSIterator& operator=(BFSIterator& it);
-		BFSIterator& operator++(); // prefix
-		BFSIterator operator++(int); // postfix
+		DFSIterator(Graph::gPtr g);
+		DFSIterator(DFSIterator& it);
+		DFSIterator& operator=(DFSIterator& it);
+		DFSIterator& operator++(); // prefix
+		DFSIterator operator++(int); // postfix
 		bool hasMoreNode();
 	};
 }

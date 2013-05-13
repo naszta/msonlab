@@ -19,6 +19,7 @@ namespace msonlab
 		IProcessable::nPtr node;
 		IProcessable::nPtr end;
 		queue<IProcessable::nPtr> toVisit; // nodes to visit
+		queue<IProcessable::nPtr> inputNodes;
 		set<IProcessable::nPtr> visited; // visited nodes
 		Graph::gPtr graph;
 		// This method chooses the next node and steps there
