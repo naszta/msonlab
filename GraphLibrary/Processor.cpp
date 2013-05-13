@@ -18,7 +18,7 @@ namespace msonlab
 		throw Exceptions::NotImplementedException("Processor::process function");
 	}
 
-	IProcessable::pVect Processor::getOutput() const
+	IProcessable::nVect Processor::getOutput() const
 	{
 		return (*graph).getOutputNodes();
 	}

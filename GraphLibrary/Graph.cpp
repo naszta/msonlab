@@ -8,17 +8,30 @@ namespace msonlab
 	{
 		nodes.clear();
 		edges.clear();
+		this->iteratorEnd = IProcessable::nPtr(new msonlab::Node(0, L'0', 0));
 	}
 
 	Graph::Graph(const Graph& other)
 	{
-		throw Exceptions::NotImplementedException("Graph copy constructor");
+		*this = other;
 	}
 
-	bool Graph::addNode(Node::nPtr toAdd)
+	// TODO: rewrite as deep copy
+	Graph& Graph::operator=(const Graph& other)
 	{
-		msonlab::IProcessable::pVect::iterator it;
-		it = std::find(nodes.begin(),nodes.end(),toAdd);
+		if (this != &other)
+		{
+			this->nodes = other.nodes;
+			this->edges = other.edges;
+		}
+
+		return *this;
+	}
+
+	bool Graph::addNode(IProcessable::nPtr toAdd)
+	{
+		msonlab::IProcessable::nVect::iterator it;
+		it = std::find(nodes.begin(),nodes.end(), toAdd);
 
 		if (it != nodes.end())
 			return false;
@@ -34,17 +47,17 @@ namespace msonlab
 		}
 	}
 
-	bool Graph::addEdge(Edge::ePtr toAdd)
+	bool Graph::addEdge(IProcessable::ePtr toAdd)
 	{
-		msonlab::IProcessable::pVect::iterator it;
+		msonlab::IProcessable::eVect::iterator it;
 		it = std::find(edges.begin(),edges.end(),toAdd);
 
 		if (it != edges.end())
 			return false;
 
-		msonlab::Node::nPtr fromNode = (*toAdd).getFrom();
+		msonlab::IProcessable::nPtr fromNode = (*toAdd).getFrom();
 		addNode(fromNode);
-		msonlab::Node::nPtr toNode = (*toAdd).getTo();
+		msonlab::IProcessable::nPtr toNode = (*toAdd).getTo();
 		addNode(toNode);
 
 		it = edges.insert(edges.end(),toAdd);
@@ -79,14 +92,23 @@ namespace msonlab
 
 	bool Graph::exportGraph(std::ostream &out) const
 	{
-		throw Exceptions::NotImplementedException("Graph::exportGraph function");
+		out << "digraph G {" << std::endl;
+
+		// print edges from this node
+		for (unsigned j = 0; j < this->edges.size(); ++j)
+		{
+			out << this->edges[j]->getFrom()->getId() << " -> " << this->edges[j]->getTo()->getId() << " ;\n";
+		}
+
+		out << "}";
+		return true;
 	}
 
-	IProcessable::pVect Graph::getInputNodes() const
+	IProcessable::nVect Graph::getInputNodes() const
 	{
-		IProcessable::pVect retVal;
+		IProcessable::nVect retVal;
 
-		IProcessable::pVect::const_iterator it = nodes.begin();
+		IProcessable::nVect::const_iterator it = nodes.begin();
 		while (it != nodes.end())
 		{
 			if ((*(*it)).getPlace() == IProcessable::Input)
@@ -97,11 +119,11 @@ namespace msonlab
 		return retVal;
 	}
 
-	IProcessable::pVect Graph::getOutputNodes() const
+	IProcessable::nVect Graph::getOutputNodes() const
 	{
-		IProcessable::pVect retVal;
+		IProcessable::nVect retVal;
 
-		IProcessable::pVect::const_iterator it = nodes.begin();
+		IProcessable::nVect::const_iterator it = nodes.begin();
 		while (it != nodes.end())
 		{
 			if ((*(*it)).getPlace() == IProcessable::Output)
@@ -111,7 +133,5 @@ namespace msonlab
 		}
 		return retVal;
 	}
-
-
 
 }

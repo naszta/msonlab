@@ -5,7 +5,9 @@
 #include "NodeDivide.h"
 #include "NodeMultiply.h"
 #include "NodeSquareRoot.h"
+#include "BFSIterator.h"
 
+#include <fstream>
 
 void main(void)
 {
@@ -100,8 +102,25 @@ void main(void)
 	qeGraph.addEdge(e23);
 
 
-	msonlab::IProcessable::pVect inputs = qeGraph.getInputNodes();
-	msonlab::IProcessable::pVect outputs = qeGraph.getOutputNodes();
+	msonlab::Node::nVect inputs = qeGraph.getInputNodes();
+	msonlab::Node::nVect outputs = qeGraph.getOutputNodes();
+
+	msonlab::BFSIterator itr (msonlab::Graph::gPtr (new msonlab::Graph(qeGraph)));
+	for(;itr.hasMoreNode();++itr)
+	{
+		std::cout << (*itr)->getLabel() << " " << (*itr)->getId() << std::endl;
+	}
+
+	std::ofstream file;
+	file.open("graph.gv");
+
+	qeGraph.exportGraph(file);
+
+	file.close();
+
+	std::cout << "Press a key to continue...";
+	char ch;
+	std::cin >> ch;
 
 	return;
 }

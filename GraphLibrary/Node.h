@@ -7,14 +7,14 @@ namespace msonlab
 	class Node : public IProcessable
 	{
 	private:
-		IProcessable::pVect predecessors;
-		IProcessable::pVect successors;
+		IProcessable::eVect predecessors;
+		IProcessable::eVect successors;
 
 		int paramCount;
 
 	public:
-		typedef boost::shared_ptr<Node> nPtr;
-
+		//typedef boost::shared_ptr<Node> nPtr;
+		//typedef vector<boost::shared_ptr<Node>> nVect;
 		
 
 		Node(unsigned int _id, wchar_t _label, Types::DataType _value);
@@ -26,14 +26,14 @@ namespace msonlab
 		virtual bool isReadyForProcess() const;
 		virtual bool resetProcessingState();
 
-		IProcessable::pVect getPredecessors() const;
-		IProcessable::pVect getSuccessors() const;
+		IProcessable::eVect getPredecessors() const;
+		IProcessable::eVect getSuccessors() const;
 
-		bool registerPredecessor(IProcessable::pPtr _newPredecessor);
-		bool unregisterPredecessor(IProcessable::pPtr _newPredecessor);
+		bool registerPredecessor(IProcessable::ePtr _newPredecessor);
+		bool unregisterPredecessor(IProcessable::ePtr _newPredecessor);
 
-		bool registerSuccessor(IProcessable::pPtr _newSuccessor);
-		bool unregisterSuccessor(IProcessable::pPtr _newSuccessor);
+		bool registerSuccessor(IProcessable::ePtr _newSuccessor);
+		bool unregisterSuccessor(IProcessable::ePtr _newSuccessor);
 
 		PlaceEnum getPlace() const;
 

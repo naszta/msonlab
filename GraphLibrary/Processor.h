@@ -17,7 +17,7 @@ namespace msonlab
 		Processor(Graph::gPtr toProcess);
 
 		virtual bool process();
-		IProcessable::pVect getOutput() const;
+		IProcessable::nVect getOutput() const;
 	};
 
 

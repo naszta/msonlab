@@ -4,7 +4,8 @@
 
 namespace msonlab
 {
-
+	class Node;
+	class Edge;
 	class IProcessable
 	{
 	protected:
@@ -22,6 +23,10 @@ namespace msonlab
 	public:
 		typedef boost::shared_ptr<IProcessable> pPtr;
 		typedef vector<boost::shared_ptr<IProcessable>> pVect;
+		typedef boost::shared_ptr<Node> nPtr;
+		typedef vector<boost::shared_ptr<Node>> nVect;
+		typedef boost::shared_ptr<Edge> ePtr;
+		typedef vector<boost::shared_ptr<Edge>> eVect;
 
 		enum PlaceEnum {Input, Inside, Output};
 

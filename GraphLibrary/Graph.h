@@ -1,5 +1,6 @@
 #pragma once
 #include "Global.h"
+#include <boost/enable_shared_from_this.hpp>
 #include "IProcessable.h"
 #include "Node.h"
 #include "Edge.h"
@@ -7,20 +8,26 @@
 namespace msonlab
 {
 
-	class Graph
+	class Graph : public boost::enable_shared_from_this<Graph>
 	{
 	private:
-		IProcessable::pVect nodes;
-		IProcessable::pVect edges;
+		IProcessable::nVect nodes;
+		IProcessable::eVect edges;
+
+		IProcessable::nPtr iteratorEnd; // this is a sign for every iterator
+
+		friend class GraphIterator;
+		friend class BFSIterator;
 
 	public:
 		typedef boost::shared_ptr<Graph> gPtr;
 
 		Graph();
 		Graph(const Graph& other);
+		Graph& operator=(const Graph& other);
 
-		bool addNode(Node::nPtr toAdd);
-		bool addEdge(Edge::ePtr toAdd);
+		bool addNode(IProcessable::nPtr toAdd);
+		bool addEdge(IProcessable::ePtr toAdd);
 
 		size_t numberOfNodes() const;
 		size_t numberOfEdges() const;
@@ -28,8 +35,10 @@ namespace msonlab
 		bool importGraph(std::istream &in) const;
 		bool exportGraph(std::ostream &out) const;
 
-		IProcessable::pVect getInputNodes() const;
-		IProcessable::pVect getOutputNodes() const;
+		IProcessable::nVect getInputNodes() const;
+		IProcessable::nVect getOutputNodes() const;
+
+		BFSIterator getBFSIterator();
 	};
 
 }

@@ -40,19 +40,19 @@ namespace msonlab
 		return true;
 	}
 
-	IProcessable::pVect Node::getPredecessors() const
+	IProcessable::eVect Node::getPredecessors() const
 	{
 		return predecessors;
 	}
 
-	IProcessable::pVect Node::getSuccessors() const
+	IProcessable::eVect Node::getSuccessors() const
 	{
 		return successors;
 	}
 
-	bool Node::registerPredecessor(IProcessable::pPtr _newPredecessor)
+	bool Node::registerPredecessor(IProcessable::ePtr _newPredecessor)
 	{
-		msonlab::IProcessable::pVect::iterator it;
+		msonlab::IProcessable::eVect::iterator it;
 		it = std::find(predecessors.begin(),predecessors.end(),_newPredecessor);
 
 		if (it != predecessors.end())
@@ -70,14 +70,14 @@ namespace msonlab
 
 	}
 
-	bool Node::unregisterPredecessor(IProcessable::pPtr _newPredecessor)
+	bool Node::unregisterPredecessor(IProcessable::ePtr _newPredecessor)
 	{
 		throw Exceptions::NotImplementedException("Node::unregisterPredecessor function");
 	}
 
-	bool Node::registerSuccessor(IProcessable::pPtr _newSuccessor)
+	bool Node::registerSuccessor(IProcessable::ePtr _newSuccessor)
 	{
-		msonlab::IProcessable::pVect::iterator it;
+		msonlab::IProcessable::eVect::iterator it;
 		it = std::find(successors.begin(),successors.end(),_newSuccessor);
 
 		if (it != successors.end())
@@ -94,7 +94,7 @@ namespace msonlab
 		}
 	}
 
-	bool Node::unregisterSuccessor(IProcessable::pPtr _newSuccessor)
+	bool Node::unregisterSuccessor(IProcessable::ePtr _newSuccessor)
 	{
 		throw Exceptions::NotImplementedException("Node::unregisterSuccessor function");
 	}

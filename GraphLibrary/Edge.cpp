@@ -1,9 +1,10 @@
 #pragma once
 #include "Edge.h"
+#include "Node.h"
 
 namespace msonlab
 {
-	Edge::Edge(unsigned int _id, wchar_t _label, Types::DataType _value, Node::nPtr _from, Node::nPtr _to)
+	Edge::Edge(unsigned int _id, wchar_t _label, Types::DataType _value, IProcessable::nPtr _from, IProcessable::nPtr _to)
 		: IProcessable(_id, _label, _value), from(_from), to(_to), paramReady(false)
 	{
 	}
@@ -54,7 +55,7 @@ namespace msonlab
 		return true;
 	}
 
-	Node::nPtr Edge::opposite(Node::nPtr x)
+	IProcessable::nPtr Edge::opposite(IProcessable::nPtr x)
 	{
 		if (to == x)
 			return from;
@@ -64,12 +65,12 @@ namespace msonlab
 			throw Exceptions::NotPartOfEdgeException("The node is not part of the current edge!");
 	}
 
-	Node::nPtr Edge::getFrom() const
+	IProcessable::nPtr Edge::getFrom() const
 	{
 		return from;
 	}
 
-	Node::nPtr Edge::getTo() const
+	IProcessable::nPtr Edge::getTo() const
 	{
 		return to;
 	}
