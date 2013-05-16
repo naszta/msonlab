@@ -75,4 +75,9 @@ namespace msonlab
 		return to;
 	}
 
+	Edge::EdgeTypeEnum Edge::getEdgeType() const
+	{
+		return default_edge;
+	}
+
 }

@@ -5,6 +5,8 @@
 #include "NodeDivide.h"
 #include "NodeMultiply.h"
 #include "NodeSquareRoot.h"
+#include "Edge.h"
+#include "BlueEdge.h"
 #include "BFSIterator.h"
 #include "GraphAlgorithms.h"
 
@@ -43,17 +45,17 @@ void main(void)
 	msonlab::Node::nPtr y2 (new msonlab::NodeMultiply(19,L'Y2',0));
 
 
-	msonlab::Edge::ePtr e1 (new msonlab::Edge(1,L'e1',0,a,multiply_2a));
-	msonlab::Edge::ePtr e2 (new msonlab::Edge(2,L'e2',0,constNumber_2,multiply_2a));
-	msonlab::Edge::ePtr e3 (new msonlab::Edge(3,L'e3',0,a,multiply_minus4ac));
+	msonlab::Edge::ePtr e1 (new msonlab::BlueEdge(1,L'e1',0,a,multiply_2a));
+	msonlab::Edge::ePtr e2 (new msonlab::BlueEdge(2,L'e2',0,constNumber_2,multiply_2a));
+	msonlab::Edge::ePtr e3 (new msonlab::BlueEdge(3,L'e3',0,a,multiply_minus4ac));
 
-	msonlab::Edge::ePtr e4 (new msonlab::Edge(4,L'e4',0,b,multiply_bb));
-	msonlab::Edge::ePtr e5 (new msonlab::Edge(5,L'e5',0,b,multiply_bb));
-	msonlab::Edge::ePtr e6 (new msonlab::Edge(6,L'e6',0,b,multiply_minusb));
-	msonlab::Edge::ePtr e7 (new msonlab::Edge(7,L'e7',0,constNumber_minus1,multiply_minusb));
+	msonlab::Edge::ePtr e4 (new msonlab::BlueEdge(4,L'e4',0,b,multiply_bb));
+	msonlab::Edge::ePtr e5 (new msonlab::BlueEdge(5,L'e5',0,b,multiply_bb));
+	msonlab::Edge::ePtr e6 (new msonlab::BlueEdge(6,L'e6',0,b,multiply_minusb));
+	msonlab::Edge::ePtr e7 (new msonlab::BlueEdge(7,L'e7',0,constNumber_minus1,multiply_minusb));
 
 	msonlab::Edge::ePtr e8 (new msonlab::Edge(8,L'e8',0,c,multiply_minus4ac));
-	msonlab::Edge::ePtr e9 (new msonlab::Edge(9,L'e9',0,constNumber_minus4,multiply_minus4ac));
+	msonlab::Edge::ePtr e9 (new msonlab::BlueEdge(9,L'e9',0,constNumber_minus4,multiply_minus4ac));
 
 	msonlab::Edge::ePtr e10 (new msonlab::Edge(10,L'e10',0,constNumber_1,divide_1_2a));
 	msonlab::Edge::ePtr e11 (new msonlab::Edge(11,L'e11',0,multiply_2a,divide_1_2a));
@@ -63,7 +65,7 @@ void main(void)
 
 	msonlab::Edge::ePtr e14 (new msonlab::Edge(14,L'e14',0,add_bb_minus4ac,squareRoot_bb_minus4ac));
 
-	msonlab::Edge::ePtr e15 (new msonlab::Edge(15,L'e15',0,squareRoot_bb_minus4ac,multiply_minus_squareRoot_bb_minus4ac));
+	msonlab::Edge::ePtr e15 (new msonlab::BlueEdge(15,L'e15',0,squareRoot_bb_minus4ac,multiply_minus_squareRoot_bb_minus4ac));
 
 	msonlab::Edge::ePtr e16 (new msonlab::Edge(16,L'e16',0,multiply_minusb,add_toDivide1));
 	msonlab::Edge::ePtr e17 (new msonlab::Edge(17,L'e17',0,squareRoot_bb_minus4ac,add_toDivide1));
@@ -102,9 +104,11 @@ void main(void)
 	qeGraph.addEdge(e22);
 	qeGraph.addEdge(e23);
 
-
 	msonlab::Node::nVect inputs = qeGraph.getInputNodes();
 	msonlab::Node::nVect outputs = qeGraph.getOutputNodes();
+
+	msonlab::Graph::gPtr reducedGraph = qeGraph.getPartialGraphByEdgeType(msonlab::Edge::blue_edge);
+
 
 	msonlab::Graph::gPtr ptrGraph (new msonlab::Graph(qeGraph));
 	msonlab::BFSIterator itr (ptrGraph);

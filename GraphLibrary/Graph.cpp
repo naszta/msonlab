@@ -134,4 +134,22 @@ namespace msonlab
 		return retVal;
 	}
 
+	Graph::gPtr Graph::getPartialGraphByEdgeType(Edge::EdgeTypeEnum edgeType) const
+	{
+		Graph::gPtr ptrGraph (new msonlab::Graph());
+
+		IProcessable::eVect::const_iterator it = edges.begin();
+		while (it != edges.end())
+		{
+			if ((*(*it)).getEdgeType() == edgeType)
+			{
+				(*ptrGraph).addEdge((*it));
+			}
+
+			++it;
+		}
+
+		return ptrGraph;
+	}
+
 }

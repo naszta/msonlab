@@ -7,14 +7,20 @@ namespace msonlab
 {
 	class Edge : public IProcessable
 	{
+	public:
+		enum EdgeTypeEnum { default_edge, blue_edge, red_edge, orange_edge };
+
 	protected:
 		IProcessable::nPtr from;
 		IProcessable::nPtr to;
 
 		bool paramReady;
+
+		EdgeTypeEnum edgeType;
 	public:
 		//typedef boost::shared_ptr<Edge> ePtr;
 		//typedef vector<boost::shared_ptr<Edge>> eVect;
+
 
 		Edge(unsigned int _id, wchar_t _label, Types::DataType _value, IProcessable::nPtr _from, IProcessable::nPtr _to);
 		Edge(const Edge& other);
@@ -30,6 +36,7 @@ namespace msonlab
 		IProcessable::nPtr getFrom() const;
 		IProcessable::nPtr getTo() const;
 
+		virtual EdgeTypeEnum getEdgeType() const;
 	};
 
 }

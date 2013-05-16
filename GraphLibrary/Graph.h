@@ -40,6 +40,8 @@ namespace msonlab
 		IProcessable::nVect getOutputNodes() const;
 
 		BFSIterator getBFSIterator();
+
+		gPtr getPartialGraphByEdgeType(Edge::EdgeTypeEnum _edgeType) const;
 	};
 
 }
