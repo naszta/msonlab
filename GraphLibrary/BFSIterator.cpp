@@ -2,8 +2,34 @@
 
 namespace msonlab
 {
+	BFSIterator::BFSIterator(IProcessable::nPtr endPtr)
+		:GraphIterator(endPtr, endPtr)
+	{
+	}
+
 	BFSIterator::BFSIterator(Graph::gPtr g) : GraphIterator(g)
 	{
+		// end of the iterator is unique for every graph
+		// but the same for every iterator on the same graph
+		this->end = g->iteratorEnd;
+
+		// adding input nodes to the queue.
+		IProcessable::nVect inputNodesVect = g->getInputNodes();
+		if (inputNodesVect.size() > 0)
+		{
+			IProcessable::nVect::iterator it = inputNodesVect.begin();
+			this->node = *it;
+			++it; // can skip first from the queue
+			for (; it != inputNodesVect.end(); ++it)
+			{
+				this->inputNodes.push(*it);
+			}
+		}
+		else
+		{
+			this->node = this->end;
+		}
+
 		this->moveNext();
 	}
 
@@ -20,9 +46,15 @@ namespace msonlab
 	{
 		if (this != &it)
 		{
+			this->clear();
 			this->graph = it.graph;
 			this->node = it.node;
 			this->end = it.end;
+			
+			// copy state
+			this->visited = it.visited;
+			this->toVisit = it.toVisit;
+			this->inputNodes = it.inputNodes;
 		}
 
 		return *this;
@@ -76,16 +108,16 @@ namespace msonlab
 	}
 
 	// Clears the state of the visitor
-	//bool BFSIterator::clear()
-	//{
-	//	this->node = this->end;
-	//	std::queue<IProcessable::nPtr> emptyQueue;
-	//	std::swap(this->toVisit, emptyQueue);
-	//	std::set<IProcessable::nPtr> emptySet;
-	//	std::swap(this->visited, emptySet);
+	bool BFSIterator::clear()
+	{
+		this->node = this->end;
+		std::queue<IProcessable::nPtr> emptyQueue;
+		std::swap(this->toVisit, emptyQueue);
+		std::set<IProcessable::nPtr> emptySet;
+		std::swap(this->visited, emptySet);
 
-	//	return true;
-	//}
+		return true;
+	}
 
 	/**
 	* PUBLIC METHODS
@@ -109,48 +141,21 @@ namespace msonlab
 		return this->node != this->end;
 	}
 
-	// Compares by pointer
-	//bool BFSIterator::operator==(const BFSIterator& it) const
-	//{
-	//	return this->node == it.node;
-	//}
-
-	// Returns the actual node
-	//IProcessable::nPtr BFSIterator::operator*()
-	//{
-	//	return this->node;
-	//}
-
 	// Marks the neighbours of the actual node visited
 	// so the bfs will skip them
-	//bool BFSIterator::skipActNode()
-	//{
-	//	// adding neighbours to visited set
-	//	IProcessable::eVect::iterator it;
-	//	for (it = node->getPredecessors().begin(); it != node->getPredecessors().end(); ++it)
-	//	{
-	//		if (visited.count((*it)->getTo()) == 0)
-	//		{
-	//			visited.insert((*it)->getTo());
-	//		}
-	//	}
+	bool BFSIterator::skipActNode()
+	{
+		// adding neighbours to visited set
+		IProcessable::eVect::const_iterator it;
+		IProcessable::eVect neighbours = node->getSuccessors();
+		for (it = neighbours.cbegin(); it != neighbours.cend(); ++it)
+		{
+			if (visited.count((*it)->getTo()) == 0)
+			{
+				visited.insert((*it)->getTo());
+			}
+		}
 
-	//	return true;
-	//}
-
-	// Sets the start node of the BFS
-	//bool BFSIterator::setStartNode(IProcessable::nPtr startNode)
-	//{
-	//	msonlab::IProcessable::nVect::iterator it;
-	//	it = std::find(this->graph->nodes.begin(),this->graph->nodes.end(), startNode);
-	//	
-	//	if (it == this->graph->nodes.end())
-	//	{
-	//		return false;
-	//	}
-	//	
-	//	this->clear();
-	//	this->node = startNode;
-	//	return this->moveNext();
-	//}
+		return true;
+	}
 }

@@ -110,11 +110,16 @@ namespace msonlab
 			IProcessable::eVect neighbours = node->getPredecessors();
 			for (eIt = neighbours.begin(); eIt != neighbours.end(); ++eIt)
 			{
-				if (modified.count((*eIt)->getFrom()) > 0)
+				if (changed.count((*eIt)->getTo()) == 0)
 				{
 					changedGraph->addEdge(*eIt);
+				}
+
+				if (modified.count((*eIt)->getFrom()) > 0)
+				{
 					toVisit.push((*eIt)->getFrom());
 				}
+
 			}
 		}
 

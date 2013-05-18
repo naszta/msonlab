@@ -8,6 +8,7 @@
 #include "Edge.h"
 #include "BlueEdge.h"
 #include "BFSIterator.h"
+#include "DFSIterator.h"
 #include "GraphAlgorithms.h"
 
 #include <fstream>
@@ -115,7 +116,12 @@ void main(void)
 	itr.setStartNode(add_bb_minus4ac);
 	for(;itr.hasMoreNode(); ++itr)
 	{
-		std::cout << (*itr)->getLabel() << " " << (*itr)->getId() << std::endl;
+		//std::cout << (*itr)->getLabel() << " " << (*itr)->getId() << std::endl;
+	}
+
+	for (msonlab::DFSIterator it = ptrGraph->dfsIteratorBegin(); it != ptrGraph->dfsIteratorEnd(); ++it)
+	{
+		std::cout << (*it)->getLabel() << " " << (*it)->getId() << std::endl;
 	}
 
 	msonlab::IProcessable::nSet changed;

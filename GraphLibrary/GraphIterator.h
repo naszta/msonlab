@@ -18,18 +18,16 @@ namespace msonlab
 	protected:
 		IProcessable::nPtr node;
 		IProcessable::nPtr end;
-		queue<IProcessable::nPtr> toVisit; // nodes to visit
 		queue<IProcessable::nPtr> inputNodes;
-		set<IProcessable::nPtr> visited; // visited nodes
 		Graph::gPtr graph;
 		// This method chooses the next node and steps there
 		virtual bool moveNext() = 0;
-		bool clear();
+		virtual bool clear() = 0;
 	public:
+		GraphIterator(IProcessable::nPtr node, IProcessable::nPtr end);
 		GraphIterator(Graph::gPtr g);
 		bool operator==(const GraphIterator& it) const;
 		IProcessable::nPtr operator*();
-		bool skipActNode();
 		bool setStartNode(IProcessable::nPtr startNode);
 	};
 }

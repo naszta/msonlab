@@ -16,14 +16,19 @@ namespace msonlab
 	*/
 	class BFSIterator : public GraphIterator
 	{
+		queue<IProcessable::nPtr> toVisit; // nodes to visit
+		set<IProcessable::nPtr> visited; // visited nodes
 		// This method chooses the next node and steps there
 		virtual bool moveNext();
+		virtual bool clear();
 	public:
+		BFSIterator(IProcessable::nPtr endPtr);
 		BFSIterator(Graph::gPtr g);
 		BFSIterator(BFSIterator& it);
 		BFSIterator& operator=(BFSIterator& it);
 		BFSIterator& operator++(); // prefix
 		BFSIterator operator++(int); // postfix
+		bool skipActNode();
 		bool hasMoreNode();
 	};
 }
