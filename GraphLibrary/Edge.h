@@ -34,7 +34,9 @@ namespace msonlab
 		IProcessable::nPtr opposite(IProcessable::nPtr x);
 
 		IProcessable::nPtr getFrom() const;
+		unsigned getFromId() const;
 		IProcessable::nPtr getTo() const;
+		unsigned getToId() const;
 
 		virtual EdgeTypeEnum getEdgeType() const;
 	};

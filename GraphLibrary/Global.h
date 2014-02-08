@@ -15,7 +15,7 @@ namespace msonlab
 
 	namespace Types
 	{
-		typedef boost::variant<int,wchar_t> DataType;
+		typedef boost::variant<int,unsigned,wchar_t> DataType;
 
 	}
 

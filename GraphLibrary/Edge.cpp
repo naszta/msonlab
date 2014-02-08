@@ -70,9 +70,19 @@ namespace msonlab
 		return from;
 	}
 
+	unsigned Edge::getFromId() const
+	{
+		return from->getId();
+	}
+
 	IProcessable::nPtr Edge::getTo() const
 	{
 		return to;
+	}
+
+	unsigned Edge::getToId() const
+	{
+		return to->getId();
 	}
 
 	Edge::EdgeTypeEnum Edge::getEdgeType() const

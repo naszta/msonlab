@@ -3,9 +3,99 @@
 #include <map>
 #include <queue>
 #include <set>
+#include <iostream>
 
 namespace msonlab
 {
+	///
+	// divides the nodes of the graph into levels
+	// there are no edges between nodes on the same level
+	// TODO: every node should be on the first possible level
+	///
+	vector<IProcessable::nVect> GraphAlgorithms::createLeveling(Graph::gPtr g)
+	{
+		IProcessable::nVect outputNodes = g->getOutputNodes();
+		vector<IProcessable::nVect> result;
+		result.push_back(outputNodes);
+		std::map< IProcessable::nPtr , int> count;
+
+		size_t added = outputNodes.size();
+		IProcessable::nVect::iterator it;
+		for (int level = 0; ; ++level) {
+			result.push_back(IProcessable::nVect());
+			for (it = result[level].begin(); it != result[level].end(); ++it)
+			{
+				IProcessable::nPtr act = *it;
+				IProcessable::eVect predecessors = act->getPredecessors();
+				for (size_t i = 0; i < predecessors.size(); ++i)
+				{
+					count[predecessors[i]->getFrom()]++;
+					if ( predecessors[i]->getFrom()->getSuccessors().size() == count[predecessors[i]->getFrom()])
+					{
+						result[level+1].push_back(predecessors[i]->getFrom());
+						++added;
+					}
+				}
+			}
+
+			if (added == g->nodes.size())
+			{
+				break;
+			}
+		}
+
+		return result;
+	}
+
+	vector<IProcessable::nVect> GraphAlgorithms::createBottomLeveling(Graph::gPtr g)
+	{
+		IProcessable::nVect inputNodes = g->getInputNodes();
+		vector<IProcessable::nVect> result;
+		// first level, the input nodes
+		result.push_back(inputNodes);
+		std::map< IProcessable::nPtr , int> count;
+
+		// this number of nodes added to the leveling
+		size_t added = inputNodes.size();
+		IProcessable::nVect::iterator it;
+		for (int level = 0; ; ++level) {
+			// adding a new level to the result
+			result.push_back(IProcessable::nVect());
+			for (it = result[level].begin(); it != result[level].end(); ++it)
+			{
+				IProcessable::nPtr act = *it;
+				IProcessable::eVect successors = act->getSuccessors();
+				for (size_t i = 0; i < successors.size(); ++i)
+				{
+					count[successors[i]->getTo()]++;
+					if ( successors[i]->getTo()->getPredecessorsSize() == count[successors[i]->getTo()])
+					{
+						result[level+1].push_back(successors[i]->getTo());
+						++added;
+					}
+				}
+			}
+
+			if (added == g->nodes.size())
+			{
+				break;
+			}
+		}
+
+		//for (size_t i = 0; i < result.size(); ++i)
+		//{
+		//	std::cout << "level " << i << std::endl;
+		//	for (it = result[i].begin(); it != result[i].end(); ++it)
+		//	{
+		//		IProcessable::nPtr act = *it;
+		//		std::cout << act->getId() << ", ";
+		//	}
+
+		//	std::cout << std::endl;
+		//}
+		return result;
+	}
+
 	IProcessable::nVect GraphAlgorithms::getTopologicalOrder(Graph::gPtr g)
 	{
 		IProcessable::nVect order;
@@ -124,5 +214,51 @@ namespace msonlab
 		}
 
 		return changedGraph;
+	}
+
+	int GraphAlgorithms::scheduleGreedy(boost::shared_ptr<Graph> graph, int pus)
+	{
+		int timeCounter = 0;
+		int taskCounter = 0;
+		std::map< IProcessable::nPtr , int> count;
+		IProcessable::nVect inputNodes = graph->getInputNodes();
+		std::queue < IProcessable::nPtr> free;
+		for (size_t i = 0; i < inputNodes.size(); ++i)
+		{
+			free.push(inputNodes[i]);
+		}
+
+		while (taskCounter < graph->numberOfNodes())
+		{
+			vector< IProcessable::nPtr > out;
+			int limit = pus;
+			while ( !free.empty() && limit > 0 )
+			{
+				out.push_back(free.front());
+				free.pop();
+				--limit;
+				taskCounter++;
+			}
+			++timeCounter;
+			if (taskCounter == graph->numberOfNodes())
+			{
+				break;
+			}
+
+			for (size_t i = 0; i < out.size(); ++i)
+			{
+				IProcessable::eVect successors = out[i]->getSuccessors();
+				for (size_t j = 0; j < successors.size(); ++j)
+				{
+					count[successors[j]->getTo()]++;
+					if ( successors[j]->getTo()->getPredecessorsSize() == count[successors[j]->getTo()])
+					{
+						free.push(successors[j]->getTo());
+					}
+				}	
+			}
+		}
+
+		return timeCounter;
 	}
 }

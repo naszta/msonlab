@@ -12,9 +12,6 @@ namespace msonlab
 	bool Processor::process()
 	{
 
-
-
-
 		throw Exceptions::NotImplementedException("Processor::process function");
 	}
 
