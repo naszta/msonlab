@@ -8,7 +8,7 @@ namespace msonlab
 	int GreedySchedulingAlgorithm::schedule(boost::shared_ptr<Graph> graph, int pus)
 	{
 		int timeCounter = 0;
-		int taskCounter = 0;
+		unsigned taskCounter = 0;
 		std::map< IProcessable::nPtr , int> count;
 		IProcessable::nVect inputNodes = graph->getInputNodes();
 		std::queue < IProcessable::nPtr> free;

@@ -158,7 +158,7 @@ int main(int argc, char *argv[])
 		unsigned last = population->best()->getFitness();
 		unsigned not_changed = 0;
 
-		for (int i = 0; i < gaoptions->getNumberOfYears(); ++i)
+		for (size_t i = 0; i < gaoptions->getNumberOfYears(); ++i)
 		{
 			gena.simulateMating(population, gaoptions->getPopMaxSize());
 			population->limit();
