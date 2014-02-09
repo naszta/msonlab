@@ -12,17 +12,18 @@ namespace msonlab
 
 	IProcessable::pVect MultiplierEdge::process()
 	{
+		IProcessable::pVect ret;
+
 		if (isReadyForProcess())
 		{
 			// TODO: static class for operands
 			if (setProcessed((*from).getResultValue()))
 			{
-				IProcessable::pVect retVal;
-				
-				if((*to).registerParameter())
-					retVal.insert(retVal.begin(),to);
-
-				return retVal;
+				if ((*to).registerParameter())
+				{
+					ret.insert(ret.begin(),(to));
+				}
+				return ret;
 			}
 			else
 				throw msonlab::Exceptions::GeneralErrorException("Error while setting the result of processing on this processable element!");
@@ -31,6 +32,16 @@ namespace msonlab
 		{
 			throw msonlab::Exceptions::StillNotReadyForProcessException("This processable element is not yet ready for processing!");
 		}
+	}
+
+
+	// compile
+
+	void MultiplierEdge::compile(msonlab::StackRunner::srPtr stackProgram)
+	{
+		stackProgram->addToken(msonlab::StackRunner::PUSH, msonlab::Types::DataType(new double(multiplier)));
+		stackProgram->addToken(msonlab::StackRunner::MUL, nullptr);
+		(*from).compile(stackProgram);
 	}
 
 }

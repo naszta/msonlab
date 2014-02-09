@@ -76,4 +76,11 @@ namespace msonlab
 		else
 			return false;
 	}
+
+	// compile
+	void IProcessable::compile(msonlab::StackRunner::srPtr stackProgram)
+	{
+
+	}
+
 }

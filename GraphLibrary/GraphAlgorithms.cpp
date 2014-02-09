@@ -3,6 +3,7 @@
 #include <map>
 #include <queue>
 #include <set>
+<<<<<<< HEAD
 #include <iostream>
 
 namespace msonlab
@@ -96,6 +97,11 @@ namespace msonlab
 		return result;
 	}
 
+=======
+
+namespace msonlab
+{
+>>>>>>> gabooo
 	IProcessable::nVect GraphAlgorithms::getTopologicalOrder(Graph::gPtr g)
 	{
 		IProcessable::nVect order;
@@ -200,6 +206,7 @@ namespace msonlab
 			IProcessable::eVect neighbours = node->getPredecessors();
 			for (eIt = neighbours.begin(); eIt != neighbours.end(); ++eIt)
 			{
+<<<<<<< HEAD
 				if (changed.count((*eIt)->getTo()) == 0)
 				{
 					changedGraph->addEdge(*eIt);
@@ -210,11 +217,19 @@ namespace msonlab
 					toVisit.push((*eIt)->getFrom());
 				}
 
+=======
+				if (modified.count((*eIt)->getFrom()) > 0)
+				{
+					changedGraph->addEdge(*eIt);
+					toVisit.push((*eIt)->getFrom());
+				}
+>>>>>>> gabooo
 			}
 		}
 
 		return changedGraph;
 	}
+<<<<<<< HEAD
 
 	int GraphAlgorithms::scheduleGreedy(boost::shared_ptr<Graph> graph, int pus)
 	{
@@ -261,4 +276,6 @@ namespace msonlab
 
 		return timeCounter;
 	}
+=======
+>>>>>>> gabooo
 }

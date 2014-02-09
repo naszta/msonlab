@@ -39,6 +39,9 @@ namespace msonlab
 		unsigned getToId() const;
 
 		virtual EdgeTypeEnum getEdgeType() const;
+
+		// compile
+		virtual void compile(msonlab::StackRunner::srPtr stackProgram);
 	};
 
 }

@@ -1,6 +1,6 @@
 #pragma once
 #include "Global.h"
-
+#include "StackRunner.h"
 
 namespace msonlab
 {
@@ -23,9 +23,11 @@ namespace msonlab
 	public:
 		typedef boost::shared_ptr<IProcessable> pPtr;
 		typedef vector<boost::shared_ptr<IProcessable>> pVect;
+
 		typedef boost::shared_ptr<Node> nPtr;
 		typedef vector<boost::shared_ptr<Node>> nVect;
 		typedef std::set<boost::shared_ptr<Node>> nSet;
+
 		typedef boost::shared_ptr<Edge> ePtr;
 		typedef vector<boost::shared_ptr<Edge>> eVect;
 
@@ -49,6 +51,10 @@ namespace msonlab
 		virtual PlaceEnum getPlace() const;
 
 		bool operator==(const IProcessable& other) const;
+
+
+		// compile
+		virtual void compile(msonlab::StackRunner::srPtr stackProgram);
 	};
 
 }

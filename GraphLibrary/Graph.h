@@ -16,11 +16,17 @@ namespace msonlab
 
 		IProcessable::nPtr iteratorEnd; // this is a sign for every iterator
 
+<<<<<<< HEAD
 		friend class GeneticAlgorithm;
 		friend class GraphAlgorithms;
 		friend class GraphIterator;
 		friend class BFSIterator;
 		friend class DFSIterator;
+=======
+		friend class GraphAlgorithms;
+		friend class GraphIterator;
+		friend class BFSIterator;
+>>>>>>> gabooo
 
 	public:
 		typedef boost::shared_ptr<Graph> gPtr;
@@ -41,10 +47,14 @@ namespace msonlab
 		IProcessable::nVect getInputNodes() const;
 		IProcessable::nVect getOutputNodes() const;
 
+<<<<<<< HEAD
 		BFSIterator bfsIteratorBegin();
 		BFSIterator bfsIteratorEnd();
 		DFSIterator dfsIteratorBegin();
 		DFSIterator dfsIteratorEnd();
+=======
+		BFSIterator getBFSIterator();
+>>>>>>> gabooo
 
 		gPtr getPartialGraphByEdgeType(Edge::EdgeTypeEnum _edgeType) const;
 	};

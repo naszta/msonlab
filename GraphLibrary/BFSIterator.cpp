@@ -2,6 +2,7 @@
 
 namespace msonlab
 {
+<<<<<<< HEAD
 	BFSIterator::BFSIterator(IProcessable::nPtr endPtr)
 		:GraphIterator(endPtr, endPtr)
 	{
@@ -30,6 +31,10 @@ namespace msonlab
 			this->node = this->end;
 		}
 
+=======
+	BFSIterator::BFSIterator(Graph::gPtr g) : GraphIterator(g)
+	{
+>>>>>>> gabooo
 		this->moveNext();
 	}
 
@@ -46,6 +51,7 @@ namespace msonlab
 	{
 		if (this != &it)
 		{
+<<<<<<< HEAD
 			this->clear();
 			this->graph = it.graph;
 			this->node = it.node;
@@ -55,6 +61,11 @@ namespace msonlab
 			this->visited = it.visited;
 			this->toVisit = it.toVisit;
 			this->inputNodes = it.inputNodes;
+=======
+			this->graph = it.graph;
+			this->node = it.node;
+			this->end = it.end;
+>>>>>>> gabooo
 		}
 
 		return *this;
@@ -107,6 +118,7 @@ namespace msonlab
 		return true;
 	}
 
+<<<<<<< HEAD
 	// Clears the state of the visitor
 	bool BFSIterator::clear()
 	{
@@ -118,6 +130,8 @@ namespace msonlab
 
 		return true;
 	}
+=======
+>>>>>>> gabooo
 
 	/**
 	* PUBLIC METHODS
@@ -141,6 +155,7 @@ namespace msonlab
 		return this->node != this->end;
 	}
 
+<<<<<<< HEAD
 	// Marks the neighbours of the actual node visited
 	// so the bfs will skip them
 	bool BFSIterator::skipActNode()
@@ -158,4 +173,7 @@ namespace msonlab
 
 		return true;
 	}
+=======
+
+>>>>>>> gabooo
 }

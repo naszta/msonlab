@@ -129,4 +129,10 @@ namespace msonlab
 		else
 			return IProcessable::Input;
 	}
+
+	// compile
+	void Node::compile(msonlab::StackRunner::srPtr stackProgram)
+	{
+
+	}
 }

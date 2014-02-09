@@ -1,7 +1,11 @@
 #pragma once
 #include "Graph.h"
+<<<<<<< HEAD
 #include "BFSIterator.h"
 #include "DFSIterator.h"
+=======
+
+>>>>>>> gabooo
 
 namespace msonlab
 {
@@ -153,6 +157,7 @@ namespace msonlab
 		return ptrGraph;
 	}
 
+<<<<<<< HEAD
 	BFSIterator Graph::bfsIteratorBegin()
 	{
 		BFSIterator bfsIT (shared_from_this());
@@ -176,4 +181,6 @@ namespace msonlab
 		DFSIterator dfsIt (this->iteratorEnd);
 		return dfsIt;
 	}
+=======
+>>>>>>> gabooo
 }

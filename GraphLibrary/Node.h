@@ -6,7 +6,7 @@ namespace msonlab
 {
 	class Node : public IProcessable
 	{
-	private:
+	protected:
 		IProcessable::eVect predecessors;
 		IProcessable::eVect successors;
 
@@ -41,6 +41,8 @@ namespace msonlab
 
 		PlaceEnum getPlace() const;
 
+		// compile
+		virtual void compile(msonlab::StackRunner::srPtr stackProgram);
 	};
 
 }

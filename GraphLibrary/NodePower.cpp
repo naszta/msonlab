@@ -1,21 +1,23 @@
 #pragma once
-#include "NodeDivide.h"
+#include "NodePower.h"
 #include "Edge.h"
+#include <math.h>
 
 namespace msonlab
 {
-	NodeDivide::NodeDivide(unsigned int _id, wchar_t _label, Types::DataType _value)
+	NodePower::NodePower(unsigned int _id, wchar_t _label, Types::DataType _value)
 		: Node(_id, _label, _value)
 	{
 	}
 
-	IProcessable::pVect NodeDivide::process()
+	IProcessable::pVect NodePower::process()
 	{
 		IProcessable::pVect ret;
 
 		if (isReadyForProcess())
 		{
-			Types::DataType newVal =  msonlab::Types::DataType(new double(1.0));
+			Types::DataType newVal = Types::DataType(new double(1.0));
+			Types::DataType floor = Types::DataType(new double(1.0));
 
 			int i = 1;
 
@@ -23,13 +25,16 @@ namespace msonlab
 			{
 				if (i == 1)
 					*newVal = *(*(*it)).getResultValue();
+				else if (i == 2)
+					*floor = *(*(*it)).getResultValue();
 				else
-					*newVal /= *(*(*it)).getResultValue();
-
+				{ }
 				i++;
 			}
 
-			if (setProcessed(newVal))
+			
+
+			if (setProcessed(Types::DataType(new double(pow(*newVal,*floor)))))
 			{
 				for (IProcessable::eVect::iterator it = successors.begin(); it != successors.end(); ++it)
 				{
@@ -52,8 +57,7 @@ namespace msonlab
 	}
 
 	// compile
-
-	void NodeDivide::compile(msonlab::StackRunner::srPtr stackProgram)
+	void NodePower::compile(msonlab::StackRunner::srPtr stackProgram)
 	{
 		int i = 1;
 		for (msonlab::Edge::eVect::iterator it = predecessors.begin(); it != predecessors.end(); ++it)
@@ -62,7 +66,6 @@ namespace msonlab
 				(*(*it)).compile(stackProgram);
 			++i;
 		}
-		stackProgram->addToken(msonlab::StackRunner::DIV, nullptr);
+		stackProgram->addToken(msonlab::StackRunner::POW, nullptr);
 	}
-
 }

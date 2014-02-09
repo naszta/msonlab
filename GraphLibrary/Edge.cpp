@@ -30,7 +30,7 @@ namespace msonlab
 				IProcessable::pVect retVal;
 				
 				if((*to).registerParameter())
-					retVal.insert(retVal.begin(),to);
+					retVal.insert(retVal.begin(), to);
 
 				return retVal;
 			}
@@ -70,14 +70,14 @@ namespace msonlab
 		return from;
 	}
 
-	unsigned Edge::getFromId() const
-	{
-		return from->getId();
-	}
-
 	IProcessable::nPtr Edge::getTo() const
 	{
 		return to;
+	}
+
+	unsigned Edge::getFromId() const
+	{
+		return from->getId();
 	}
 
 	unsigned Edge::getToId() const
@@ -88,6 +88,12 @@ namespace msonlab
 	Edge::EdgeTypeEnum Edge::getEdgeType() const
 	{
 		return default_edge;
+	}
+	// compile
+
+	void Edge::compile(msonlab::StackRunner::srPtr stackProgram)
+	{
+		(*from).compile(stackProgram);
 	}
 
 }
