@@ -2,13 +2,16 @@
 
 namespace msonlab
 {
-
+	/// Initialises a new instance of the Chromosome class.
+	/// The size is the number of tasks.
 	Chromosome::Chromosome(size_t size) : fitness(0)
 	{
 		scheduling.resize(size);
 		mapping.resize(size);
 	}
 
+	/// prints this Chromosome's instance to the
+	/// given output stream.
 	void Chromosome::printChromosome(std::ostream& o)
 	{
 		for (size_t i = 0; i < mapping.size(); ++i)
