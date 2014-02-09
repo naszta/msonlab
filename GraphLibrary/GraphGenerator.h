@@ -40,9 +40,9 @@ namespace msonlab
 			{
 				unsigned edges = i < pus ? (rand () % (edgeProb-1))+1 : edgeProb +1 ;
 				unsigned space = size - input_size + closer_favor * widening;
-				for (int j = 0; j < edges; ++j)
+				for (size_t j = 0; j < edges; ++j)
 				{
-					int nodeId = (rand()%(space-1))+1;
+					unsigned nodeId = (rand()%(space-1))+1;
 					if (nodeId < (closer_favor+1)*widening)
 					{
 						nodeId /= (closer_favor+1);
@@ -63,9 +63,9 @@ namespace msonlab
 				unsigned favored = size - i - 1 < widening ? size - i -1  : widening;
 				unsigned space = size - i + closer_favor* favored;
 				if (edges == edgeProb -1 ) edges += widening;
-				for (int j = 0; j < edges; ++j)
+				for (size_t j = 0; j < edges; ++j)
 				{
-					int nodeId = (rand()%(space-1))+1;
+					unsigned nodeId = (rand()%(space-1))+1;
 					if (nodeId < (closer_favor+1)*favored)
 					{
 						nodeId /= (closer_favor+1);

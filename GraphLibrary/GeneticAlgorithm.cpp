@@ -262,7 +262,7 @@ namespace msonlab {
 	{
 		for (uint i = 0; i < gaoptions->getMutationRate(); ++i)
 		{
-			int rate = rand() % 100;
+			unsigned rate = rand() % 100;
 			if (rate < gaoptions->getMutationPercentage())
 			{
 				int position = rand() % offspring->scheduling.size();
@@ -280,7 +280,7 @@ namespace msonlab {
 	{
 		//for (uint i = 0; i < gaoptions->getMutationRate(); ++i)
 		{
-			int rate = rand() % 100;
+			unsigned rate = rand() % 100;
 			if (rate < gaoptions->getMutationPercentage())
 			{
 
