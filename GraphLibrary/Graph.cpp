@@ -1,11 +1,7 @@
 #pragma once
 #include "Graph.h"
-<<<<<<< HEAD
 #include "BFSIterator.h"
 #include "DFSIterator.h"
-=======
-
->>>>>>> gabooo
 
 namespace msonlab
 {
@@ -36,12 +32,12 @@ namespace msonlab
 	bool Graph::addNode(IProcessable::nPtr toAdd)
 	{
 		msonlab::IProcessable::nVect::iterator it;
-		it = std::find(nodes.begin(),nodes.end(), toAdd);
+		it = std::find(nodes.begin(), nodes.end(), toAdd);
 
 		if (it != nodes.end())
 			return false;
 
-		it = nodes.insert(nodes.end(),toAdd);
+		it = nodes.insert(nodes.end(), toAdd);
 
 		if (*it == toAdd)
 			return true;
@@ -55,7 +51,7 @@ namespace msonlab
 	bool Graph::addEdge(IProcessable::ePtr toAdd)
 	{
 		msonlab::IProcessable::eVect::iterator it;
-		it = std::find(edges.begin(),edges.end(),toAdd);
+		it = std::find(edges.begin(), edges.end(), toAdd);
 
 		if (it != edges.end())
 			return false;
@@ -65,7 +61,7 @@ namespace msonlab
 		msonlab::IProcessable::nPtr toNode = (*toAdd).getTo();
 		addNode(toNode);
 
-		it = edges.insert(edges.end(),toAdd);
+		it = edges.insert(edges.end(), toAdd);
 
 		if (*it == toAdd)
 		{
@@ -117,7 +113,7 @@ namespace msonlab
 		while (it != nodes.end())
 		{
 			if ((*(*it)).getPlace() == IProcessable::Input)
-				retVal.insert(retVal.end(),(*it));
+				retVal.insert(retVal.end(), (*it));
 
 			++it;
 		}
@@ -132,7 +128,7 @@ namespace msonlab
 		while (it != nodes.end())
 		{
 			if ((*(*it)).getPlace() == IProcessable::Output)
-				retVal.insert(retVal.end(),(*it));
+				retVal.insert(retVal.end(), (*it));
 
 			++it;
 		}
@@ -141,7 +137,7 @@ namespace msonlab
 
 	Graph::gPtr Graph::getPartialGraphByEdgeType(Edge::EdgeTypeEnum edgeType) const
 	{
-		Graph::gPtr ptrGraph (new msonlab::Graph());
+		Graph::gPtr ptrGraph(new msonlab::Graph());
 
 		IProcessable::eVect::const_iterator it = edges.begin();
 		while (it != edges.end())
@@ -157,30 +153,27 @@ namespace msonlab
 		return ptrGraph;
 	}
 
-<<<<<<< HEAD
 	BFSIterator Graph::bfsIteratorBegin()
 	{
-		BFSIterator bfsIT (shared_from_this());
+		BFSIterator bfsIT(shared_from_this());
 		return bfsIT;
 	}
 
 	BFSIterator Graph::bfsIteratorEnd()
 	{
-		BFSIterator bfsIt (this->iteratorEnd);
+		BFSIterator bfsIt(this->iteratorEnd);
 		return bfsIt;
 	}
 
 	DFSIterator Graph::dfsIteratorBegin()
 	{
-		DFSIterator dfsIT (shared_from_this());
+		DFSIterator dfsIT(shared_from_this());
 		return dfsIT;
 	}
 
 	DFSIterator Graph::dfsIteratorEnd()
 	{
-		DFSIterator dfsIt (this->iteratorEnd);
+		DFSIterator dfsIt(this->iteratorEnd);
 		return dfsIt;
 	}
-=======
->>>>>>> gabooo
 }

@@ -27,7 +27,7 @@ namespace msonlab
 
 			for (size_t i = 0; i < size; ++i)
 			{
-				nodes[i] = Node::nPtr(new Node(i,L'a',i));
+				nodes[i] = Node::nPtr(new Node(i, L'a', shared_ptr<double>(new double(i))));
 				graph->addNode(nodes[i]);
 			}
 
@@ -52,7 +52,7 @@ namespace msonlab
 					}
 
 					nodeId += input_size;
-					IProcessable::ePtr e (new Edge(i+nodeId, L'a', i+nodeId, nodes[i], nodes[nodeId]));
+					IProcessable::ePtr e(new Edge(i + nodeId, L'a', shared_ptr<double>(new double(i + nodeId)), nodes[i], nodes[nodeId]));
 					graph->addEdge(e);
 				}
 			}
@@ -76,7 +76,7 @@ namespace msonlab
 					}
 
 					nodeId += i;
-					IProcessable::ePtr e (new Edge(i+nodeId, L'a', i+nodeId, nodes[i], nodes[nodeId]));
+					IProcessable::ePtr e(new Edge(i + nodeId, L'a', shared_ptr<double>(new double(i + nodeId)), nodes[i], nodes[nodeId]));
 					graph->addEdge(e);
 				}
 			}

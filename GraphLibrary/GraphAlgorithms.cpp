@@ -3,7 +3,6 @@
 #include <map>
 #include <queue>
 #include <set>
-<<<<<<< HEAD
 #include <iostream>
 
 namespace msonlab
@@ -18,11 +17,11 @@ namespace msonlab
 		IProcessable::nVect outputNodes = g->getOutputNodes();
 		vector<IProcessable::nVect> result;
 		result.push_back(outputNodes);
-		std::map< IProcessable::nPtr , int> count;
+		std::map< IProcessable::nPtr, int> count;
 
 		size_t added = outputNodes.size();
 		IProcessable::nVect::iterator it;
-		for (int level = 0; ; ++level) {
+		for (int level = 0;; ++level) {
 			result.push_back(IProcessable::nVect());
 			for (it = result[level].begin(); it != result[level].end(); ++it)
 			{
@@ -31,9 +30,9 @@ namespace msonlab
 				for (size_t i = 0; i < predecessors.size(); ++i)
 				{
 					count[predecessors[i]->getFrom()]++;
-					if ( predecessors[i]->getFrom()->getSuccessors().size() == count[predecessors[i]->getFrom()])
+					if (predecessors[i]->getFrom()->getSuccessors().size() == count[predecessors[i]->getFrom()])
 					{
-						result[level+1].push_back(predecessors[i]->getFrom());
+						result[level + 1].push_back(predecessors[i]->getFrom());
 						++added;
 					}
 				}
@@ -54,12 +53,12 @@ namespace msonlab
 		vector<IProcessable::nVect> result;
 		// first level, the input nodes
 		result.push_back(inputNodes);
-		std::map< IProcessable::nPtr , int> count;
+		std::map< IProcessable::nPtr, int> count;
 
 		// this number of nodes added to the leveling
 		size_t added = inputNodes.size();
 		IProcessable::nVect::iterator it;
-		for (int level = 0; ; ++level) {
+		for (int level = 0;; ++level) {
 			// adding a new level to the result
 			result.push_back(IProcessable::nVect());
 			for (it = result[level].begin(); it != result[level].end(); ++it)
@@ -69,9 +68,9 @@ namespace msonlab
 				for (size_t i = 0; i < successors.size(); ++i)
 				{
 					count[successors[i]->getTo()]++;
-					if ( successors[i]->getTo()->getPredecessorsSize() == count[successors[i]->getTo()])
+					if (successors[i]->getTo()->getPredecessorsSize() == count[successors[i]->getTo()])
 					{
-						result[level+1].push_back(successors[i]->getTo());
+						result[level + 1].push_back(successors[i]->getTo());
 						++added;
 					}
 				}
@@ -97,28 +96,23 @@ namespace msonlab
 		return result;
 	}
 
-=======
-
-namespace msonlab
-{
->>>>>>> gabooo
 	IProcessable::nVect GraphAlgorithms::getTopologicalOrder(Graph::gPtr g)
 	{
 		IProcessable::nVect order;
 		IProcessable::nVect allNodes = g->nodes;
 		IProcessable::nVect inputNodes = g->getInputNodes();
 		IProcessable::nVect::iterator it;
-		std::map< IProcessable::nPtr , int> count;
+		std::map< IProcessable::nPtr, int> count;
 		std::queue< IProcessable::nPtr> q;
 
 		// pushing input nodes into a queue
 		// nodes in this queue have no unprocessed predecessors
-		for(it = inputNodes.begin(); it != inputNodes.end(); ++it)
+		for (it = inputNodes.begin(); it != inputNodes.end(); ++it)
 		{
 			q.push(*it);
 		}
 
-		while(!q.empty())
+		while (!q.empty())
 		{
 			IProcessable::nPtr act = q.front();
 			q.pop();
@@ -127,7 +121,7 @@ namespace msonlab
 			for (unsigned i = 0; i < successors.size(); ++i)
 			{
 				count[successors[i]->getTo()]++;
-				if ( successors[i]->getTo()->getPredecessors().size() == count[successors[i]->getTo()])
+				if (successors[i]->getTo()->getPredecessors().size() == count[successors[i]->getTo()])
 				{
 					q.push(successors[i]->getTo());
 				}
@@ -145,7 +139,7 @@ namespace msonlab
 
 		// finding the the last needed element in the topological order
 		int maxNodeTopValue = -1;
-		for (int i = topologicalOrder.size()-1; i >= 0; --i)
+		for (int i = topologicalOrder.size() - 1; i >= 0; --i)
 		{
 			topologicalOrderMap[topologicalOrder[i]] = i;
 			if (needed.count(topologicalOrder[i]) > 0 && i > maxNodeTopValue)
@@ -158,11 +152,11 @@ namespace msonlab
 		// stops if topological number is bigger than
 		// the maximum of needed
 		IProcessable::nSet modified;
-		BFSIterator bfsItr (g);
-		for( it = changed.cbegin(); it != changed.cend(); ++it)
+		BFSIterator bfsItr(g);
+		for (it = changed.cbegin(); it != changed.cend(); ++it)
 		{
 			bfsItr.setStartNode(*it);
-			for(; bfsItr.hasMoreNode(); ++bfsItr)
+			for (; bfsItr.hasMoreNode(); ++bfsItr)
 			{
 				if (modified.count(*bfsItr) > 0 || topologicalOrderMap[*bfsItr] > maxNodeTopValue)
 				{
@@ -189,24 +183,22 @@ namespace msonlab
 
 		while (!toVisit.empty())
 		{
-			do 
+			do
 			{
 				if (toVisit.empty())
 				{
 					break;
 				}
-				else 
+				else
 				{
 					node = toVisit.front();
 					toVisit.pop();
 				}
-			}
-			while (visited.count(node) > 0);
+			} while (visited.count(node) > 0);
 
 			IProcessable::eVect neighbours = node->getPredecessors();
 			for (eIt = neighbours.begin(); eIt != neighbours.end(); ++eIt)
 			{
-<<<<<<< HEAD
 				if (changed.count((*eIt)->getTo()) == 0)
 				{
 					changedGraph->addEdge(*eIt);
@@ -217,25 +209,17 @@ namespace msonlab
 					toVisit.push((*eIt)->getFrom());
 				}
 
-=======
-				if (modified.count((*eIt)->getFrom()) > 0)
-				{
-					changedGraph->addEdge(*eIt);
-					toVisit.push((*eIt)->getFrom());
-				}
->>>>>>> gabooo
 			}
 		}
 
 		return changedGraph;
 	}
-<<<<<<< HEAD
 
 	int GraphAlgorithms::scheduleGreedy(boost::shared_ptr<Graph> graph, int pus)
 	{
 		int timeCounter = 0;
 		int taskCounter = 0;
-		std::map< IProcessable::nPtr , int> count;
+		std::map< IProcessable::nPtr, int> count;
 		IProcessable::nVect inputNodes = graph->getInputNodes();
 		std::queue < IProcessable::nPtr> free;
 		for (size_t i = 0; i < inputNodes.size(); ++i)
@@ -247,7 +231,7 @@ namespace msonlab
 		{
 			vector< IProcessable::nPtr > out;
 			int limit = pus;
-			while ( !free.empty() && limit > 0 )
+			while (!free.empty() && limit > 0)
 			{
 				out.push_back(free.front());
 				free.pop();
@@ -266,16 +250,14 @@ namespace msonlab
 				for (size_t j = 0; j < successors.size(); ++j)
 				{
 					count[successors[j]->getTo()]++;
-					if ( successors[j]->getTo()->getPredecessorsSize() == count[successors[j]->getTo()])
+					if (successors[j]->getTo()->getPredecessorsSize() == count[successors[j]->getTo()])
 					{
 						free.push(successors[j]->getTo());
 					}
-				}	
+				}
 			}
 		}
 
 		return timeCounter;
 	}
-=======
->>>>>>> gabooo
 }
