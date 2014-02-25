@@ -1,6 +1,5 @@
 #pragma once
 #include "Global.h"
-#include <boost/enable_shared_from_this.hpp>
 #include "IProcessable.h"
 #include "Node.h"
 #include "Edge.h"

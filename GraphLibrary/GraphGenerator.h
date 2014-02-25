@@ -1,8 +1,6 @@
 #pragma once
 
-//#include <boost/enable_shared_from_this.hpp>
 #include <vector>
-#include <memory> // for share_ptr
 #include "Graph.h"
 #include "Node.h"
 

@@ -1,7 +1,5 @@
 #pragma once
 
-#include "boost\shared_ptr.hpp"
-
 #include <utility>
 #include <stack>
 #include <vector>
