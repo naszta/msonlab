@@ -29,12 +29,13 @@ namespace msonlab
 	public:
 		typedef shared_ptr<Chromosome> cPtr;
 		typedef vector< cPtr > cVect;
+		typedef shared_ptr<Population> pPtr;
 
 		GeneticAlgorithm();
 		GeneticAlgorithm(shared_ptr<GAOptions> options);
 
-		shared_ptr<Chromosome> greedyChromosome(boost::shared_ptr<Graph> graph);
-		shared_ptr<Population> generateInitialSolution(Graph::gPtr);
+		shared_ptr<Chromosome> greedyChromosome(Graph::gPtr graph);
+		shared_ptr<Population> generateInitialSolution(Graph::gPtr graph);
 		unsigned int fitness(cPtr chromosome);
 
 		cPtr crossover_map(cPtr father, cPtr mother);
@@ -42,6 +43,6 @@ namespace msonlab
 		void mutate(cPtr offspring);
 		void mutateSheduling(cPtr offspring);
 
-		void simulateMating(shared_ptr<Population> population, int offsprings);
+		void simulateMating(pPtr population, int offsprings);
 	};
 }

@@ -20,7 +20,7 @@ namespace msonlab {
 	{
 	}
 
-	shared_ptr<Chromosome> GeneticAlgorithm::greedyChromosome(boost::shared_ptr<Graph> graph) 
+	shared_ptr<Chromosome> GeneticAlgorithm::greedyChromosome(Graph::gPtr graph)
 	{
 		unsigned timeCounter = 0;
 		unsigned taskCounter = 0;
@@ -79,10 +79,10 @@ namespace msonlab {
 	///
 	// generating a random initial solution
 	///
-	shared_ptr<Population> GeneticAlgorithm::generateInitialSolution(Graph::gPtr g)
+	shared_ptr<Population> GeneticAlgorithm::generateInitialSolution(Graph::gPtr graph)
 	{
 		vector<shared_ptr<Chromosome>> solution;
-		vector<IProcessable::nVect> levels = algorithms.createLeveling(g);
+		vector<IProcessable::nVect> levels = algorithms.createLeveling(graph);
 		size_t numLevels = levels.size();
 		std::cout << "levels: " << numLevels << std::endl;
 		unsigned limits = 0;
@@ -100,9 +100,9 @@ namespace msonlab {
 
 		shared_ptr<Population> population = shared_ptr<Population>(new Population(solution, gaoptions->getKeepSize(), gaoptions->getPopMaxSize(), gaoptions->getKeepBest()));
 		
-		shared_ptr<Chromosome> chr = this->greedyChromosome(g);
+		shared_ptr<Chromosome> chr = this->greedyChromosome(graph);
 
-		shared_ptr<Chromosome> cc(new Chromosome(g->numberOfNodes()));
+		shared_ptr<Chromosome> cc(new Chromosome(graph->numberOfNodes()));
 		cc->pus = gaoptions->getNumberOfPus();
 		size_t currentPos = 0;
 		unsigned counter = 0;
@@ -125,7 +125,7 @@ namespace msonlab {
 		counter = gaoptions->getPopMaxSize()-1;
 		for (; counter > 0; --counter)
 		{
-			shared_ptr<Chromosome> c(new Chromosome(g->numberOfNodes()));
+			shared_ptr<Chromosome> c(new Chromosome(graph->numberOfNodes()));
 			c->pus = gaoptions->getNumberOfPus();
 			for (unsigned int i = 0; i < c->mapping.size(); ++i)
 			{
