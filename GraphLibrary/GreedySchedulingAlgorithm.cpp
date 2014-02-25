@@ -5,7 +5,7 @@
 
 namespace msonlab
 {
-	int GreedySchedulingAlgorithm::schedule(boost::shared_ptr<Graph> graph, int pus)
+	int GreedySchedulingAlgorithm::schedule(std::shared_ptr<Graph> graph, int pus)
 	{
 		int timeCounter = 0;
 		unsigned taskCounter = 0;

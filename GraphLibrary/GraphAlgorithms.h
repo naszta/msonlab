@@ -13,6 +13,6 @@ namespace msonlab
 		vector<IProcessable::nVect> createBottomLeveling(Graph::gPtr g);
 		IProcessable::nVect getTopologicalOrder(Graph::gPtr g);
 		Graph::gPtr getChangedGraph(Graph::gPtr g, IProcessable::nSet changed, IProcessable::nSet needed);
-		int scheduleGreedy(boost::shared_ptr<Graph> graph, int pus);
+		int scheduleGreedy(std::shared_ptr<Graph> graph, int pus);
 	};
 }

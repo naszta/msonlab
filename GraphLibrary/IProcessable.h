@@ -21,15 +21,15 @@ namespace msonlab
 		bool clearProcessed();
 
 	public:
-		typedef boost::shared_ptr<IProcessable> pPtr;
-		typedef vector<boost::shared_ptr<IProcessable>> pVect;
+		typedef std::shared_ptr<IProcessable> pPtr;
+		typedef vector<std::shared_ptr<IProcessable>> pVect;
 
-		typedef boost::shared_ptr<Node> nPtr;
-		typedef vector<boost::shared_ptr<Node>> nVect;
-		typedef std::set<boost::shared_ptr<Node>> nSet;
+		typedef std::shared_ptr<Node> nPtr;
+		typedef vector<std::shared_ptr<Node>> nVect;
+		typedef std::set<std::shared_ptr<Node>> nSet;
 
-		typedef boost::shared_ptr<Edge> ePtr;
-		typedef vector<boost::shared_ptr<Edge>> eVect;
+		typedef std::shared_ptr<Edge> ePtr;
+		typedef vector<std::shared_ptr<Edge>> eVect;
 
 		enum PlaceEnum {Input, Inside, Output};
 

@@ -8,7 +8,11 @@
 namespace msonlab
 {
 
-	class Graph : public boost::enable_shared_from_this<Graph>
+	/// Models a Graph. The graph is consits of nodes connected by edges.
+	/// std::enable_shared_from_this allows an object that is currently managed by a
+	/// std::shared_ptr named p to safely generate std::shared_ptr instances pt1, pt2 ...
+	/// that all share ownership of t with pt.
+	class Graph : public std::enable_shared_from_this<Graph>
 	{
 	private:
 		IProcessable::nVect nodes;
@@ -23,7 +27,7 @@ namespace msonlab
 		friend class DFSIterator;
 
 	public:
-		typedef boost::shared_ptr<Graph> gPtr;
+		typedef std::shared_ptr<Graph> gPtr;
 
 		Graph();
 		Graph(const Graph& other);

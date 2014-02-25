@@ -1,8 +1,7 @@
 #pragma once
 #include <vector>
 #include <set>
-#include <boost\shared_ptr.hpp>
-#include <boost\variant\variant.hpp>
+#include <memory>
 #include <iostream>
 #include <algorithm>
 
@@ -15,8 +14,7 @@ namespace msonlab
 
 	namespace Types
 	{
-		// typedef boost::variant<int,wchar_t> DataType;
-		typedef boost::shared_ptr<double> DataType;
+		typedef std::shared_ptr<double> DataType;
 	}
 
 	namespace Exceptions

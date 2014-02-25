@@ -15,9 +15,7 @@ namespace msonlab
 	public:
 
 		// public typedefinitions
-		// typedef boost::shared_ptr<double> dataType;
-
-		typedef boost::shared_ptr<StackRunner> srPtr;
+		typedef std::shared_ptr<StackRunner> srPtr;
 
 		typedef std::stack<msonlab::Types::DataType> dPtrStack;
 

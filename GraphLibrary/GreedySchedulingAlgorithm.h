@@ -8,6 +8,6 @@ namespace msonlab
 	class GreedySchedulingAlgorithm
 	{
 	public:
-		int schedule(boost::shared_ptr<Graph> graph, int pus);
+		int schedule(std::shared_ptr<Graph> graph, int pus);
 	};
 }

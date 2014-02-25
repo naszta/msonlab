@@ -18,10 +18,6 @@ namespace msonlab
 
 		EdgeTypeEnum edgeType;
 	public:
-		//typedef boost::shared_ptr<Edge> ePtr;
-		//typedef vector<boost::shared_ptr<Edge>> eVect;
-
-
 		Edge(unsigned int _id, wchar_t _label, Types::DataType _value, IProcessable::nPtr _from, IProcessable::nPtr _to);
 		Edge(const Edge& other);
 

@@ -1,6 +1,7 @@
 #pragma once
 
-#include <boost/enable_shared_from_this.hpp>
+//#include <boost/enable_shared_from_this.hpp>
+#include <memory>
 #include <vector>
 #include "GraphAlgorithms.h"
 #include "IProcessable.h"
@@ -10,7 +11,7 @@
 #include "GAOptions.h"
 
 using std::vector;
-using boost::shared_ptr;
+using std::shared_ptr;
 
 // GeneticAlgoritm implementation for project laboratory
 // created by Zoltan Szekeres

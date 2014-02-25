@@ -215,7 +215,7 @@ namespace msonlab
 		return changedGraph;
 	}
 
-	int GraphAlgorithms::scheduleGreedy(boost::shared_ptr<Graph> graph, int pus)
+	int GraphAlgorithms::scheduleGreedy(std::shared_ptr<Graph> graph, int pus)
 	{
 		int timeCounter = 0;
 		int taskCounter = 0;

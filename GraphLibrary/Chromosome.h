@@ -32,7 +32,7 @@ namespace msonlab
 		friend class chrComparator;
 		friend class GeneticAlgorithm;
 	public:
-		typedef boost::shared_ptr<Chromosome> cPtr;
+		typedef std::shared_ptr<Chromosome> cPtr;
 		typedef vector< cPtr > cVect;
 
 		Chromosome();

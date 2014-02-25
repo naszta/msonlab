@@ -13,10 +13,6 @@ namespace msonlab
 		int paramCount;
 
 	public:
-		//typedef boost::shared_ptr<Node> nPtr;
-		//typedef vector<boost::shared_ptr<Node>> nVect;
-		
-
 		Node(unsigned int _id, wchar_t _label, Types::DataType _value);
 		Node(const Node& other);
 
