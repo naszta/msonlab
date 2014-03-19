@@ -90,6 +90,7 @@
     <ClCompile Include="NodeConstant.cpp" />
     <ClCompile Include="NodeDivide.cpp" />
     <ClCompile Include="NodeMultiply.cpp" />
+    <ClCompile Include="NodePower.cpp" />
     <ClCompile Include="NodeSquareRoot.cpp" />
     <ClCompile Include="Population .cpp" />
     <ClCompile Include="Processor.cpp" />
@@ -111,6 +112,7 @@
     <ClInclude Include="GraphGenerator.h" />
     <ClInclude Include="GraphIterator.h" />
     <ClInclude Include="GreedySchedulingAlgorithm.h" />
+    <ClInclude Include="NodePower.h" />
     <ClInclude Include="SchedulerAlgorithm.h" />
     <ClInclude Include="IProcessable.h" />
     <ClInclude Include="MultiplierEdge.h" />

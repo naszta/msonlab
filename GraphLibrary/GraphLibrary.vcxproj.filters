@@ -141,6 +141,9 @@
     <ClInclude Include="FitnessStrategy.h">
       <Filter>Header Files\Scheduling\Genetic\FitnessStrategy</Filter>
     </ClInclude>
+    <ClInclude Include="NodePower.h">
+      <Filter>Header Files\Node</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="IProcessable.cpp">
@@ -217,6 +220,9 @@
     </ClCompile>
     <ClCompile Include="FitnessStrategy.cpp">
       <Filter>Source Files\Scheduling\Genetic\FitnessStrategy</Filter>
+    </ClCompile>
+    <ClCompile Include="NodePower.cpp">
+      <Filter>Source Files\Node</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

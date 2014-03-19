@@ -34,7 +34,7 @@ namespace msonlab
 		const size_t KEEPBEST;
 		
 	public:
-		typedef shared_ptr<Chromosome> cPtr;
+		//typedef shared_ptr<Chromosome> cPtr;
 		Population(vector<cPtr> sol, size_t keepSize, size_t popMaxSize, size_t keepBest);
 
 		vector<cPtr> getPopulation();
