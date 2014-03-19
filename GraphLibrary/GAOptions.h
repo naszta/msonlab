@@ -1,6 +1,7 @@
 #pragma once
 
 #include <fstream>
+#include <memory>
 #include "ConfigFile.h"
 
 namespace msonlab
@@ -26,6 +27,8 @@ namespace msonlab
 		uint graphWidening;
 		
 	public:
+
+		typedef std::shared_ptr<GAOptions> gaPtr;
 
 		GAOptions();
 		GAOptions(char * configFilePath);

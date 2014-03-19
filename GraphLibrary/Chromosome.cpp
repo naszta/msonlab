@@ -10,8 +10,31 @@ namespace msonlab
 		mapping.resize(size);
 	}
 
+	/// Copy constructor.
+	/// Sets the fitness to zero.
+	Chromosome::Chromosome(Chromosome& chromosome)
+	{
+		*this = chromosome;
+		this->fitness = 0;
+	}
+
+	/// operator =
+	/// It DOES copy the fitness.
+	Chromosome& Chromosome::operator=(const Chromosome &chromosome)
+	{
+		if (this != &chromosome)
+		{
+			this->mapping = chromosome.mapping;
+			this->scheduling = chromosome.scheduling;
+			this->fitness = chromosome.fitness;
+			this->pus = chromosome.pus;
+		}
+
+		return *this;
+	}
+
 	/// prints this Chromosome's instance to the
-	/// given output stream.
+	/// given output stream
 	void Chromosome::printChromosome(std::ostream& o)
 	{
 		for (size_t i = 0; i < mapping.size(); ++i)

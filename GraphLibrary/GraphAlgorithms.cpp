@@ -12,9 +12,9 @@ namespace msonlab
 	// there are no edges between nodes on the same level
 	// TODO: every node should be on the first possible level
 	///
-	vector<IProcessable::nVect> GraphAlgorithms::createLeveling(Graph::gPtr g)
+	vector<IProcessable::nVect> GraphAlgorithms::createLeveling(Graph::gPtr graph)
 	{
-		IProcessable::nVect outputNodes = g->getOutputNodes();
+		IProcessable::nVect outputNodes = graph->getOutputNodes();
 		vector<IProcessable::nVect> result;
 		result.push_back(outputNodes);
 		std::map< IProcessable::nPtr, int> count;
@@ -38,7 +38,7 @@ namespace msonlab
 				}
 			}
 
-			if (added == g->nodes.size())
+			if (added == graph->nodes.size())
 			{
 				break;
 			}
@@ -47,9 +47,9 @@ namespace msonlab
 		return result;
 	}
 
-	vector<IProcessable::nVect> GraphAlgorithms::createBottomLeveling(Graph::gPtr g)
+	vector<IProcessable::nVect> GraphAlgorithms::createBottomLeveling(Graph::gPtr graph)
 	{
-		IProcessable::nVect inputNodes = g->getInputNodes();
+		IProcessable::nVect inputNodes = graph->getInputNodes();
 		vector<IProcessable::nVect> result;
 		// first level, the input nodes
 		result.push_back(inputNodes);
@@ -76,7 +76,7 @@ namespace msonlab
 				}
 			}
 
-			if (added == g->nodes.size())
+			if (added == graph->nodes.size())
 			{
 				break;
 			}
@@ -96,11 +96,11 @@ namespace msonlab
 		return result;
 	}
 
-	IProcessable::nVect GraphAlgorithms::getTopologicalOrder(Graph::gPtr g)
+	IProcessable::nVect GraphAlgorithms::createTopologicalOrder(Graph::gPtr graph)
 	{
 		IProcessable::nVect order;
-		IProcessable::nVect allNodes = g->nodes;
-		IProcessable::nVect inputNodes = g->getInputNodes();
+		IProcessable::nVect allNodes = graph->nodes;
+		IProcessable::nVect inputNodes = graph->getInputNodes();
 		IProcessable::nVect::iterator it;
 		std::map< IProcessable::nPtr, int> count;
 		std::queue< IProcessable::nPtr> q;
@@ -131,9 +131,9 @@ namespace msonlab
 		return order;
 	}
 
-	Graph::gPtr  GraphAlgorithms::getChangedGraph(Graph::gPtr g, IProcessable::nSet changed, IProcessable::nSet needed)
+	Graph::gPtr  GraphAlgorithms::getChangedGraph(Graph::gPtr graph, IProcessable::nSet changed, IProcessable::nSet needed)
 	{
-		IProcessable::nVect topologicalOrder = getTopologicalOrder(g);
+		IProcessable::nVect topologicalOrder = createTopologicalOrder(graph);
 		IProcessable::nSet::iterator it;
 		std::map<IProcessable::nPtr, int> topologicalOrderMap;
 
@@ -152,7 +152,7 @@ namespace msonlab
 		// stops if topological number is bigger than
 		// the maximum of needed
 		IProcessable::nSet modified;
-		BFSIterator bfsItr(g);
+		BFSIterator bfsItr(graph);
 		for (it = changed.cbegin(); it != changed.cend(); ++it)
 		{
 			bfsItr.setStartNode(*it);

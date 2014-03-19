@@ -13,6 +13,7 @@
 #include "GraphGenerator.h"
 #include "GeneticAlgorithm.h"
 #include "GAOptions.h"
+#include "FitnessStrategy.h"
 #include <fstream>
 #include <ctime>
 #include <cstdlib>
@@ -144,8 +145,9 @@ int main(int argc, char *argv[])
 	//srand(1234);
 	msonlab::GraphAlgorithms ga;
 
-	shared_ptr<GAOptions> gaoptions(new GAOptions("Options.cfg"));
-	GeneticAlgorithm gena(gaoptions);
+	GAOptions::gaPtr gaoptions(new GAOptions("Options.cfg"));
+	FitnessStrategy::fsPtr fsstrategy (new LengthFitnessStartegy());
+	GeneticAlgorithm gena(gaoptions, fsstrategy);
 	//for (int n = 1; n <= 8; ++n)
 	{
 		//std::cout << "Test case " << n << std::endl;

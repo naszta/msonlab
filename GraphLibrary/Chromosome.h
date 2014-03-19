@@ -37,6 +37,9 @@ namespace msonlab
 
 		Chromosome();
 		Chromosome(size_t size);
+		Chromosome(Chromosome& chromosome);
+
+		Chromosome& operator=(const Chromosome &chromosome);
 
 		unsigned int getFitness() { return fitness; }
 		unsigned int getPUs() { return pus; }
