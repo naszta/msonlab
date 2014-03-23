@@ -9,7 +9,7 @@ namespace msonlab
 	{
 		nodes.clear();
 		edges.clear();
-		this->iteratorEnd = IProcessable::nPtr(new msonlab::Node(0, L'0', 0));
+		this->iteratorEnd = IProcessable::nPtr(new msonlab::Node(0, L"0", 0));
 	}
 
 	Graph::Graph(const Graph& other)

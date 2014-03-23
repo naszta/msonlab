@@ -3,7 +3,7 @@
 
 namespace msonlab
 {
-	NodeSquareRoot::NodeSquareRoot(unsigned int _id, wchar_t _label, Types::DataType _value)
+	NodeSquareRoot::NodeSquareRoot(unsigned int _id, Types::LabelType _label, Types::DataType _value)
 		: Node(_id, _label, _value)
 	{
 	}

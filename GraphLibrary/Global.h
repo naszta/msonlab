@@ -4,8 +4,7 @@
 #include <memory>
 #include <iostream>
 #include <algorithm>
-
-
+#include <string>
 
 using std::vector;
 
@@ -15,6 +14,7 @@ namespace msonlab
 	namespace Types
 	{
 		typedef std::shared_ptr<double> DataType;
+		typedef std::wstring LabelType;
 	}
 
 	namespace Exceptions

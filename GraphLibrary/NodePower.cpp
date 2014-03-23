@@ -5,7 +5,7 @@
 
 namespace msonlab
 {
-	NodePower::NodePower(unsigned int _id, wchar_t _label, Types::DataType _value)
+	NodePower::NodePower(unsigned int _id, Types::LabelType _label, Types::DataType _value)
 		: Node(_id, _label, _value)
 	{
 	}

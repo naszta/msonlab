@@ -1,6 +1,7 @@
 #pragma once
 #include "Global.h"
 #include "StackRunner.h"
+#include <string>
 
 namespace msonlab
 {
@@ -10,7 +11,8 @@ namespace msonlab
 	{
 	protected:
 		unsigned int id;
-		wchar_t label;
+		//wchar_t label;
+		Types::LabelType label;
 
 		Types::DataType value;
 
@@ -33,7 +35,7 @@ namespace msonlab
 
 		enum PlaceEnum {Input, Inside, Output};
 
-		IProcessable(unsigned int _id, wchar_t _label, Types::DataType _value);
+		IProcessable(unsigned int _id, Types::LabelType _label, Types::DataType _value);
 		IProcessable();
 
 		virtual bool registerParameter() = 0;
@@ -44,14 +46,13 @@ namespace msonlab
 		virtual bool resetProcessingState();
 
 		unsigned int getId() const;
-		wchar_t getLabel() const;
+		Types::LabelType getLabel() const;
 		Types::DataType getValue() const;
 		Types::DataType getResultValue() const;
 
 		virtual PlaceEnum getPlace() const;
 
 		bool operator==(const IProcessable& other) const;
-
 
 		// compile
 		virtual void compile(msonlab::StackRunner::srPtr stackProgram);

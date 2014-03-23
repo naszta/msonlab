@@ -13,7 +13,7 @@ namespace msonlab
 		int paramCount;
 
 	public:
-		Node(unsigned int _id, wchar_t _label, Types::DataType _value);
+		Node(unsigned int _id, Types::LabelType _label, Types::DataType _value);
 		Node(const Node& other);
 
 		bool registerParameter();

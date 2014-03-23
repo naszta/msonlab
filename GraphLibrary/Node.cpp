@@ -3,7 +3,7 @@
 
 namespace msonlab
 {
-	Node::Node(unsigned int _id, wchar_t _label, Types::DataType _value)
+	Node::Node(unsigned int _id, Types::LabelType _label, Types::DataType _value)
 		: IProcessable(_id, _label, _value), paramCount(0)
 	{
 	}

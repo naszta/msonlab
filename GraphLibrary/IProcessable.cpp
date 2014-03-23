@@ -20,10 +20,9 @@ namespace msonlab
 		return true;
 	}
 
+	// public constructors and methods
 
-	// public 
-
-	IProcessable::IProcessable(unsigned int _id, wchar_t _label, Types::DataType _value)
+	IProcessable::IProcessable(unsigned int _id, Types::LabelType _label, Types::DataType _value)
 		: id(_id), label(_label), value(_value)
 	{ 
 	}
@@ -46,7 +45,7 @@ namespace msonlab
 		return id;
 	}
 
-	wchar_t IProcessable::getLabel() const
+	Types::LabelType IProcessable::getLabel() const
 	{
 		return label;
 	}

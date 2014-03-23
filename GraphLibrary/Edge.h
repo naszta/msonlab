@@ -18,7 +18,7 @@ namespace msonlab
 
 		EdgeTypeEnum edgeType;
 	public:
-		Edge(unsigned int _id, wchar_t _label, Types::DataType _value, IProcessable::nPtr _from, IProcessable::nPtr _to);
+		Edge(unsigned int _id, Types::LabelType _label, Types::DataType _value, IProcessable::nPtr _from, IProcessable::nPtr _to);
 		Edge(const Edge& other);
 
 		bool registerParameter();
