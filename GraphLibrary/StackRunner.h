@@ -33,16 +33,13 @@ namespace msonlab
 			DIV
 		};
 
-
 	private:
-
+		friend std::ostream& operator<<(std::ostream& os, const msonlab::StackRunner& sr);
 		// private variables
 		program currentProgram;
 		dPtrStack dataStack;
 
-
 	public:
-
 		// public stack functions
 		static void push(dPtrStack* stack, msonlab::Types::DataType data);
 
@@ -52,17 +49,10 @@ namespace msonlab
 		static void add(dPtrStack* stack, msonlab::Types::DataType data);
 		static void div(dPtrStack* stack, msonlab::Types::DataType data);
 
-
 		// public build functions
 		void addToken(functionTypeEnum functionType, msonlab::Types::DataType data);
 
-
 		// public running functions
 		msonlab::Types::DataType run(int count);
-
-
-
-
 	};
-
 }

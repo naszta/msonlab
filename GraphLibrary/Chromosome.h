@@ -41,10 +41,10 @@ namespace msonlab
 
 		Chromosome& operator=(const Chromosome &chromosome);
 
-		unsigned int getFitness() { return fitness; }
-		unsigned int getPUs() { return pus; }
-		vector<unsigned int> getMapping() { return mapping; }
-		IProcessable::nVect getScheduling() { return scheduling; }
+		unsigned int getFitness() const { return fitness; }
+		unsigned int getPUs() const { return pus; }
+		vector<unsigned int> getMapping() const { return mapping; }
+		IProcessable::nVect getScheduling() const { return scheduling; }
 
 		void printChromosome(std::ostream& o);
 	};

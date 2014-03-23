@@ -229,6 +229,8 @@ msonlab::Graph::gPtr initStackGraph()
 	qeGraph->addEdge(e20);
 	qeGraph->addEdge(e21);
 	qeGraph->addEdge(e24);
+
+	return qeGraph;
 }
 
 void runCompile()
@@ -242,6 +244,9 @@ void runCompile()
 	startCPU = clock();
 	auto stackProg = sc.getStackProgram();
 	finishCPU = clock();
+
+	std::cout << "Printing complied program\n";
+	std::cout << *stackProg << std::endl;
 
 	clock_t timeCPU = (finishCPU - startCPU);
 	double elapsedCPU = timeCPU;
@@ -385,7 +390,8 @@ void runGA()
 
 int main(int argc, char *argv[])
 {
-	runGA();
+	//runGA();
+	runCompile();
 	std::cout << "Press a key to continue...";
 	std::cin.get();
 
