@@ -12,7 +12,7 @@ namespace msonlab
 	// there are no edges between nodes on the same level
 	// TODO: every node should be on the first possible level
 	///
-	vector<IProcessable::nVect> GraphAlgorithms::createLeveling(Graph::gPtr graph)
+	vector<IProcessable::nVect> GraphAlgorithms::createLeveling(const Graph::gPtr graph) const
 	{
 		IProcessable::nVect outputNodes = graph->getOutputNodes();
 		vector<IProcessable::nVect> result;
@@ -47,7 +47,7 @@ namespace msonlab
 		return result;
 	}
 
-	vector<IProcessable::nVect> GraphAlgorithms::createBottomLeveling(Graph::gPtr graph)
+	vector<IProcessable::nVect> GraphAlgorithms::createBottomLeveling(const Graph::gPtr graph) const
 	{
 		IProcessable::nVect inputNodes = graph->getInputNodes();
 		vector<IProcessable::nVect> result;
@@ -82,21 +82,10 @@ namespace msonlab
 			}
 		}
 
-		//for (size_t i = 0; i < result.size(); ++i)
-		//{
-		//	std::cout << "level " << i << std::endl;
-		//	for (it = result[i].begin(); it != result[i].end(); ++it)
-		//	{
-		//		IProcessable::nPtr act = *it;
-		//		std::cout << act->getId() << ", ";
-		//	}
-
-		//	std::cout << std::endl;
-		//}
 		return result;
 	}
 
-	IProcessable::nVect GraphAlgorithms::createTopologicalOrder(Graph::gPtr graph)
+	IProcessable::nVect GraphAlgorithms::createTopologicalOrder(const Graph::gPtr graph) const
 	{
 		IProcessable::nVect order;
 		IProcessable::nVect allNodes = graph->nodes;
@@ -131,7 +120,7 @@ namespace msonlab
 		return order;
 	}
 
-	Graph::gPtr  GraphAlgorithms::getChangedGraph(Graph::gPtr graph, IProcessable::nSet changed, IProcessable::nSet needed)
+	Graph::gPtr GraphAlgorithms::computeChangedGraph(const Graph::gPtr graph, IProcessable::nSet changed, IProcessable::nSet needed) const
 	{
 		IProcessable::nVect topologicalOrder = createTopologicalOrder(graph);
 		IProcessable::nSet::iterator it;
@@ -215,7 +204,7 @@ namespace msonlab
 		return changedGraph;
 	}
 
-	int GraphAlgorithms::scheduleGreedy(std::shared_ptr<Graph> graph, int pus)
+	int GraphAlgorithms::scheduleGreedy(const Graph::gPtr graph, int pus) const
 	{
 		int timeCounter = 0;
 		unsigned taskCounter = 0;

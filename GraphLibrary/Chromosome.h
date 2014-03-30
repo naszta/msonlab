@@ -32,6 +32,7 @@ namespace msonlab
 		friend class chrComparator;
 		friend class GeneticAlgorithm;
 	public:
+		friend std::ostream& operator<<(std::ostream& os, const Chromosome& chromosome);
 		typedef std::shared_ptr<Chromosome> cPtr;
 		typedef vector< cPtr > cVect;
 
@@ -43,9 +44,9 @@ namespace msonlab
 
 		unsigned int getFitness() const { return fitness; }
 		unsigned int getPUs() const { return pus; }
-		vector<unsigned int> getMapping() const { return mapping; }
-		IProcessable::nVect getScheduling() const { return scheduling; }
+		const vector<unsigned int>& getMapping() const { return mapping; }
+		const IProcessable::nVect& getScheduling() const { return scheduling; }
 
-		void printChromosome(std::ostream& o);
+		void printChromosome(std::ostream& o) const;
 	};
 }

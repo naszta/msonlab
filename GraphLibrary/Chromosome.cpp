@@ -35,7 +35,7 @@ namespace msonlab
 
 	/// prints this Chromosome's instance to the
 	/// given output stream
-	void Chromosome::printChromosome(std::ostream& o)
+	void Chromosome::printChromosome(std::ostream& o) const
 	{
 		for (size_t i = 0; i < mapping.size(); ++i)
 		{
@@ -50,5 +50,11 @@ namespace msonlab
 		}
 
 		o << "| length = " << fitness << std::endl;
+	}
+
+	std::ostream& operator<<(std::ostream& os, const Chromosome& chromosome)
+	{
+		chromosome.printChromosome(os);
+		return os;
 	}
 }

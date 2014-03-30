@@ -2,10 +2,6 @@
 
 namespace msonlab
 {
-	GAOptions::GAOptions()
-	{
-	}
-
 	GAOptions::GAOptions(char * configFilePath)
 	{
 		ConfigFile config = ConfigFile(configFilePath);

@@ -27,26 +27,24 @@ namespace msonlab
 		uint graphWidening;
 		
 	public:
-
 		typedef std::shared_ptr<GAOptions> gaPtr;
 
-		GAOptions();
 		GAOptions(char * configFilePath);
 
-		unsigned getMutationPercentage() { return mutationPercentage; }
-		unsigned getMutationRate() { return mutationRate; }
-		unsigned getPopMaxSize() { return popMaxSize; }
-		unsigned getKeepSize() { return keepSize; }
-		unsigned getKeepBest() { return keepBest; }
-		unsigned getNumberOfYears() { return numberOfYears; }
+		unsigned getMutationPercentage() const { return mutationPercentage; }
+		unsigned getMutationRate() const { return mutationRate; }
+		unsigned getPopMaxSize() const { return popMaxSize; }
+		unsigned getKeepSize() const { return keepSize; }
+		unsigned getKeepBest() const { return keepBest; }
+		unsigned getNumberOfYears() const { return numberOfYears; }
 
-		unsigned getCommOverhead() { return commOverhead; }
-		unsigned getTaskLength() { return taskLength; }
-		unsigned getNumberOfPus() { return numberOfPus; }
-		unsigned getPuGroupSize() { return puGroupSize; }
+		unsigned getCommOverhead() const { return commOverhead; }
+		unsigned getTaskLength() const { return taskLength; }
+		unsigned getNumberOfPus() const { return numberOfPus; }
+		unsigned getPuGroupSize() const { return puGroupSize; }
 
-		unsigned getGraphSize() { return graphSize; }
-		unsigned getGraphEdgeProb() { return graphEdgeProb; }
-		unsigned getGraphWidening() { return graphWidening; }
+		unsigned getGraphSize() const { return graphSize; }
+		unsigned getGraphEdgeProb() const { return graphEdgeProb; }
+		unsigned getGraphWidening() const { return graphWidening; }
 	};
 }

@@ -25,7 +25,8 @@ namespace msonlab
 		// algorithm parameters
 		GAOptions::gaPtr gaoptions;
 		FitnessStrategy::fsPtr fsstrategy;
-		vector<unsigned> levelingLimits;
+		// remove from here
+		//vector<unsigned> levelingLimits;
 	public:
 		typedef shared_ptr<Chromosome> cPtr;
 		typedef vector< cPtr > cVect;
@@ -33,17 +34,17 @@ namespace msonlab
 
 		GeneticAlgorithm(GAOptions::gaPtr options, FitnessStrategy::fsPtr strategy);
 
-		virtual Chromosome::cPtr shedule(Graph::gPtr graph);
+		virtual Chromosome::cPtr shedule(Graph::gPtr graph) const;
 
-		shared_ptr<Chromosome> greedyChromosome(Graph::gPtr graph);
-		shared_ptr<Population> generateInitialSolution(Graph::gPtr graph);
-		unsigned int fitness(cPtr chromosome);
+		shared_ptr<Chromosome> greedyChromosome(Graph::gPtr graph) const;
+		shared_ptr<Population> generateInitialSolution(Graph::gPtr graph) const;
+		unsigned int fitness(cPtr chromosome) const;
 
-		cPtr crossoverMap(cPtr father, cPtr mother);
-		cPtr crossoverOrder(cPtr father, cPtr mother);
-		void mutateMapping(cPtr offspring);
-		void mutateSheduling(cPtr offspring);
+		cPtr crossoverMap(cPtr father, cPtr mother) const;
+		cPtr crossoverOrder(cPtr father, cPtr mother, const vector<unsigned>& levelingLimits) const;
+		void mutateMapping(cPtr offspring) const;
+		void mutateSheduling(cPtr offspring, const vector<unsigned>& levelingLimits) const;
 
-		void simulateMating(pPtr population, int offsprings);
+		void simulateMating(pPtr population, int offsprings) const;
 	};
 }
