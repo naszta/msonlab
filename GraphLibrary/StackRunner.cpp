@@ -122,10 +122,33 @@ namespace msonlab
 
 	std::ostream& operator<<(std::ostream& os, const StackRunner& sr)
 	{
-		for (StackRunner::program::const_iterator it = sr.currentProgram.begin();
-			it != sr.currentProgram.end(); ++it)
+		for (auto it = sr.currentProgram.begin(); it != sr.currentProgram.end(); ++it)
 		{
-			os << (std::get<0>(**it));
+			void* func = std::get<0>(**it);
+			if (func == &StackRunner::push)
+			{
+				os << "PUSH";
+			}
+			else if (func == &StackRunner::add)
+			{
+				os << "ADD";
+			}
+			else if (func == &StackRunner::sub)
+			{
+				os << "SUB";
+			}
+			else if (func == &StackRunner::mul)
+			{
+				os << "MUL";
+			}
+			else if (func == &StackRunner::div)
+			{
+				os << "DIV";
+			}
+			else if (func == &StackRunner::power)
+			{
+				os << "POW";
+			}
 			if (std::get<1>(**it) != nullptr)
 				os << " => " << *(std::get<1>(**it));
 			else
