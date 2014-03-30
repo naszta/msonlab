@@ -21,8 +21,6 @@
 #include <fstream>
 #include <ctime>
 #include <cstdlib>
-#include <locale>
-#include <codecvt>
 
 using namespace msonlab;
 using namespace std;
@@ -233,9 +231,39 @@ msonlab::Graph::gPtr initStackGraph()
 	return qeGraph;
 }
 
-void runCompile()
+Graph::gPtr initSampleGraph()
 {
-	Graph::gPtr graph = initStackGraph();
+	Graph::gPtr graph(new Graph());
+	
+	Node::nPtr nc0(new NodeConstant(0, L"nc0", Types::DataType(new double(1.0))));
+	Node::nPtr nc1(new NodeConstant(1, L"nc1", Types::DataType(new double(5.0))));
+	Node::nPtr nc2(new NodeConstant(2, L"nc2", Types::DataType(new double(3.0))));
+	Node::nPtr nc3(new NodeConstant(3, L"nc3", Types::DataType(new double(4.0))));
+	Node::nPtr na(new NodeAdd(4, L"na", nullptr));
+	Node::nPtr nm1(new NodeMultiply(5, L"nm1", nullptr));
+	Node::nPtr nm2(new NodeMultiply(6, L"nm2", nullptr));
+
+	Edge::ePtr e0(new Edge(0, L"e0", nullptr, nc0, na));
+	Edge::ePtr e1(new Edge(1, L"e1", nullptr, nc1, na));
+	Edge::ePtr e2(new Edge(2, L"e2", nullptr, nc2, na));
+	Edge::ePtr e3(new Edge(3, L"e3", nullptr, na, nm2));
+	Edge::ePtr e4(new Edge(4, L"e4", nullptr, nc2, nm1));
+	Edge::ePtr e5(new Edge(5, L"e5", nullptr, nc3, nm1));
+	Edge::ePtr e6(new Edge(6, L"e6", nullptr, nm1, nm2));
+
+	graph->addEdge(e0);
+	graph->addEdge(e1);
+	graph->addEdge(e2);
+	graph->addEdge(e3);
+	graph->addEdge(e4);
+	graph->addEdge(e5);
+	graph->addEdge(e6);
+
+	return graph;
+}
+
+void runCompile(Graph::gPtr graph)
+{
 	msonlab::StackCompiler sc(graph);
 
 	// CPU idõ mérése
@@ -266,8 +294,6 @@ void runCompile()
 
 	std::cout << std::setprecision(100) << elapsedCHRONO << std::endl;
 	std::cout << std::setprecision(100) << elapsedCPU;
-	char ch;
-	std::cin >> ch;
 }
 
 void runStackModel()
@@ -354,7 +380,8 @@ void runGA()
 	GeneticAlgorithm gena(gaoptions, fsstrategy);
 
 	// getting the graph
-	auto graph = initRandomGraph(gaoptions);
+	//auto graph = initRandomGraph(gaoptions);
+	auto graph = initSampleGraph();
 
 	int greedy = ga.scheduleGreedy(graph, gaoptions->getNumberOfPus());
 	
@@ -369,9 +396,9 @@ void runGA()
 		gena.simulateMating(population, gaoptions->getPopMaxSize());
 		population->limit();
 		unsigned best = population->best()->getFitness();
-		std::cout << "Generation " << i + 1 << std::endl;
-		std::cout << "Best fitness: " << best << std::endl;
-		std::cout << "Avarage fitness: " << population->avarageFittness() << std::endl;
+		//std::cout << "Generation " << i + 1 << std::endl;
+		//std::cout << "Best fitness: " << best << std::endl;
+		//std::cout << "Avarage fitness: " << population->avarageFittness() << std::endl;
 		if (best == last)
 		{
 			++not_changed;
@@ -386,12 +413,17 @@ void runGA()
 			i -= 2 * not_changed;
 		}
 	}
+
+	auto best = population->best();
+	std::cout << "Best fitness: " << best->getFitness() << std::endl;
+	best->printChromosome(std::cout);
+	//std::cout << best;
 }
 
 int main(int argc, char *argv[])
 {
-	//runGA();
-	runCompile();
+	runGA();
+	//runCompile(initSampleGraph());
 	std::cout << "Press a key to continue...";
 	std::cin.get();
 
