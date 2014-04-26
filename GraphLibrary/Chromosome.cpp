@@ -60,8 +60,6 @@ namespace msonlab
 
 	void Chromosome::printTable(std::ostream& os, unsigned taskLength, unsigned commOverhead) const
 	{
-		unsigned taskLength = 3;// options->getTaskLength();
-		unsigned commOverhead = 1;// options->getCommOverhead();
 		unsigned puGroupSize = 4;
 		unsigned tasks = scheduling.size();
 		vector<unsigned> ST(tasks);
