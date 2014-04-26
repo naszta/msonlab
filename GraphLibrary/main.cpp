@@ -22,6 +22,8 @@
 #include <ctime>
 #include <cstdlib>
 
+#define MEASURE 1000000
+
 using namespace msonlab;
 using namespace std;
 
@@ -273,26 +275,25 @@ void runCompile(Graph::gPtr graph)
 	auto stackProg = sc.getStackProgram();
 	finishCPU = clock();
 
-	std::cout << "Printing complied program\n";
-	std::cout << *stackProg << std::endl;
+	DEBUG("Printing complied program");
+	DEBUG(*stackProg);
 
 	clock_t timeCPU = (finishCPU - startCPU);
 	double elapsedCPU = timeCPU;
 
 	// CHRONO idõ mérése
 
-	std::chrono::high_resolution_clock clockCHRONO;
 	std::chrono::time_point<std::chrono::high_resolution_clock> startCHRONO, finishCHRONO;
 
-	startCHRONO = clockCHRONO.now();
+	startCHRONO = std::chrono::high_resolution_clock::now();
 	auto stackProg2 = sc.getStackProgram();
-	finishCHRONO = clockCHRONO.now();
+	finishCHRONO = std::chrono::high_resolution_clock::now();
 
-	double elapsedCHRONO = (finishCHRONO - startCHRONO).count();
+	std::chrono::duration<double> elapsedCHRONO = finishCHRONO - startCHRONO;
 
 	auto result = stackProg->run(1);
 
-	std::cout << std::setprecision(100) << elapsedCHRONO << std::endl;
+	std::cout << std::setprecision(100) << elapsedCHRONO.count() << std::endl;
 	std::cout << std::setprecision(100) << elapsedCPU;
 }
 
@@ -337,16 +338,15 @@ void runStackModel()
 
 	// CHRONO idõ mérése
 
-	std::chrono::high_resolution_clock clockCHRONO;
 	std::chrono::time_point<std::chrono::high_resolution_clock> startCHRONO, finishCHRONO;
 
-	startCHRONO = clockCHRONO.now();
+	startCHRONO = std::chrono::high_resolution_clock::now();
 	ret = runner.run(runCount);
-	finishCHRONO = clockCHRONO.now();
+	finishCHRONO = std::chrono::high_resolution_clock::now();
 
-	double elapsedCHRONO = (finishCHRONO - startCHRONO).count();
+	std::chrono::duration<double> elapsedCHRONO = (finishCHRONO - startCHRONO);
 
-	std::cout << std::setprecision(100) << elapsedCHRONO << std::endl;
+	std::cout << std::setprecision(100) << elapsedCHRONO.count() << std::endl;
 
 	// CPU idõ mérése
 
@@ -381,7 +381,7 @@ void runGA()
 
 	// getting the graph
 	//auto graph = initRandomGraph(gaoptions);
-	auto graph = initSampleGraph();
+	auto graph = initGraph();
 
 	int greedy = ga.scheduleGreedy(graph, gaoptions->getNumberOfPus());
 	
@@ -396,9 +396,9 @@ void runGA()
 		gena.simulateMating(population, gaoptions->getPopMaxSize());
 		population->limit();
 		unsigned best = population->best()->getFitness();
-		//std::cout << "Generation " << i + 1 << std::endl;
-		//std::cout << "Best fitness: " << best << std::endl;
-		//std::cout << "Avarage fitness: " << population->avarageFittness() << std::endl;
+		DEBUG("Generation " << i + 1);
+		DEBUG("Best fitness: " << best);
+		DEBUG("Avarage fitness: " << population->avarageFittness());
 		if (best == last)
 		{
 			++not_changed;
@@ -415,17 +415,36 @@ void runGA()
 	}
 
 	auto best = population->best();
-	std::cout << "Best fitness: " << best->getFitness() << std::endl;
 	best->printChromosome(std::cout);
-	//std::cout << best;
+
+	DEBUG("Best fitness: " << best->getFitness());
+	DEBUG(*best);
 }
 
 int main(int argc, char *argv[])
 {
-	runGA();
-	//runCompile(initSampleGraph());
+	
+#if MEASURE != 0
+	double average = 0.0;
+	for (int i = 0; i < 1; ++i)
+	{
+		std::chrono::time_point<std::chrono::high_resolution_clock> startCHRONO, finishCHRONO;
+		startCHRONO = std::chrono::high_resolution_clock::now();
+#endif
+		runGA();
+#if MEASURE != 0
+		finishCHRONO = std::chrono::high_resolution_clock::now();
+		std::chrono::duration<double> elapsedCHRONO = finishCHRONO - startCHRONO;
+		average += elapsedCHRONO.count();
+	}
+
+	std::cout << "Elapsed time " << std::setprecision(10) << average << std::endl;
+#endif
+#if WAIT == 1
 	std::cout << "Press a key to continue...";
 	std::cin.get();
+#endif
 
 	return 0;
 }
+

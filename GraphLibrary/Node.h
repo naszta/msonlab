@@ -22,7 +22,7 @@ namespace msonlab
 		virtual bool isReadyForProcess() const;
 		virtual bool resetProcessingState();
 
-		IProcessable::eVect getPredecessors() const;
+		const IProcessable::eVect& getPredecessors() const;
 		size_t getPredecessorsSize() const;
 		IProcessable::ePtr getPredecessor(size_t index) const;
 		IProcessable::eVect::iterator getPredecessorBegin();

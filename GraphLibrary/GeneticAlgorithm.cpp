@@ -72,9 +72,9 @@ namespace msonlab {
 			}
 		}
 
-		std::cout << "Greedy time: " << timeCounter << std::endl;
 		fitness(c);
-		std::cout << "Greedy fitness: " << c->fitness << std::endl;
+		DEBUG("Greedy time: " << timeCounter);
+		DEBUG("Greedy fitness: " << c->fitness);
 		return c;
 	}
 
@@ -109,11 +109,12 @@ namespace msonlab {
 		vector<IProcessable::nVect> levels = algorithms.createLeveling(graph);
 		size_t numLevels = levels.size();
 		vector<unsigned> levelingLimits;
-		std::cout << "levels: " << numLevels << std::endl;
+		DEBUG("levels: " << numLevels);
 		unsigned limits = 0;
 		for (size_t i = numLevels; i > 0; --i)
 		{
 			limits += levels[i - 1].size();
+#if PRINT == 1
 			std::cout << "Level " << i << " ---" << std::endl;
 			for (size_t j = 0; j < levels[i - 1].size(); ++j)
 			{
@@ -121,6 +122,7 @@ namespace msonlab {
 			}
 
 			std::cout << "\n---\n";
+#endif
 		}
 
 		pPtr population = pPtr(new Population(solution, gaoptions->getKeepSize(), gaoptions->getPopMaxSize(), gaoptions->getKeepBest()));
@@ -144,7 +146,7 @@ namespace msonlab {
 		}
 
 		fitness(cc);
-		std::cout << "First fitness: " << cc->fitness << std::endl;
+		DEBUG("First fitness: " << cc->fitness);
 		population->addOffspring(cc);
 
 		counter = gaoptions->getPopMaxSize() - 1;

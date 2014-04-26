@@ -40,7 +40,7 @@ namespace msonlab
 		return true;
 	}
 
-	IProcessable::eVect Node::getPredecessors() const
+	const IProcessable::eVect& Node::getPredecessors() const
 	{
 		return predecessors;
 	}

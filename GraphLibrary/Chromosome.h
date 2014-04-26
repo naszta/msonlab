@@ -3,6 +3,7 @@
 #include "IProcessable.h"
 #include "GraphAlgorithms.h"
 #include "Global.h"
+#include "GAOptions.h"
 #include <ostream>
 
 /// This class represents a solution
@@ -31,6 +32,8 @@ namespace msonlab
 
 		friend class chrComparator;
 		friend class GeneticAlgorithm;
+
+		void calcStartTime(GAOptions::gaPtr options);
 	public:
 		friend std::ostream& operator<<(std::ostream& os, const Chromosome& chromosome);
 		typedef std::shared_ptr<Chromosome> cPtr;
@@ -38,7 +41,7 @@ namespace msonlab
 
 		Chromosome();
 		Chromosome(size_t size);
-		Chromosome(Chromosome& chromosome);
+		Chromosome(const Chromosome& chromosome);
 
 		Chromosome& operator=(const Chromosome &chromosome);
 
@@ -48,5 +51,6 @@ namespace msonlab
 		const IProcessable::nVect& getScheduling() const { return scheduling; }
 
 		void printChromosome(std::ostream& o) const;
+		void printTable(std::ostream& o, unsigned taskLength, unsigned commOverhead) const;
 	};
 }
