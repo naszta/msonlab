@@ -111,10 +111,10 @@ namespace msonlab
 		}
 
 		// initialize table
-		vector<vector<unsigned>> table(this->fitness);
+		vector<vector<int>> table(this->fitness);
 		for (unsigned i = 0; i < table.size(); ++i)
 		{
-			table[i].resize(this->getPUs());
+			table[i].resize(this->getPUs(), -1);
 		}
 
 		for (unsigned i = 0; i < this->scheduling.size(); ++i)
@@ -124,7 +124,7 @@ namespace msonlab
 			unsigned start = ST[task];
 			for (unsigned j = 0; j < taskLength; ++j)
 			{
-				table[start + j][pu] = i;
+				table[start + j][pu] = task;
 			}
 		}
 
@@ -133,7 +133,7 @@ namespace msonlab
 		{
 			for (unsigned j = 0; j < table[i].size(); ++j)
 			{
-				if (table[i][j] > 0) {
+				if (table[i][j] >= 0) {
 					os.width(3);
 					os << table[i][j];
 				}
