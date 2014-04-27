@@ -46,5 +46,7 @@ namespace msonlab
 		void mutateSheduling(cPtr offspring, const vector<unsigned>& levelingLimits) const;
 
 		void simulateMating(pPtr population, int offsprings) const;
+
+		void transfromResult(Chromosome::cPtr c, vector<unsigned>& result) const;
 	};
 }

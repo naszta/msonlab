@@ -305,4 +305,25 @@ namespace msonlab {
 			population->addOffspring(offspring);
 		}
 	}
+
+	///
+	/// Transform the mapping and scheduling into one vector.
+	///
+	/// Assumes that the id's of the tasks are from 0 to n-1, where n is the number
+	/// nodes in the graph.
+	///
+	/// @param c the chromosome to transform
+	/// @param result the result vector.
+	void GeneticAlgorithm::transfromResult(Chromosome::cPtr c, vector<unsigned>& result) const {
+		auto mapping = c->getMapping();
+		auto scheduling = c->getScheduling();
+		size_t tasks = scheduling.size();
+		if (result.size() != tasks) {
+			result.resize(tasks);
+		}
+
+		for (unsigned i = 0; i < tasks; ++i) {
+			result[scheduling[i]->getId()] = mapping[i];
+		}
+	}
 }
