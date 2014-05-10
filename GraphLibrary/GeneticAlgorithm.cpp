@@ -34,8 +34,7 @@ namespace msonlab {
 			free.push(inputNodes[i]);
 		}
 
-		shared_ptr<Chromosome> c(new Chromosome(graph->numberOfNodes()));
-		c->pus = gaoptions->getNumberOfPus();
+		shared_ptr<Chromosome> c(new Chromosome(graph->numberOfNodes(), gaoptions->getNumberOfPus()));
 		while (taskCounter < graph->numberOfNodes())
 		{
 			vector< IProcessable::nPtr > out;
@@ -129,8 +128,7 @@ namespace msonlab {
 
 		cPtr chr = this->greedyChromosome(graph);
 
-		cPtr cc(new Chromosome(graph->numberOfNodes()));
-		cc->pus = gaoptions->getNumberOfPus();
+		cPtr cc(new Chromosome(graph->numberOfNodes(), gaoptions->getNumberOfPus()));
 		size_t currentPos = 0;
 		unsigned counter = 0;
 		for (size_t i = numLevels; i > 0; --i)
@@ -152,7 +150,7 @@ namespace msonlab {
 		counter = gaoptions->getPopMaxSize() - 1;
 		for (; counter > 0; --counter)
 		{
-			shared_ptr<Chromosome> c(new Chromosome(graph->numberOfNodes()));
+			shared_ptr<Chromosome> c(new Chromosome(graph->numberOfNodes(), gaoptions->getNumberOfPus()));
 			c->pus = gaoptions->getNumberOfPus();
 			for (unsigned int i = 0; i < c->mapping.size(); ++i)
 			{
