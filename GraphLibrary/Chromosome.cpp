@@ -4,7 +4,13 @@ namespace msonlab
 {
 	/// Initialises a new instance of the Chromosome class.
 	/// The size is the number of tasks.
-	Chromosome::Chromosome(size_t size) : fitness(0)
+	Chromosome::Chromosome(unsigned pus) : fitness(0), pus(pus)
+	{
+	}
+
+	/// Initialises a new instance of the Chromosome class.
+	/// The size is the number of tasks.
+	Chromosome::Chromosome(size_t size, unsigned pus) : fitness(0), pus(pus)
 	{
 		scheduling.resize(size);
 		mapping.resize(size);
@@ -61,16 +67,16 @@ namespace msonlab
 	void Chromosome::printTable(std::ostream& os, unsigned taskLength, unsigned commOverhead) const
 	{
 		unsigned puGroupSize = 4;
-		unsigned tasks = scheduling.size();
+		auto tasks = scheduling.size();
 		vector<unsigned> ST(tasks);
-		vector<unsigned> RT(this->getPUs()); // ready time of the PUs
+		vector<unsigned> RT(this->pus); // ready time of the PUs
 		vector<unsigned> FT(tasks); // finish time of the tasks
 		vector<unsigned> DAT(tasks); // Data Arrival Time
 		vector<unsigned> idPuMapping(tasks); // idPuMapping[i] = j means that node[i] is processed by pu[j] // is this necessary?
 
 		unsigned actId = scheduling[0]->getId();
 		ST[actId] = 0;
-		FT[actId] = ST[actId] + taskLength; // task length, TODO: create a distribution
+		FT[actId] = ST[actId] + scheduling[0]->getComputationTime(); // task length, TODO: create a distribution
 		DAT[actId] = 0;
 		idPuMapping[actId] = mapping[0];
 		RT[mapping[0]] = FT[actId];
@@ -94,6 +100,7 @@ namespace msonlab
 					comm *= 2;
 				}
 
+				DAT[actId] = std::max(DAT[actId], FT[id] + comm);
 				if (DAT[actId] < FT[id] + comm)
 				{
 					DAT[actId] = FT[id] + comm;
@@ -101,17 +108,13 @@ namespace msonlab
 			}
 
 			ST[actId] = RT[actPU] > DAT[actId] ? RT[actPU] : DAT[actId];
-			FT[actId] = ST[actId] + taskLength;
+			FT[actId] = ST[actId] + actNode->getComputationTime();
 			RT[actPU] = FT[actId];
-
-			std::cout << "ST[" << actId << "] = " << ST[actId] << std::endl;
-			std::cout << "FT[" << actId << "] = " << FT[actId] << std::endl;
-			std::cout << "DAT[" << actId << "] = " << DAT[actId] << std::endl;
-			std::cout << "RT[" << actPU << "] = " << RT[actPU] << std::endl;
 		}
 
 		// initialize table
-		vector<vector<int>> table(this->fitness);
+		unsigned length = *std::max_element(FT.begin(), FT.end());
+		vector<vector<int>> table(length);
 		for (unsigned i = 0; i < table.size(); ++i)
 		{
 			table[i].resize(this->getPUs(), -1);
@@ -122,13 +125,14 @@ namespace msonlab
 			unsigned pu = this->mapping[i];
 			unsigned task = this->scheduling[i]->getId();
 			unsigned start = ST[task];
-			for (unsigned j = 0; j < taskLength; ++j)
+			for (unsigned j = 0; j < this->scheduling[i]->getComputationTime(); ++j)
 			{
 				table[start + j][pu] = task;
 			}
 		}
 
 		//os.width(3);
+		os << "Length: " << length << std::endl;
 		for (unsigned i = 0; i < table.size(); ++i)
 		{
 			for (unsigned j = 0; j < table[i].size(); ++j)

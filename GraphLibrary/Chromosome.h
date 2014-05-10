@@ -32,6 +32,7 @@ namespace msonlab
 
 		friend class chrComparator;
 		friend class GeneticAlgorithm;
+		friend class HusSchedulingAlgorithm;
 
 		void calcStartTime(GAOptions::gaPtr options);
 	public:
@@ -39,8 +40,8 @@ namespace msonlab
 		typedef std::shared_ptr<Chromosome> cPtr;
 		typedef vector< cPtr > cVect;
 
-		Chromosome();
-		Chromosome(size_t size);
+		Chromosome(unsigned pus);
+		Chromosome(size_t size, unsigned pus);
 		Chromosome(const Chromosome& chromosome);
 
 		Chromosome& operator=(const Chromosome &chromosome);
