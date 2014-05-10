@@ -17,38 +17,29 @@ namespace msonlab
 		}
 	public:
 		virtual unsigned int fitness(Chromosome::cPtr chromosome, GAOptions::gaPtr options) = 0;
-		virtual void communication(unsigned nodeFromId, unsigned nodeToId) = 0;
-		virtual void startTimeSet(unsigned nodeId, unsigned time) = 0;
 
 		typedef std::shared_ptr<FitnessStrategy> fsPtr;
 	};
 
 	class LengthFitnessStartegy : public FitnessStrategy
 	{
-		std::shared_ptr<FitnessStrategy> handler;
+		bool punishCommunication;
 	public:
+		LengthFitnessStartegy();
+		LengthFitnessStartegy(bool punishCommunication);
 		virtual unsigned int fitness(Chromosome::cPtr chromosome, GAOptions::gaPtr options);
-		virtual void communication(unsigned nodeFromId, unsigned nodeToId);
-		virtual void startTimeSet(unsigned nodeId, unsigned time);
-		void setHandler(std::shared_ptr<FitnessStrategy> strategy) {
-			this->handler = strategy;
-		}
 	};
 
 	class LeastCutFitnessStrategy : public LengthFitnessStartegy
 	{
 	public:
 		virtual unsigned int fitness(Chromosome::cPtr chromosome, GAOptions::gaPtr options);
-		virtual void communication(unsigned nodeFromId, unsigned nodeToId);
-		virtual void startTimeSet(unsigned nodeId, unsigned time);
 	};
 
 	class OpenEdgesFitnessStrategy : public FitnessStrategy
 	{
 	public:
 		virtual unsigned int fitness(Chromosome::cPtr chromosome, GAOptions::gaPtr options);
-		virtual void communication(unsigned nodeFromId, unsigned nodeToId);
-		virtual void startTimeSet(unsigned nodeId, unsigned time);
 	};
 }
 

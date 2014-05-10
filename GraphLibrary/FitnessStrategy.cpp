@@ -1,25 +1,32 @@
 #include "FitnessStrategy.h"
+#include <algorithm>
 
 namespace msonlab
 {
+
+	LengthFitnessStartegy::LengthFitnessStartegy() : punishCommunication(false) {}
+
+	LengthFitnessStartegy::LengthFitnessStartegy(bool punishCommunication) : punishCommunication(punishCommunication) {}
+
 	unsigned int LengthFitnessStartegy::fitness(Chromosome::cPtr chromosome, GAOptions::gaPtr options)
 	{
 		typedef unsigned int uint;
-		unsigned taskLength = options->getTaskLength();
+		unsigned communication = 0;
+		//unsigned taskLength = options->getTaskLength();
 		unsigned commOverhead = options->getCommOverhead();
-		unsigned puGroupSize = 4;
-		const vector<unsigned int>& mapping = chromosome->getMapping();
-		const IProcessable::nVect& scheduling = chromosome->getScheduling();
-		uint tasks = scheduling.size();
+		unsigned puGroupSize = options->getPuGroupSize();
+		auto mapping = chromosome->getMapping();
+		auto scheduling = chromosome->getScheduling();
+		auto tasks = scheduling.size();
 		vector<uint> RT(chromosome->getPUs()); // ready time of the PUs
 		vector<uint> ST(tasks); // start time of the tasks
 		vector<uint> FT(tasks); // finish time of the tasks
 		vector<uint> DAT(tasks); // Data Arrival Time
-		vector<uint> idPuMapping(tasks); // idPuMapping[i] = j means that node[i] is processed by pu[j] // is this necessary?
+		vector<uint> idPuMapping(tasks); // idPuMapping[i] = j means that node[i] is processed by pu[j]
 
 		uint actId = scheduling[0]->getId();
 		ST[actId] = 0;
-		FT[actId] = ST[actId] + taskLength; // task length, TODO: create a distribution
+		FT[actId] = ST[actId] + scheduling[0]->getComputationTime(); // task length, TODO: create a distribution
 		DAT[actId] = 0;
 		idPuMapping[actId] = mapping[0];
 		RT[mapping[0]] = FT[actId];
@@ -37,7 +44,12 @@ namespace msonlab
 			for (uint j = 0; j < predecessorSize; ++j)
 			{
 				uint id = actNode->getPredecessor(j)->getFromId();
-				uint comm = actPU == idPuMapping[id] ? 0 : commOverhead;
+				uint comm = 0;
+				if (actPU != idPuMapping[id]) {
+					comm = commOverhead;
+					++communication;
+				}
+
 				if (actPU / puGroupSize != idPuMapping[id] / puGroupSize)
 				{
 					comm *= 2;
@@ -50,7 +62,7 @@ namespace msonlab
 				// check whether a flaw is present in this solution
 				if (FT[id] == 0)
 				{
-					DAT[actId] = 10000;
+					// TODO: remove, when ensured, cannot happen
 					std::cout << "Flawed chromosome" << std::endl;
 					chromosome->printChromosome(std::cout);
 					std::cin.get();
@@ -59,24 +71,17 @@ namespace msonlab
 			}
 
 			ST[actId] = max(RT[actPU], DAT[actId]);
-			FT[actId] = ST[actId] + taskLength;
+			FT[actId] = ST[actId] + actNode->getComputationTime();
 			RT[actPU] = FT[actId];
 		}
 
-		uint length = 0;
-		for (uint i = 0; i < tasks; ++i)
-		{
-			if (FT[i] > length)
-			{
-				length = FT[i];
-			}
+		uint length = *std::max_element(FT.begin(), FT.end());
+		if (this->punishCommunication) {
+			length += communication*commOverhead;
 		}
 
 		return length;
 	}
-
-	void LengthFitnessStartegy::communication(unsigned nodeFromId, unsigned nodeToId) {}
-	void LengthFitnessStartegy::startTimeSet(unsigned nodeId, unsigned time){}
 
 	unsigned int LeastCutFitnessStrategy::fitness(Chromosome::cPtr chromosome, GAOptions::gaPtr options)
 	{
@@ -85,14 +90,9 @@ namespace msonlab
 		return 0;
 	}
 
-	void LeastCutFitnessStrategy::communication(unsigned nodeFromId, unsigned nodeToId) {}
-	void LeastCutFitnessStrategy::startTimeSet(unsigned nodeId, unsigned time){}
-
 	unsigned int OpenEdgesFitnessStrategy::fitness(Chromosome::cPtr chromosome, GAOptions::gaPtr options)
 	{
 		return 0;
 	}
 
-	void OpenEdgesFitnessStrategy::communication(unsigned nodeFromId, unsigned nodeToId) {}
-	void OpenEdgesFitnessStrategy::startTimeSet(unsigned nodeId, unsigned time){}
 }
