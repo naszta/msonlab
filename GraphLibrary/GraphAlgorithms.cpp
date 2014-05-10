@@ -204,6 +204,54 @@ namespace msonlab
 		return changedGraph;
 	}
 
+	void GraphAlgorithms::computeNextFreeNodes(vector<int>& dependencies, Node::nPtr node) const
+	{
+		for (auto it = node->getSuccessors().begin(); it != node->getSuccessors().end(); ++it)
+		{
+			unsigned id = (*it)->getToId();
+			--dependencies[id];
+		}
+
+		dependencies[node->getId()] = -1;
+	}
+
+	unsigned GraphAlgorithms::findMaxDistanceWithoutDependency(const vector<int>& dependencies, const vector<unsigned>& distances) const
+	{
+		unsigned id = 0;
+		unsigned max = 0;
+		for (unsigned i = 0; i < distances.size(); ++i) {
+			if (dependencies[i] == 0 && (max == 0 || distances[i] > max)) {
+				id = i;
+				max = distances[i];
+			}
+		}
+
+		return id;
+	}
+
+	void GraphAlgorithms::createDependencyVector(const Graph::gPtr graph, vector<int>& dependencies) const
+	{
+		if (dependencies.size() != graph->numberOfNodes()) {
+			dependencies.resize(graph->numberOfNodes());
+		}
+
+		auto end = graph->nodes.end();
+		for (auto it = graph->nodes.begin(); it != end; ++it) {
+			dependencies[(*it)->getId()] = (*it)->getPredecessorsSize();
+		}
+	}
+
+	void GraphAlgorithms::listNodes(const Graph::gPtr graph, vector<Node::nPtr>& nodes) const {
+		if (nodes.size() != graph->numberOfNodes()) {
+			nodes.resize(graph->numberOfNodes());
+		}
+
+		auto end = graph->nodes.end();
+		for (auto it = graph->nodes.begin(); it != end; ++it) {
+			nodes[(*it)->getId()] = (*it);
+		}
+	}
+
 	int GraphAlgorithms::scheduleGreedy(const Graph::gPtr graph, int pus) const
 	{
 		int timeCounter = 0;
