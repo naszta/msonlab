@@ -3,7 +3,6 @@
 
 namespace msonlab
 {
-
 	LengthFitnessStartegy::LengthFitnessStartegy() : punishCommunication(false) {}
 
 	LengthFitnessStartegy::LengthFitnessStartegy(bool punishCommunication) : punishCommunication(punishCommunication) {}
@@ -12,13 +11,15 @@ namespace msonlab
 	{
 		typedef unsigned int uint;
 		unsigned communication = 0;
-		//unsigned taskLength = options->getTaskLength();
+		// const vector references
+
 		unsigned commOverhead = options->getCommOverhead();
 		unsigned puGroupSize = options->getPuGroupSize();
+		// const vector references
 		auto mapping = chromosome->getMapping();
 		auto scheduling = chromosome->getScheduling();
 		auto tasks = scheduling.size();
-		vector<uint> RT(chromosome->getPUs()); // ready time of the PUs
+		vector<uint> RT(options->getNumberOfPus()); // ready time of the PUs
 		vector<uint> ST(tasks); // start time of the tasks
 		vector<uint> FT(tasks); // finish time of the tasks
 		vector<uint> DAT(tasks); // Data Arrival Time
@@ -83,11 +84,22 @@ namespace msonlab
 		return length;
 	}
 
-	unsigned int LeastCutFitnessStrategy::fitness(Chromosome::cPtr chromosome, Options::oPtr options)
+	unsigned int PUUsageFitnessStrategy::fitness(Chromosome::cPtr chromosome, Options::oPtr options)
 	{
 		unsigned length = LengthFitnessStartegy::fitness(chromosome, options);
-		// count cuts
-		return 0;
+		
+		unsigned sumUsedTime = length * options->getNumberOfPus();
+		unsigned sumWorkTime = 0;
+
+		auto scheduling = chromosome->getScheduling();
+
+		for (auto it = scheduling.begin(); it != scheduling.end(); ++it)
+		{
+			sumWorkTime += (*it)->getComputationTime();
+		}
+
+		// returning the percentage of time spent idle
+		return ((sumUsedTime - sumWorkTime)*1000)/sumUsedTime;
 	}
 
 	unsigned int OpenEdgesFitnessStrategy::fitness(Chromosome::cPtr chromosome, Options::oPtr options)

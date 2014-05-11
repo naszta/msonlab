@@ -60,11 +60,11 @@ namespace msonlab
 
 	std::ostream& operator<<(std::ostream& os, const Chromosome& chromosome)
 	{
-		chromosome.printTable(os, 3, 1);
+		chromosome.printTable(os, 1);
 		return os;
 	}
 
-	void Chromosome::printTable(std::ostream& os, unsigned taskLength, unsigned commOverhead) const
+	void Chromosome::printTable(std::ostream& os, unsigned commOverhead) const
 	{
 		unsigned puGroupSize = 4;
 		auto tasks = scheduling.size();
@@ -117,9 +117,9 @@ namespace msonlab
 		vector<vector<int>> table(length);
 		for (unsigned i = 0; i < table.size(); ++i)
 		{
-			table[i].resize(this->getPUs(), -1);
-		}
+			table[i].resize(this->pus, -1);
 
+		}
 		for (unsigned i = 0; i < this->scheduling.size(); ++i)
 		{
 			unsigned pu = this->mapping[i];

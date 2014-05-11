@@ -30,7 +30,7 @@ namespace msonlab
 		virtual unsigned int fitness(Chromosome::cPtr chromosome, Options::oPtr options);
 	};
 
-	class LeastCutFitnessStrategy : public LengthFitnessStartegy
+	class PUUsageFitnessStrategy : public LengthFitnessStartegy
 	{
 	public:
 		virtual unsigned int fitness(Chromosome::cPtr chromosome, Options::oPtr options);

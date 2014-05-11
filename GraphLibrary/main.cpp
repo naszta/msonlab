@@ -1,4 +1,3 @@
-#include "Graph.h"
 #include "NodeAdd.h"
 #include "NodeConstant.h"
 #include "NodeDivide.h"
@@ -8,8 +7,8 @@
 #include "BlueEdge.h"
 #include "BFSIterator.h"
 #include "DFSIterator.h"
-#include "GraphAlgorithms.h"
 #include "GraphGenerator.h"
+#include "GreedySchedulingAlgorithm.h"
 #include "GeneticAlgorithm.h"
 #include "HusSchedulingAlgorithm.h"
 #include "Options.h"
@@ -20,8 +19,8 @@
 #include <iostream>
 #include <iomanip>
 #include <fstream>
-#include <ctime>
-#include <cstdlib>
+#include <cstdlib>     /* srand, rand */
+#include <ctime>       /* time */
 
 #define MEASURE 1
 
@@ -372,51 +371,54 @@ void runGA()
 	msonlab::GraphAlgorithms ga;
 
 	// loading GA configuration
-	Options::oPtr Options(new Options("Options.cfg"));
+	Options::oPtr options(new Options("Options.cfg"));
 
 	// choosing fitness strategy for the GA
 	FitnessStrategy::fsPtr fsstrategy(new LengthFitnessStartegy());
+	//FitnessStrategy::fsPtr fsstrategy(new PUUsageFitnessStrategy());
 
 	// initializing GA
-	GeneticAlgorithm gena(Options, fsstrategy);
+	GeneticAlgorithm gena(options, fsstrategy);
 
 	// getting the graph
 	//auto graph = initRandomGraph(Options);
 	auto graph = initGraph();
 
-	int greedy = ga.scheduleGreedy(graph, Options->getNumberOfPus());
+	GreedySchedulingAlgorithm greedyAlg;
+	auto greedy = greedyAlg.schedule(graph, options);
+
+	LengthFitnessStartegy lengtFS;
+	std::cout << "Greedy length: " << lengtFS.fitness(greedy, options) << std::endl;
+	std::cout << "Greedy fitness: " << fsstrategy->fitness(greedy, options) << std::endl;
 	
 	shared_ptr<Population> population = gena.generateInitialSolution(graph);
 	population->limit();
 
 	unsigned last = population->best()->getFitness();
-	unsigned not_changed = 0;
+	unsigned bests_round = 0;
 
-	for (size_t i = 0; i < Options->getNumberOfYears(); ++i)
+	for (size_t i = 0; i < options->getNumberOfYears(); ++i)
 	{
-		gena.simulateMating(population, Options->getPopMaxSize());
+		gena.simulateMating(population, options->getPopMaxSize());
 		population->limit();
 		unsigned best = population->best()->getFitness();
 		DEBUG("Generation " << i + 1);
 		DEBUG("Best fitness: " << best);
 		DEBUG("Avarage fitness: " << population->avarageFittness());
-		if (best == last)
+		if (best != last)
 		{
-			++not_changed;
-		}
-		else
-		{
-			not_changed = 0;
 			last = best;
+			bests_round = i;
 		}
 
 	}
 
 	auto best = population->best();
 	best->printChromosome(std::cout);
-	std::cout << "Best found in round " << Options->getNumberOfYears() - not_changed << std::endl;
+	std::cout << "Best found in round " << bests_round << std::endl;
 	DEBUG("Best fitness: " << best->getFitness());
-	best->printTable(std::cout, Options->getTaskLength(), Options->getCommOverhead());
+	std::cout << "Best length: " << lengtFS.fitness(best, options) << std::endl;
+	best->printTable(std::cout, options->getCommOverhead());
 	std::vector<unsigned> result;
 	gena.transfromResult(best, result);
 	std::copy(result.begin(), result.end(), ostream_iterator<unsigned>(std::cout, " "));
@@ -436,14 +438,15 @@ void runHusScheduling() {
 	auto graph = initGraph();
 
 	auto result = alg.schedule(graph, Options);
-	result->printTable(std::cout, Options->getTaskLength(), Options->getCommOverhead());
+	result->printTable(std::cout, Options->getCommOverhead());
 	unsigned fitness = fsstrategy->fitness(result, Options);
 	std::cout << fitness << std::endl;
 }
 
 int main(int argc, char *argv[])
 {
-	
+	/* initialize random seed: */
+	srand(time(NULL));
 #if MEASURE != 0
 	double average = 0.0;
 	for (int i = 0; i < MEASURE; ++i)
@@ -451,8 +454,8 @@ int main(int argc, char *argv[])
 		std::chrono::time_point<std::chrono::high_resolution_clock> startCHRONO, finishCHRONO;
 		startCHRONO = std::chrono::high_resolution_clock::now();
 #endif
-		runGA();
-		//runHusScheduling();
+		//runGA();
+		runHusScheduling();
 #if MEASURE != 0
 		finishCHRONO = std::chrono::high_resolution_clock::now();
 		std::chrono::duration<double> elapsedCHRONO = finishCHRONO - startCHRONO;

@@ -18,7 +18,7 @@ namespace msonlab {
 	///
 	/// @param The input graph.
 	/// @return The constructed chromosome.
-	shared_ptr<Chromosome> GeneticAlgorithm::greedyChromosome(Graph::gPtr graph) const
+	Chromosome::cPtr GeneticAlgorithm::greedyChromosome(Graph::gPtr graph) const
 	{
 		unsigned timeCounter = 0;
 		unsigned taskCounter = 0;
@@ -182,10 +182,9 @@ namespace msonlab {
 		{
 			return chromosome->fitness;
 		}
-		unsigned length = this->fsstrategy->fitness(chromosome, options);
 
-		chromosome->fitness = length;
-		return length;
+		chromosome->fitness = this->fsstrategy->fitness(chromosome, options);
+		return chromosome->fitness;
 	}
 
 	///

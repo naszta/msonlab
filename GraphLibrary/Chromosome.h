@@ -15,20 +15,20 @@ namespace msonlab
 	class Chromosome
 	{
 	private:
-		/// the scheduling part
-		/// this part describes the order of the tasks
+		// the scheduling part, escribes the order of the tasks
 		IProcessable::nVect scheduling;
 
-		/// the mapping part
-		/// this part maps the task to PUs.
+		// the mapping part, maps the task to PUs.
 		vector<unsigned int> mapping;
 
-		/// the number of PUs
+		// the number of PUs
 		unsigned int pus;
 
-		/// the score of this solution
-		/// the less is better
+		// the score of this solution, the less is better
 		unsigned int fitness;
+
+		// the length of the result
+		unsigned int length; 
 
 		friend class chrComparator;
 		friend class GeneticAlgorithm;
@@ -48,11 +48,10 @@ namespace msonlab
 		Chromosome& operator=(const Chromosome &chromosome);
 
 		unsigned int getFitness() const { return fitness; }
-		unsigned int getPUs() const { return pus; }
 		const vector<unsigned int>& getMapping() const { return mapping; }
 		const IProcessable::nVect& getScheduling() const { return scheduling; }
 
 		void printChromosome(std::ostream& o) const;
-		void printTable(std::ostream& o, unsigned taskLength, unsigned commOverhead) const;
+		void printTable(std::ostream& o, unsigned commOverhead) const;
 	};
 }
