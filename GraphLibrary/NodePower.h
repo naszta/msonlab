@@ -12,8 +12,7 @@ namespace msonlab
 
 		// compile
 		virtual void compile(msonlab::StackRunner::srPtr stackProgram);
+
+		unsigned getComputationTime() { return 6; }
 	};
-
-
-
 }

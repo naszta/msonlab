@@ -27,7 +27,8 @@ namespace msonlab
 		IProcessable::ePtr getPredecessor(size_t index) const;
 		IProcessable::eVect::iterator getPredecessorBegin();
 		IProcessable::eVect::iterator getPredecessorEnd();
-		IProcessable::eVect getSuccessors() const;
+		const IProcessable::eVect& getSuccessors() const;
+		size_t getSuccessorsSize() const;
 
 		bool registerPredecessor(IProcessable::ePtr _newPredecessor);
 		bool unregisterPredecessor(IProcessable::ePtr _newPredecessor);
@@ -36,6 +37,8 @@ namespace msonlab
 		bool unregisterSuccessor(IProcessable::ePtr _newSuccessor);
 
 		PlaceEnum getPlace() const;
+
+		virtual unsigned getComputationTime() { return 1; }
 
 		// compile
 		virtual void compile(msonlab::StackRunner::srPtr stackProgram);

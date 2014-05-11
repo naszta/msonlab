@@ -9,8 +9,7 @@ namespace msonlab
 		NodeSquareRoot(unsigned int _id, Types::LabelType _label, Types::DataType _value);
 
 		virtual IProcessable::pVect process();
+
+		unsigned getComputationTime() { return 7; }
 	};
-
-
-
 }

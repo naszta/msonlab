@@ -65,9 +65,14 @@ namespace msonlab
 		return predecessors.end();
 	}
 
-	IProcessable::eVect Node::getSuccessors() const
+	const IProcessable::eVect& Node::getSuccessors() const
 	{
 		return successors;
+	}
+
+	size_t Node::getSuccessorsSize() const
+	{
+		return successors.size();
 	}
 
 	bool Node::registerPredecessor(IProcessable::ePtr _newPredecessor)
