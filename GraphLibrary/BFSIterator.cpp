@@ -94,9 +94,8 @@ namespace msonlab
 		visited.insert(node);
 
 		// adding neighbours to queue
-		IProcessable::eVect::iterator it;
-		IProcessable::eVect &neighbours = node->getSuccessors();
-		for (it = neighbours.begin(); it != neighbours.end(); ++it)
+		const IProcessable::eVect &neighbours = node->getSuccessors();
+		for (auto it = neighbours.begin(); it != neighbours.end(); ++it)
 		{
 			if (visited.count((*it)->getTo()) == 0)
 			{

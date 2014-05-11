@@ -11,7 +11,8 @@
 #include "GraphAlgorithms.h"
 #include "GraphGenerator.h"
 #include "GeneticAlgorithm.h"
-#include "GAOptions.h"
+#include "HusSchedulingAlgorithm.h"
+#include "Options.h"
 #include "FitnessStrategy.h"
 #include "StackCompiler.h"
 #include "StackRunner.h"
@@ -22,7 +23,7 @@
 #include <ctime>
 #include <cstdlib>
 
-#define MEASURE 1000000
+#define MEASURE 1
 
 using namespace msonlab;
 using namespace std;
@@ -144,9 +145,9 @@ msonlab::Graph::gPtr initTestGraph()
 	return testG;
 }
 
-msonlab::Graph::gPtr initRandomGraph(GAOptions::gaPtr gaoptions)
+msonlab::Graph::gPtr initRandomGraph(Options::oPtr Options)
 {
-	return GraphGenerator::generate(gaoptions->getGraphSize(), gaoptions->getGraphEdgeProb(), gaoptions->getGraphWidening(), gaoptions->getNumberOfPus());
+	return GraphGenerator::generate(Options->getGraphSize(), Options->getGraphEdgeProb(), Options->getGraphWidening(), Options->getNumberOfPus());
 }
 
 msonlab::Graph::gPtr initStackGraph()
@@ -371,19 +372,19 @@ void runGA()
 	msonlab::GraphAlgorithms ga;
 
 	// loading GA configuration
-	GAOptions::gaPtr gaoptions(new GAOptions("Options.cfg"));
+	Options::oPtr Options(new Options("Options.cfg"));
 
 	// choosing fitness strategy for the GA
 	FitnessStrategy::fsPtr fsstrategy(new LengthFitnessStartegy());
 
 	// initializing GA
-	GeneticAlgorithm gena(gaoptions, fsstrategy);
+	GeneticAlgorithm gena(Options, fsstrategy);
 
 	// getting the graph
-	//auto graph = initRandomGraph(gaoptions);
+	//auto graph = initRandomGraph(Options);
 	auto graph = initGraph();
 
-	int greedy = ga.scheduleGreedy(graph, gaoptions->getNumberOfPus());
+	int greedy = ga.scheduleGreedy(graph, Options->getNumberOfPus());
 	
 	shared_ptr<Population> population = gena.generateInitialSolution(graph);
 	population->limit();
@@ -391,9 +392,9 @@ void runGA()
 	unsigned last = population->best()->getFitness();
 	unsigned not_changed = 0;
 
-	for (size_t i = 0; i < gaoptions->getNumberOfYears(); ++i)
+	for (size_t i = 0; i < Options->getNumberOfYears(); ++i)
 	{
-		gena.simulateMating(population, gaoptions->getPopMaxSize());
+		gena.simulateMating(population, Options->getPopMaxSize());
 		population->limit();
 		unsigned best = population->best()->getFitness();
 		DEBUG("Generation " << i + 1);
@@ -408,17 +409,36 @@ void runGA()
 			not_changed = 0;
 			last = best;
 		}
-		if (i == gaoptions->getNumberOfYears() - 1 && not_changed < 10)
-		{
-			i -= 2 * not_changed;
-		}
+
 	}
 
 	auto best = population->best();
 	best->printChromosome(std::cout);
-
+	std::cout << "Best found in round " << Options->getNumberOfYears() - not_changed << std::endl;
 	DEBUG("Best fitness: " << best->getFitness());
-	DEBUG(*best);
+	best->printTable(std::cout, Options->getTaskLength(), Options->getCommOverhead());
+	std::vector<unsigned> result;
+	gena.transfromResult(best, result);
+	std::copy(result.begin(), result.end(), ostream_iterator<unsigned>(std::cout, " "));
+}
+
+void runHusScheduling() {
+	// loading GA configuration
+	Options::oPtr Options(new Options("Options.cfg"));
+
+	// choosing fitness strategy for the GA
+	FitnessStrategy::fsPtr fsstrategy(new LengthFitnessStartegy());
+
+	HusSchedulingAlgorithm alg;
+
+	// getting the graph
+	//auto graph = initRandomGraph(Options);
+	auto graph = initGraph();
+
+	auto result = alg.schedule(graph, Options);
+	result->printTable(std::cout, Options->getTaskLength(), Options->getCommOverhead());
+	unsigned fitness = fsstrategy->fitness(result, Options);
+	std::cout << fitness << std::endl;
 }
 
 int main(int argc, char *argv[])
@@ -426,18 +446,19 @@ int main(int argc, char *argv[])
 	
 #if MEASURE != 0
 	double average = 0.0;
-	for (int i = 0; i < 1; ++i)
+	for (int i = 0; i < MEASURE; ++i)
 	{
 		std::chrono::time_point<std::chrono::high_resolution_clock> startCHRONO, finishCHRONO;
 		startCHRONO = std::chrono::high_resolution_clock::now();
 #endif
 		runGA();
+		//runHusScheduling();
 #if MEASURE != 0
 		finishCHRONO = std::chrono::high_resolution_clock::now();
 		std::chrono::duration<double> elapsedCHRONO = finishCHRONO - startCHRONO;
 		average += elapsedCHRONO.count();
 	}
-
+	average /= MEASURE;
 	std::cout << "Elapsed time " << std::setprecision(10) << average << std::endl;
 #endif
 #if WAIT == 1

@@ -126,23 +126,26 @@
     <ClInclude Include="ConfigFile.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GAOptions.h">
-      <Filter>Header Files\Scheduling\Genetic</Filter>
-    </ClInclude>
     <ClInclude Include="StackCompiler.h">
       <Filter>Header Files\Stack</Filter>
     </ClInclude>
     <ClInclude Include="StackRunner.h">
       <Filter>Header Files\Stack</Filter>
     </ClInclude>
-    <ClInclude Include="SchedulerAlgorithm.h">
-      <Filter>Header Files\Scheduling</Filter>
-    </ClInclude>
     <ClInclude Include="FitnessStrategy.h">
       <Filter>Header Files\Scheduling\Genetic\FitnessStrategy</Filter>
     </ClInclude>
     <ClInclude Include="NodePower.h">
       <Filter>Header Files\Node</Filter>
+    </ClInclude>
+    <ClInclude Include="HusSchedulingAlgorithm.h">
+      <Filter>Header Files\Scheduling</Filter>
+    </ClInclude>
+    <ClInclude Include="Options.h">
+      <Filter>Header Files\Scheduling</Filter>
+    </ClInclude>
+    <ClInclude Include="SchedulingAlgorithm.h">
+      <Filter>Header Files\Scheduling</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -165,9 +168,6 @@
       <Filter>Source Files\Scheduling\Genetic</Filter>
     </ClCompile>
     <ClCompile Include="Population .cpp">
-      <Filter>Source Files\Scheduling\Genetic</Filter>
-    </ClCompile>
-    <ClCompile Include="GAOptions.cpp">
       <Filter>Source Files\Scheduling\Genetic</Filter>
     </ClCompile>
     <ClCompile Include="BlueEdge.cpp">
@@ -223,6 +223,12 @@
     </ClCompile>
     <ClCompile Include="NodePower.cpp">
       <Filter>Source Files\Node</Filter>
+    </ClCompile>
+    <ClCompile Include="HusSchedulingAlgorithm.cpp">
+      <Filter>Source Files\Scheduling</Filter>
+    </ClCompile>
+    <ClCompile Include="Options.cpp">
+      <Filter>Source Files\Scheduling</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

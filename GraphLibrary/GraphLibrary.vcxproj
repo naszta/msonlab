@@ -76,11 +76,12 @@
     <ClCompile Include="DFSIterator.cpp" />
     <ClCompile Include="Edge.cpp" />
     <ClCompile Include="FitnessStrategy.cpp" />
-    <ClCompile Include="GAOptions.cpp" />
+    <ClCompile Include="Options.cpp" />
     <ClCompile Include="GeneticAlgorithm.cpp" />
     <ClCompile Include="Graph.cpp" />
     <ClCompile Include="GraphAlgorithms.cpp" />
     <ClCompile Include="GreedySchedulingAlgorithm.cpp" />
+    <ClCompile Include="HusSchedulingAlgorithm.cpp" />
     <ClCompile Include="IProcessable.cpp" />
     <ClCompile Include="GraphIterator.cpp" />
     <ClCompile Include="main.cpp" />
@@ -112,8 +113,9 @@
     <ClInclude Include="GraphGenerator.h" />
     <ClInclude Include="GraphIterator.h" />
     <ClInclude Include="GreedySchedulingAlgorithm.h" />
+    <ClInclude Include="HusSchedulingAlgorithm.h" />
     <ClInclude Include="NodePower.h" />
-    <ClInclude Include="SchedulerAlgorithm.h" />
+    <ClInclude Include="SchedulingAlgorithm.h" />
     <ClInclude Include="IProcessable.h" />
     <ClInclude Include="MultiplierEdge.h" />
     <ClInclude Include="Node.h" />
@@ -122,7 +124,7 @@
     <ClInclude Include="NodeDivide.h" />
     <ClInclude Include="NodeMultiply.h" />
     <ClInclude Include="NodeSquareRoot.h" />
-    <ClInclude Include="GAOptions.h" />
+    <ClInclude Include="Options.h" />
     <ClInclude Include="Population.h" />
     <ClInclude Include="Processor.h" />
     <ClInclude Include="StackCompiler.h" />
