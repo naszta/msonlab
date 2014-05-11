@@ -6,7 +6,7 @@
 
 namespace msonlab {
 
-	class HusSchedulingAlgorithm : SchedulingAlgorithm
+	class HusSchedulingAlgorithm : public SchedulingAlgorithm
 	{
 		GraphAlgorithms algorithms;
 

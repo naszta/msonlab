@@ -79,6 +79,8 @@ namespace msonlab {
 	/// @return the best solution the GA finds.
 	Chromosome::cPtr GeneticAlgorithm::schedule(Graph::gPtr graph, Options::oPtr options) const {
 		auto population = this->generateInitialSolution(graph);
+		population->limit();
+
 		for (size_t i = 0; i < options->getNumberOfYears(); ++i)
 		{
 			simulateMating(population, options->getPopMaxSize());

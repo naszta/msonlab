@@ -2,10 +2,13 @@
 
 #include <fstream>
 #include <memory>
+#include <string>
 #include "ConfigFile.h"
 
 namespace msonlab
 {
+	using std::string;
+
 	class Options
 	{
 		typedef unsigned int uint;
@@ -26,6 +29,8 @@ namespace msonlab
 		uint graphEdgeProb;
 		uint graphWidening;
 		
+		string algorithm;
+		string fitnessStrategy;
 	public:
 		typedef std::shared_ptr<Options> oPtr;
 
@@ -46,5 +51,8 @@ namespace msonlab
 		unsigned getGraphSize() const { return graphSize; }
 		unsigned getGraphEdgeProb() const { return graphEdgeProb; }
 		unsigned getGraphWidening() const { return graphWidening; }
+
+		string getAlgorithm() const { return algorithm; }
+		string getFitnessStrategy() const { return fitnessStrategy; }
 	};
 }

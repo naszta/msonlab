@@ -71,7 +71,7 @@ namespace msonlab
 				}
 			}
 
-			ST[actId] = max(RT[actPU], DAT[actId]);
+			ST[actId] = std::max(RT[actPU], DAT[actId]);
 			FT[actId] = ST[actId] + actNode->getComputationTime();
 			RT[actPU] = FT[actId];
 		}

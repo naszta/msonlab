@@ -4,7 +4,7 @@
 
 namespace msonlab
 {
-	class GreedySchedulingAlgorithm : SchedulingAlgorithm
+	class GreedySchedulingAlgorithm : public SchedulingAlgorithm
 	{
 	public:
 		Chromosome::cPtr schedule(Graph::gPtr graph, Options::oPtr options) const;

@@ -18,5 +18,14 @@ namespace msonlab
 		graphEdgeProb = config.getValueOfKey<unsigned>("graphEdgeProb");
 		graphWidening = config.getValueOfKey<unsigned>("graphWidening");
 		numberOfYears = config.getValueOfKey<unsigned>("numberOfYears");
+		algorithm = config.getValueOfKey<string>("algorithm");
+		if (algorithm.length() == 0) {
+			algorithm = "greedy";
+		}
+
+		fitnessStrategy = config.getValueOfKey<string>("fitnessStrategy");
+		if (fitnessStrategy.length() == 0) {
+			fitnessStrategy = "length";
+		}
 	}
 }

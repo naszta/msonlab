@@ -11,10 +11,6 @@ namespace msonlab
 	/// to calculate the fitness of a chromsome.
 	class FitnessStrategy
 	{
-	protected:
-		unsigned int max(unsigned int a, unsigned int b) {
-			return a > b ? a : b;
-		}
 	public:
 		virtual unsigned int fitness(Chromosome::cPtr chromosome, Options::oPtr options) = 0;
 

@@ -366,12 +366,9 @@ void runStackModel()
 
 }
 
-void runGA()
+void runGA(Options::oPtr options)
 {
 	msonlab::GraphAlgorithms ga;
-
-	// loading GA configuration
-	Options::oPtr options(new Options("Options.cfg"));
 
 	// choosing fitness strategy for the GA
 	FitnessStrategy::fsPtr fsstrategy(new LengthFitnessStartegy());
@@ -391,7 +388,7 @@ void runGA()
 	std::cout << "Greedy length: " << lengtFS.fitness(greedy, options) << std::endl;
 	std::cout << "Greedy fitness: " << fsstrategy->fitness(greedy, options) << std::endl;
 	
-	shared_ptr<Population> population = gena.generateInitialSolution(graph);
+	Population::pPtr population = gena.generateInitialSolution(graph);
 	population->limit();
 
 	unsigned last = population->best()->getFitness();
@@ -424,10 +421,8 @@ void runGA()
 	std::copy(result.begin(), result.end(), ostream_iterator<unsigned>(std::cout, " "));
 }
 
-void runHusScheduling() {
-	// loading GA configuration
-	Options::oPtr Options(new Options("Options.cfg"));
-
+void runHusScheduling(Options::oPtr options) 
+{
 	// choosing fitness strategy for the GA
 	FitnessStrategy::fsPtr fsstrategy(new LengthFitnessStartegy());
 
@@ -437,16 +432,26 @@ void runHusScheduling() {
 	//auto graph = initRandomGraph(Options);
 	auto graph = initGraph();
 
-	auto result = alg.schedule(graph, Options);
-	result->printTable(std::cout, Options->getCommOverhead());
-	unsigned fitness = fsstrategy->fitness(result, Options);
+	auto result = alg.schedule(graph, options);
+	result->printTable(std::cout, options->getCommOverhead());
+	unsigned fitness = fsstrategy->fitness(result, options);
 	std::cout << fitness << std::endl;
+}
+
+void schedule(SchedulingAlgorithm::algPtr alg, Options::oPtr options)
+{
+	auto graph = initGraph();
+	auto best = alg->schedule(graph, options);
+	std::cout << "Best fitness: " << best->getFitness() << std::endl;
+	best->printTable(std::cout, options->getCommOverhead());
 }
 
 int main(int argc, char *argv[])
 {
 	/* initialize random seed: */
 	srand(time(NULL));
+	// loading GA configuration
+	Options::oPtr options(new Options("Options.cfg"));
 #if MEASURE != 0
 	double average = 0.0;
 	for (int i = 0; i < MEASURE; ++i)
@@ -454,8 +459,30 @@ int main(int argc, char *argv[])
 		std::chrono::time_point<std::chrono::high_resolution_clock> startCHRONO, finishCHRONO;
 		startCHRONO = std::chrono::high_resolution_clock::now();
 #endif
-		//runGA();
-		runHusScheduling();
+		FitnessStrategy::fsPtr fs;
+		if (options->getFitnessStrategy().compare("puUsage") == 0) {
+			fs = FitnessStrategy::fsPtr(new PUUsageFitnessStrategy());
+		}
+		else {
+			fs = FitnessStrategy::fsPtr(new LengthFitnessStartegy());
+		}
+		SchedulingAlgorithm::algPtr alg;
+		std::cout << "Using ";
+		if (options->getAlgorithm().compare("genetic") == 0) {
+			std::cout << "Genetic";
+			alg = SchedulingAlgorithm::algPtr(new GeneticAlgorithm(options, fs));
+		}
+		else if (options->getAlgorithm().compare("criticalPath") == 0) {
+			std::cout << "Critical Path";
+			alg = SchedulingAlgorithm::algPtr(new HusSchedulingAlgorithm());
+		}
+		else {
+			std::cout << "Greedy";
+			alg = SchedulingAlgorithm::algPtr(new GreedySchedulingAlgorithm());
+		}
+
+		std::cout << " algorithm.\n";
+		schedule(alg, options);
 #if MEASURE != 0
 		finishCHRONO = std::chrono::high_resolution_clock::now();
 		std::chrono::duration<double> elapsedCHRONO = finishCHRONO - startCHRONO;

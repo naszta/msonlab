@@ -16,7 +16,7 @@ using std::shared_ptr;
 
 namespace msonlab
 {
-	class GeneticAlgorithm : SchedulingAlgorithm
+	class GeneticAlgorithm : public SchedulingAlgorithm
 	{
 		typedef unsigned int uint;
 		// num of PUs
