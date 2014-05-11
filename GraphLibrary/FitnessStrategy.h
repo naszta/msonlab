@@ -2,7 +2,7 @@
 #define GRAPHLIB_FITNESSSTRATEGY_H
 
 #include "Chromosome.h"
-#include "GAOptions.h"
+#include "Options.h"
 
 namespace msonlab
 {
@@ -16,7 +16,7 @@ namespace msonlab
 			return a > b ? a : b;
 		}
 	public:
-		virtual unsigned int fitness(Chromosome::cPtr chromosome, GAOptions::gaPtr options) = 0;
+		virtual unsigned int fitness(Chromosome::cPtr chromosome, Options::oPtr options) = 0;
 
 		typedef std::shared_ptr<FitnessStrategy> fsPtr;
 	};
@@ -27,19 +27,19 @@ namespace msonlab
 	public:
 		LengthFitnessStartegy();
 		LengthFitnessStartegy(bool punishCommunication);
-		virtual unsigned int fitness(Chromosome::cPtr chromosome, GAOptions::gaPtr options);
+		virtual unsigned int fitness(Chromosome::cPtr chromosome, Options::oPtr options);
 	};
 
 	class LeastCutFitnessStrategy : public LengthFitnessStartegy
 	{
 	public:
-		virtual unsigned int fitness(Chromosome::cPtr chromosome, GAOptions::gaPtr options);
+		virtual unsigned int fitness(Chromosome::cPtr chromosome, Options::oPtr options);
 	};
 
 	class OpenEdgesFitnessStrategy : public FitnessStrategy
 	{
 	public:
-		virtual unsigned int fitness(Chromosome::cPtr chromosome, GAOptions::gaPtr options);
+		virtual unsigned int fitness(Chromosome::cPtr chromosome, Options::oPtr options);
 	};
 }
 

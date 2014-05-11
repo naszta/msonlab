@@ -7,13 +7,9 @@
 #include <map>
 
 namespace msonlab {
-	unsigned int max(unsigned int a, unsigned int b)
-	{
-		return a > b ? a : b;
-	}
 
-	GeneticAlgorithm::GeneticAlgorithm(shared_ptr<GAOptions> options, FitnessStrategy::fsPtr strategy) 
-		: gaoptions(options), fsstrategy(strategy)
+	GeneticAlgorithm::GeneticAlgorithm(Options::oPtr options, FitnessStrategy::fsPtr strategy) 
+		: options(options), fsstrategy(strategy)
 	{
 	}
 
@@ -34,7 +30,7 @@ namespace msonlab {
 			free.push(inputNodes[i]);
 		}
 
-		shared_ptr<Chromosome> c(new Chromosome(graph->numberOfNodes(), gaoptions->getNumberOfPus()));
+		shared_ptr<Chromosome> c(new Chromosome(graph->numberOfNodes(), options->getNumberOfPus()));
 		while (taskCounter < graph->numberOfNodes())
 		{
 			vector< IProcessable::nPtr > out;
@@ -72,22 +68,20 @@ namespace msonlab {
 		}
 
 		fitness(c);
-		DEBUG("Greedy time: " << timeCounter);
-		DEBUG("Greedy fitness: " << c->fitness);
 		return c;
 	}
 
 	///
 	/// Schedules the given graph.
 	///
-	/// For the schedule the GAOptions of this GeneticAlgorithm is used.
+	/// For the schedule the Options of this GeneticAlgorithm is used.
 	/// @param graph The graph to schedule.
 	/// @return the best solution the GA finds.
-	Chromosome::cPtr GeneticAlgorithm::shedule(Graph::gPtr graph) const {
-		shared_ptr<Population> population = this->generateInitialSolution(graph);
-		for (size_t i = 0; i < gaoptions->getNumberOfYears(); ++i)
+	Chromosome::cPtr GeneticAlgorithm::schedule(Graph::gPtr graph, Options::oPtr options) const {
+		auto population = this->generateInitialSolution(graph);
+		for (size_t i = 0; i < options->getNumberOfYears(); ++i)
 		{
-			simulateMating(population, gaoptions->getPopMaxSize());
+			simulateMating(population, options->getPopMaxSize());
 			population->limit();
 		}
 
@@ -124,11 +118,11 @@ namespace msonlab {
 #endif
 		}
 
-		pPtr population = pPtr(new Population(solution, gaoptions->getKeepSize(), gaoptions->getPopMaxSize(), gaoptions->getKeepBest()));
+		pPtr population = pPtr(new Population(solution, options->getKeepSize(), options->getPopMaxSize(), options->getKeepBest()));
 
 		cPtr chr = this->greedyChromosome(graph);
 
-		cPtr cc(new Chromosome(graph->numberOfNodes(), gaoptions->getNumberOfPus()));
+		cPtr cc(new Chromosome(graph->numberOfNodes(), options->getNumberOfPus()));
 		size_t currentPos = 0;
 		unsigned counter = 0;
 		for (size_t i = numLevels; i > 0; --i)
@@ -147,11 +141,10 @@ namespace msonlab {
 		DEBUG("First fitness: " << cc->fitness);
 		population->addOffspring(cc);
 
-		counter = gaoptions->getPopMaxSize() - 1;
+		counter = options->getPopMaxSize() - 1;
 		for (; counter > 0; --counter)
 		{
-			shared_ptr<Chromosome> c(new Chromosome(graph->numberOfNodes(), gaoptions->getNumberOfPus()));
-			c->pus = gaoptions->getNumberOfPus();
+			shared_ptr<Chromosome> c(new Chromosome(graph->numberOfNodes(), options->getNumberOfPus()));
 			for (unsigned int i = 0; i < c->mapping.size(); ++i)
 			{
 				c->mapping[i] = rand() % c->pus;
@@ -189,7 +182,7 @@ namespace msonlab {
 		{
 			return chromosome->fitness;
 		}
-		unsigned length = this->fsstrategy->fitness(chromosome, gaoptions);
+		unsigned length = this->fsstrategy->fitness(chromosome, options);
 
 		chromosome->fitness = length;
 		return length;
@@ -236,10 +229,10 @@ namespace msonlab {
 	/// @param offspring chromosome to mutate
 	void GeneticAlgorithm::mutateMapping(cPtr offspring) const
 	{
-		for (uint i = 0; i < gaoptions->getMutationRate(); ++i)
+		for (uint i = 0; i < options->getMutationRate(); ++i)
 		{
 			unsigned rate = rand() % 100;
-			if (rate < gaoptions->getMutationPercentage())
+			if (rate < options->getMutationPercentage())
 			{
 				int position = rand() % offspring->scheduling.size();
 				int mutation = rand() % (offspring->pus - 1) + 1;
@@ -261,7 +254,7 @@ namespace msonlab {
 	void GeneticAlgorithm::mutateSheduling(cPtr offspring, const vector<unsigned>& levelingLimits) const
 	{
 		unsigned rate = rand() % 100;
-		if (rate < gaoptions->getMutationPercentage())
+		if (rate < options->getMutationPercentage())
 		{
 			int position = rand() % levelingLimits.size();
 			IProcessable::nVect::iterator begin = offspring->scheduling.begin() + levelingLimits[position];

@@ -4,8 +4,8 @@
 #include <vector>
 #include "GraphAlgorithms.h"
 #include "Population.h"
-#include "GAOptions.h"
-#include "SchedulerAlgorithm.h"
+#include "Options.h"
+#include "SchedulingAlgorithm.h"
 #include "FitnessStrategy.h"
 
 using std::vector;
@@ -16,14 +16,14 @@ using std::shared_ptr;
 
 namespace msonlab
 {
-	class GeneticAlgorithm : ShedulerAlgorithm
+	class GeneticAlgorithm : SchedulingAlgorithm
 	{
 		typedef unsigned int uint;
 		// num of PUs
 		GraphAlgorithms algorithms;
 
 		// algorithm parameters
-		GAOptions::gaPtr gaoptions;
+		Options::oPtr options;
 		FitnessStrategy::fsPtr fsstrategy;
 		// remove from here
 		//vector<unsigned> levelingLimits;
@@ -32,9 +32,9 @@ namespace msonlab
 		typedef vector< cPtr > cVect;
 		typedef shared_ptr<Population> pPtr;
 
-		GeneticAlgorithm(GAOptions::gaPtr options, FitnessStrategy::fsPtr strategy);
+		GeneticAlgorithm(Options::oPtr options, FitnessStrategy::fsPtr strategy);
 
-		virtual Chromosome::cPtr shedule(Graph::gPtr graph) const;
+		virtual Chromosome::cPtr schedule(Graph::gPtr graph, Options::oPtr options) const;
 
 		shared_ptr<Chromosome> greedyChromosome(Graph::gPtr graph) const;
 		shared_ptr<Population> generateInitialSolution(Graph::gPtr graph) const;

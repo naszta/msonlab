@@ -1,12 +1,12 @@
 #pragma once
 
-#include "Graph.h"
+#include "SchedulingAlgorithm.h"
 
 namespace msonlab
 {
-	class GreedySchedulingAlgorithm
+	class GreedySchedulingAlgorithm : SchedulingAlgorithm
 	{
 	public:
-		int schedule(Graph::gPtr graph, int pus) const;
+		Chromosome::cPtr schedule(Graph::gPtr graph, Options::oPtr options) const;
 	};
 }

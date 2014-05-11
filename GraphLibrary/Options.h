@@ -6,7 +6,7 @@
 
 namespace msonlab
 {
-	class GAOptions
+	class Options
 	{
 		typedef unsigned int uint;
 		// algorithm parameters
@@ -27,9 +27,9 @@ namespace msonlab
 		uint graphWidening;
 		
 	public:
-		typedef std::shared_ptr<GAOptions> gaPtr;
+		typedef std::shared_ptr<Options> oPtr;
 
-		GAOptions(char * configFilePath);
+		Options(char * configFilePath);
 
 		unsigned getMutationPercentage() const { return mutationPercentage; }
 		unsigned getMutationRate() const { return mutationRate; }

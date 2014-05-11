@@ -8,7 +8,7 @@ namespace msonlab
 
 	LengthFitnessStartegy::LengthFitnessStartegy(bool punishCommunication) : punishCommunication(punishCommunication) {}
 
-	unsigned int LengthFitnessStartegy::fitness(Chromosome::cPtr chromosome, GAOptions::gaPtr options)
+	unsigned int LengthFitnessStartegy::fitness(Chromosome::cPtr chromosome, Options::oPtr options)
 	{
 		typedef unsigned int uint;
 		unsigned communication = 0;
@@ -83,14 +83,14 @@ namespace msonlab
 		return length;
 	}
 
-	unsigned int LeastCutFitnessStrategy::fitness(Chromosome::cPtr chromosome, GAOptions::gaPtr options)
+	unsigned int LeastCutFitnessStrategy::fitness(Chromosome::cPtr chromosome, Options::oPtr options)
 	{
 		unsigned length = LengthFitnessStartegy::fitness(chromosome, options);
 		// count cuts
 		return 0;
 	}
 
-	unsigned int OpenEdgesFitnessStrategy::fitness(Chromosome::cPtr chromosome, GAOptions::gaPtr options)
+	unsigned int OpenEdgesFitnessStrategy::fitness(Chromosome::cPtr chromosome, Options::oPtr options)
 	{
 		return 0;
 	}

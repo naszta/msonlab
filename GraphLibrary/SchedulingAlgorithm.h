@@ -10,9 +10,9 @@ namespace msonlab
 	///
 	/// Abstract class for schedule algorithms.
 	///
-	class ShedulerAlgorithm
+	class SchedulingAlgorithm
 	{
-		virtual Chromosome::cPtr shedule(Graph::gPtr graph) const = 0;
+		virtual Chromosome::cPtr schedule(Graph::gPtr graph, Options::oPtr options) const = 0;
 	};
 }
 

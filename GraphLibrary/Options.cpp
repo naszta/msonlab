@@ -1,8 +1,8 @@
-#include "GAOptions.h"
+#include "Options.h"
 
 namespace msonlab
 {
-	GAOptions::GAOptions(char * configFilePath)
+	Options::Options(char * configFilePath)
 	{
 		ConfigFile config = ConfigFile(configFilePath);
 		mutationPercentage = config.getValueOfKey<unsigned>("mutationPercentage");
