@@ -1,5 +1,4 @@
 #pragma once
-#include "Global.h"
 #include "IProcessable.h"
 #include "Node.h"
 #include "Edge.h"

@@ -368,8 +368,6 @@ void runStackModel()
 
 void runGA(Options::oPtr options)
 {
-	msonlab::GraphAlgorithms ga;
-
 	// choosing fitness strategy for the GA
 	FitnessStrategy::fsPtr fsstrategy(new LengthFitnessStartegy());
 	//FitnessStrategy::fsPtr fsstrategy(new PUUsageFitnessStrategy());

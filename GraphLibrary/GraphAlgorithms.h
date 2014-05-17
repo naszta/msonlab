@@ -1,7 +1,5 @@
 #pragma once
-#include "Global.h"
 #include "Graph.h"
-#include "IProcessable.h"
 
 namespace msonlab
 {

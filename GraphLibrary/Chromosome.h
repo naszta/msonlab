@@ -1,8 +1,6 @@
 #pragma once	
 
-#include "IProcessable.h"
 #include "GraphAlgorithms.h"
-#include "Global.h"
 #include "Options.h"
 #include <ostream>
 

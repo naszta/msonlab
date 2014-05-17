@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Graph.h"
-#include "StackRunner.h"
 
 namespace msonlab
 {

@@ -2,7 +2,6 @@
 #define GRAPHLIB_GRAPHGENERATOR_H
 
 #include "Graph.h"
-#include "Node.h"
 
 namespace msonlab
 {

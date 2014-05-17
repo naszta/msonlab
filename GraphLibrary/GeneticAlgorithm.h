@@ -2,9 +2,7 @@
 
 #include <memory>
 #include <vector>
-#include "GraphAlgorithms.h"
 #include "Population.h"
-#include "Options.h"
 #include "SchedulingAlgorithm.h"
 #include "FitnessStrategy.h"
 

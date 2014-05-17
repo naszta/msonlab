@@ -1,8 +1,5 @@
 #pragma once
-#include "Global.h"
-#include "Graph.h"
 #include "GraphIterator.h"
-#include "IProcessable.h"
 #include <queue>
 #include <set>
 

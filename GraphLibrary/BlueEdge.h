@@ -1,5 +1,4 @@
 #pragma once
-#include "Global.h"
 #include "Edge.h"
 
 
