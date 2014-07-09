@@ -30,6 +30,7 @@ namespace msonlab {
 			free.push(inputNodes[i]);
 		}
 
+		
 		shared_ptr<Chromosome> c(new Chromosome(graph->numberOfNodes(), options->getNumberOfPus()));
 		while (taskCounter < graph->numberOfNodes())
 		{
@@ -101,7 +102,7 @@ namespace msonlab {
 	shared_ptr<Population> GeneticAlgorithm::generateInitialSolution(Graph::gPtr graph) const
 	{
 		cVect solution;
-		vector<IProcessable::nVect> levels = algorithms.createLeveling(graph);
+		vector<IProcessable::nVect> levels = algorithms.partialTopologicalSort(graph);
 		size_t numLevels = levels.size();
 		vector<unsigned> levelingLimits;
 		DEBUG("levels: " << numLevels);
@@ -109,15 +110,15 @@ namespace msonlab {
 		for (size_t i = numLevels; i > 0; --i)
 		{
 			limits += levels[i - 1].size();
-#if PRINT == 1
-			std::cout << "Level " << i << " ---" << std::endl;
-			for (size_t j = 0; j < levels[i - 1].size(); ++j)
-			{
-				std::cout << levels[i - 1][j]->getId() << " ";
-			}
-
-			std::cout << "\n---\n";
-#endif
+//#if PRINT == 1
+//			std::cout << "Level " << i << " ---" << std::endl;
+//			for (size_t j = 0; j < levels[i - 1].size(); ++j)
+//			{
+//				std::cout << levels[i - 1][j]->getId() << " ";
+//			}
+//
+//			std::cout << "\n---\n";
+//#endif
 		}
 
 		pPtr population = pPtr(new Population(solution, options->getKeepSize(), options->getPopMaxSize(), options->getKeepBest()));
@@ -185,7 +186,8 @@ namespace msonlab {
 			return chromosome->fitness;
 		}
 
-		chromosome->fitness = this->fsstrategy->fitness(chromosome, options);
+		chromosome->fitness = GraphAlgorithms::computeLengthAndReuseIdleTime(chromosome, options);
+		//chromosome->fitness = this->fsstrategy->fitness(chromosome, options);
 		return chromosome->fitness;
 	}
 
@@ -230,18 +232,15 @@ namespace msonlab {
 	/// @param offspring chromosome to mutate
 	void GeneticAlgorithm::mutateMapping(cPtr offspring) const
 	{
-		for (uint i = 0; i < options->getMutationRate(); ++i)
+		unsigned rate = rand() % 100;
+		if (rate < options->getMapMutationRate())
 		{
-			unsigned rate = rand() % 100;
-			if (rate < options->getMutationPercentage())
+			int position = rand() % offspring->scheduling.size();
+			int mutation = rand() % (offspring->pus - 1) + 1;
+			offspring->mapping[position] += mutation;
+			if (offspring->mapping[position] >= offspring->pus)
 			{
-				int position = rand() % offspring->scheduling.size();
-				int mutation = rand() % (offspring->pus - 1) + 1;
-				offspring->mapping[position] += mutation;
-				if (offspring->mapping[position] >= offspring->pus)
-				{
-					offspring->mapping[position] -= offspring->pus;
-				}
+				offspring->mapping[position] -= offspring->pus;
 			}
 		}
 	}
@@ -255,7 +254,7 @@ namespace msonlab {
 	void GeneticAlgorithm::mutateSheduling(cPtr offspring, const vector<unsigned>& levelingLimits) const
 	{
 		unsigned rate = rand() % 100;
-		if (rate < options->getMutationPercentage())
+		if (rate < options->getScheduleMutationRate())
 		{
 			int position = rand() % levelingLimits.size();
 			IProcessable::nVect::iterator begin = offspring->scheduling.begin() + levelingLimits[position];
@@ -282,7 +281,7 @@ namespace msonlab {
 			cPtr mother = population->getParent();
 			int crossoverType = rand() % 2;
 			cPtr offspring;
-			if (crossoverType == 0)
+			if (crossoverType >= 0)
 			{
 				offspring = crossoverMap(father, mother);
 			}

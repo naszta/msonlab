@@ -5,6 +5,7 @@
 #include "Population.h"
 #include "SchedulingAlgorithm.h"
 #include "FitnessStrategy.h"
+#include "GraphAlgorithms.h"
 
 using std::vector;
 using std::shared_ptr;
@@ -26,8 +27,8 @@ namespace msonlab
 		// remove from here
 		//vector<unsigned> levelingLimits;
 	public:
-		typedef shared_ptr<Chromosome> cPtr;
-		typedef vector< cPtr > cVect;
+		//typedef shared_ptr<Chromosome> cPtr;
+		typedef vector< Chromosome::cPtr > cVect;
 		typedef shared_ptr<Population> pPtr;
 
 		GeneticAlgorithm(Options::oPtr options, FitnessStrategy::fsPtr strategy);

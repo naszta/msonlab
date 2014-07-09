@@ -5,8 +5,8 @@ namespace msonlab
 	Options::Options(char * configFilePath)
 	{
 		ConfigFile config = ConfigFile(configFilePath);
-		mutationPercentage = config.getValueOfKey<unsigned>("mutationPercentage");
-		mutationRate = config.getValueOfKey<unsigned>("mutationRate");
+		scheduleMutationRate = config.getValueOfKey<unsigned>("scheduleMutationRate");
+		mapMutationRate = config.getValueOfKey<unsigned>("mapMutationRate");
 		commOverhead = config.getValueOfKey<unsigned>("commOverhead");
 		taskLength = config.getValueOfKey<unsigned>("taskLength");
 		popMaxSize = config.getValueOfKey<unsigned>("popMaxSize");

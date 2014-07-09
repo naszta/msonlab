@@ -1,4 +1,5 @@
 #include "Chromosome.h"
+#include "GraphAlgorithms.h"
 
 namespace msonlab
 {
@@ -22,6 +23,7 @@ namespace msonlab
 	{
 		*this = chromosome;
 		this->fitness = 0;
+		auto ptr = shared_from_this();
 	}
 
 	/// operator =
@@ -66,54 +68,60 @@ namespace msonlab
 
 	void Chromosome::printTable(std::ostream& os, unsigned commOverhead) const
 	{
-		unsigned puGroupSize = 4;
+		//unsigned puGroupSize = 12;
 		auto tasks = scheduling.size();
+		//vector<unsigned> ST(tasks);
+		//vector<unsigned> RT(this->pus); // ready time of the PUs
+		//vector<unsigned> FT(tasks); // finish time of the tasks
+		//vector<unsigned> DAT(tasks); // Data Arrival Time
+		//vector<unsigned> idPuMapping(tasks); // idPuMapping[i] = j means that node[i] is processed by pu[j] // is this necessary?
+
+		//unsigned actId = scheduling[0]->getId();
+		//ST[actId] = 0;
+		//FT[actId] = ST[actId] + scheduling[0]->getComputationTime(); // task length, TODO: create a distribution
+		//DAT[actId] = 0;
+		//idPuMapping[actId] = mapping[0];
+		//RT[mapping[0]] = FT[actId];
+
+		//// skipping first task
+		//for (unsigned i = 1; i < tasks; ++i)
+		//{
+		//	IProcessable::nPtr actNode = scheduling[i];
+		//	unsigned actId = actNode->getId();
+		//	unsigned actPU = mapping[i];
+		//	idPuMapping[actId] = actPU;
+
+		//	// calculating data arrival time
+		//	size_t predecessorSize = actNode->getPredecessorsSize();
+		//	for (unsigned j = 0; j < predecessorSize; ++j)
+		//	{
+		//		unsigned id = actNode->getPredecessor(j)->getFromId();
+		//		unsigned comm = actPU == idPuMapping[id] ? 0 : commOverhead;
+		//		if (actPU / puGroupSize != idPuMapping[id] / puGroupSize)
+		//		{
+		//			comm *= 2;
+		//		}
+
+		//		DAT[actId] = std::max(DAT[actId], FT[id] + comm);
+		//		if (DAT[actId] < FT[id] + comm)
+		//		{
+		//			DAT[actId] = FT[id] + comm;
+		//		}
+		//	}
+
+		//	ST[actId] = RT[actPU] > DAT[actId] ? RT[actPU] : DAT[actId];
+		//	FT[actId] = ST[actId] + actNode->getComputationTime();
+		//	RT[actPU] = FT[actId];
+		//}
+
+
 		vector<unsigned> ST(tasks);
-		vector<unsigned> RT(this->pus); // ready time of the PUs
-		vector<unsigned> FT(tasks); // finish time of the tasks
-		vector<unsigned> DAT(tasks); // Data Arrival Time
-		vector<unsigned> idPuMapping(tasks); // idPuMapping[i] = j means that node[i] is processed by pu[j] // is this necessary?
-
-		unsigned actId = scheduling[0]->getId();
-		ST[actId] = 0;
-		FT[actId] = ST[actId] + scheduling[0]->getComputationTime(); // task length, TODO: create a distribution
-		DAT[actId] = 0;
-		idPuMapping[actId] = mapping[0];
-		RT[mapping[0]] = FT[actId];
-
-		// skipping first task
-		for (unsigned i = 1; i < tasks; ++i)
-		{
-			IProcessable::nPtr actNode = scheduling[i];
-			unsigned actId = actNode->getId();
-			unsigned actPU = mapping[i];
-			idPuMapping[actId] = actPU;
-
-			// calculating data arrival time
-			size_t predecessorSize = actNode->getPredecessorsSize();
-			for (unsigned j = 0; j < predecessorSize; ++j)
-			{
-				unsigned id = actNode->getPredecessor(j)->getFromId();
-				unsigned comm = actPU == idPuMapping[id] ? 0 : commOverhead;
-				if (actPU / puGroupSize != idPuMapping[id] / puGroupSize)
-				{
-					comm *= 2;
-				}
-
-				DAT[actId] = std::max(DAT[actId], FT[id] + comm);
-				if (DAT[actId] < FT[id] + comm)
-				{
-					DAT[actId] = FT[id] + comm;
-				}
-			}
-
-			ST[actId] = RT[actPU] > DAT[actId] ? RT[actPU] : DAT[actId];
-			FT[actId] = ST[actId] + actNode->getComputationTime();
-			RT[actPU] = FT[actId];
-		}
+		auto ptr = shared_from_this();
+		unsigned length = 1;
+		//unsigned length = GraphAlgorithms::computeLengthAndST(ptr, nullptr, ST);
 
 		// initialize table
-		unsigned length = *std::max_element(FT.begin(), FT.end());
+		//unsigned length = *std::max_element(FT.begin(), FT.end());
 		vector<vector<int>> table(length);
 		for (unsigned i = 0; i < table.size(); ++i)
 		{
@@ -132,9 +140,11 @@ namespace msonlab
 		}
 
 		//os.width(3);
-		os << "Length: " << length << std::endl;
+		os << "Print table length: " << length << std::endl;
 		for (unsigned i = 0; i < table.size(); ++i)
 		{
+			os.width(2);
+			os << i << ": ";
 			for (unsigned j = 0; j < table[i].size(); ++j)
 			{
 				if (table[i][j] >= 0) {

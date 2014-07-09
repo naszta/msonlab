@@ -12,30 +12,33 @@ namespace msonlab
 	class FitnessStrategy
 	{
 	public:
-		virtual unsigned int fitness(Chromosome::cPtr chromosome, Options::oPtr options) = 0;
+		virtual unsigned int fitness(Chromosome::cPtr chromosome, const Options::oPtr options) = 0;
 
 		typedef std::shared_ptr<FitnessStrategy> fsPtr;
 	};
 
 	class LengthFitnessStartegy : public FitnessStrategy
 	{
-		bool punishCommunication;
 	public:
-		LengthFitnessStartegy();
-		LengthFitnessStartegy(bool punishCommunication);
-		virtual unsigned int fitness(Chromosome::cPtr chromosome, Options::oPtr options);
+		virtual unsigned int fitness(Chromosome::cPtr chromosome, const Options::oPtr options);
 	};
 
-	class PUUsageFitnessStrategy : public LengthFitnessStartegy
+	class PUUsageFitnessStrategy : public FitnessStrategy
 	{
 	public:
-		virtual unsigned int fitness(Chromosome::cPtr chromosome, Options::oPtr options);
+		virtual unsigned int fitness(Chromosome::cPtr chromosome, const Options::oPtr options);
+	};
+
+	class LoadBalanceFitnessStrategy : public FitnessStrategy
+	{
+	public:
+		virtual unsigned int fitness(Chromosome::cPtr chromosome, const Options::oPtr options);
 	};
 
 	class OpenEdgesFitnessStrategy : public FitnessStrategy
 	{
 	public:
-		virtual unsigned int fitness(Chromosome::cPtr chromosome, Options::oPtr options);
+		virtual unsigned int fitness(Chromosome::cPtr chromosome, const Options::oPtr options);
 	};
 }
 

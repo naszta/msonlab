@@ -2,6 +2,7 @@
 #define HUS_SCHEDULERALGORITHM_H
 
 #include "SchedulingAlgorithm.h"
+#include "GraphAlgorithms.h"
 
 namespace msonlab {
 

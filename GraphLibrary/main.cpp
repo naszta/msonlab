@@ -125,22 +125,41 @@ msonlab::Graph::gPtr initTestGraph()
 {
 	msonlab::Graph::gPtr testG(new Graph());
 
-	msonlab::Node::nPtr node1(new msonlab::NodeConstant(0, L"5", msonlab::Types::DataType(new double(5))));
-	msonlab::Node::nPtr node2(new msonlab::NodeConstant(1, L"2", msonlab::Types::DataType(new double(2))));
-	msonlab::Node::nPtr node3(new msonlab::NodeConstant(2, L"3", msonlab::Types::DataType(new double(3))));
-	msonlab::Node::nPtr node4(new msonlab::NodeAdd(3, L"*", msonlab::Types::DataType(new double(0))));
-	msonlab::Node::nPtr node5(new msonlab::NodeMultiply(4, L"+", msonlab::Types::DataType(new double(0))));
+	msonlab::Node::nPtr node1(new msonlab::Node(0, L"0", msonlab::Types::DataType(new double(5)), 2));
+	msonlab::Node::nPtr node2(new msonlab::Node(1, L"1", msonlab::Types::DataType(new double(2)), 3));
+	msonlab::Node::nPtr node3(new msonlab::Node(2, L"2", msonlab::Types::DataType(new double(3)), 3));
+	msonlab::Node::nPtr node4(new msonlab::Node(3, L"3", msonlab::Types::DataType(new double(0)), 4));
+	msonlab::Node::nPtr node5(new msonlab::Node(4, L"4", msonlab::Types::DataType(new double(0)), 5));
+	msonlab::Node::nPtr node6(new msonlab::Node(5, L"5", msonlab::Types::DataType(new double(0)), 4));
+	msonlab::Node::nPtr node7(new msonlab::Node(6, L"6", msonlab::Types::DataType(new double(0)), 4));
+	msonlab::Node::nPtr node8(new msonlab::Node(7, L"7", msonlab::Types::DataType(new double(0)), 4));
+	msonlab::Node::nPtr node9(new msonlab::Node(8, L"8", msonlab::Types::DataType(new double(0)), 1));
 
-	msonlab::Edge::ePtr edge1(new msonlab::Edge(0, L"e0", 0, node1, node5));
-	msonlab::Edge::ePtr edge2(new msonlab::Edge(1, L"e1", 0, node2, node4));
-	msonlab::Edge::ePtr edge3(new msonlab::Edge(2, L"e2", 0, node3, node4));
-	msonlab::Edge::ePtr edge4(new msonlab::Edge(3, L"e3", 0, node4, node5));
+	msonlab::Edge::ePtr edge1(new msonlab::Edge(0, L"e12", 0, node1, node2));
+	msonlab::Edge::ePtr edge2(new msonlab::Edge(1, L"e13", 0, node1, node3));
+	msonlab::Edge::ePtr edge3(new msonlab::Edge(2, L"e14", 0, node1, node4));
+	msonlab::Edge::ePtr edge4(new msonlab::Edge(3, L"e15", 0, node1, node5));
+	msonlab::Edge::ePtr edge5(new msonlab::Edge(4, L"e17", 0, node1, node7));
+	msonlab::Edge::ePtr edge6(new msonlab::Edge(6, L"e26", 0, node2, node6));
+	msonlab::Edge::ePtr edge7(new msonlab::Edge(7, L"e27", 0, node2, node7));
+	msonlab::Edge::ePtr edge8(new msonlab::Edge(8, L"e38", 0, node3, node8));
+	msonlab::Edge::ePtr edge9(new msonlab::Edge(9, L"e48", 0, node4, node8));
+	msonlab::Edge::ePtr edge10(new msonlab::Edge(10, L"e69", 0, node6, node9));
+	msonlab::Edge::ePtr edge11(new msonlab::Edge(11, L"e79", 0, node7, node9));
+	msonlab::Edge::ePtr edge12(new msonlab::Edge(12, L"e89", 0, node8, node9));
 
 	testG->addEdge(edge1);
 	testG->addEdge(edge2);
 	testG->addEdge(edge3);
 	testG->addEdge(edge4);
-
+	testG->addEdge(edge5);
+	testG->addEdge(edge6);
+	testG->addEdge(edge7);
+	testG->addEdge(edge8);
+	testG->addEdge(edge9);
+	testG->addEdge(edge10);
+	testG->addEdge(edge11);
+	testG->addEdge(edge12);
 	return testG;
 }
 
@@ -376,8 +395,8 @@ void runGA(Options::oPtr options)
 	GeneticAlgorithm gena(options, fsstrategy);
 
 	// getting the graph
-	//auto graph = initRandomGraph(Options);
-	auto graph = initGraph();
+	auto graph = initRandomGraph(options);
+	//auto graph = initGraph();
 
 	GreedySchedulingAlgorithm greedyAlg;
 	auto greedy = greedyAlg.schedule(graph, options);
@@ -438,18 +457,53 @@ void runHusScheduling(Options::oPtr options)
 
 void schedule(SchedulingAlgorithm::algPtr alg, Options::oPtr options)
 {
-	auto graph = initGraph();
+	//auto graph = initSampleGraph();
+	auto graph = initRandomGraph(options);
+	//auto graph = initGraph();
 	auto best = alg->schedule(graph, options);
-	std::cout << "Best fitness: " << best->getFitness() << std::endl;
+	std::cout << "Best length: " << best->getFitness() << std::endl;
+	//best->printTable(std::cout, options->getCommOverhead());
+	unsigned l = GraphAlgorithms::computeLengthAndReuseIdleTime(best, options);
+	std::cout << "Rescheduled length: " << l << std::endl;
+	LengthFitnessStartegy fs;
+	l = fs.fitness(best, options);
+	std::cout << "Length: " << l << std::endl;
 	best->printTable(std::cout, options->getCommOverhead());
 }
 
 int main(int argc, char *argv[])
 {
 	/* initialize random seed: */
-	srand(time(NULL));
+	srand(1991);
 	// loading GA configuration
 	Options::oPtr options(new Options("Options.cfg"));
+	FitnessStrategy::fsPtr fs;
+	if (options->getFitnessStrategy().compare("puUsage") == 0) {
+		fs = FitnessStrategy::fsPtr(new PUUsageFitnessStrategy());
+	}
+	else if (options->getFitnessStrategy().compare("loadBalance") == 0) {
+		fs = FitnessStrategy::fsPtr(new LoadBalanceFitnessStrategy());
+	}
+	else {
+		fs = FitnessStrategy::fsPtr(new LengthFitnessStartegy());
+		std::cout << "Fitness set to Length.\n";
+	}
+	SchedulingAlgorithm::algPtr alg;
+	std::cout << "Using ";
+	if (options->getAlgorithm().compare("genetic") == 0) {
+		std::cout << "Genetic";
+		alg = SchedulingAlgorithm::algPtr(new GeneticAlgorithm(options, fs));
+	}
+	else if (options->getAlgorithm().compare("criticalPath") == 0) {
+		std::cout << "Critical Path";
+		alg = SchedulingAlgorithm::algPtr(new HusSchedulingAlgorithm());
+	}
+	else {
+		std::cout << "Greedy";
+		alg = SchedulingAlgorithm::algPtr(new GreedySchedulingAlgorithm());
+	}
+
+	std::cout << " algorithm.\n";
 #if MEASURE != 0
 	double average = 0.0;
 	for (int i = 0; i < MEASURE; ++i)
@@ -457,29 +511,6 @@ int main(int argc, char *argv[])
 		std::chrono::time_point<std::chrono::high_resolution_clock> startCHRONO, finishCHRONO;
 		startCHRONO = std::chrono::high_resolution_clock::now();
 #endif
-		FitnessStrategy::fsPtr fs;
-		if (options->getFitnessStrategy().compare("puUsage") == 0) {
-			fs = FitnessStrategy::fsPtr(new PUUsageFitnessStrategy());
-		}
-		else {
-			fs = FitnessStrategy::fsPtr(new LengthFitnessStartegy());
-		}
-		SchedulingAlgorithm::algPtr alg;
-		std::cout << "Using ";
-		if (options->getAlgorithm().compare("genetic") == 0) {
-			std::cout << "Genetic";
-			alg = SchedulingAlgorithm::algPtr(new GeneticAlgorithm(options, fs));
-		}
-		else if (options->getAlgorithm().compare("criticalPath") == 0) {
-			std::cout << "Critical Path";
-			alg = SchedulingAlgorithm::algPtr(new HusSchedulingAlgorithm());
-		}
-		else {
-			std::cout << "Greedy";
-			alg = SchedulingAlgorithm::algPtr(new GreedySchedulingAlgorithm());
-		}
-
-		std::cout << " algorithm.\n";
 		schedule(alg, options);
 #if MEASURE != 0
 		finishCHRONO = std::chrono::high_resolution_clock::now();

@@ -10,9 +10,11 @@ namespace msonlab
 		IProcessable::eVect successors;
 
 		int paramCount;
+		unsigned compTime;
 
 	public:
 		Node(unsigned int _id, Types::LabelType _label, Types::DataType _value);
+		Node(unsigned int _id, Types::LabelType _label, Types::DataType _value, unsigned compTime);
 		Node(const Node& other);
 
 		bool registerParameter();
@@ -37,7 +39,7 @@ namespace msonlab
 
 		PlaceEnum getPlace() const;
 
-		virtual unsigned getComputationTime() { return 1; }
+		virtual unsigned getComputationTime() { return compTime; }
 
 		// compile
 		virtual void compile(msonlab::StackRunner::srPtr stackProgram);

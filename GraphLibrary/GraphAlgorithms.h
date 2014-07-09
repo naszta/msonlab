@@ -1,10 +1,16 @@
 #pragma once
+#include "Chromosome.h"
+#include "Options.h"
+#include <memory>
+#include <vector>
 #include "Graph.h"
 
 namespace msonlab
 {
 	class GraphAlgorithms
 	{
+		static unsigned int doComputeLengthSTAndRT(Chromosome::cPtr chromosome, Options::oPtr options,
+		vector<unsigned>& ST, vector<unsigned>& RT);
 	public:
 		///
 		/// Splits the nodes of the graph into levels.
@@ -14,7 +20,7 @@ namespace msonlab
 		///
 		/// @param graph The input graph.
 		/// @return vector of vectors containing the nodes.
-		vector<IProcessable::nVect> createLeveling(const Graph::gPtr graph) const;
+		vector<IProcessable::nVect> partialTopologicalSort(const Graph::gPtr graph) const;
 
 		///
 		/// Splits the nodes of the graph into levels.
@@ -24,7 +30,7 @@ namespace msonlab
 		///
 		/// @param graph The input graph.
 		/// @return vector of vectors containing the nodes.
-		vector<IProcessable::nVect> createBottomLeveling(const Graph::gPtr graph) const;
+		vector<IProcessable::nVect> partialTopologicalSortFromBottom(const Graph::gPtr graph) const;
 
 		///
 		/// Creates a topological order of the input graph.
@@ -33,7 +39,7 @@ namespace msonlab
 		///
 		/// @param graph The input graph.
 		/// @return Vector of the graph's node in topological order.
-		IProcessable::nVect createTopologicalOrder(const Graph::gPtr graph) const;
+		IProcessable::nVect topologicalSort(const Graph::gPtr graph) const;
 		
 		///
 		/// With a given change in some nodes, this method computes the graph, that needs to be rerun
@@ -78,7 +84,7 @@ namespace msonlab
 		/// i-th element in the vector.
 		/// @param graph The grpah its nodes to list.
 		/// @param nodes The vector of nodes.
-		void listNodes(const Graph::gPtr graph, vector<Node::nPtr>& nodes) const;
+		static void listNodes(const Graph::gPtr graph, vector<Node::nPtr>& nodes);
 
 		///
 		/// This method calculates the length of execution using greedy scheduling.
@@ -87,5 +93,24 @@ namespace msonlab
 		/// @param pus Number of PUs.
 		/// @return The execution time.
 		int scheduleGreedy(Graph::gPtr graph, int pus) const;
+
+		///
+		/// Computes the length of the chromosome with the given option.
+		///
+		/// @param chromosome the result to use
+		/// @param options the options to use
+		/// @return the length
+		static unsigned int computeLength(Chromosome::cPtr chromosome, const Options::oPtr options);
+
+		static unsigned int computeLengthAndST(Chromosome::cPtr chromosome, const Options::oPtr options,
+			vector<unsigned>& ST);
+
+		static unsigned int computeLengthAndRT(Chromosome::cPtr chromosome, const Options::oPtr options,
+			vector<unsigned>& RT);
+
+		static unsigned int computeLengthSTAndRT(Chromosome::cPtr chromosome, const Options::oPtr options,
+			vector<unsigned>& ST, vector<unsigned>& RT);
+
+		static unsigned int computeLengthAndReuseIdleTime(Chromosome::cPtr chromosome, const Options::oPtr options);
 	};
 }

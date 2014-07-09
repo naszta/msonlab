@@ -1,8 +1,10 @@
 #pragma once	
 
-#include "GraphAlgorithms.h"
 #include "Options.h"
+#include "Graph.h"
 #include <ostream>
+#include <vector>
+#include <memory>
 
 /// This class represents a solution
 /// a solution is described with
@@ -10,7 +12,7 @@
 
 namespace msonlab
 {
-	class Chromosome
+	class Chromosome : public std::enable_shared_from_this<Chromosome>
 	{
 	private:
 		// the scheduling part, escribes the order of the tasks
@@ -29,6 +31,7 @@ namespace msonlab
 		unsigned int length; 
 
 		friend class chrComparator;
+		friend class GraphAlgorithms;
 		friend class GeneticAlgorithm;
 		friend class GreedySchedulingAlgorithm;
 		friend class HusSchedulingAlgorithm;
@@ -36,7 +39,7 @@ namespace msonlab
 		void calcStartTime(Options::oPtr options);
 	public:
 		friend std::ostream& operator<<(std::ostream& os, const Chromosome& chromosome);
-		typedef std::shared_ptr<Chromosome> cPtr;
+		typedef std::shared_ptr<const Chromosome> cPtr;
 		typedef vector< cPtr > cVect;
 
 		Chromosome(unsigned pus);

@@ -22,7 +22,8 @@ namespace msonlab
 
 			for (size_t i = 0; i < size; ++i)
 			{
-				nodes[i] = Node::nPtr(new Node(i, L"a", Types::DataType(new double(i))));
+				unsigned comp = rand() % 3 + 1;
+				nodes[i] = Node::nPtr(new Node(i, L"a", Types::DataType(new double(i)), comp));
 				graph->addNode(nodes[i]);
 			}
 
