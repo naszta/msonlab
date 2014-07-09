@@ -2,9 +2,9 @@
 #include "Node.h"
 
 
-msonlab::StackRunner::srPtr msonlab::StackCompiler::getStackProgram()
+msonlab::StackRunner::srPtr msonlab::StackCompiler::getStackProgram(Graph::gPtr& graph)
 {
-	msonlab::StackRunner::srPtr ret (new msonlab::StackRunner());
+	msonlab::StackRunner::srPtr ret = std::make_shared<StackRunner>();
 
 	auto outputs = graph->getOutputNodes();
 
@@ -18,12 +18,3 @@ msonlab::StackRunner::srPtr msonlab::StackCompiler::getStackProgram()
 
 	return ret;
 }
-
-
-
-msonlab::StackCompiler::StackCompiler(msonlab::Graph::gPtr toCompile)
-{
-	graph = toCompile;
-}
-
-

@@ -33,10 +33,10 @@ namespace msonlab
 
 		GeneticAlgorithm(Options::oPtr options, FitnessStrategy::fsPtr strategy);
 
-		virtual Chromosome::cPtr schedule(Graph::gPtr graph, Options::oPtr options) const;
+		virtual Chromosome::cPtr schedule(Graph::gPtr& graph, Options::oPtr options) const;
 
-		shared_ptr<Chromosome> greedyChromosome(Graph::gPtr graph) const;
-		shared_ptr<Population> generateInitialSolution(Graph::gPtr graph) const;
+		shared_ptr<Chromosome> greedyChromosome(Graph::gPtr& graph) const;
+		shared_ptr<Population> generateInitialSolution(Graph::gPtr& graph) const;
 		unsigned int fitness(Chromosome::cPtr chromosome) const;
 
 		Chromosome::cPtr crossoverMap(Chromosome::cPtr father, Chromosome::cPtr mother) const;

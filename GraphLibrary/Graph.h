@@ -25,7 +25,7 @@ namespace msonlab
 		friend class DFSIterator;
 
 	public:
-		typedef std::shared_ptr<Graph> gPtr;
+		typedef std::unique_ptr<Graph> gPtr;
 
 		Graph(); // empty constructor
 		Graph(const Graph& other); // copy constructor

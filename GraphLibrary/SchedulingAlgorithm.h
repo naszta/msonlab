@@ -14,7 +14,7 @@ namespace msonlab
 	{
 	public:
 		typedef std::shared_ptr<SchedulingAlgorithm> algPtr;
-		virtual Chromosome::cPtr schedule(Graph::gPtr graph, Options::oPtr options) const = 0;
+		virtual Chromosome::cPtr schedule(Graph::gPtr& graph, Options::oPtr options) const = 0;
 	};
 }
 

@@ -24,7 +24,7 @@ namespace msonlab
 		return id;
 	}
 
-	Chromosome::cPtr HusSchedulingAlgorithm::schedule(Graph::gPtr graph, Options::oPtr options) const 
+	Chromosome::cPtr HusSchedulingAlgorithm::schedule(Graph::gPtr& graph, Options::oPtr options) const 
 	{
 		auto levels = algorithms.partialTopologicalSort(graph);
 		vector<unsigned> distance(graph->numberOfNodes());
@@ -60,7 +60,7 @@ namespace msonlab
 
 		int tasks = graph->numberOfNodes();
 		int comm = options->getCommOverhead();
-		Chromosome::cPtr result(new Chromosome(tasks, options->getNumberOfPus()));
+		Chromosome::cPtr result = std::make_shared<Chromosome>(tasks, options->getNumberOfPus());
 		vector<unsigned> RT(options->getNumberOfPus());
 		vector<unsigned> ST(tasks); // start time of the tasks
 		vector<unsigned> FT(tasks); // finish time of the tasks

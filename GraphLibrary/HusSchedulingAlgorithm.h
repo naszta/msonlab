@@ -13,7 +13,7 @@ namespace msonlab {
 		unsigned findNextToSchedule(const vector<unsigned>& dependencies, const vector<unsigned>& distances) const;
 
 	public:
-		Chromosome::cPtr schedule(Graph::gPtr graph, Options::oPtr options) const;
+		Chromosome::cPtr schedule(Graph::gPtr& graph, Options::oPtr options) const;
 	};
 
 }

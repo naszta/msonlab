@@ -6,6 +6,7 @@
 namespace msonlab
 {
 	using std::make_shared;
+	using std::make_unique;
 	class GraphGenerator
 	{
 
@@ -19,12 +20,12 @@ namespace msonlab
 		static Graph::gPtr generate(size_t size, unsigned edgeProb, unsigned widening, unsigned pus)
 		{
 			IProcessable::nVect nodes(size);
-			Graph::gPtr graph(new Graph());
+			Graph::gPtr graph = make_unique<Graph>();
 
 			for (size_t i = 0; i < size; ++i)
 			{
 				unsigned comp = rand() % 3 + 1;
-				nodes[i] = Node::nPtr(new Node(i, L"a", make_shared<Types::DataType>(i), comp));
+				nodes[i] = make_shared<Node>(i, L"a", make_shared<Types::DataType>(i), comp);
 				graph->addNode(nodes[i]);
 			}
 
@@ -49,7 +50,7 @@ namespace msonlab
 					}
 
 					nodeId += input_size;
-					IProcessable::ePtr e(new Edge(i + nodeId, L"a", make_shared<Types::DataType>(i + nodeId), nodes[i], nodes[nodeId]));
+					IProcessable::ePtr e = make_shared<Edge>(i + nodeId, L"a", make_shared<Types::DataType>(i + nodeId), nodes[i], nodes[nodeId]);
 					graph->addEdge(e);
 				}
 			}
@@ -73,7 +74,7 @@ namespace msonlab
 					}
 
 					nodeId += i;
-					IProcessable::ePtr e(new Edge(i + nodeId, L"a", make_shared<Types::DataType>(i + nodeId), nodes[i], nodes[nodeId]));
+					IProcessable::ePtr e = make_shared<Edge>(i + nodeId, L"a", make_shared<Types::DataType>(i + nodeId), nodes[i], nodes[nodeId]);
 					graph->addEdge(e);
 				}
 			}

@@ -23,7 +23,7 @@ namespace msonlab
 		virtual bool clear();
 	public:
 		DFSIterator(IProcessable::nPtr endPtr);
-		DFSIterator(Graph::gPtr g);
+		DFSIterator(Graph& g);
 		DFSIterator(DFSIterator& it);
 		DFSIterator& operator=(DFSIterator& it);
 		bool operator==(const DFSIterator& it) const;

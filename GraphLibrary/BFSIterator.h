@@ -20,7 +20,7 @@ namespace msonlab
 		virtual bool clear();
 	public:
 		BFSIterator(IProcessable::nPtr endPtr);
-		BFSIterator(Graph::gPtr g);
+		BFSIterator(Graph& g);
 		BFSIterator(BFSIterator& it);
 		BFSIterator& operator=(BFSIterator& it);
 		BFSIterator& operator++(); // prefix

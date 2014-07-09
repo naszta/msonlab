@@ -19,7 +19,7 @@ namespace msonlab {
 	///
 	/// @param The input graph.
 	/// @return The constructed chromosome.
-	Chromosome::cPtr GeneticAlgorithm::greedyChromosome(Graph::gPtr graph) const
+	Chromosome::cPtr GeneticAlgorithm::greedyChromosome(Graph::gPtr& graph) const
 	{
 		unsigned timeCounter = 0;
 		unsigned taskCounter = 0;
@@ -32,7 +32,6 @@ namespace msonlab {
 		}
 
 		auto c = std::make_shared<Chromosome>(graph->numberOfNodes(), options->getNumberOfPus());
-		//shared_ptr<Chromosome> c(new Chromosome(graph->numberOfNodes(), options->getNumberOfPus()));
 		while (taskCounter < graph->numberOfNodes())
 		{
 			vector< IProcessable::nPtr > out;
@@ -79,7 +78,7 @@ namespace msonlab {
 	/// For the schedule the Options of this GeneticAlgorithm is used.
 	/// @param graph The graph to schedule.
 	/// @return the best solution the GA finds.
-	Chromosome::cPtr GeneticAlgorithm::schedule(Graph::gPtr graph, Options::oPtr options) const {
+	Chromosome::cPtr GeneticAlgorithm::schedule(Graph::gPtr& graph, Options::oPtr options) const {
 		auto population = this->generateInitialSolution(graph);
 		population->limit();
 
@@ -100,7 +99,7 @@ namespace msonlab {
 	/// 
 	/// @param graph The input graph.
 	/// @return The generated population.
-	shared_ptr<Population> GeneticAlgorithm::generateInitialSolution(Graph::gPtr graph) const
+	shared_ptr<Population> GeneticAlgorithm::generateInitialSolution(Graph::gPtr& graph) const
 	{
 		cVect solution;
 		vector<IProcessable::nVect> levels = algorithms.partialTopologicalSort(graph);
@@ -122,11 +121,11 @@ namespace msonlab {
 //#endif
 		}
 
-		pPtr population = pPtr(new Population(solution, options->getKeepSize(), options->getPopMaxSize(), options->getKeepBest()));
+		pPtr population = std::make_shared<Population>(solution, options->getKeepSize(), options->getPopMaxSize(), options->getKeepBest());
 
 		Chromosome::cPtr chr = this->greedyChromosome(graph);
 
-		Chromosome::cPtr cc(new Chromosome(graph->numberOfNodes(), options->getNumberOfPus()));
+		Chromosome::cPtr cc = std::make_shared<Chromosome>(graph->numberOfNodes(), options->getNumberOfPus());
 		size_t currentPos = 0;
 		unsigned counter = 0;
 		for (size_t i = numLevels; i > 0; --i)
@@ -148,7 +147,7 @@ namespace msonlab {
 		counter = options->getPopMaxSize() - 1;
 		for (; counter > 0; --counter)
 		{
-			shared_ptr<Chromosome> c(new Chromosome(graph->numberOfNodes(), options->getNumberOfPus()));
+			shared_ptr<Chromosome> c = std::make_shared<Chromosome>(graph->numberOfNodes(), options->getNumberOfPus());
 			for (unsigned int i = 0; i < c->mapping.size(); ++i)
 			{
 				c->mapping[i] = rand() % c->pus;
@@ -200,7 +199,7 @@ namespace msonlab {
 	/// @return the offspring.
 	Chromosome::cPtr GeneticAlgorithm::crossoverMap(Chromosome::cPtr father, Chromosome::cPtr mother) const
 	{
-		Chromosome::cPtr offspring(new Chromosome(*father));
+		Chromosome::cPtr offspring = std::make_shared<Chromosome>(*father);
 		uint crossoverPoint = rand() % father->mapping.size();
 		std::copy(mother->mapping.begin() + crossoverPoint, mother->mapping.end(), offspring->mapping.begin() + crossoverPoint);
 
@@ -215,7 +214,7 @@ namespace msonlab {
 	/// @return the offspring.
 	Chromosome::cPtr GeneticAlgorithm::crossoverOrder(Chromosome::cPtr father, Chromosome::cPtr mother, const vector<unsigned>& levelingLimits) const
 	{
-		Chromosome::cPtr offsrping(new Chromosome(*father));
+		Chromosome::cPtr offsrping = std::make_shared<Chromosome>(*father);
 		uint crossoverPoint = rand() % levelingLimits.size();
 
 		std::copy(mother->scheduling.begin() + levelingLimits[crossoverPoint], mother->scheduling.end(), offsrping->scheduling.begin() + levelingLimits[crossoverPoint]);

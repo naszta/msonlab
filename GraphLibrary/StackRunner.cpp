@@ -10,65 +10,71 @@
 namespace msonlab
 {
 	using std::make_shared;
+	using namespace Types;
 
-	void msonlab::StackRunner::push(dPtrStack* stack, msonlab::Types::DataPtr data)
+	void msonlab::StackRunner::push(dPtrStack* stack, DataPtr data)
 	{
 		stack->push(data);
 	}
 
-	void msonlab::StackRunner::mul(dPtrStack* stack, msonlab::Types::DataPtr data)
+	void msonlab::StackRunner::mul(dPtrStack* stack, DataPtr data)
 	{
-		msonlab::Types::DataPtr t1 = stack->top();
+		DataPtr t1 = stack->top();
 		stack->pop();
-		msonlab::Types::DataPtr t2 = stack->top();
+		DataPtr t2 = stack->top();
 		stack->pop();
 
-		stack->push(make_shared<Types::DataType>(*t1 * *t2));
+		DataPtr ret = make_shared<Types::DataType>(*t1 * *t2);
+		stack->push(ret);
 	}
 
-	void msonlab::StackRunner::power(dPtrStack* stack, msonlab::Types::DataPtr data)
+	void msonlab::StackRunner::power(dPtrStack* stack, DataPtr data)
 	{
-		msonlab::Types::DataPtr t1 = stack->top();
+		DataPtr t1 = stack->top();
 		stack->pop();
-		msonlab::Types::DataPtr t2 = stack->top();
+		DataPtr t2 = stack->top();
 		stack->pop();
 
-		stack->push(make_shared<Types::DataType>(pow(*t2, *t1)));
+		DataPtr ret = make_shared<Types::DataType>(pow(*t2, *t1));
+		stack->push(ret);
 	}
 
-	void msonlab::StackRunner::sub(dPtrStack* stack, msonlab::Types::DataPtr data)
+	void msonlab::StackRunner::sub(dPtrStack* stack, DataPtr data)
 	{
-		msonlab::Types::DataPtr t1 = stack->top();
+		DataPtr t1 = stack->top();
 		stack->pop();
-		msonlab::Types::DataPtr t2 = stack->top();
+		DataPtr t2 = stack->top();
 		stack->pop();
 
-		stack->push(make_shared<Types::DataType>(*t2 - *t1));
+		DataPtr ret = make_shared<Types::DataType>(*t2 - *t1);
+		stack->push(ret);
 	}
 
-	void msonlab::StackRunner::add(dPtrStack* stack, msonlab::Types::DataPtr data)
+	void msonlab::StackRunner::add(dPtrStack* stack, DataPtr data)
 	{
-		msonlab::Types::DataPtr t1 = stack->top();
+		DataPtr t1 = stack->top();
 		stack->pop();
-		msonlab::Types::DataPtr t2 = stack->top();
+		DataPtr t2 = stack->top();
 		stack->pop();
 
-		stack->push(make_shared<Types::DataType>(*t1 + *t2));
+		DataPtr ret = make_shared<Types::DataType>(*t1 + *t2);
+		stack->push(ret);
 	}
 
-	void msonlab::StackRunner::div(dPtrStack* stack, msonlab::Types::DataPtr data)
+	void msonlab::StackRunner::div(dPtrStack* stack, DataPtr data)
 	{
-		msonlab::Types::DataPtr t1 = stack->top();
+		DataPtr t1 = stack->top();
 		stack->pop();
-		msonlab::Types::DataPtr t2 = stack->top();
+		DataPtr t2 = stack->top();
 		stack->pop();
 
-		stack->push(make_shared<Types::DataType>(*t2 / *t1));
+		DataPtr ret = make_shared<Types::DataType>(*t2 / *t1);
+		stack->push(ret);
 	}
 
 
 	// public build functions
-	void msonlab::StackRunner::addToken(functionTypeEnum functionType, msonlab::Types::DataPtr data)
+	void msonlab::StackRunner::addToken(functionTypeEnum functionType, DataPtr data)
 	{
 		switch (functionType)
 		{
@@ -97,7 +103,7 @@ namespace msonlab
 
 
 	// public running functions
-	msonlab::Types::DataPtr msonlab::StackRunner::run(int count)
+	DataPtr msonlab::StackRunner::run(int count)
 	{
 		// repeat specified times
 		for (; count > 0; --count)

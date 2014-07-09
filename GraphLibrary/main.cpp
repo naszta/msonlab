@@ -27,17 +27,17 @@
 using namespace msonlab;
 using namespace std;
 
-msonlab::Graph::gPtr initGraph()
+Graph::gPtr initGraph()
 {
-	msonlab::Graph::gPtr graph(new Graph());
-	msonlab::Node::nPtr a(new msonlab::NodeConstant(0, L"a", make_shared<Types::DataType>(4)));
-	msonlab::Node::nPtr b(new msonlab::NodeConstant(1, L"b", make_shared<Types::DataType>(2)));
-	msonlab::Node::nPtr c(new msonlab::NodeConstant(2, L"c", make_shared<Types::DataType>(-5)));
+	auto graph = make_unique<Graph>();
+	msonlab::Node::nPtr a = (make_shared<msonlab::NodeConstant>(0, L"a", make_shared<Types::DataType>(4)));
+	msonlab::Node::nPtr b = (make_shared<msonlab::NodeConstant>(1, L"b", make_shared<Types::DataType>(2)));
+	msonlab::Node::nPtr c = (make_shared<msonlab::NodeConstant>(2, L"c", make_shared<Types::DataType>(-5)));
 
-	msonlab::Node::nPtr constNumber_1(new msonlab::NodeConstant(3, L"1", make_shared<Types::DataType>(1)));
-	msonlab::Node::nPtr constNumber_2(new msonlab::NodeConstant(4, L"2", make_shared<Types::DataType>(2)));
-	msonlab::Node::nPtr constNumber_minus1(new msonlab::NodeConstant(5, L"-1", make_shared<Types::DataType>(-1)));
-	msonlab::Node::nPtr constNumber_minus4(new msonlab::NodeConstant(6, L"-4", make_shared<Types::DataType>(-4)));
+	msonlab::Node::nPtr constNumber_1 = (make_shared<msonlab::NodeConstant>(3, L"1", make_shared<Types::DataType>(1)));
+	msonlab::Node::nPtr constNumber_2 = (make_shared<msonlab::NodeConstant>(4, L"2", make_shared<Types::DataType>(2)));
+	msonlab::Node::nPtr constNumber_minus1 = (make_shared<msonlab::NodeConstant>(5, L"-1", make_shared<Types::DataType>(-1)));
+	msonlab::Node::nPtr constNumber_minus4 = (make_shared<msonlab::NodeConstant>(6, L"-4", make_shared<Types::DataType>(-4)));
 
 	msonlab::Node::nPtr multiply_2a(new msonlab::NodeMultiply(7, L"2a", make_shared<Types::DataType>(0)));
 	msonlab::Node::nPtr multiply_bb(new msonlab::NodeMultiply(8, L"b^2", make_shared<Types::DataType>(0)));
@@ -121,32 +121,32 @@ msonlab::Graph::gPtr initGraph()
 	return graph;
 }
 
-msonlab::Graph::gPtr initTestGraph()
+unique_ptr<Graph> initTestGraph()
 {
-	msonlab::Graph::gPtr testG(new Graph());
+	auto testG = make_unique<Graph>();
 
-	msonlab::Node::nPtr node1(new msonlab::Node(0, L"0", make_shared<Types::DataType>(5), 2));
-	msonlab::Node::nPtr node2(new msonlab::Node(1, L"1", make_shared<Types::DataType>(2), 3));
-	msonlab::Node::nPtr node3(new msonlab::Node(2, L"2", make_shared<Types::DataType>(3), 3));
-	msonlab::Node::nPtr node4(new msonlab::Node(3, L"3", make_shared<Types::DataType>(0), 4));
-	msonlab::Node::nPtr node5(new msonlab::Node(4, L"4", make_shared<Types::DataType>(0), 5));
-	msonlab::Node::nPtr node6(new msonlab::Node(5, L"5", make_shared<Types::DataType>(0), 4));
-	msonlab::Node::nPtr node7(new msonlab::Node(6, L"6", make_shared<Types::DataType>(0), 4));
-	msonlab::Node::nPtr node8(new msonlab::Node(7, L"7", make_shared<Types::DataType>(0), 4));
-	msonlab::Node::nPtr node9(new msonlab::Node(8, L"8", make_shared<Types::DataType>(0), 1));
+	msonlab::Node::nPtr node1 = make_shared<msonlab::Node>(0, L"0", make_shared<Types::DataType>(5), 2);
+	msonlab::Node::nPtr node2 = make_shared<msonlab::Node>(1, L"1", make_shared<Types::DataType>(2), 3);
+	msonlab::Node::nPtr node3 = make_shared<msonlab::Node>(2, L"2", make_shared<Types::DataType>(3), 3);
+	msonlab::Node::nPtr node4 = make_shared<msonlab::Node>(3, L"3", make_shared<Types::DataType>(0), 4);
+	msonlab::Node::nPtr node5 = make_shared<msonlab::Node>(4, L"4", make_shared<Types::DataType>(0), 5);
+	msonlab::Node::nPtr node6 = make_shared<msonlab::Node>(5, L"5", make_shared<Types::DataType>(0), 4);
+	msonlab::Node::nPtr node7 = make_shared<msonlab::Node>(6, L"6", make_shared<Types::DataType>(0), 4);
+	msonlab::Node::nPtr node8 = make_shared<msonlab::Node>(7, L"7", make_shared<Types::DataType>(0), 4);
+	msonlab::Node::nPtr node9 = make_shared<msonlab::Node>(8, L"8", make_shared<Types::DataType>(0), 1);
 
-	msonlab::Edge::ePtr edge1(new msonlab::Edge(0, L"e12", 0, node1, node2));
-	msonlab::Edge::ePtr edge2(new msonlab::Edge(1, L"e13", 0, node1, node3));
-	msonlab::Edge::ePtr edge3(new msonlab::Edge(2, L"e14", 0, node1, node4));
-	msonlab::Edge::ePtr edge4(new msonlab::Edge(3, L"e15", 0, node1, node5));
-	msonlab::Edge::ePtr edge5(new msonlab::Edge(4, L"e17", 0, node1, node7));
-	msonlab::Edge::ePtr edge6(new msonlab::Edge(6, L"e26", 0, node2, node6));
-	msonlab::Edge::ePtr edge7(new msonlab::Edge(7, L"e27", 0, node2, node7));
-	msonlab::Edge::ePtr edge8(new msonlab::Edge(8, L"e38", 0, node3, node8));
-	msonlab::Edge::ePtr edge9(new msonlab::Edge(9, L"e48", 0, node4, node8));
-	msonlab::Edge::ePtr edge10(new msonlab::Edge(10, L"e69", 0, node6, node9));
-	msonlab::Edge::ePtr edge11(new msonlab::Edge(11, L"e79", 0, node7, node9));
-	msonlab::Edge::ePtr edge12(new msonlab::Edge(12, L"e89", 0, node8, node9));
+	msonlab::Edge::ePtr edge1 = make_shared<msonlab::Edge>(0, L"e12", nullptr, node1, node2);
+	msonlab::Edge::ePtr edge2 = make_shared<msonlab::Edge>(1, L"e13", nullptr, node1, node3);
+	msonlab::Edge::ePtr edge3 = make_shared<msonlab::Edge>(2, L"e14", nullptr, node1, node4);
+	msonlab::Edge::ePtr edge4 = make_shared<msonlab::Edge>(3, L"e15", nullptr, node1, node5);
+	msonlab::Edge::ePtr edge5 = make_shared<msonlab::Edge>(4, L"e17", nullptr, node1, node7);
+	msonlab::Edge::ePtr edge6 = make_shared<msonlab::Edge>(6, L"e26", nullptr, node2, node6);
+	msonlab::Edge::ePtr edge7 = make_shared<msonlab::Edge>(7, L"e27", nullptr, node2, node7);
+	msonlab::Edge::ePtr edge8 = make_shared<msonlab::Edge>(8, L"e38", nullptr, node3, node8);
+	msonlab::Edge::ePtr edge9 = make_shared<msonlab::Edge>(9, L"e48", nullptr, node4, node8);
+	msonlab::Edge::ePtr edge10 = make_shared<msonlab::Edge>(10, L"e69", nullptr, node6, node9);
+	msonlab::Edge::ePtr edge11 = make_shared<msonlab::Edge>(11, L"e79", nullptr, node7, node9);
+	msonlab::Edge::ePtr edge12 = make_shared<msonlab::Edge>(12, L"e89", nullptr, node8, node9);
 
 	testG->addEdge(edge1);
 	testG->addEdge(edge2);
@@ -163,24 +163,24 @@ msonlab::Graph::gPtr initTestGraph()
 	return testG;
 }
 
-msonlab::Graph::gPtr initRandomGraph(Options::oPtr Options)
+Graph::gPtr initRandomGraph(Options::oPtr Options)
 {
 	return GraphGenerator::generate(Options->getGraphSize(), Options->getGraphEdgeProb(), Options->getGraphWidening(), Options->getNumberOfPus());
 }
 
-msonlab::Graph::gPtr initStackGraph()
+Graph::gPtr initStackGraph()
 {
-	msonlab::Graph::gPtr qeGraph = std::make_shared<Graph>();
+	auto qeGraph = make_unique<Graph>();
 
-	msonlab::Node::nPtr a(new msonlab::NodeConstant(1, L"a", make_shared<Types::DataType>(2)));
-	msonlab::Node::nPtr b(new msonlab::NodeConstant(2, L"b", make_shared<Types::DataType>(4)));
-	msonlab::Node::nPtr c(new msonlab::NodeConstant(3, L"c", make_shared<Types::DataType>(-4)));
+	msonlab::Node::nPtr a = (make_shared<msonlab::NodeConstant>(1, L"a", make_shared<Types::DataType>(2)));
+	msonlab::Node::nPtr b = (make_shared<msonlab::NodeConstant>(2, L"b", make_shared<Types::DataType>(4)));
+	msonlab::Node::nPtr c = (make_shared<msonlab::NodeConstant>(3, L"c", make_shared<Types::DataType>(-4)));
 
-	msonlab::Node::nPtr constNumber_1(new msonlab::NodeConstant(4, L"1", make_shared<Types::DataType>(1.0)));
-	msonlab::Node::nPtr constNumber_2(new msonlab::NodeConstant(5, L"2", make_shared<Types::DataType>(2.0)));
-	msonlab::Node::nPtr constNumber_minus1(new msonlab::NodeConstant(6, L"-1", make_shared<Types::DataType>(-1.0)));
-	msonlab::Node::nPtr constNumber_minus4(new msonlab::NodeConstant(7, L"-4", make_shared<Types::DataType>(-4.0)));
-	msonlab::Node::nPtr constNumber_05(new msonlab::NodeConstant(20, L"0.5", make_shared<Types::DataType>(0.5)));
+	msonlab::Node::nPtr constNumber_1 = (make_shared<msonlab::NodeConstant>(4, L"1", make_shared<Types::DataType>(1.0)));
+	msonlab::Node::nPtr constNumber_2 = (make_shared<msonlab::NodeConstant>(5, L"2", make_shared<Types::DataType>(2.0)));
+	msonlab::Node::nPtr constNumber_minus1 = (make_shared<msonlab::NodeConstant>(6, L"-1", make_shared<Types::DataType>(-1.0)));
+	msonlab::Node::nPtr constNumber_minus4 = (make_shared<msonlab::NodeConstant>(7, L"-4", make_shared<Types::DataType>(-4.0)));
+	msonlab::Node::nPtr constNumber_05 = (make_shared<msonlab::NodeConstant>(20, L"0.5", make_shared<Types::DataType>(0.5)));
 
 	msonlab::Node::nPtr multiply_2a(new msonlab::NodeMultiply(8, L"2a", make_shared<Types::DataType>(0.0)));
 	msonlab::Node::nPtr multiply_bb(new msonlab::NodeMultiply(9, L"b^2", make_shared<Types::DataType>(0.0)));
@@ -283,15 +283,13 @@ Graph::gPtr initSampleGraph()
 	return graph;
 }
 
-void runCompile(Graph::gPtr graph)
+void runCompile(Graph::gPtr& graph)
 {
-	msonlab::StackCompiler sc(graph);
-
 	// CPU idõ mérése
 	clock_t startCPU, finishCPU;
 
 	startCPU = clock();
-	auto stackProg = sc.getStackProgram();
+	auto stackProg = StackCompiler::getStackProgram(graph);
 	finishCPU = clock();
 
 	DEBUG("Printing complied program");
@@ -305,7 +303,7 @@ void runCompile(Graph::gPtr graph)
 	std::chrono::time_point<std::chrono::high_resolution_clock> startCHRONO, finishCHRONO;
 
 	startCHRONO = std::chrono::high_resolution_clock::now();
-	auto stackProg2 = sc.getStackProgram();
+	auto stackProg2 = StackCompiler::getStackProgram(graph);
 	finishCHRONO = std::chrono::high_resolution_clock::now();
 
 	std::chrono::duration<Types::DataType> elapsedCHRONO = finishCHRONO - startCHRONO;

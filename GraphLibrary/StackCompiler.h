@@ -6,15 +6,8 @@ namespace msonlab
 {
 	class StackCompiler
 	{
-	private:
-		msonlab::Graph::gPtr graph;
-
-
 	public:
-
-		StackCompiler(msonlab::Graph::gPtr toCompile);
-
-		msonlab::StackRunner::srPtr getStackProgram();
+		static msonlab::StackRunner::srPtr getStackProgram(Graph::gPtr& graph);
 
 	};
 
