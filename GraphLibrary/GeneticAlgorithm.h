@@ -37,12 +37,12 @@ namespace msonlab
 
 		shared_ptr<Chromosome> greedyChromosome(Graph::gPtr graph) const;
 		shared_ptr<Population> generateInitialSolution(Graph::gPtr graph) const;
-		unsigned int fitness(cPtr chromosome) const;
+		unsigned int fitness(Chromosome::cPtr chromosome) const;
 
-		cPtr crossoverMap(cPtr father, cPtr mother) const;
-		cPtr crossoverOrder(cPtr father, cPtr mother, const vector<unsigned>& levelingLimits) const;
-		void mutateMapping(cPtr offspring) const;
-		void mutateSheduling(cPtr offspring, const vector<unsigned>& levelingLimits) const;
+		Chromosome::cPtr crossoverMap(Chromosome::cPtr father, Chromosome::cPtr mother) const;
+		Chromosome::cPtr crossoverOrder(Chromosome::cPtr father, Chromosome::cPtr mother, const vector<unsigned>& levelingLimits) const;
+		void mutateMapping(Chromosome::cPtr offspring) const;
+		void mutateSheduling(Chromosome::cPtr offspring, const vector<unsigned>& levelingLimits) const;
 
 		void simulateMating(pPtr population, int offsprings) const;
 

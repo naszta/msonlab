@@ -5,6 +5,7 @@
 #include <set>
 #include <queue>
 #include <map>
+#include <memory>
 
 namespace msonlab {
 
@@ -30,8 +31,8 @@ namespace msonlab {
 			free.push(inputNodes[i]);
 		}
 
-		
-		shared_ptr<Chromosome> c(new Chromosome(graph->numberOfNodes(), options->getNumberOfPus()));
+		auto c = std::make_shared<Chromosome>(graph->numberOfNodes(), options->getNumberOfPus());
+		//shared_ptr<Chromosome> c(new Chromosome(graph->numberOfNodes(), options->getNumberOfPus()));
 		while (taskCounter < graph->numberOfNodes())
 		{
 			vector< IProcessable::nPtr > out;
@@ -123,9 +124,9 @@ namespace msonlab {
 
 		pPtr population = pPtr(new Population(solution, options->getKeepSize(), options->getPopMaxSize(), options->getKeepBest()));
 
-		cPtr chr = this->greedyChromosome(graph);
+		Chromosome::cPtr chr = this->greedyChromosome(graph);
 
-		cPtr cc(new Chromosome(graph->numberOfNodes(), options->getNumberOfPus()));
+		Chromosome::cPtr cc(new Chromosome(graph->numberOfNodes(), options->getNumberOfPus()));
 		size_t currentPos = 0;
 		unsigned counter = 0;
 		for (size_t i = numLevels; i > 0; --i)
@@ -179,7 +180,7 @@ namespace msonlab {
 	///
 	/// @param chromosome Which's fitness is calculated.
 	/// @return The fitness of the chromosome.
-	unsigned int GeneticAlgorithm::fitness(cPtr chromosome) const
+	unsigned int GeneticAlgorithm::fitness(Chromosome::cPtr chromosome) const
 	{
 		if (chromosome->fitness > 0)
 		{
@@ -197,9 +198,9 @@ namespace msonlab {
 	/// @param father One parent of the offspring.
 	/// @param mother Another parent of the offspring.
 	/// @return the offspring.
-	Chromosome::cPtr GeneticAlgorithm::crossoverMap(cPtr father, cPtr mother) const
+	Chromosome::cPtr GeneticAlgorithm::crossoverMap(Chromosome::cPtr father, Chromosome::cPtr mother) const
 	{
-		cPtr offspring(new Chromosome(*father));
+		Chromosome::cPtr offspring(new Chromosome(*father));
 		uint crossoverPoint = rand() % father->mapping.size();
 		std::copy(mother->mapping.begin() + crossoverPoint, mother->mapping.end(), offspring->mapping.begin() + crossoverPoint);
 
@@ -212,9 +213,9 @@ namespace msonlab {
 	/// @param father One parent of the offspring.
 	/// @param mother Another parent of the offspring.
 	/// @return the offspring.
-	Chromosome::cPtr GeneticAlgorithm::crossoverOrder(cPtr father, cPtr mother, const vector<unsigned>& levelingLimits) const
+	Chromosome::cPtr GeneticAlgorithm::crossoverOrder(Chromosome::cPtr father, Chromosome::cPtr mother, const vector<unsigned>& levelingLimits) const
 	{
-		cPtr offsrping(new Chromosome(*father));
+		Chromosome::cPtr offsrping(new Chromosome(*father));
 		uint crossoverPoint = rand() % levelingLimits.size();
 
 		std::copy(mother->scheduling.begin() + levelingLimits[crossoverPoint], mother->scheduling.end(), offsrping->scheduling.begin() + levelingLimits[crossoverPoint]);
@@ -230,7 +231,7 @@ namespace msonlab {
 	/// and the number of mutation points are [MutationRate].
 	///
 	/// @param offspring chromosome to mutate
-	void GeneticAlgorithm::mutateMapping(cPtr offspring) const
+	void GeneticAlgorithm::mutateMapping(Chromosome::cPtr offspring) const
 	{
 		unsigned rate = rand() % 100;
 		if (rate < options->getMapMutationRate())
@@ -251,7 +252,7 @@ namespace msonlab {
 	/// In case of a mutation a level is choosen and shuffled.
 	///
 	/// @param offspring The chromosome to mutate.
-	void GeneticAlgorithm::mutateSheduling(cPtr offspring, const vector<unsigned>& levelingLimits) const
+	void GeneticAlgorithm::mutateSheduling(Chromosome::cPtr offspring, const vector<unsigned>& levelingLimits) const
 	{
 		unsigned rate = rand() % 100;
 		if (rate < options->getScheduleMutationRate())
@@ -277,10 +278,10 @@ namespace msonlab {
 		//population->addOffspring(population->best());
 		for (int i = 0; i < offsprings; i++)
 		{
-			cPtr father = population->getParent();
-			cPtr mother = population->getParent();
+			Chromosome::cPtr father = population->getParent();
+			Chromosome::cPtr mother = population->getParent();
 			int crossoverType = rand() % 2;
-			cPtr offspring;
+			Chromosome::cPtr offspring;
 			if (crossoverType >= 0)
 			{
 				offspring = crossoverMap(father, mother);

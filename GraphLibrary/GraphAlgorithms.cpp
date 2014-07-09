@@ -14,7 +14,7 @@ namespace msonlab
 
 	typedef pair<unsigned, unsigned> puu;
 
-	unsigned int GraphAlgorithms::doComputeLengthSTAndRT(Chromosome::cPtr chromosome, const Options::oPtr options,
+	unsigned int GraphAlgorithms::doComputeLengthSTAndRT(std::shared_ptr<const Chromosome> chromosome, const Options::oPtr options,
 		vector<unsigned>& ST, vector<unsigned>& RT)
 	{
 		typedef unsigned int uint;
@@ -87,7 +87,7 @@ namespace msonlab
 		return length;
 	}
 
-	unsigned int GraphAlgorithms::computeLength(Chromosome::cPtr chromosome, const Options::oPtr options)
+	unsigned int GraphAlgorithms::computeLength(Chromosome::ccPtr chromosome, const Options::oPtr options)
 	{
 		vector<unsigned> ST(chromosome->getScheduling().size());
 		vector<unsigned> RT(options->getNumberOfPus());
@@ -95,7 +95,7 @@ namespace msonlab
 		return doComputeLengthSTAndRT(chromosome, options, ST, RT);
 	}
 
-	unsigned int GraphAlgorithms::computeLengthAndST(Chromosome::cPtr chromosome, const Options::oPtr options,
+	unsigned int GraphAlgorithms::computeLengthAndST(Chromosome::ccPtr chromosome, const Options::oPtr options,
 		vector<unsigned>& ST)
 	{
 		ST.resize(chromosome->getScheduling().size());
@@ -104,7 +104,7 @@ namespace msonlab
 		return doComputeLengthSTAndRT(chromosome, options, ST, RT);
 	}
 
-	unsigned int GraphAlgorithms::computeLengthAndRT(Chromosome::cPtr chromosome, const Options::oPtr options,
+	unsigned int GraphAlgorithms::computeLengthAndRT(Chromosome::ccPtr chromosome, const Options::oPtr options,
 		vector<unsigned>& RT)
 	{
 		vector<unsigned> ST(chromosome->getScheduling().size());
@@ -113,7 +113,7 @@ namespace msonlab
 		return doComputeLengthSTAndRT(chromosome, options, ST, RT);
 	}
 
-	unsigned int GraphAlgorithms::computeLengthSTAndRT(Chromosome::cPtr chromosome, Options::oPtr options,
+	unsigned int GraphAlgorithms::computeLengthSTAndRT(Chromosome::ccPtr chromosome, Options::oPtr options,
 		vector<unsigned>& ST, vector<unsigned>& RT)
 	{
 		ST.resize(chromosome->getScheduling().size());

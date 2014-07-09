@@ -432,7 +432,7 @@ void runGA(Options::oPtr options)
 	std::cout << "Best found in round " << bests_round << std::endl;
 	DEBUG("Best fitness: " << best->getFitness());
 	std::cout << "Best length: " << lengtFS.fitness(best, options) << std::endl;
-	best->printTable(std::cout, options->getCommOverhead());
+	best->printTable(std::cout, options);
 	std::vector<unsigned> result;
 	gena.transfromResult(best, result);
 	std::copy(result.begin(), result.end(), ostream_iterator<unsigned>(std::cout, " "));
@@ -450,7 +450,7 @@ void runHusScheduling(Options::oPtr options)
 	auto graph = initGraph();
 
 	auto result = alg.schedule(graph, options);
-	result->printTable(std::cout, options->getCommOverhead());
+	result->printTable(std::cout, options);
 	unsigned fitness = fsstrategy->fitness(result, options);
 	std::cout << fitness << std::endl;
 }
@@ -468,7 +468,7 @@ void schedule(SchedulingAlgorithm::algPtr alg, Options::oPtr options)
 	LengthFitnessStartegy fs;
 	l = fs.fitness(best, options);
 	std::cout << "Length: " << l << std::endl;
-	best->printTable(std::cout, options->getCommOverhead());
+	best->printTable(std::cout, options);
 }
 
 int main(int argc, char *argv[])

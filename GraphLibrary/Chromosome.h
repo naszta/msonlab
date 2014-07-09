@@ -39,7 +39,8 @@ namespace msonlab
 		void calcStartTime(Options::oPtr options);
 	public:
 		friend std::ostream& operator<<(std::ostream& os, const Chromosome& chromosome);
-		typedef std::shared_ptr<const Chromosome> cPtr;
+		typedef std::shared_ptr<Chromosome> cPtr;
+		typedef std::shared_ptr<const Chromosome> ccPtr;
 		typedef vector< cPtr > cVect;
 
 		Chromosome(unsigned pus);
@@ -53,6 +54,6 @@ namespace msonlab
 		const IProcessable::nVect& getScheduling() const { return scheduling; }
 
 		void printChromosome(std::ostream& o) const;
-		void printTable(std::ostream& o, unsigned commOverhead) const;
+		void printTable(std::ostream& o, Options::oPtr options) const;
 	};
 }

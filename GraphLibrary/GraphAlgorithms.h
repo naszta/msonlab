@@ -9,7 +9,7 @@ namespace msonlab
 {
 	class GraphAlgorithms
 	{
-		static unsigned int doComputeLengthSTAndRT(Chromosome::cPtr chromosome, Options::oPtr options,
+		static unsigned int doComputeLengthSTAndRT(Chromosome::ccPtr chromosome, Options::oPtr options,
 		vector<unsigned>& ST, vector<unsigned>& RT);
 	public:
 		///
@@ -100,15 +100,15 @@ namespace msonlab
 		/// @param chromosome the result to use
 		/// @param options the options to use
 		/// @return the length
-		static unsigned int computeLength(Chromosome::cPtr chromosome, const Options::oPtr options);
+		static unsigned int computeLength(Chromosome::ccPtr chromosome, const Options::oPtr options);
 
-		static unsigned int computeLengthAndST(Chromosome::cPtr chromosome, const Options::oPtr options,
+		static unsigned int computeLengthAndST(Chromosome::ccPtr chromosome, const Options::oPtr options,
 			vector<unsigned>& ST);
 
-		static unsigned int computeLengthAndRT(Chromosome::cPtr chromosome, const Options::oPtr options,
+		static unsigned int computeLengthAndRT(Chromosome::ccPtr chromosome, const Options::oPtr options,
 			vector<unsigned>& RT);
 
-		static unsigned int computeLengthSTAndRT(Chromosome::cPtr chromosome, const Options::oPtr options,
+		static unsigned int computeLengthSTAndRT(Chromosome::ccPtr chromosome, const Options::oPtr options,
 			vector<unsigned>& ST, vector<unsigned>& RT);
 
 		static unsigned int computeLengthAndReuseIdleTime(Chromosome::cPtr chromosome, const Options::oPtr options);
