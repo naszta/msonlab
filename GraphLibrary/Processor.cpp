@@ -6,9 +6,8 @@ namespace msonlab
 
 	IProcessable::nVect Processor::process(Graph::gPtr graph)
 	{
-		// reset helper lists
-		readyToProcess = IProcessable::pVect();
-		processed = IProcessable::pVect();
+		IProcessable::pVect readyToProcess;
+		IProcessable::pVect processed;
 
 		// get input nodes
 		IProcessable::nVect inodes = graph->getInputNodes();

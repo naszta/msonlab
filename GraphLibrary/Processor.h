@@ -12,8 +12,6 @@ namespace msonlab
 		IProcessable::pVect processed;
 
 	public:
-		Processor();
-
 		virtual IProcessable::nVect process(Graph::gPtr toProcess);
 		
 	};
