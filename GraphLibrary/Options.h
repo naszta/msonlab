@@ -33,9 +33,9 @@ namespace msonlab
 		string algorithm;
 		string fitnessStrategy;
 	public:
-		typedef std::shared_ptr<Options> oPtr;
+		typedef std::shared_ptr<const Options> oPtr;
 
-		Options(char * configFilePath);
+		Options(const char * configFilePath);
 
 		unsigned getScheduleMutationRate() const { return scheduleMutationRate; }
 		unsigned getMapMutationRate() const { return mapMutationRate; }

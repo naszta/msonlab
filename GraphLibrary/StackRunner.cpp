@@ -9,70 +9,66 @@
 // public stack functions
 namespace msonlab
 {
+	using std::make_shared;
 
-	void msonlab::StackRunner::push(dPtrStack* stack, msonlab::Types::DataType data)
+	void msonlab::StackRunner::push(dPtrStack* stack, msonlab::Types::DataPtr data)
 	{
 		stack->push(data);
 	}
 
-	void msonlab::StackRunner::mul(dPtrStack* stack, msonlab::Types::DataType data)
+	void msonlab::StackRunner::mul(dPtrStack* stack, msonlab::Types::DataPtr data)
 	{
-		msonlab::Types::DataType t1 = stack->top();
+		msonlab::Types::DataPtr t1 = stack->top();
 		stack->pop();
-		msonlab::Types::DataType t2 = stack->top();
+		msonlab::Types::DataPtr t2 = stack->top();
 		stack->pop();
 
-		msonlab::Types::DataType ret(new double(*t1 * *t2));
-		stack->push(ret);
+		stack->push(make_shared<Types::DataType>(*t1 * *t2));
 	}
 
-	void msonlab::StackRunner::power(dPtrStack* stack, msonlab::Types::DataType data)
+	void msonlab::StackRunner::power(dPtrStack* stack, msonlab::Types::DataPtr data)
 	{
-		msonlab::Types::DataType t1 = stack->top();
+		msonlab::Types::DataPtr t1 = stack->top();
 		stack->pop();
-		msonlab::Types::DataType t2 = stack->top();
+		msonlab::Types::DataPtr t2 = stack->top();
 		stack->pop();
 
-		msonlab::Types::DataType ret(new double(pow(*t2, *t1)));
-		stack->push(ret);
+		stack->push(make_shared<Types::DataType>(pow(*t2, *t1)));
 	}
 
-	void msonlab::StackRunner::sub(dPtrStack* stack, msonlab::Types::DataType data)
+	void msonlab::StackRunner::sub(dPtrStack* stack, msonlab::Types::DataPtr data)
 	{
-		msonlab::Types::DataType t1 = stack->top();
+		msonlab::Types::DataPtr t1 = stack->top();
 		stack->pop();
-		msonlab::Types::DataType t2 = stack->top();
+		msonlab::Types::DataPtr t2 = stack->top();
 		stack->pop();
 
-		msonlab::Types::DataType ret(new double(*t2 - *t1));
-		stack->push(ret);
+		stack->push(make_shared<Types::DataType>(*t2 - *t1));
 	}
 
-	void msonlab::StackRunner::add(dPtrStack* stack, msonlab::Types::DataType data)
+	void msonlab::StackRunner::add(dPtrStack* stack, msonlab::Types::DataPtr data)
 	{
-		msonlab::Types::DataType t1 = stack->top();
+		msonlab::Types::DataPtr t1 = stack->top();
 		stack->pop();
-		msonlab::Types::DataType t2 = stack->top();
+		msonlab::Types::DataPtr t2 = stack->top();
 		stack->pop();
 
-		msonlab::Types::DataType ret(new double(*t1 + *t2));
-		stack->push(ret);
+		stack->push(make_shared<Types::DataType>(*t1 + *t2));
 	}
 
-	void msonlab::StackRunner::div(dPtrStack* stack, msonlab::Types::DataType data)
+	void msonlab::StackRunner::div(dPtrStack* stack, msonlab::Types::DataPtr data)
 	{
-		msonlab::Types::DataType t1 = stack->top();
+		msonlab::Types::DataPtr t1 = stack->top();
 		stack->pop();
-		msonlab::Types::DataType t2 = stack->top();
+		msonlab::Types::DataPtr t2 = stack->top();
 		stack->pop();
 
-		msonlab::Types::DataType ret(new double(*t2 / *t1));
-		stack->push(ret);
+		stack->push(make_shared<Types::DataType>(*t2 / *t1));
 	}
 
 
 	// public build functions
-	void msonlab::StackRunner::addToken(functionTypeEnum functionType, msonlab::Types::DataType data)
+	void msonlab::StackRunner::addToken(functionTypeEnum functionType, msonlab::Types::DataPtr data)
 	{
 		switch (functionType)
 		{
@@ -101,7 +97,7 @@ namespace msonlab
 
 
 	// public running functions
-	msonlab::Types::DataType msonlab::StackRunner::run(int count)
+	msonlab::Types::DataPtr msonlab::StackRunner::run(int count)
 	{
 		// repeat specified times
 		for (; count > 0; --count)

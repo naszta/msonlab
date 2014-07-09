@@ -6,7 +6,7 @@ namespace msonlab
 	class NodePower : public Node
 	{
 	public:
-		NodePower(unsigned int _id, Types::LabelType _label, Types::DataType _value);
+		NodePower(unsigned int _id, Types::LabelType _label, Types::DataPtr _value);
 
 		virtual IProcessable::pVect process();
 

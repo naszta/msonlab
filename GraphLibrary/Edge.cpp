@@ -4,7 +4,7 @@
 
 namespace msonlab
 {
-	Edge::Edge(unsigned int _id, Types::LabelType _label, Types::DataType _value, IProcessable::nPtr _from, IProcessable::nPtr _to)
+	Edge::Edge(unsigned int _id, Types::LabelType _label, Types::DataPtr _value, IProcessable::nPtr _from, IProcessable::nPtr _to)
 		: IProcessable(_id, _label, _value), from(_from), to(_to), paramReady(false)
 	{
 	}

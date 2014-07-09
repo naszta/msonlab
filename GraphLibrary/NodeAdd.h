@@ -6,7 +6,7 @@ namespace msonlab
 	class NodeAdd : public Node
 	{
 	public:
-		NodeAdd(unsigned int _id, Types::LabelType _label, Types::DataType _value);
+		NodeAdd(unsigned int _id, Types::LabelType _label, Types::DataPtr _value);
 
 		virtual IProcessable::pVect process();
 

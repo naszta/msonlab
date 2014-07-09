@@ -5,7 +5,7 @@
 
 namespace msonlab
 {
-	NodePower::NodePower(unsigned int _id, Types::LabelType _label, Types::DataType _value)
+	NodePower::NodePower(unsigned int _id, Types::LabelType _label, Types::DataPtr _value)
 		: Node(_id, _label, _value)
 	{
 	}
@@ -16,8 +16,8 @@ namespace msonlab
 
 		if (isReadyForProcess())
 		{
-			Types::DataType newVal = Types::DataType(new double(1.0));
-			Types::DataType floor = Types::DataType(new double(1.0));
+			Types::DataPtr newVal = std::make_shared<Types::DataType>(1.0);
+			Types::DataPtr floor = std::make_shared<Types::DataType>(1.0);
 
 			int i = 1;
 
@@ -34,7 +34,7 @@ namespace msonlab
 
 			
 
-			if (setProcessed(Types::DataType(new double(pow(*newVal,*floor)))))
+			if (setProcessed(std::make_shared<Types::DataType>(pow(*newVal, *floor))))
 			{
 				for (IProcessable::eVect::iterator it = successors.begin(); it != successors.end(); ++it)
 				{

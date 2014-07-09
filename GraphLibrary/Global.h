@@ -21,7 +21,8 @@ namespace msonlab
 
 	namespace Types
 	{
-		typedef std::shared_ptr<double> DataType;
+		typedef double DataType;
+		typedef std::shared_ptr<DataType> DataPtr;
 		typedef std::wstring LabelType;
 	}
 

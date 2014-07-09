@@ -4,7 +4,7 @@
 
 namespace msonlab
 {
-	NodeConstant::NodeConstant(unsigned int _id, Types::LabelType _label, Types::DataType _value)
+	NodeConstant::NodeConstant(unsigned int _id, Types::LabelType _label, Types::DataPtr _value)
 		: Node(_id, _label, _value)
 	{
 	}

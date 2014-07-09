@@ -6,9 +6,9 @@ namespace msonlab
 	class MultiplierEdge : public Edge
 	{
 	private:
-		double multiplier;
+		Types::DataType multiplier;
 	public:
-		MultiplierEdge(unsigned int _id, Types::LabelType _label, Types::DataType _value, IProcessable::nPtr _from, IProcessable::nPtr _to, double _multiplier);
+		MultiplierEdge(unsigned int _id, Types::LabelType _label, Types::DataPtr _value, IProcessable::nPtr _from, IProcessable::nPtr _to, Types::DataType _multiplier);
 
 		virtual IProcessable::pVect process();
 

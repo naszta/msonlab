@@ -2,7 +2,7 @@
 
 namespace msonlab
 {
-	Options::Options(char * configFilePath)
+	Options::Options(const char * configFilePath)
 	{
 		ConfigFile config = ConfigFile(configFilePath);
 		scheduleMutationRate = config.getValueOfKey<unsigned>("scheduleMutationRate");

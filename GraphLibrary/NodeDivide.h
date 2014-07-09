@@ -6,7 +6,7 @@ namespace msonlab
 	class NodeDivide : public Node
 	{
 	public:
-		NodeDivide(unsigned int _id, Types::LabelType _label, Types::DataType _value);
+		NodeDivide(unsigned int _id, Types::LabelType _label, Types::DataPtr _value);
 
 		virtual IProcessable::pVect process();
 

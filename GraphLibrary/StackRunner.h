@@ -15,10 +15,10 @@ namespace msonlab
 		// public typedefinitions
 		typedef std::shared_ptr<StackRunner> srPtr;
 
-		typedef std::stack<msonlab::Types::DataType> dPtrStack;
+		typedef std::stack<msonlab::Types::DataPtr> dPtrStack;
 
-		typedef void(*fPtr)(dPtrStack*,msonlab::Types::DataType);
-		typedef std::pair<fPtr,msonlab::Types::DataType> token;
+		typedef void(*fPtr)(dPtrStack*,msonlab::Types::DataPtr);
+		typedef std::pair<fPtr,msonlab::Types::DataPtr> token;
 
 		typedef std::vector<token*> program;
 
@@ -41,18 +41,18 @@ namespace msonlab
 
 	public:
 		// public stack functions
-		static void push(dPtrStack* stack, msonlab::Types::DataType data);
+		static void push(dPtrStack* stack, msonlab::Types::DataPtr data);
 
-		static void mul(dPtrStack* stack, msonlab::Types::DataType data);
-		static void power(dPtrStack* stack, msonlab::Types::DataType data);
-		static void sub(dPtrStack* stack, msonlab::Types::DataType data);
-		static void add(dPtrStack* stack, msonlab::Types::DataType data);
-		static void div(dPtrStack* stack, msonlab::Types::DataType data);
+		static void mul(dPtrStack* stack, msonlab::Types::DataPtr data);
+		static void power(dPtrStack* stack, msonlab::Types::DataPtr data);
+		static void sub(dPtrStack* stack, msonlab::Types::DataPtr data);
+		static void add(dPtrStack* stack, msonlab::Types::DataPtr data);
+		static void div(dPtrStack* stack, msonlab::Types::DataPtr data);
 
 		// public build functions
-		void addToken(functionTypeEnum functionType, msonlab::Types::DataType data);
+		void addToken(functionTypeEnum functionType, msonlab::Types::DataPtr data);
 
 		// public running functions
-		msonlab::Types::DataType run(int count);
+		msonlab::Types::DataPtr run(int count);
 	};
 }

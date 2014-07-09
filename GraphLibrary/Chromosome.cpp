@@ -23,7 +23,6 @@ namespace msonlab
 	{
 		*this = chromosome;
 		this->fitness = 0;
-		auto ptr = shared_from_this();
 	}
 
 	/// operator =

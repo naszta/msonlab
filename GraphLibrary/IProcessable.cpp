@@ -5,7 +5,7 @@ namespace msonlab
 {
 	// protected
 
-	bool IProcessable::setProcessed(msonlab::Types::DataType _resultValue)
+	bool IProcessable::setProcessed(msonlab::Types::DataPtr _resultValue)
 	{
 		resultValue = _resultValue;
 		processed = true;
@@ -22,7 +22,7 @@ namespace msonlab
 
 	// public constructors and methods
 
-	IProcessable::IProcessable(unsigned int _id, Types::LabelType _label, Types::DataType _value)
+	IProcessable::IProcessable(unsigned int _id, Types::LabelType _label, Types::DataPtr _value)
 		: id(_id), label(_label), value(_value)
 	{ 
 	}
@@ -50,12 +50,12 @@ namespace msonlab
 		return label;
 	}
 
-	Types::DataType IProcessable::getValue() const
+	Types::DataPtr IProcessable::getValue() const
 	{
 		return value;
 	}
 
-	Types::DataType IProcessable::getResultValue() const
+	Types::DataPtr IProcessable::getResultValue() const
 	{
 		if (isProcessed())
 			return resultValue;
