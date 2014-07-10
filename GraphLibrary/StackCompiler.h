@@ -8,7 +8,6 @@ namespace msonlab
 	{
 	public:
 		static msonlab::StackRunner::srPtr getStackProgram(Graph::gPtr& graph);
-
 	};
 
 }

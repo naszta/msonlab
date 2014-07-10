@@ -55,7 +55,7 @@ namespace msonlab
 		return predecessors.size();
 	}
 
-	IProcessable::ePtr Node::getPredecessor(size_t index) const
+	const IProcessable::ePtr& Node::getPredecessor(size_t index) const
 	{
 		return predecessors[index];
 	}

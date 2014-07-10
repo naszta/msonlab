@@ -25,7 +25,7 @@ namespace msonlab
 
 		const IProcessable::eVect& getPredecessors() const;
 		size_t getPredecessorsSize() const;
-		IProcessable::ePtr getPredecessor(size_t index) const;
+		const IProcessable::ePtr& getPredecessor(size_t index) const;
 		IProcessable::eVect::iterator getPredecessorBegin();
 		IProcessable::eVect::iterator getPredecessorEnd();
 		const IProcessable::eVect& getSuccessors() const;

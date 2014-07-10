@@ -147,7 +147,7 @@ namespace msonlab {
 		counter = options->getPopMaxSize() - 1;
 		for (; counter > 0; --counter)
 		{
-			shared_ptr<Chromosome> c = std::make_shared<Chromosome>(graph->numberOfNodes(), options->getNumberOfPus());
+			auto c = std::make_shared<Chromosome>(graph->numberOfNodes(), options->getNumberOfPus());
 			for (unsigned int i = 0; i < c->mapping.size(); ++i)
 			{
 				c->mapping[i] = rand() % c->pus;
@@ -233,7 +233,7 @@ namespace msonlab {
 	void GeneticAlgorithm::mutateMapping(Chromosome::cPtr offspring) const
 	{
 		unsigned rate = rand() % 100;
-		if (rate < options->getMapMutationRate())
+		if (rate < this->options->getMapMutationRate())
 		{
 			int position = rand() % offspring->scheduling.size();
 			int mutation = rand() % (offspring->pus - 1) + 1;
@@ -274,7 +274,6 @@ namespace msonlab {
 	/// @param offsprings The number of offsprings to generate.
 	void GeneticAlgorithm::simulateMating(shared_ptr<Population> population, int offsprings) const
 	{
-		//population->addOffspring(population->best());
 		for (int i = 0; i < offsprings; i++)
 		{
 			Chromosome::cPtr father = population->getParent();
