@@ -1,0 +1,126 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{C52B8F60-9D85-4A46-9A2E-786880759177}</ProjectGuid>
+    <RootNamespace>GraphLibrary</RootNamespace>
+    <SccProjectName>SAK</SccProjectName>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level4</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>..\externals\xerces-c-3.1.1-x86-windows-vc-10.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <Cpp0xSupport>true</Cpp0xSupport>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <Profile>true</Profile>
+      <AdditionalDependencies>..\externals\xerces-c-3.1.1-x86-windows-vc-10.0\lib\xerces-c_3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <AdditionalIncludeDirectories>D:\ProgramFiles\boost\boost_1_53_0;C:\Boost\1.54.0\VC\11.0;..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="BFSIterator.cpp" />
+    <ClCompile Include="BlueEdge.cpp" />
+    <ClCompile Include="DFSIterator.cpp" />
+    <ClCompile Include="Edge.cpp" />
+    <ClCompile Include="FutureStackValue.cpp" />
+    <ClCompile Include="Graph.cpp" />
+    <ClCompile Include="GraphBuilder.cpp" />
+    <ClCompile Include="GraphExchanger.cpp" />
+    <ClCompile Include="IProcessable.cpp" />
+    <ClCompile Include="GraphIterator.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="MultiplierEdge.cpp" />
+    <ClCompile Include="Node.cpp" />
+    <ClCompile Include="NodeAdd.cpp" />
+    <ClCompile Include="NodeConstant.cpp" />
+    <ClCompile Include="NodeDivide.cpp" />
+    <ClCompile Include="NodeMultiply.cpp" />
+    <ClCompile Include="NodeSquareRoot.cpp" />
+    <ClCompile Include="Processor.cpp" />
+    <ClCompile Include="SimpleStackValue.cpp" />
+    <ClCompile Include="StackCompiler.cpp" />
+    <ClCompile Include="StackRunner.cpp" />
+    <ClCompile Include="StackValue.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="BFSIterator.h" />
+    <ClInclude Include="BlueEdge.h" />
+    <ClInclude Include="DFSIterator.h" />
+    <ClInclude Include="Edge.h" />
+    <ClInclude Include="FutureStackValue.h" />
+    <ClInclude Include="Global.h" />
+    <ClInclude Include="Graph.h" />
+    <ClInclude Include="GraphBuilder.h" />
+    <ClInclude Include="GraphExchanger.h" />
+    <ClInclude Include="GraphIterator.h" />
+    <ClInclude Include="IProcessable.h" />
+    <ClInclude Include="MultiplierEdge.h" />
+    <ClInclude Include="Node.h" />
+    <ClInclude Include="NodeAdd.h" />
+    <ClInclude Include="NodeConstant.h" />
+    <ClInclude Include="NodeDivide.h" />
+    <ClInclude Include="NodeMultiply.h" />
+    <ClInclude Include="NodeSquareRoot.h" />
+    <ClInclude Include="Processor.h" />
+    <ClInclude Include="SimpleStackValue.h" />
+    <ClInclude Include="StackCompiler.h" />
+    <ClInclude Include="StackRunner.h" />
+    <ClInclude Include="StackValue.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

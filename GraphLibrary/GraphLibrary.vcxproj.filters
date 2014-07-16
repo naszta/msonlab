@@ -1,0 +1,195 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Header Files\Node">
+      <UniqueIdentifier>{0500ca1e-baeb-40cf-8209-1d4b2ce4ceba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Edge">
+      <UniqueIdentifier>{d2470f26-a193-4cf6-a1b0-07eb0fc34f26}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Graph">
+      <UniqueIdentifier>{5cad580b-f435-4678-8c72-76b0e644c5ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Edge">
+      <UniqueIdentifier>{392fdbf6-c75b-4760-b702-ceb4b26c52a0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Node">
+      <UniqueIdentifier>{cf8ee208-cb72-48e2-9218-05b890f7b71f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Graph">
+      <UniqueIdentifier>{28d3598e-d145-4f14-a8be-72a0541bff86}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Stack">
+      <UniqueIdentifier>{2008d2fb-5216-4f79-ba7a-b1f12756b4d0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Stack">
+      <UniqueIdentifier>{12755bff-b42f-4456-8a35-f836cca53806}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Exchange">
+      <UniqueIdentifier>{c4f6bbbf-bbca-4aa0-9ed8-98354ac2e606}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Exchange">
+      <UniqueIdentifier>{54026b20-8851-473c-b34e-1b88979df61e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Stack\Values">
+      <UniqueIdentifier>{433a693d-fd63-498c-a075-6009ec51d9ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Stack\Values">
+      <UniqueIdentifier>{f34e5416-190b-4589-b84e-f597d5e9fc87}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Global.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IProcessable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Processor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Node.h">
+      <Filter>Header Files\Node</Filter>
+    </ClInclude>
+    <ClInclude Include="NodeAdd.h">
+      <Filter>Header Files\Node</Filter>
+    </ClInclude>
+    <ClInclude Include="NodeConstant.h">
+      <Filter>Header Files\Node</Filter>
+    </ClInclude>
+    <ClInclude Include="NodeMultiply.h">
+      <Filter>Header Files\Node</Filter>
+    </ClInclude>
+    <ClInclude Include="NodeSquareRoot.h">
+      <Filter>Header Files\Node</Filter>
+    </ClInclude>
+    <ClInclude Include="NodeDivide.h">
+      <Filter>Header Files\Node</Filter>
+    </ClInclude>
+    <ClInclude Include="Graph.h">
+      <Filter>Header Files\Graph</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphIterator.h">
+      <Filter>Header Files\Graph</Filter>
+    </ClInclude>
+    <ClInclude Include="BFSIterator.h">
+      <Filter>Header Files\Graph</Filter>
+    </ClInclude>
+    <ClInclude Include="DFSIterator.h">
+      <Filter>Header Files\Graph</Filter>
+    </ClInclude>
+    <ClInclude Include="BlueEdge.h">
+      <Filter>Header Files\Edge</Filter>
+    </ClInclude>
+    <ClInclude Include="MultiplierEdge.h">
+      <Filter>Header Files\Edge</Filter>
+    </ClInclude>
+    <ClInclude Include="Edge.h">
+      <Filter>Header Files\Edge</Filter>
+    </ClInclude>
+    <ClInclude Include="StackCompiler.h">
+      <Filter>Header Files\Stack</Filter>
+    </ClInclude>
+    <ClInclude Include="StackRunner.h">
+      <Filter>Header Files\Stack</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphExchanger.h">
+      <Filter>Header Files\Exchange</Filter>
+    </ClInclude>
+    <ClInclude Include="StackValue.h">
+      <Filter>Header Files\Stack\Values</Filter>
+    </ClInclude>
+    <ClInclude Include="SimpleStackValue.h">
+      <Filter>Header Files\Stack\Values</Filter>
+    </ClInclude>
+    <ClInclude Include="FutureStackValue.h">
+      <Filter>Header Files\Stack\Values</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphBuilder.h">
+      <Filter>Header Files\Exchange</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="IProcessable.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Processor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BlueEdge.cpp">
+      <Filter>Source Files\Edge</Filter>
+    </ClCompile>
+    <ClCompile Include="MultiplierEdge.cpp">
+      <Filter>Source Files\Edge</Filter>
+    </ClCompile>
+    <ClCompile Include="Edge.cpp">
+      <Filter>Source Files\Edge</Filter>
+    </ClCompile>
+    <ClCompile Include="BFSIterator.cpp">
+      <Filter>Source Files\Graph</Filter>
+    </ClCompile>
+    <ClCompile Include="DFSIterator.cpp">
+      <Filter>Source Files\Graph</Filter>
+    </ClCompile>
+    <ClCompile Include="Graph.cpp">
+      <Filter>Source Files\Graph</Filter>
+    </ClCompile>
+    <ClCompile Include="GraphIterator.cpp">
+      <Filter>Source Files\Graph</Filter>
+    </ClCompile>
+    <ClCompile Include="Node.cpp">
+      <Filter>Source Files\Node</Filter>
+    </ClCompile>
+    <ClCompile Include="NodeConstant.cpp">
+      <Filter>Source Files\Node</Filter>
+    </ClCompile>
+    <ClCompile Include="NodeAdd.cpp">
+      <Filter>Source Files\Node</Filter>
+    </ClCompile>
+    <ClCompile Include="NodeDivide.cpp">
+      <Filter>Source Files\Node</Filter>
+    </ClCompile>
+    <ClCompile Include="NodeMultiply.cpp">
+      <Filter>Source Files\Node</Filter>
+    </ClCompile>
+    <ClCompile Include="NodeSquareRoot.cpp">
+      <Filter>Source Files\Node</Filter>
+    </ClCompile>
+    <ClCompile Include="StackCompiler.cpp">
+      <Filter>Source Files\Stack</Filter>
+    </ClCompile>
+    <ClCompile Include="StackRunner.cpp">
+      <Filter>Source Files\Stack</Filter>
+    </ClCompile>
+    <ClCompile Include="GraphExchanger.cpp">
+      <Filter>Source Files\Exchange</Filter>
+    </ClCompile>
+    <ClCompile Include="StackValue.cpp">
+      <Filter>Source Files\Stack\Values</Filter>
+    </ClCompile>
+    <ClCompile Include="SimpleStackValue.cpp">
+      <Filter>Source Files\Stack\Values</Filter>
+    </ClCompile>
+    <ClCompile Include="FutureStackValue.cpp">
+      <Filter>Source Files\Stack\Values</Filter>
+    </ClCompile>
+    <ClCompile Include="GraphBuilder.cpp">
+      <Filter>Source Files\Exchange</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
