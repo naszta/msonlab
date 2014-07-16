@@ -21,6 +21,9 @@ namespace msonlab
 		// the mapping part, maps the task to PUs.
 		vector<unsigned int> mapping;
 
+		// the number of edges
+		unsigned int edges;
+
 		// the number of PUs
 		unsigned int pus;
 
@@ -43,8 +46,8 @@ namespace msonlab
 		typedef std::shared_ptr<const Chromosome> ccPtr;
 		typedef vector< cPtr > cVect;
 
-		Chromosome(unsigned pus);
-		Chromosome(size_t size, unsigned pus);
+		//Chromosome(unsigned pus, unsigned edges);
+		Chromosome(size_t size, unsigned pus, unsigned edges);
 		Chromosome(const Chromosome& chromosome);
 
 		Chromosome& operator=(const Chromosome &chromosome);

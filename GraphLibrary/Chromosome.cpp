@@ -5,13 +5,13 @@ namespace msonlab
 {
 	/// Initialises a new instance of the Chromosome class.
 	/// The size is the number of tasks.
-	Chromosome::Chromosome(unsigned pus) : fitness(0), pus(pus)
+	/*Chromosome::Chromosome(unsigned pus, unsigned edges) : fitness(0), pus(pus), edges(edges)
 	{
-	}
+	}*/
 
 	/// Initialises a new instance of the Chromosome class.
 	/// The size is the number of tasks.
-	Chromosome::Chromosome(size_t size, unsigned pus) : fitness(0), pus(pus)
+	Chromosome::Chromosome(size_t size, unsigned pus, unsigned edges) : fitness(0), pus(pus), edges(edges)
 	{
 		scheduling.resize(size);
 		mapping.resize(size);
@@ -35,6 +35,7 @@ namespace msonlab
 			this->scheduling = chromosome.scheduling;
 			this->fitness = chromosome.fitness;
 			this->pus = chromosome.pus;
+			this->edges = chromosome.edges;
 		}
 
 		return *this;

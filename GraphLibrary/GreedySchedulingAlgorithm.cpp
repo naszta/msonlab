@@ -16,7 +16,7 @@ namespace msonlab
 			free.push(inputNodes[i]);
 		}
 
-		Chromosome::cPtr c = std::make_shared<Chromosome>(graph->numberOfNodes(), options->getNumberOfPus());
+		Chromosome::cPtr c = std::make_shared<Chromosome>(graph->numberOfNodes(), options->getNumberOfPus(), graph->numberOfEdges());
 		while (taskCounter < graph->numberOfNodes())
 		{
 			vector< IProcessable::nPtr > out;

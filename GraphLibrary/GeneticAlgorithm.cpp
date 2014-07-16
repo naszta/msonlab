@@ -32,7 +32,7 @@ namespace msonlab {
 			free.push(inputNodes[i]);
 		}
 
-		auto c = std::make_shared<Chromosome>(graph->numberOfNodes(), options->getNumberOfPus());
+		auto c = std::make_shared<Chromosome>(graph->numberOfNodes(), options->getNumberOfPus(), graph->numberOfEdges());
 		while (taskCounter < graph->numberOfNodes())
 		{
 			vector< IProcessable::nPtr > out;
@@ -154,7 +154,7 @@ namespace msonlab {
 
 		Chromosome::cPtr chr = this->greedyChromosome(graph);
 
-		Chromosome::cPtr cc = std::make_shared<Chromosome>(graph->numberOfNodes(), options->getNumberOfPus());
+		Chromosome::cPtr cc = std::make_shared<Chromosome>(graph->numberOfNodes(), options->getNumberOfPus(), graph->numberOfEdges());
 		size_t currentPos = 0;
 		unsigned counter = 0;
 		for (size_t i = numLevels; i > 0; --i)
@@ -182,7 +182,7 @@ namespace msonlab {
 		counter = options->getPopMaxSize() - 1;
 		for (; counter > 0; --counter)
 		{
-			auto c = std::make_shared<Chromosome>(graph->numberOfNodes(), options->getNumberOfPus());
+			auto c = std::make_shared<Chromosome>(graph->numberOfNodes(), options->getNumberOfPus(), graph->numberOfEdges());
 			for (unsigned int i = 0; i < c->mapping.size(); ++i)
 			{
 				c->mapping[i] = rand() % c->pus;
@@ -216,7 +216,7 @@ namespace msonlab {
 		unsigned counter = options->getPopMaxSize() - 2; // CP and greedy
 		for (; counter > 0; --counter)
 		{
-			auto c = std::make_shared<Chromosome>(graph->numberOfNodes(), options->getNumberOfPus());
+			auto c = std::make_shared<Chromosome>(graph->numberOfNodes(), options->getNumberOfPus(), graph->numberOfEdges());
 			for (unsigned int i = 0; i < c->mapping.size(); ++i)
 			{
 				c->mapping[i] = rand() % c->pus;
@@ -383,8 +383,9 @@ namespace msonlab {
 		auto mapping = c->getMapping();
 		auto scheduling = c->getScheduling();
 		size_t tasks = scheduling.size();
-		if (result.size() != 17) {
-			result.resize(17);
+		size_t edges = c->edges;
+		if (result.size() != tasks + edges) {
+			result.resize(tasks + edges);
 		}
 
 		for (unsigned i = 0; i < tasks; ++i) {

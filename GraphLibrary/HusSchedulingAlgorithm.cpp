@@ -60,7 +60,7 @@ namespace msonlab
 
 		int tasks = graph->numberOfNodes();
 		int comm = options->getCommOverhead();
-		Chromosome::cPtr result = std::make_shared<Chromosome>(tasks, options->getNumberOfPus());
+		Chromosome::cPtr result = std::make_shared<Chromosome>(tasks, options->getNumberOfPus(), graph->numberOfEdges());
 		vector<unsigned> RT(options->getNumberOfPus());
 		vector<unsigned> ST(tasks); // start time of the tasks
 		vector<unsigned> FT(tasks); // finish time of the tasks

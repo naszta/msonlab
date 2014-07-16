@@ -132,7 +132,7 @@ Graph::gPtr initGraph()
 	return graph;
 }
 
-unique_ptr<Graph> initTestGraph()
+Graph::gPtr initTestGraph()
 {
 	auto testG = make_unique<Graph>();
 
@@ -172,6 +172,48 @@ unique_ptr<Graph> initTestGraph()
 	testG->addEdge(edge11);
 	testG->addEdge(edge12);
 	return testG;
+}
+
+Graph::gPtr initSampleGraph()
+{
+	Graph::gPtr g = make_unique<Graph>();
+
+	msonlab::Node::nPtr a(new msonlab::NodeConstant(0, L"a", make_shared<Types::DataType>(2)));
+	msonlab::Node::nPtr b(new msonlab::NodeConstant(1, L"b", make_shared<Types::DataType>(3)));
+	msonlab::Node::nPtr c(new msonlab::NodeConstant(2, L"c", make_shared<Types::DataType>(2)));
+	msonlab::Node::nPtr d(new msonlab::NodeConstant(3, L"d", make_shared<Types::DataType>(3)));
+
+	msonlab::Node::nPtr ab(new msonlab::NodeMultiply(4, L"a*b", nullptr));
+	msonlab::Node::nPtr cd(new msonlab::NodeMultiply(5, L"c*d", nullptr));
+
+	msonlab::Node::nPtr ab2(new msonlab::NodeMultiply(6, L"2*a*b", nullptr));
+	msonlab::Node::nPtr c2(new msonlab::NodeConstant(7, L"2", make_shared<Types::DataType>(2)));
+
+	msonlab::Node::nPtr res(new msonlab::NodeAdd(8, L"2*a*b + c*d", nullptr));
+
+	msonlab::Edge::ePtr e1(new msonlab::Edge(9, L"e1", 0, a, ab));
+	msonlab::Edge::ePtr e2(new msonlab::Edge(10, L"e2", 0, b, ab));
+
+	msonlab::Edge::ePtr e3(new msonlab::Edge(11, L"e3", 0, c, cd));
+	msonlab::Edge::ePtr e4(new msonlab::Edge(12, L"e4", 0, d, cd));
+
+	msonlab::Edge::ePtr e5(new msonlab::Edge(13, L"e5", 0, ab, ab2));
+	msonlab::Edge::ePtr e6(new msonlab::Edge(14, L"e6", 0, c2, ab2));
+
+	msonlab::Edge::ePtr e7(new msonlab::Edge(15, L"e7", 0, ab2, res));
+
+	msonlab::Edge::ePtr e8(new msonlab::Edge(16, L"e8", 0, cd, res));
+
+	g->addEdge(e1);
+	g->addEdge(e2);
+	g->addEdge(e3);
+	g->addEdge(e4);
+	g->addEdge(e5);
+	g->addEdge(e6);
+	g->addEdge(e7);
+	g->addEdge(e8);
+
+	return g;
 }
 
 Graph::gPtr initRandomGraph(Options::oPtr Options)
@@ -296,48 +338,12 @@ Graph::gPtr initSampleGraph()
 
 void test_small_graph(Options::oPtr options)
 {
-	Graph::gPtr g(new Graph());
-
-	msonlab::Node::nPtr a(new msonlab::NodeConstant(0, L"a", make_shared<Types::DataType>(2)));
-	msonlab::Node::nPtr b(new msonlab::NodeConstant(1, L"b", make_shared<Types::DataType>(3)));
-	msonlab::Node::nPtr c(new msonlab::NodeConstant(2, L"c", make_shared<Types::DataType>(2)));
-	msonlab::Node::nPtr d(new msonlab::NodeConstant(3, L"d", make_shared<Types::DataType>(3)));
-
-	msonlab::Node::nPtr ab(new msonlab::NodeMultiply(4, L"a*b", nullptr));
-	msonlab::Node::nPtr cd(new msonlab::NodeMultiply(5, L"c*d", nullptr));
-
-	msonlab::Node::nPtr ab2(new msonlab::NodeMultiply(6, L"2*a*b", nullptr));
-	msonlab::Node::nPtr c2(new msonlab::NodeConstant(7, L"2", make_shared<Types::DataType>(2)));
-
-	msonlab::Node::nPtr res(new msonlab::NodeAdd(8, L"2*a*b + c*d", nullptr));
-
-	msonlab::Edge::ePtr e1(new msonlab::Edge(9, L"e1", 0, a, ab));
-	msonlab::Edge::ePtr e2(new msonlab::Edge(10, L"e2", 0, b, ab));
-
-	msonlab::Edge::ePtr e3(new msonlab::Edge(11, L"e3", 0, c, cd));
-	msonlab::Edge::ePtr e4(new msonlab::Edge(12, L"e4", 0, d, cd));
-
-	msonlab::Edge::ePtr e5(new msonlab::Edge(13, L"e5", 0, ab, ab2));
-	msonlab::Edge::ePtr e6(new msonlab::Edge(14, L"e6", 0, c2, ab2));
-
-	msonlab::Edge::ePtr e7(new msonlab::Edge(15, L"e7", 0, ab2, res));
-
-	msonlab::Edge::ePtr e8(new msonlab::Edge(16, L"e8", 0, cd, res));
-
-	g->addEdge(e1);
-	g->addEdge(e2);
-	g->addEdge(e3);
-	g->addEdge(e4);
-	g->addEdge(e5);
-	g->addEdge(e6);
-	g->addEdge(e7);
-	g->addEdge(e8);
-
-	vector<unsigned int> testOrder;
+	Graph::gPtr g = initSampleGraph();
 
 	HusSchedulingAlgorithm alg;
 	auto result = alg.schedule(g, options);
 
+	vector<unsigned int> testOrder;
 	GeneticAlgorithm::transfromResult(result, testOrder);
 
 	// 0 - 9
@@ -369,11 +375,9 @@ void test_small_graph(Options::oPtr options)
 	//GraphExchanger ge2(imported);
 	//ge2.ExportGraph("test2.msg");
 
-
 	auto sp1 = StackCompiler::getStackProgram(g, 2, testOrder);
 	sp1->print_out_programs();
 	sp1->run(sp1, 2);
-
 
 	/*auto sp2 = StackCompiler::getStackProgram(imported, 2, testOrder);
 	sp2->print_out_programs();
