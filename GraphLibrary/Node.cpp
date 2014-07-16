@@ -1,5 +1,6 @@
 #pragma once
 #include "Node.h"
+#include "Edge.h"
 
 namespace msonlab
 {
@@ -53,6 +54,11 @@ namespace msonlab
 	size_t Node::getPredecessorsSize() const
 	{
 		return predecessors.size();
+	}
+
+	unsigned Node::getPredecessorNodeId(size_t index) const
+	{
+		return predecessors[index]->getFromId();
 	}
 
 	const IProcessable::ePtr& Node::getPredecessor(size_t index) const

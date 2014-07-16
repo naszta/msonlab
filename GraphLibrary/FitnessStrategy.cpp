@@ -10,6 +10,11 @@ namespace msonlab
 		return GraphAlgorithms::computeLength(chromosome, options);
 	}
 
+	unsigned int RescheduleIdleTimeFitnessStartegy::fitness(Chromosome::cPtr chromosome, const Options::oPtr options)
+	{
+		return GraphAlgorithms::computeLengthAndReuseIdleTime(chromosome, options);
+	}
+
 	unsigned int PUUsageFitnessStrategy::fitness(Chromosome::cPtr chromosome, const Options::oPtr options)
 	{
 		unsigned length = GraphAlgorithms::computeLength(chromosome, options);

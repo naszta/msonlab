@@ -30,12 +30,16 @@ namespace msonlab
 		uint graphEdgeProb;
 		uint graphWidening;
 
+		string initialSolution;
 		string algorithm;
 		string fitnessStrategy;
 	public:
 		typedef std::shared_ptr<const Options> oPtr;
 
 		Options(const char * configFilePath);
+
+		// for testing purposes.
+		Options(const Options& opt, unsigned value);
 
 		unsigned getScheduleMutationRate() const { return scheduleMutationRate; }
 		unsigned getMapMutationRate() const { return mapMutationRate; }
@@ -55,5 +59,6 @@ namespace msonlab
 
 		string getAlgorithm() const { return algorithm; }
 		string getFitnessStrategy() const { return fitnessStrategy; }
+		string getInitialSolution() const { return initialSolution; }
 	};
 }

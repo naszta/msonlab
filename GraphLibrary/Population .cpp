@@ -109,4 +109,9 @@ namespace msonlab
 			this->levelSize.push_back(*it);
 		}
 	}
+
+	Population & Population::operator = (Population & p) {
+		std::cout << "Where am I used?";
+		return *this;
+	}
 }

@@ -18,7 +18,6 @@ namespace msonlab
 		vector<unsigned>& ST, vector<unsigned>& RT)
 	{
 		typedef unsigned int uint;
-		unsigned communication = 0;
 		// const vector references
 
 		unsigned commOverhead = options->getCommOverhead();
@@ -50,31 +49,24 @@ namespace msonlab
 			size_t predecessorSize = actNode->getPredecessorsSize();
 			for (uint j = 0; j < predecessorSize; ++j)
 			{
-				uint id = actNode->getPredecessor(j)->getFromId();
+				// skipping edge
+				uint id = actNode->getPredecessorNodeId(j);
 				uint comm = 0;
 				if (actPU != idPuMapping[id]) {
 					comm = commOverhead;
-					++communication;
 				}
 
-				if (actPU / puGroupSize != idPuMapping[id] / puGroupSize)
-				{
-					comm *= 2;
-				}
-				if (DAT[actId] < FT[id] + comm)
-				{
-					DAT[actId] = FT[id] + comm;
-				}
+				DAT[actId] = std::max(DAT[actId], FT[id] + comm);
 
 				// check whether a flaw is present in this solution
-				if (FT[id] == 0)
-				{
-					// TODO: remove, when ensured, cannot happen
-					std::cout << "Flawed chromosome" << std::endl;
-					chromosome->printChromosome(std::cout);
-					std::cin.get();
-					return UINT32_MAX;
-				}
+				//if (FT[id] == 0)
+				//{
+				//	// TODO: remove, when ensured, cannot happen
+				//	std::cout << "Flawed chromosome" << std::endl;
+				//	chromosome->printChromosome(std::cout);
+				//	std::cin.get();
+				//	return UINT32_MAX;
+				//}
 			}
 
 			ST[actId] = std::max(RT[actPU], DAT[actId]);
@@ -83,7 +75,6 @@ namespace msonlab
 		}
 
 		uint length = *std::max_element(FT.begin(), FT.end());
-
 		return length;
 	}
 
@@ -411,7 +402,7 @@ namespace msonlab
 		return timeCounter;
 	}
 
-	unsigned int GraphAlgorithms::computeLengthAndReuseIdleTime(Chromosome::cPtr chromosome, const Options::oPtr options)
+	unsigned int GraphAlgorithms::computeLengthAndReuseIdleTime(Chromosome::cPtr& chromosome, const Options::oPtr& options)
 	{
 		typedef unsigned int uint;
 		unsigned communication = 0;
@@ -447,7 +438,7 @@ namespace msonlab
 		// skipping first task
 		for (uint i = 1; i < tasks; ++i)
 		{
-			IProcessable::nPtr actNode = scheduling[i];
+			auto actNode = scheduling[i];
 			uint actId = actNode->getId();
 			uint actPU = mapping[i];
 			idPuMapping[actId] = actPU;
@@ -460,6 +451,12 @@ namespace msonlab
 				{
 					uint id = actNode->getPredecessor(j)->getFromId();
 					uint comm = p != idPuMapping[id] ? commOverhead : 0;
+
+					if (FT[id] == 0)
+					{
+						// this solutuion is not good
+						return UINT32_MAX;
+					}
 
 					DAT[p][actId] = std::max(DAT[p][actId], FT[id] + comm);
 				}
@@ -505,7 +502,6 @@ namespace msonlab
 				min_it->first = 0;
 				min_it->second = 0;
 				idPuMapping[actId] = actPU;
-				//std::cout << "Reschedule " << actId << " ID to " << min_st << ", on " << pu << std::endl;
 			}
 
 			ST[actId] = st;

@@ -38,7 +38,7 @@ namespace msonlab
 		const size_t KEEPBEST;
 		
 	public:
-		typedef shared_ptr<Population> pPtr;
+		typedef std::unique_ptr<Population> pPtr;
 		Population(const vector<Chromosome::cPtr>& sol, size_t keepSize, size_t popMaxSize, size_t keepBest);
 
 		const vector<Chromosome::cPtr>& getPopulation() const;
@@ -59,6 +59,8 @@ namespace msonlab
 		/// Gets the number of levels.
 		// TODO: return a pointer to the vector
 		const vector<unsigned>& getLevels() const { return this->levelSize; }
+
+		Population & operator = (Population &);
 
 		unsigned avarageFittness() const;
 	};

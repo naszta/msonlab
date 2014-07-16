@@ -27,5 +27,32 @@ namespace msonlab
 		if (fitnessStrategy.length() == 0) {
 			fitnessStrategy = "length";
 		}
+
+		initialSolution = config.getValueOfKey<string>("initialSolution");
+		if (initialSolution.length() == 0) {
+			initialSolution = "rnd";
+		}
+	}
+
+	Options::Options(const Options& opt, unsigned value)
+	{
+		scheduleMutationRate = opt.scheduleMutationRate;
+		mapMutationRate = opt.mapMutationRate;
+		commOverhead = opt.commOverhead;
+		taskLength = opt.taskLength;
+		popMaxSize = opt.popMaxSize;
+		keepSize = opt.keepSize;
+		keepBest = opt.keepBest;
+		numberOfPus = opt.numberOfPus;
+		puGroupSize = opt.puGroupSize;
+		graphSize = opt.graphSize;
+		graphEdgeProb = opt.graphEdgeProb;
+		graphWidening = opt.graphWidening;
+		numberOfYears = opt.numberOfYears;
+		algorithm = opt.algorithm;
+		fitnessStrategy = opt.fitnessStrategy;
+
+		// the one that changed
+		scheduleMutationRate = value;
 	}
 }

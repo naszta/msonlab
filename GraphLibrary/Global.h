@@ -8,12 +8,13 @@
 
 using std::vector;
 
-#define WAIT 1
 #define PRINT 1
 #if PRINT == 1
-#define DEBUG(str) std::cout << str << std::endl
+#define DEBUG(str) std::cout << str
+#define DEBUGLN(str) std::cout << str << std::endl
 #else
 #define DEBUG(str) 
+#define DEBUGLN(str)
 #endif
 
 namespace msonlab

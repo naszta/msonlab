@@ -23,6 +23,12 @@ namespace msonlab
 		virtual unsigned int fitness(Chromosome::cPtr chromosome, const Options::oPtr options);
 	};
 
+	class RescheduleIdleTimeFitnessStartegy : public FitnessStrategy
+	{
+	public:
+		virtual unsigned int fitness(Chromosome::cPtr chromosome, const Options::oPtr options);
+	};
+
 	class PUUsageFitnessStrategy : public FitnessStrategy
 	{
 	public:

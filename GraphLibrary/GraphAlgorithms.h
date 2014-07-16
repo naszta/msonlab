@@ -111,6 +111,6 @@ namespace msonlab
 		static unsigned int computeLengthSTAndRT(Chromosome::ccPtr chromosome, const Options::oPtr options,
 			vector<unsigned>& ST, vector<unsigned>& RT);
 
-		static unsigned int computeLengthAndReuseIdleTime(Chromosome::cPtr chromosome, const Options::oPtr options);
+		static unsigned int computeLengthAndReuseIdleTime(Chromosome::cPtr& chromosome, const Options::oPtr& options);
 	};
 }

@@ -13,7 +13,7 @@ namespace msonlab
 	unsigned HusSchedulingAlgorithm::findNextToSchedule(const vector<unsigned>& dependencies, const vector<unsigned>& distances) const
 	{
 		unsigned id;
-		unsigned max;
+		unsigned max = 0;
 		for (unsigned i = 0; i < distances.size(); ++i) {
 			if (dependencies[i] == 0 && (max == 0 || distances[i] > max)) {
 				id = i;
@@ -70,7 +70,6 @@ namespace msonlab
 		for (int i = 0; i < tasks; ++i) {
 			next = algorithms.findMaxDistanceWithoutDependency(dependencies, distance);
 			auto actNode = nodes[next];
-			unsigned st = 0;
 			// calculating data arrival time
 			size_t predecessorSize = actNode->getPredecessorsSize();
 			for (unsigned j = 0; j < predecessorSize; ++j)

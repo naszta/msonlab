@@ -7,14 +7,17 @@
 #include "FitnessStrategy.h"
 #include "GraphAlgorithms.h"
 
-using std::vector;
-using std::shared_ptr;
 
 // GeneticAlgoritm implementation for project laboratory
 // created by Zoltan Szekeres
 
 namespace msonlab
 {
+	using std::vector;
+	using std::shared_ptr;
+	using std::unique_ptr;
+	using msonlab::Population;
+
 	class GeneticAlgorithm : public SchedulingAlgorithm
 	{
 		typedef unsigned int uint;
@@ -29,23 +32,28 @@ namespace msonlab
 	public:
 		//typedef shared_ptr<Chromosome> cPtr;
 		typedef vector< Chromosome::cPtr > cVect;
-		typedef shared_ptr<Population> pPtr;
+		//typedef unique_ptr<Population> pPtr;
 
 		GeneticAlgorithm(Options::oPtr options, FitnessStrategy::fsPtr strategy);
 
 		virtual Chromosome::cPtr schedule(Graph::gPtr& graph, Options::oPtr options) const;
 
-		shared_ptr<Chromosome> greedyChromosome(Graph::gPtr& graph) const;
-		shared_ptr<Population> generateInitialSolution(Graph::gPtr& graph) const;
+		Chromosome::cPtr greedyChromosome(Graph::gPtr& graph) const;
+		Population::pPtr generateInitialSolution(Graph::gPtr& graph, Options::oPtr options) const;
+		Population::pPtr generateCPSolution(Graph::gPtr& graph, Options::oPtr options) const;
+		Population::pPtr generateRndSolution(Graph::gPtr& graph, Options::oPtr options) const;
 		unsigned int fitness(Chromosome::cPtr chromosome) const;
 
 		Chromosome::cPtr crossoverMap(Chromosome::cPtr father, Chromosome::cPtr mother) const;
 		Chromosome::cPtr crossoverOrder(Chromosome::cPtr father, Chromosome::cPtr mother, const vector<unsigned>& levelingLimits) const;
-		void mutateMapping(Chromosome::cPtr offspring) const;
+		void mutateMapping(Chromosome::cPtr& offspring) const;
 		void mutateSheduling(Chromosome::cPtr offspring, const vector<unsigned>& levelingLimits) const;
 
-		void simulateMating(pPtr population, int offsprings) const;
+		void simulateMating(Population::pPtr& population, int offsprings, bool doOrderCrossover) const;
 
 		void transfromResult(Chromosome::cPtr c, vector<unsigned>& result) const;
+
+		// experimental
+		void swapMutateScheduling(Chromosome::cPtr offspring) const;
 	};
 }

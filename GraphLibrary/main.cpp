@@ -23,6 +23,7 @@
 #include <ctime>       /* time */
 
 #define MEASURE 1
+#define WAIT 1
 
 using namespace msonlab;
 using namespace std;
@@ -403,7 +404,7 @@ void runGA(Options::oPtr options)
 	std::cout << "Greedy length: " << lengtFS.fitness(greedy, options) << std::endl;
 	std::cout << "Greedy fitness: " << fsstrategy->fitness(greedy, options) << std::endl;
 	
-	Population::pPtr population = gena.generateInitialSolution(graph);
+	Population::pPtr population = gena.generateInitialSolution(graph, options);
 	population->limit();
 
 	unsigned last = population->best()->getFitness();
@@ -411,7 +412,7 @@ void runGA(Options::oPtr options)
 
 	for (size_t i = 0; i < options->getNumberOfYears(); ++i)
 	{
-		gena.simulateMating(population, options->getPopMaxSize());
+		gena.simulateMating(population, options->getPopMaxSize(), false);
 		population->limit();
 		unsigned best = population->best()->getFitness();
 		DEBUG("Generation " << i + 1);
@@ -422,7 +423,6 @@ void runGA(Options::oPtr options)
 			last = best;
 			bests_round = i;
 		}
-
 	}
 
 	auto best = population->best();
@@ -469,39 +469,82 @@ void schedule(SchedulingAlgorithm::algPtr alg, Options::oPtr options)
 	best->printTable(std::cout, options);
 }
 
+// used for running the algorithm with changing one parameter
+void scheduleTest(SchedulingAlgorithm::algPtr alg, Options::oPtr options, ofstream& resfile)
+{
+	//auto graph = initSampleGraph();
+	auto graph = initRandomGraph(options);
+	//auto graph = initGraph();
+	auto best = alg->schedule(graph, options);
+	resfile << ", preResult=" << best->getFitness();
+	//best->printTable(std::cout, options->getCommOverhead());
+	unsigned l = GraphAlgorithms::computeLengthAndReuseIdleTime(best, options);
+	resfile << ", result=" << l;
+}
+
+void doTest(SchedulingAlgorithm::algPtr alg, Options::oPtr options)
+{
+	ofstream resfile;
+	resfile.open("result.txt");
+	for (unsigned i = 10; i <= 30; i += 10) {
+		srand(161803);
+		std::cout << "Testing " << i << std::endl;
+		Options::oPtr opt = make_shared<const Options>(*options.get(), i);
+		resfile << "{type=genetic, scheduleMutationRate=" << i;
+		double elapsed = 0.0;
+		std::chrono::time_point<std::chrono::high_resolution_clock> startCHRONO, finishCHRONO;
+		startCHRONO = std::chrono::high_resolution_clock::now();
+		scheduleTest(alg, opt, resfile);
+		finishCHRONO = std::chrono::high_resolution_clock::now();
+		std::chrono::duration<Types::DataType> elapsedCHRONO = finishCHRONO - startCHRONO;
+		elapsed = elapsedCHRONO.count();
+		resfile << ", time=" << elapsed << "}\n";
+	}
+	resfile.close();
+}
+
 int main(int argc, char *argv[])
 {
 	/* initialize random seed: */
-	srand(1991);
+	srand(161803);
 	// loading GA configuration
 	Options::oPtr options = std::make_shared<const Options>("Options.cfg");
-	FitnessStrategy::fsPtr fs;
-	if (options->getFitnessStrategy().compare("puUsage") == 0) {
-		fs = std::make_shared<PUUsageFitnessStrategy>();
-	}
-	else if (options->getFitnessStrategy().compare("loadBalance") == 0) {
-		fs = FitnessStrategy::fsPtr(new LoadBalanceFitnessStrategy());
-	}
-	else {
-		fs = FitnessStrategy::fsPtr(new LengthFitnessStartegy());
-		std::cout << "Fitness set to Length.\n";
-	}
+
 	SchedulingAlgorithm::algPtr alg;
 	std::cout << "Using ";
 	if (options->getAlgorithm().compare("genetic") == 0) {
 		std::cout << "Genetic";
-		alg = SchedulingAlgorithm::algPtr(new GeneticAlgorithm(options, fs));
+		FitnessStrategy::fsPtr fs;
+		if (options->getFitnessStrategy().compare("puUsage") == 0) {
+			fs = std::make_shared<PUUsageFitnessStrategy>();
+			std::cout << "Fitness set to pu usage.\n";
+		}
+		else if (options->getFitnessStrategy().compare("loadBalance") == 0) {
+			fs = std::make_shared<LoadBalanceFitnessStrategy>();
+			std::cout << "Fitness set to load balance.\n";
+		}
+		else if (options->getFitnessStrategy().compare("reschedule") == 0) {
+			fs = std::make_shared<RescheduleIdleTimeFitnessStartegy>();
+			std::cout << "Fitness set to reschedule idle time.\n";
+		}
+		else {
+			fs = std::make_shared<LengthFitnessStartegy>();
+			std::cout << "Fitness set to Length.\n";
+		}
+
+		alg = std::make_shared<GeneticAlgorithm>(options, fs);
 	}
 	else if (options->getAlgorithm().compare("criticalPath") == 0) {
 		std::cout << "Critical Path";
-		alg = SchedulingAlgorithm::algPtr(new HusSchedulingAlgorithm());
+		alg = std::make_shared<HusSchedulingAlgorithm>();
 	}
 	else {
 		std::cout << "Greedy";
-		alg = SchedulingAlgorithm::algPtr(new GreedySchedulingAlgorithm());
+		alg = std::make_shared<GreedySchedulingAlgorithm>();
 	}
 
 	std::cout << " algorithm.\n";
+	//doTest(alg, options);
 #if MEASURE != 0
 	double average = 0.0;
 	for (int i = 0; i < MEASURE; ++i)
