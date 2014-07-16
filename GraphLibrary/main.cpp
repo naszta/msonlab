@@ -294,128 +294,88 @@ Graph::gPtr initSampleGraph()
 	return graph;
 }
 
-//void runCompile(Graph::gPtr& graph)
-//{
-//	// CPU idõ mérése
-//	clock_t startCPU, finishCPU;
-//
-//	startCPU = clock();
-//	auto stackProg = StackCompiler::getStackProgram(graph);
-//	finishCPU = clock();
-//
-//	DEBUG("Printing complied program");
-//	DEBUG(*stackProg);
-//
-//	clock_t timeCPU = (finishCPU - startCPU);
-//	double elapsedCPU = timeCPU;
-//
-//	// CHRONO idõ mérése
-//
-//	std::chrono::time_point<std::chrono::high_resolution_clock> startCHRONO, finishCHRONO;
-//
-//	startCHRONO = std::chrono::high_resolution_clock::now();
-//	auto stackProg2 = StackCompiler::getStackProgram(graph);
-//	finishCHRONO = std::chrono::high_resolution_clock::now();
-//
-//	std::chrono::duration<Types::DataType> elapsedCHRONO = finishCHRONO - startCHRONO;
-//
-//	auto result = stackProg->run(1);
-//
-//	std::cout << std::setprecision(100) << elapsedCHRONO.count() << std::endl;
-//	std::cout << std::setprecision(100) << elapsedCPU;
-//}
+void test_small_graph()
+{
+	Graph::gPtr g(new Graph());
 
-	//msonlab::Edge::ePtr e1 (new msonlab::BlueEdge(1,L'e1',0,a,multiply_2a));
-	//msonlab::Edge::ePtr e2 (new msonlab::BlueEdge(2,L'e2',0,constNumber_2,multiply_2a));
-	//msonlab::Edge::ePtr e3 (new msonlab::BlueEdge(3,L'e3',0,a,multiply_minus4ac));
+	msonlab::Node::nPtr a(new msonlab::NodeConstant(0, L"a", make_shared<Types::DataType>(2)));
+	msonlab::Node::nPtr b(new msonlab::NodeConstant(1, L"b", make_shared<Types::DataType>(3)));
+	msonlab::Node::nPtr c(new msonlab::NodeConstant(2, L"c", make_shared<Types::DataType>(2)));
+	msonlab::Node::nPtr d(new msonlab::NodeConstant(3, L"d", make_shared<Types::DataType>(3)));
 
-	//msonlab::Edge::ePtr e4 (new msonlab::BlueEdge(4,L'e4',0,b,multiply_bb));
-	//msonlab::Edge::ePtr e5 (new msonlab::BlueEdge(5,L'e5',0,b,multiply_bb));
-	//msonlab::Edge::ePtr e6 (new msonlab::BlueEdge(6,L'e6',0,b,multiply_minusb));
-	//msonlab::Edge::ePtr e7 (new msonlab::BlueEdge(7,L'e7',0,constNumber_minus1,multiply_minusb));
+	msonlab::Node::nPtr ab(new msonlab::NodeMultiply(4, L"a*b", nullptr));
+	msonlab::Node::nPtr cd(new msonlab::NodeMultiply(5, L"c*d", nullptr));
 
-	//msonlab::Edge::ePtr e8 (new msonlab::Edge(8,L'e8',0,c,multiply_minus4ac));
-	//msonlab::Edge::ePtr e9 (new msonlab::BlueEdge(9,L'e9',0,constNumber_minus4,multiply_minus4ac));
+	msonlab::Node::nPtr ab2(new msonlab::NodeMultiply(6, L"2*a*b", nullptr));
+	msonlab::Node::nPtr c2(new msonlab::NodeConstant(7, L"2", make_shared<Types::DataType>(2)));
 
-	//msonlab::Edge::ePtr e10 (new msonlab::Edge(10,L'e10',0,constNumber_1,divide_1_2a));
-	//msonlab::Edge::ePtr e11 (new msonlab::Edge(11,L'e11',0,multiply_2a,divide_1_2a));
+	msonlab::Node::nPtr res(new msonlab::NodeAdd(8, L"2*a*b + c*d", nullptr));
 
-	//msonlab::Edge::ePtr e12 (new msonlab::Edge(12,L'e12',0,multiply_bb,add_bb_minus4ac));
-	//msonlab::Edge::ePtr e13 (new msonlab::Edge(13,L'e13',0,multiply_minus4ac,add_bb_minus4ac));
+	msonlab::Edge::ePtr e1(new msonlab::Edge(9, L"e1", 0, a, ab));
+	msonlab::Edge::ePtr e2(new msonlab::Edge(10, L"e2", 0, b, ab));
 
-	//msonlab::Edge::ePtr e14 (new msonlab::Edge(14,L'e14',0,add_bb_minus4ac,squareRoot_bb_minus4ac));
+	msonlab::Edge::ePtr e3(new msonlab::Edge(11, L"e3", 0, c, cd));
+	msonlab::Edge::ePtr e4(new msonlab::Edge(12, L"e4", 0, d, cd));
 
-	//msonlab::Edge::ePtr e15 (new msonlab::BlueEdge(15,L'e15',0,squareRoot_bb_minus4ac,multiply_minus_squareRoot_bb_minus4ac));
+	msonlab::Edge::ePtr e5(new msonlab::Edge(13, L"e5", 0, ab, ab2));
+	msonlab::Edge::ePtr e6(new msonlab::Edge(14, L"e6", 0, c2, ab2));
 
-	//msonlab::Edge::ePtr e16 (new msonlab::Edge(16,L'e16',0,multiply_minusb,add_toDivide1));
-	//msonlab::Edge::ePtr e17 (new msonlab::Edge(17,L'e17',0,squareRoot_bb_minus4ac,add_toDivide1));
+	msonlab::Edge::ePtr e7(new msonlab::Edge(15, L"e7", 0, ab2, res));
 
-	//msonlab::Edge::ePtr e18 (new msonlab::Edge(18,L'e18',0,multiply_minusb,add_toDivide2));
-	//msonlab::Edge::ePtr e19 (new msonlab::Edge(19,L'e19',0,multiply_minus_squareRoot_bb_minus4ac,add_toDivide2));
+	msonlab::Edge::ePtr e8(new msonlab::Edge(16, L"e8", 0, cd, res));
 
-	//msonlab::Edge::ePtr e20 (new msonlab::Edge(20,L'e20',0,add_toDivide1,y1));
-	//msonlab::Edge::ePtr e21 (new msonlab::Edge(21,L'e21',0,divide_1_2a,y1));
+	g->addEdge(e1);
+	g->addEdge(e2);
+	g->addEdge(e3);
+	g->addEdge(e4);
+	g->addEdge(e5);
+	g->addEdge(e6);
+	g->addEdge(e7);
+	g->addEdge(e8);
 
-	//msonlab::Edge::ePtr e22 (new msonlab::Edge(22,L'e22',0,add_toDivide2,y2));
-	//msonlab::Edge::ePtr e23 (new msonlab::Edge(23,L'e23',0,divide_1_2a,y2));
+	vector<unsigned int> testOrder;
+
+	// 0 - 9
+	testOrder.push_back(0);
+	testOrder.push_back(0);
+	testOrder.push_back(1);//
+	testOrder.push_back(1);//
+	testOrder.push_back(1);//
+	testOrder.push_back(1);//
+	testOrder.push_back(0);
+	testOrder.push_back(0);
+	testOrder.push_back(0);
+	testOrder.push_back(0);
+
+	// 10 - 16
+	testOrder.push_back(0);
+	testOrder.push_back(1);//
+	testOrder.push_back(1);//
+	testOrder.push_back(0);
+	testOrder.push_back(0);
+	testOrder.push_back(0);
+	testOrder.push_back(0);
 
 
-	//qeGraph.addEdge(e1);
-	//qeGraph.addEdge(e2);
-	//qeGraph.addEdge(e3);
-	//qeGraph.addEdge(e4);
-	//qeGraph.addEdge(e5);
-	//qeGraph.addEdge(e6);
-	//qeGraph.addEdge(e7);
-	//qeGraph.addEdge(e8);
-	//qeGraph.addEdge(e9);
-	//qeGraph.addEdge(e10);
-	//qeGraph.addEdge(e11);
-	//qeGraph.addEdge(e12);
-	//qeGraph.addEdge(e13);
-	//qeGraph.addEdge(e14);
-	//qeGraph.addEdge(e15);
-	//qeGraph.addEdge(e16);
-	//qeGraph.addEdge(e17);
-	//qeGraph.addEdge(e18);
-	//qeGraph.addEdge(e19);
-	//qeGraph.addEdge(e20);
-	//qeGraph.addEdge(e21);
-	//qeGraph.addEdge(e22);
-	//qeGraph.addEdge(e23);
+	//GraphExchanger ge(g);
+	//ge.ExportGraph("test.msg");
+	//
+	//Graph::gPtr imported = GraphExchanger::ImportGraph("test.msg");
+	//GraphExchanger ge2(imported);
+	//ge2.ExportGraph("test2.msg");
 
-	
-	//msonlab::Graph::gPtr testG (new msonlab::Graph(qeGraph));
 
-	//msonlab::Node::nPtr node1 (new msonlab::NodeConstant(0,L'1',1));
-	//msonlab::Node::nPtr node2 (new msonlab::NodeConstant(1,L'1',1));
-	//msonlab::Node::nPtr node3 (new msonlab::NodeConstant(2,L'1',1));
-	//msonlab::Node::nPtr node4 (new msonlab::NodeConstant(3,L'1',1));
-	//msonlab::Node::nPtr node5 (new msonlab::NodeConstant(4,L'1',1));
-	//msonlab::Node::nPtr node6 (new msonlab::NodeConstant(5,L'1',1));
-	//msonlab::Node::nPtr node7 (new msonlab::NodeConstant(6,L'1',1));
+	auto sp1 = StackCompiler::getStackProgram(g, 2, testOrder);
+	sp1->print_out_programs();
+	sp1->run(sp1, 2);
 
-	//msonlab::Edge::ePtr edge1 (new msonlab::Edge(0,L'e1',0,node1,node2));
-	//msonlab::Edge::ePtr edge2 (new msonlab::Edge(1,L'e1',0,node1,node3));
-	//msonlab::Edge::ePtr edge3 (new msonlab::Edge(2,L'e1',0,node1,node4));
-	//msonlab::Edge::ePtr edge4 (new msonlab::Edge(3,L'e1',0,node2,node5));
-	//msonlab::Edge::ePtr edge5 (new msonlab::Edge(4,L'e1',0,node2,node6));
-	//msonlab::Edge::ePtr edge6 (new msonlab::Edge(5,L'e1',0,node3,node6));
-	//msonlab::Edge::ePtr edge7 (new msonlab::Edge(6,L'e1',0,node3,node7));
-	//msonlab::Edge::ePtr edge8 (new msonlab::Edge(7,L'e1',0,node4,node7));
-	//msonlab::Edge::ePtr edge9 (new msonlab::Edge(8,L'e1',0,node6,node7));
 
-	//testG->addEdge(edge1);
-	//testG->addEdge(edge2);
-	//testG->addEdge(edge3);
-	//testG->addEdge(edge4);
-	//testG->addEdge(edge5);
-	//testG->addEdge(edge6);
-	//testG->addEdge(edge7);
-	//testG->addEdge(edge8);
-	//testG->addEdge(edge9);
-	//srand(1234);
-	msonlab::GraphAlgorithms ga;
+	/*auto sp2 = StackCompiler::getStackProgram(imported, 2, testOrder);
+	sp2->print_out_programs();
+	*/
+}
+
+msonlab::GraphAlgorithms ga;
 
 void runGA(Options::oPtr options)
 {
@@ -585,7 +545,8 @@ int main(int argc, char *argv[])
 		std::chrono::time_point<std::chrono::high_resolution_clock> startCHRONO, finishCHRONO;
 		startCHRONO = std::chrono::high_resolution_clock::now();
 #endif
-		schedule(alg, options);
+		test_small_graph();
+		//schedule(alg, options);
 #if MEASURE != 0
 		finishCHRONO = std::chrono::high_resolution_clock::now();
 		std::chrono::duration<Types::DataType> elapsedCHRONO = finishCHRONO - startCHRONO;
