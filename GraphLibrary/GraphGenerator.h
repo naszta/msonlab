@@ -1,15 +1,12 @@
-#pragma once
+#ifndef GRAPHLIB_GRAPHGENERATOR_H
+#define GRAPHLIB_GRAPHGENERATOR_H
 
-#include <boost/enable_shared_from_this.hpp>
-#include <vector>
 #include "Graph.h"
-#include "Node.h"
-
-using std::vector;
-using boost::shared_ptr;
 
 namespace msonlab
 {
+	using std::make_shared;
+	using std::make_unique;
 	class GraphGenerator
 	{
 
@@ -20,14 +17,15 @@ namespace msonlab
 		// edgeProb: the probability of an edge between any two node
 		// return: the generated graph
 		///
-		static shared_ptr<Graph> generate(size_t size, unsigned edgeProb, unsigned widening, unsigned pus)
+		static Graph::gPtr generate(size_t size, unsigned edgeProb, unsigned widening, unsigned pus)
 		{
 			IProcessable::nVect nodes(size);
-			shared_ptr<Graph> graph(new Graph());
+			Graph::gPtr graph = make_unique<Graph>();
 
 			for (size_t i = 0; i < size; ++i)
 			{
-				nodes[i] = Node::nPtr(new Node(i, L'a', shared_ptr<double>(new double(i))));
+				unsigned comp = rand() % 3 + 1;
+				nodes[i] = make_shared<Node>(i, L"a", make_shared<Types::DataType>(i), comp);
 				graph->addNode(nodes[i]);
 			}
 
@@ -52,7 +50,7 @@ namespace msonlab
 					}
 
 					nodeId += input_size;
-					IProcessable::ePtr e(new Edge(i + nodeId, L'a', shared_ptr<double>(new double(i + nodeId)), nodes[i], nodes[nodeId]));
+					IProcessable::ePtr e = make_shared<Edge>(i + nodeId, L"a", make_shared<Types::DataType>(i + nodeId), nodes[i], nodes[nodeId]);
 					graph->addEdge(e);
 				}
 			}
@@ -76,7 +74,7 @@ namespace msonlab
 					}
 
 					nodeId += i;
-					IProcessable::ePtr e(new Edge(i + nodeId, L'a', shared_ptr<double>(new double(i + nodeId)), nodes[i], nodes[nodeId]));
+					IProcessable::ePtr e = make_shared<Edge>(i + nodeId, L"a", make_shared<Types::DataType>(i + nodeId), nodes[i], nodes[nodeId]);
 					graph->addEdge(e);
 				}
 			}
@@ -85,3 +83,5 @@ namespace msonlab
 		}
 	};
 }
+
+#endif

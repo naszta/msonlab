@@ -11,7 +11,7 @@ namespace msonlab
 	}
 
 
-	Types::DataType FutureStackValue::getValue()
+	Types::DataPtr FutureStackValue::getValue()
 	{
 		return (*value).get();
 	}

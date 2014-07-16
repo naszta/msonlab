@@ -5,7 +5,7 @@ namespace msonlab
 {
 	// protected
 
-	bool IProcessable::setProcessed(msonlab::Types::DataType _resultValue)
+	bool IProcessable::setProcessed(msonlab::Types::DataPtr _resultValue)
 	{
 		resultValue = _resultValue;
 		processed = true;
@@ -20,12 +20,11 @@ namespace msonlab
 		return true;
 	}
 
+	// public constructors and methods
 
-	// public 
-
-	IProcessable::IProcessable(unsigned int _id, std::string _label, Types::DataType _value)
+	IProcessable::IProcessable(unsigned int _id, Types::LabelType _label, Types::DataPtr _value)
 		: id(_id), label(_label), value(_value)
-	{
+	{ 
 	}
 
 	IProcessable::IProcessable() { };
@@ -51,25 +50,24 @@ namespace msonlab
 		return "i" + id;
 	}
 
-
-	std::string IProcessable::getLabel() const
+	Types::LabelType IProcessable::getLabel() const
 	{
 		return label;
 	}
 
-	Types::DataType IProcessable::getValue() const
+	Types::DataPtr IProcessable::getValue() const
 	{
 		return value;
 	}
 
-	Types::DataType IProcessable::getResultValue() const
+	Types::DataPtr IProcessable::getResultValue() const
 	{
 		if (isProcessed())
 			return resultValue;
 		else
 			throw msonlab::Exceptions::ResultStillNotReadyException("Result for this processable element still not available!");
 	}
-
+	
 	IProcessable::PlaceEnum IProcessable::getPlace() const
 	{
 		return IProcessable::Inside;
@@ -139,6 +137,6 @@ namespace msonlab
 	{
 		return "";
 	}
-	
+
 
 }

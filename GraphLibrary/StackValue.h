@@ -8,7 +8,7 @@ namespace msonlab
 	public:
 		typedef std::shared_ptr<StackValue> stackvaluePtr;
 
-		virtual Types::DataType getValue();
+		virtual Types::DataPtr getValue();
 
 		virtual std::string to_string();
 	};

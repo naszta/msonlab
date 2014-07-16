@@ -2,6 +2,7 @@
 #include <vector>
 #include <map>
 #include <set>
+#include <memory>
 #include <iostream>
 #include <algorithm>
 #include <memory>
@@ -16,19 +17,26 @@
 #include <xercesc\sax\HandlerBase.hpp>
 XERCES_CPP_NAMESPACE_USE
 
-
-
 using std::vector;
+
+#define PRINT 1
+#if PRINT == 1
+#define DEBUG(str) std::cout << str
+#define DEBUGLN(str) std::cout << str << std::endl
+#else
+#define DEBUG(str) 
+#define DEBUGLN(str)
+#endif
 
 namespace msonlab
 {
 
 	namespace Types
 	{
-		typedef std::shared_ptr<double> DataType;
-		typedef std::shared_ptr<std::shared_future<DataType>> FutureDataType;
-
-
+		typedef double DataType;
+		typedef std::shared_ptr<DataType> DataPtr;
+		typedef std::wstring LabelType;
+		typedef std::shared_ptr<std::shared_future<DataPtr>> FutureDataType;
 	}
 
 	namespace Exceptions

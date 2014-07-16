@@ -6,7 +6,7 @@ namespace msonlab
 	class NodeSquareRoot : public Node
 	{
 	public:
-		NodeSquareRoot(unsigned int _id, std::string _label, Types::DataType _value);
+		NodeSquareRoot(unsigned int _id, Types::LabelType _label, Types::DataPtr _value);
 
 		virtual IProcessable::pVect process();
 
@@ -16,8 +16,7 @@ namespace msonlab
 		// exchange
 		std::string getTypeString() const;
 		std::string get_color() const;
+
+		unsigned getComputationTime() { return 7; }
 	};
-
-
-
 }

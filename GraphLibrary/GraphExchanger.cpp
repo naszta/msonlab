@@ -13,12 +13,10 @@ namespace msonlab
 		}
 	};
 
-
-	GraphExchanger::GraphExchanger(msonlab::Graph::gPtr toExchange)
-	{
-		graph = toExchange;
-	}
-
+	//GraphExchanger::GraphExchanger(msonlab::Graph::gPtr toExchange)
+	//{
+	//	graph = toExchange;
+	//}
 
 	Graph::gPtr GraphExchanger::ImportGraph(std::string inputPath)
 	{
@@ -79,7 +77,6 @@ namespace msonlab
 			return nullptr;
 		}
 
-
 		// check for "msonlab::GraphExchanger" comment in the document
 		bool ge_signal = false;
 		DOMNodeList* comment_list = doc->getDocumentElement()->getChildNodes();
@@ -99,11 +96,9 @@ namespace msonlab
 			}
 		}
 
-
 		// create id variable
 		unsigned int id = 0;
 		unsigned int node_count = 0;
-
 
 		// import nodes
 		DOMNodeList* node_list = doc->getElementsByTagName(XMLString::transcode(std::string("node").c_str()));
@@ -112,8 +107,8 @@ namespace msonlab
 			auto curr_node_xml = dynamic_cast<DOMElement*>(node_list->item(i));
 
 			std::string node_type;
-			std::string nodegraphics_label;
 			std::string custom_data;
+			Types::LabelType nodegraphics_label;
 			unsigned int node_id = -1;
 
 			std::string id_string = XMLString::transcode(curr_node_xml->getAttribute(XMLString::transcode(std::string("id").c_str())));
@@ -136,10 +131,12 @@ namespace msonlab
 				{
 					DOMNodeList* label_list = curr_data_xml->getElementsByTagName(XMLString::transcode(std::string("y:NodeLabel").c_str()));
 					if (label_list->getLength() > 0)
-						nodegraphics_label = XMLString::transcode(dynamic_cast<DOMElement*>(label_list->item(0))->getTextContent());
+					{
+						std::string stmp = XMLString::transcode(dynamic_cast<DOMElement*>(label_list->item(0))->getTextContent());
+						nodegraphics_label = std::wstring(stmp.begin(), stmp.end());
+					}
 				}
 			}
-
 
 			GraphBuilder::add_node(node_id, node_type, nodegraphics_label, custom_data);
 
@@ -172,7 +169,6 @@ namespace msonlab
 			target_id_string.erase(0, 1);
 			target_id = atoi(target_id_string.c_str());
 
-
 			DOMNodeList* data_list = curr_edge_xml->getElementsByTagName(XMLString::transcode(std::string("data").c_str()));
 			for (size_t j = 0; j < data_list->getLength(); ++j)
 			{
@@ -187,9 +183,7 @@ namespace msonlab
 			}
 
 			GraphBuilder::add_edge(edge_id, source_id, target_id, edge_type, custom_data);
-
 		}
-
 
 		if (doc) doc->release();
 		XMLPlatformUtils::Terminate();
@@ -245,7 +239,7 @@ namespace msonlab
 
 	}
 
-	bool GraphExchanger::ExportGraph(std::string outputPath) const
+	bool GraphExchanger::ExportGraph(const Graph::gPtr& graph, std::string outputPath) const
 	{
 		XMLPlatformUtils::Initialize();
 
@@ -289,7 +283,6 @@ namespace msonlab
 			graphElement->appendChild(edges.at(i)->serialize(pDOMDocument, "d3", "d1", "d5"));
 		}
 
-
 		// save XML to file
 		outputXML(pDOMDocument, outputPath);
 		outputXML(pDOMDocument, "test.graphml");
@@ -298,7 +291,6 @@ namespace msonlab
 
 		return true;
 	}
-
 
 	bool GraphExchanger::outputXML(DOMDocument* myDOMDocument, std::string filePath) const
 	{
@@ -338,5 +330,4 @@ namespace msonlab
 
 		return true;
 	}
-
 }

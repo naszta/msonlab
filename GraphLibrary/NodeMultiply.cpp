@@ -5,7 +5,7 @@
 
 namespace msonlab
 {
-	NodeMultiply::NodeMultiply(unsigned int _id, std::string _label, Types::DataType _value)
+	NodeMultiply::NodeMultiply(unsigned int _id, Types::LabelType _label, Types::DataPtr _value)
 		: Node(_id, _label, _value)
 	{
 	}
@@ -16,7 +16,7 @@ namespace msonlab
 
 		if (isReadyForProcess())
 		{
-			Types::DataType newVal = msonlab::Types::DataType(new double(1.0));
+			Types::DataPtr newVal = std::make_shared<Types::DataType>(1.0);
 
 			for (IProcessable::eVect::iterator it = predecessors.begin(); it != predecessors.end(); ++it)
 			{
@@ -92,9 +92,9 @@ namespace msonlab
 		{
 			// if need to sync but called from the same thread, DUP is needed
 			if (caller_thread != -1)
-			{
+	{
 				if (caller_thread == thread_id)
-				{
+		{
 					StackRunner::addToken(prog, StackRunner::DUP, StackRunner::dataToken(new std::pair<StackValue::stackvaluePtr, int>(nullptr, -1)));
 				}
 			}
@@ -102,13 +102,13 @@ namespace msonlab
 			StackRunner::addToken(prog, StackRunner::SYNC, StackRunner::dataToken(new std::pair<StackValue::stackvaluePtr, int>(nullptr, getId())));
 			set_synced();
 		}
-	}
+		}
 
 	// exchange
 	std::string NodeMultiply::getTypeString() const
-	{
+		{
 		return GraphExchanger::getSupportedNodeTypeName(GraphExchanger::supportedNodeType::MULTIPLY);
-	}
+		}
 
 	std::string NodeMultiply::get_color() const
 	{

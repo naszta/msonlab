@@ -12,14 +12,14 @@ namespace msonlab
 	{
 	}
 
-	DFSIterator::DFSIterator(Graph::gPtr g) : GraphIterator(g)
+	DFSIterator::DFSIterator(Graph& g) : GraphIterator(g)
 	{
 		// end of the iterator is unique for every graph
 		// but the same for every iterator on the same graph
-		this->end = g->iteratorEnd;
+		this->end = g.iteratorEnd;
 
 		// adding input nodes to the queue.
-		IProcessable::nVect inputNodesVect = g->getInputNodes();
+		IProcessable::nVect inputNodesVect = g.getInputNodes();
 		if (inputNodesVect.size() > 0)
 		{
 			IProcessable::nVect::iterator it = inputNodesVect.begin();
@@ -40,7 +40,7 @@ namespace msonlab
 	}
 
 	// Copy constructor
-	DFSIterator::DFSIterator(DFSIterator& it) : GraphIterator(it.graph)
+	DFSIterator::DFSIterator(DFSIterator& it) : GraphIterator(it)
 	{
 		if (this != &it)
 		{
@@ -52,16 +52,12 @@ namespace msonlab
 	{
 		if (this != &it)
 		{
-			this->clear();
-			this->graph = it.graph;
-			this->node = it.node;
-			this->end = it.end;
-			//
-			//// copy state
+			GraphIterator::operator=(it);
+
+			// copy state
 			this->explored = it.explored;
 			this->discovered = it.discovered;
 			this->toDiscover = it.toDiscover;
-			this->inputNodes = it.inputNodes;
 		}
 
 		return *this;

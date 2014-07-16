@@ -12,26 +12,27 @@ namespace msonlab
 		return a->getFitness() > b->getFitness();
 	}
 
-	Population::Population(vector<cPtr> sol, size_t keepSize, size_t popMaxSize, size_t keepBest) : solution(sol), POPMAXSIZE(popMaxSize), KEEP(keepSize), KEEPBEST(keepBest)
+	Population::Population(const vector<Chromosome::cPtr>& sol, size_t keepSize, size_t popMaxSize, size_t keepBest) : solution(sol), POPMAXSIZE(popMaxSize), KEEP(keepSize), KEEPBEST(keepBest)
 	{
 		this->solution.resize(KEEP);
 	}
 
-	vector<shared_ptr<Chromosome>> Population::getPopulation()
+	const vector<shared_ptr<Chromosome>>& Population::getPopulation() const
 	{
 		return this->solution;
 	}
 
 	///
-	// adds a new offspring to the population
+	/// adds a new offspring to the population
 	///
-	void Population::addOffspring(cPtr offspring)
+	/// @param offspring the chromosome to add.
+	void Population::addOffspring(Chromosome::cPtr offspring)
 	{
 		this->newGeneration.push(offspring);
 	}
 
 	///
-	// increase age of the chromosomes
+	/// Increase age of the chromosomes.
 	///
 	void Population::ageChromosomes()
 	{
@@ -39,8 +40,9 @@ namespace msonlab
 	}
 
 	///
-	// limits the population to KEEP size
-	// it keeps the chromosomes with the best fitness
+	/// Limits the population to KEEP size.
+	/// 
+	/// It keeps the chromosomes with the best fitness.
 	///
 	void Population::limit()
 	{
@@ -63,22 +65,28 @@ namespace msonlab
 	}
 
 	///
-	// gets a potential parent from the population randomly
+	/// gets a potential parent from the population randomly
 	///
-	shared_ptr<Chromosome> Population::getParent()
+	/// @return A chromosome from the offspring will be created.
+	shared_ptr<Chromosome> Population::getParent() const
 	{
 		return this->solution[rand() % solution.size()];
 	}
 
 	///
-	// gets the best chromosome from the population
+	/// Gets the best chromosome from the population
 	///
-	shared_ptr<Chromosome> Population::best()
+	/// @return A chromosome with the best fitness value.
+	shared_ptr<Chromosome> Population::best() const
 	{
 		return solution[0];
 	}
 
-	unsigned Population::avarageFittness()
+	///
+	/// Calculates the avarage fitness of the population.
+	///
+	/// @return The avarage fitness of the population.
+	unsigned Population::avarageFittness() const
 	{
 		unsigned sum = 0;
 		for (size_t i = 0; i < solution.size(); ++i)
@@ -87,5 +95,23 @@ namespace msonlab
 		}
 
 		return sum / solution.size();
+	}
+
+	///
+	/// Sets the levels' size's.
+	///
+	void Population::setLevelSize(const vector<size_t>& sizes)
+	{
+		if (this->levelSize.size() != 0)
+			throw Exceptions::GeneralErrorException("Level size can be set only once.");
+		for (vector<size_t>::const_iterator it = sizes.begin(); it != sizes.end(); ++it)
+		{
+			this->levelSize.push_back(*it);
+		}
+	}
+
+	Population & Population::operator = (Population & p) {
+		std::cout << "Where am I used?";
+		return *this;
 	}
 }

@@ -1,13 +1,17 @@
 #pragma once
 
-#include <boost\enable_shared_from_this.hpp>
-#include "Graph.h"
+#include "SchedulingAlgorithm.h"
 
 namespace msonlab
 {
-	class GreedySchedulingAlgorithm
+	///
+	/// This class implements a greedy scheduling of the graph.
+	///
+	/// Greedy scheduling means, it always schedules the next
+	/// ready to process node to the next available PU.
+	class GreedySchedulingAlgorithm : public SchedulingAlgorithm
 	{
 	public:
-		int schedule(boost::shared_ptr<Graph> graph, int pus);
+		Chromosome::cPtr schedule(Graph::gPtr& graph, Options::oPtr options) const;
 	};
 }

@@ -5,7 +5,7 @@
 
 namespace msonlab
 {
-	NodeAdd::NodeAdd(unsigned int _id, std::string _label, Types::DataType _value)
+	NodeAdd::NodeAdd(unsigned int _id, Types::LabelType _label, Types::DataPtr _value)
 		: Node(_id, _label, _value)
 	{
 	}
@@ -16,7 +16,7 @@ namespace msonlab
 
 		if (isReadyForProcess())
 		{
-			Types::DataType newVal = msonlab::Types::DataType(new double(0.0));
+			Types::DataPtr newVal = std::make_shared<Types::DataType>(0.0);
 
 			for (IProcessable::eVect::iterator it = predecessors.begin(); it != predecessors.end(); ++it)
 			{
@@ -94,7 +94,7 @@ namespace msonlab
 			if (caller_thread != -1)
 			{
 				if (caller_thread == thread_id)
-				{
+		{
 					StackRunner::addToken(prog, StackRunner::DUP, StackRunner::dataToken(new std::pair<StackValue::stackvaluePtr, int>(nullptr, -1)));
 				}
 			}

@@ -13,8 +13,17 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Header Files\Scheduling">
+      <UniqueIdentifier>{705f784b-5f18-4307-9e21-f11f2c44cb64}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Scheduling">
+      <UniqueIdentifier>{b07ff3d8-cdfd-4880-99e7-a0a25c0ef1d2}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Header Files\Node">
       <UniqueIdentifier>{0500ca1e-baeb-40cf-8209-1d4b2ce4ceba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Scheduling\Genetic">
+      <UniqueIdentifier>{7f7cc1a5-9891-47a2-80c2-87601e595dd9}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\Edge">
       <UniqueIdentifier>{d2470f26-a193-4cf6-a1b0-07eb0fc34f26}</UniqueIdentifier>
@@ -31,23 +40,20 @@
     <Filter Include="Source Files\Graph">
       <UniqueIdentifier>{28d3598e-d145-4f14-a8be-72a0541bff86}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Scheduling\Genetic">
+      <UniqueIdentifier>{359b44fe-e245-4972-a1bf-3edecceb2f38}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Header Files\Stack">
       <UniqueIdentifier>{2008d2fb-5216-4f79-ba7a-b1f12756b4d0}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Stack">
       <UniqueIdentifier>{12755bff-b42f-4456-8a35-f836cca53806}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Exchange">
-      <UniqueIdentifier>{c4f6bbbf-bbca-4aa0-9ed8-98354ac2e606}</UniqueIdentifier>
+    <Filter Include="Header Files\Scheduling\Genetic\FitnessStrategy">
+      <UniqueIdentifier>{bb4553d1-c5dc-4861-b30a-4bd28d5754e6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Exchange">
-      <UniqueIdentifier>{54026b20-8851-473c-b34e-1b88979df61e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Stack\Values">
-      <UniqueIdentifier>{433a693d-fd63-498c-a075-6009ec51d9ee}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Stack\Values">
-      <UniqueIdentifier>{f34e5416-190b-4589-b84e-f597d5e9fc87}</UniqueIdentifier>
+    <Filter Include="Source Files\Scheduling\Genetic\FitnessStrategy">
+      <UniqueIdentifier>{f59c4609-bb38-49f1-91c7-99f9ce6917e6}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -59,6 +65,9 @@
     </ClInclude>
     <ClInclude Include="Processor.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GreedySchedulingAlgorithm.h">
+      <Filter>Header Files\Scheduling</Filter>
     </ClInclude>
     <ClInclude Include="Node.h">
       <Filter>Header Files\Node</Filter>
@@ -78,7 +87,22 @@
     <ClInclude Include="NodeDivide.h">
       <Filter>Header Files\Node</Filter>
     </ClInclude>
+    <ClInclude Include="GeneticAlgorithm.h">
+      <Filter>Header Files\Scheduling\Genetic</Filter>
+    </ClInclude>
+    <ClInclude Include="Population.h">
+      <Filter>Header Files\Scheduling\Genetic</Filter>
+    </ClInclude>
+    <ClInclude Include="Chromosome.h">
+      <Filter>Header Files\Scheduling\Genetic</Filter>
+    </ClInclude>
     <ClInclude Include="Graph.h">
+      <Filter>Header Files\Graph</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphAlgorithms.h">
+      <Filter>Header Files\Graph</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphGenerator.h">
       <Filter>Header Files\Graph</Filter>
     </ClInclude>
     <ClInclude Include="GraphIterator.h">
@@ -99,26 +123,41 @@
     <ClInclude Include="Edge.h">
       <Filter>Header Files\Edge</Filter>
     </ClInclude>
+    <ClInclude Include="ConfigFile.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="StackCompiler.h">
       <Filter>Header Files\Stack</Filter>
     </ClInclude>
     <ClInclude Include="StackRunner.h">
       <Filter>Header Files\Stack</Filter>
     </ClInclude>
-    <ClInclude Include="GraphExchanger.h">
-      <Filter>Header Files\Exchange</Filter>
+    <ClInclude Include="FitnessStrategy.h">
+      <Filter>Header Files\Scheduling\Genetic\FitnessStrategy</Filter>
     </ClInclude>
-    <ClInclude Include="StackValue.h">
-      <Filter>Header Files\Stack\Values</Filter>
+    <ClInclude Include="HusSchedulingAlgorithm.h">
+      <Filter>Header Files\Scheduling</Filter>
+    </ClInclude>
+    <ClInclude Include="Options.h">
+      <Filter>Header Files\Scheduling</Filter>
+    </ClInclude>
+    <ClInclude Include="SchedulingAlgorithm.h">
+      <Filter>Header Files\Scheduling</Filter>
     </ClInclude>
     <ClInclude Include="SimpleStackValue.h">
-      <Filter>Header Files\Stack\Values</Filter>
+      <Filter>Header Files\Stack</Filter>
+    </ClInclude>
+    <ClInclude Include="StackValue.h">
+      <Filter>Header Files\Stack</Filter>
     </ClInclude>
     <ClInclude Include="FutureStackValue.h">
-      <Filter>Header Files\Stack\Values</Filter>
+      <Filter>Header Files\Stack</Filter>
     </ClInclude>
     <ClInclude Include="GraphBuilder.h">
-      <Filter>Header Files\Exchange</Filter>
+      <Filter>Header Files\Graph</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphExchanger.h">
+      <Filter>Header Files\Graph</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -130,6 +169,18 @@
     </ClCompile>
     <ClCompile Include="Processor.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GreedySchedulingAlgorithm.cpp">
+      <Filter>Source Files\Scheduling</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneticAlgorithm.cpp">
+      <Filter>Source Files\Scheduling\Genetic</Filter>
+    </ClCompile>
+    <ClCompile Include="Chromosome.cpp">
+      <Filter>Source Files\Scheduling\Genetic</Filter>
+    </ClCompile>
+    <ClCompile Include="Population .cpp">
+      <Filter>Source Files\Scheduling\Genetic</Filter>
     </ClCompile>
     <ClCompile Include="BlueEdge.cpp">
       <Filter>Source Files\Edge</Filter>
@@ -147,6 +198,9 @@
       <Filter>Source Files\Graph</Filter>
     </ClCompile>
     <ClCompile Include="Graph.cpp">
+      <Filter>Source Files\Graph</Filter>
+    </ClCompile>
+    <ClCompile Include="GraphAlgorithms.cpp">
       <Filter>Source Files\Graph</Filter>
     </ClCompile>
     <ClCompile Include="GraphIterator.cpp">
@@ -176,20 +230,29 @@
     <ClCompile Include="StackRunner.cpp">
       <Filter>Source Files\Stack</Filter>
     </ClCompile>
-    <ClCompile Include="GraphExchanger.cpp">
-      <Filter>Source Files\Exchange</Filter>
+    <ClCompile Include="FitnessStrategy.cpp">
+      <Filter>Source Files\Scheduling\Genetic\FitnessStrategy</Filter>
     </ClCompile>
-    <ClCompile Include="StackValue.cpp">
-      <Filter>Source Files\Stack\Values</Filter>
+    <ClCompile Include="HusSchedulingAlgorithm.cpp">
+      <Filter>Source Files\Scheduling</Filter>
+    </ClCompile>
+    <ClCompile Include="Options.cpp">
+      <Filter>Source Files\Scheduling</Filter>
     </ClCompile>
     <ClCompile Include="SimpleStackValue.cpp">
-      <Filter>Source Files\Stack\Values</Filter>
+      <Filter>Source Files\Stack</Filter>
+    </ClCompile>
+    <ClCompile Include="StackValue.cpp">
+      <Filter>Source Files\Stack</Filter>
     </ClCompile>
     <ClCompile Include="FutureStackValue.cpp">
-      <Filter>Source Files\Stack\Values</Filter>
+      <Filter>Source Files\Stack</Filter>
+    </ClCompile>
+    <ClCompile Include="GraphExchanger.cpp">
+      <Filter>Source Files\Graph</Filter>
     </ClCompile>
     <ClCompile Include="GraphBuilder.cpp">
-      <Filter>Source Files\Exchange</Filter>
+      <Filter>Source Files\Graph</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -7,7 +7,7 @@
 
 namespace msonlab
 {
-	NodeSquareRoot::NodeSquareRoot(unsigned int _id, std::string _label, Types::DataType _value)
+	NodeSquareRoot::NodeSquareRoot(unsigned int _id, Types::LabelType _label, Types::DataPtr _value)
 		: Node(_id, _label, _value)
 	{
 	}
@@ -16,8 +16,7 @@ namespace msonlab
 	{
 		IProcessable::pVect ret;
 
-
-		Types::DataType newVal = msonlab::Types::DataType(new double(0.0));
+		Types::DataPtr newVal = std::make_shared<msonlab::Types::DataType>(0.0);
 
 
 		if (isReadyForProcess())
@@ -87,7 +86,9 @@ namespace msonlab
 		}
 
 		// add SQRT operation
-		StackRunner::addToken(prog, StackRunner::PUSH, StackRunner::dataToken(new std::pair<StackValue::stackvaluePtr, int>(StackValue::stackvaluePtr(new SimpleStackValue(Types::DataType(new double(0.5)))), -1)));
+		Types::DataPtr data = std::make_shared<Types::DataType>(0.5);
+		StackValue::stackvaluePtr stackValue = std::make_shared<SimpleStackValue>(data);
+		StackRunner::addToken(prog, StackRunner::PUSH, StackRunner::dataToken(new std::pair<StackValue::stackvaluePtr, int>(stackValue, -1)));
 		StackRunner::addToken(prog, StackRunner::POW, StackRunner::dataToken(new std::pair<StackValue::stackvaluePtr, int>(nullptr, -1)));
 
 

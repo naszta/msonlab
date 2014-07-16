@@ -1,7 +1,7 @@
 #pragma once
 #include "Global.h"
 #include "StackRunner.h"
-
+#include <string>
 
 namespace msonlab
 {
@@ -11,14 +11,15 @@ namespace msonlab
 	{
 	protected:
 		unsigned int id;
-		std::string label;
+		//wchar_t label;
+		Types::LabelType label;
 
-		Types::DataType value;
+		Types::DataPtr value;
 
 		bool processed;
-		Types::DataType resultValue;
+		Types::DataPtr resultValue;
 
-		bool setProcessed(msonlab::Types::DataType _resultValue);
+		bool setProcessed(msonlab::Types::DataPtr _resultValue);
 		bool clearProcessed();
 
 		// compile
@@ -26,7 +27,6 @@ namespace msonlab
 
 	public:
 		bool synced = false;
-
 		typedef std::shared_ptr<IProcessable> pPtr;
 		typedef vector<std::shared_ptr<IProcessable>> pVect;
 
@@ -35,11 +35,11 @@ namespace msonlab
 		typedef std::set<std::shared_ptr<Node>> nSet;
 
 		typedef std::shared_ptr<Edge> ePtr;
-		typedef vector<ePtr> eVect;
+		typedef vector<std::shared_ptr<Edge>> eVect;
 
 		enum PlaceEnum {Input, Inside, Output};
 
-		IProcessable(unsigned int _id, std::string _label, Types::DataType _value);
+		IProcessable(unsigned int _id, Types::LabelType _label, Types::DataPtr _value);
 		IProcessable();
 
 		virtual bool registerParameter() = 0;
@@ -51,14 +51,13 @@ namespace msonlab
 
 		unsigned int getId() const;
 		virtual std::string getIdString() const;
-		virtual std::string getLabel() const;
-		Types::DataType getValue() const;
-		Types::DataType getResultValue() const;
+		virtual Types::LabelType getLabel() const;
+		Types::DataPtr getValue() const;
+		Types::DataPtr getResultValue() const;
 
 		virtual PlaceEnum getPlace() const;
 
 		bool operator==(const IProcessable& other) const;
-
 
 		// compile
 		virtual void compile(int caller_thread, vector<msonlab::StackRunner::program>* programs, StackRunner::scheduleOrder schedule);

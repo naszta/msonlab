@@ -6,7 +6,9 @@ namespace msonlab
 	std::map<unsigned int, Node::nPtr> GraphBuilder::nodes;
 	std::map<unsigned int, Edge::ePtr> GraphBuilder::edges;
 
-	void GraphBuilder::add_node(unsigned int id, std::string node_type, std::string label, std::string custom_data)
+	using namespace Types;
+
+	void GraphBuilder::add_node(unsigned int id, std::string node_type, Types::LabelType label, std::string custom_data)
 	{
 		if (node_type == std::string("ADD"))
 		{
@@ -17,10 +19,9 @@ namespace msonlab
 		}
 		if (node_type == std::string("CONSTANT"))
 		{
+			DataPtr data = std::make_shared<DataType>(atof(custom_data.c_str()));
 			GraphBuilder::nodes.insert(std::pair<unsigned int, Node::nPtr>
-				(id,
-				Node::nPtr(new NodeConstant(id, label, Types::DataType(new double(atof(custom_data.c_str())))))
-				));
+				(id, Node::nPtr(new NodeConstant(id, label, data))));
 		}
 		if (node_type == std::string("DIVIDE"))
 		{
@@ -51,21 +52,21 @@ namespace msonlab
 		{
 			GraphBuilder::edges.insert(std::pair<unsigned int, Edge::ePtr>
 				(id,
-				Edge::ePtr(new Edge(id, std::string(""), 0, nodes.at(source_id), nodes.at(target_id)))
+				Edge::ePtr(new Edge(id, L"", 0, nodes.at(source_id), nodes.at(target_id)))
 				));
 		}
 		if (edge_type == std::string("BLUE"))
 		{
 			GraphBuilder::edges.insert(std::pair<unsigned int, Edge::ePtr>
 				(id,
-				Edge::ePtr(new BlueEdge(id, std::string(""), 0, nodes.at(source_id), nodes.at(target_id)))
+				Edge::ePtr(new BlueEdge(id, L"", 0, nodes.at(source_id), nodes.at(target_id)))
 				));
 		}
 		if (edge_type == std::string("MULTIPLIER"))
 		{
 			GraphBuilder::edges.insert(std::pair<unsigned int, Edge::ePtr>
 				(id,
-				Edge::ePtr(new MultiplierEdge(id, std::string(""), 0, nodes.at(source_id), nodes.at(target_id), atof(custom_data.c_str())))
+				Edge::ePtr(new MultiplierEdge(id, L"", 0, nodes.at(source_id), nodes.at(target_id), atof(custom_data.c_str())))
 				));
 		}
 	}
@@ -79,7 +80,7 @@ namespace msonlab
 
 	Graph::gPtr GraphBuilder::build()
 	{
-		Graph::gPtr ret(new Graph());
+		Graph::gPtr ret = std::make_unique<Graph>();
 		for (auto e : GraphBuilder::edges)
 		{
 			ret->addEdge(e.second);

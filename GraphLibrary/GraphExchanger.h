@@ -11,14 +11,14 @@ namespace msonlab
 	class GraphExchanger
 	{
 	private:
-		msonlab::Graph::gPtr graph;
+		//msonlab::Graph::gPtr graph;
 
 		bool outputXML(DOMDocument* myDOMDocument, std::string filePath) const;
 
 		void createKeys(DOMDocument* inDocument) const;
 
 	public:
-		GraphExchanger(msonlab::Graph::gPtr toExchange);
+		//GraphExchanger(msonlab::Graph::gPtr toExchange);
 
 		enum supportedNodeType
 		{
@@ -77,11 +77,7 @@ namespace msonlab
 			}
 		}
 
-
 		static Graph::gPtr ImportGraph(std::string inputPath);
-		bool ExportGraph(std::string outputPath) const;
-
-
-		
+		bool ExportGraph(const Graph::gPtr& graph, std::string outputPath) const;
 	};
 }

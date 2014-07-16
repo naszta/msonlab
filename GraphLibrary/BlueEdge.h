@@ -8,7 +8,7 @@ namespace msonlab
 	class BlueEdge : public Edge
 	{
 	public:
-		BlueEdge(unsigned int _id, std::string _label, Types::DataType _value, IProcessable::nPtr _from, IProcessable::nPtr _to);
+		BlueEdge(unsigned int _id, Types::LabelType _label, Types::DataPtr _value, IProcessable::nPtr _from, IProcessable::nPtr _to);
 
 		virtual EdgeTypeEnum getEdgeType() const;
 

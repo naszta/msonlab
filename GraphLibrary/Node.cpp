@@ -1,12 +1,18 @@
 #pragma once
 #include "Node.h"
 #include "GraphExchanger.h"
+#include "Edge.h"
 
 
 namespace msonlab
 {
-	Node::Node(unsigned int _id, std::string _label, Types::DataType _value)
-		: IProcessable(_id, _label, _value), paramCount(0)
+	Node::Node(unsigned int _id, Types::LabelType _label, Types::DataPtr _value)
+		: IProcessable(_id, _label, _value), paramCount(0), compTime(1)
+	{
+	}
+
+	Node::Node(unsigned int _id, Types::LabelType _label, Types::DataPtr _value, unsigned compTime)
+		: IProcessable(_id, _label, _value), paramCount(0), compTime(compTime)
 	{
 	}
 
@@ -42,7 +48,7 @@ namespace msonlab
 		return true;
 	}
 
-	IProcessable::eVect Node::getPredecessors() const
+	const IProcessable::eVect& Node::getPredecessors() const
 	{
 		return predecessors;
 	}
@@ -52,7 +58,12 @@ namespace msonlab
 		return predecessors.size();
 	}
 
-	IProcessable::ePtr Node::getPredecessor(size_t index) const
+	unsigned Node::getPredecessorNodeId(size_t index) const
+	{
+		return predecessors[index]->getFromId();
+	}
+
+	const IProcessable::ePtr& Node::getPredecessor(size_t index) const
 	{
 		return predecessors[index];
 	}
@@ -67,7 +78,7 @@ namespace msonlab
 		return predecessors.end();
 	}
 
-	IProcessable::eVect Node::getSuccessors() const
+	const IProcessable::eVect& Node::getSuccessors() const
 	{
 		return successors;
 	}
@@ -77,6 +88,11 @@ namespace msonlab
 		std::string ret("n");
 		ret = ret + std::to_string(id);
 		return ret;
+	}
+
+	size_t Node::getSuccessorsSize() const
+	{
+		return successors.size();
 	}
 
 	bool Node::registerPredecessor(IProcessable::ePtr _newPredecessor)
@@ -209,7 +225,8 @@ namespace msonlab
 		nodeLabel->setAttribute(L"width", L"10.0");
 		nodeLabel->setAttribute(L"x", L"0.0");
 		nodeLabel->setAttribute(L"y", L"0.0");
-		DOMText* lbl = xmlDocument->createTextNode(XMLString::transcode(label.c_str()));
+		std::string str(label.begin(), label.end());
+		DOMText* lbl = xmlDocument->createTextNode(XMLString::transcode(str.c_str()));
 		nodeLabel->appendChild(lbl);
 		sn->appendChild(nodeLabel);
 

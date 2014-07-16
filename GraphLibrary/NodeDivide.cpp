@@ -5,7 +5,7 @@
 
 namespace msonlab
 {
-	NodeDivide::NodeDivide(unsigned int _id, std::string _label, Types::DataType _value)
+	NodeDivide::NodeDivide(unsigned int _id, Types::LabelType _label, Types::DataPtr _value)
 		: Node(_id, _label, _value)
 	{
 	}
@@ -16,7 +16,7 @@ namespace msonlab
 
 		if (isReadyForProcess())
 		{
-			Types::DataType newVal =  msonlab::Types::DataType(new double(1.0));
+			Types::DataPtr newVal = std::make_shared<Types::DataType>(1.0);
 
 			int i = 1;
 

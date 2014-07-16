@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Graph.h"
-#include "StackRunner.h"
 
 namespace msonlab
 {
@@ -15,7 +14,7 @@ namespace msonlab
 
 	public:
 
-		static StackRunner::srPtr getStackProgram(msonlab::Graph::gPtr graph, unsigned int number_of_threads, StackRunner::scheduleOrder schedule);
+		static StackRunner::srPtr getStackProgram(msonlab::Graph::gPtr& graph, unsigned int number_of_threads, StackRunner::scheduleOrder schedule);
 
 	};
 

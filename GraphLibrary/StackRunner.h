@@ -34,18 +34,17 @@ namespace msonlab
 			DUP
 		};
 
-		typedef std::shared_ptr<std::promise<Types::DataType>> promisePtr;
-		typedef std::shared_ptr<std::shared_future<Types::DataType>> futurePtr;
+		typedef std::shared_ptr<std::promise<Types::DataPtr>> promisePtr;
+		typedef std::shared_ptr<std::shared_future<Types::DataPtr>> futurePtr;
 		typedef vector<unsigned int> scheduleOrder;
 
 	private:
-
+		friend std::ostream& operator<<(std::ostream& os, const msonlab::StackRunner& sr);
 		// private variables
 		
 
 		// private running functions
 		void graph_runner(std::shared_ptr<std::shared_future<void>> start, unsigned int thread_id, srPtr runner);
-
 
 	public:
 		vector<program> programs;
@@ -107,5 +106,4 @@ namespace msonlab
 		}
 
 	};
-
 }

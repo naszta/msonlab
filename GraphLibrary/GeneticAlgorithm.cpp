@@ -1,30 +1,30 @@
 #include "GeneticAlgorithm.h"
 #include "GraphAlgorithms.h"
+#include "HusSchedulingAlgorithm.h"
 #include <cstdlib>
 #include <ctime>
 #include <set>
 #include <queue>
 #include <map>
+#include <memory>
 
 namespace msonlab {
-	unsigned int max(unsigned int a, unsigned int b)
-	{
-		return a > b ? a : b;
-	}
 
-	GeneticAlgorithm::GeneticAlgorithm()
+	GeneticAlgorithm::GeneticAlgorithm(Options::oPtr options, FitnessStrategy::fsPtr strategy)
+		: options(options), fsstrategy(strategy)
 	{
 	}
 
-	GeneticAlgorithm::GeneticAlgorithm(shared_ptr<GAOptions> options) : gaoptions(options)
-	{
-	}
-
-	shared_ptr<Chromosome> GeneticAlgorithm::greedyChromosome(Graph::gPtr graph)
+	///
+	/// Constructs a chromosome using greedy scheduling.
+	///
+	/// @param The input graph.
+	/// @return The constructed chromosome.
+	Chromosome::cPtr GeneticAlgorithm::greedyChromosome(Graph::gPtr& graph) const
 	{
 		unsigned timeCounter = 0;
 		unsigned taskCounter = 0;
-		std::map< IProcessable::nPtr , int> count;
+		std::map< IProcessable::nPtr, unsigned> count;
 		IProcessable::nVect inputNodes = graph->getInputNodes();
 		std::queue < IProcessable::nPtr> free;
 		for (size_t i = 0; i < inputNodes.size(); ++i)
@@ -32,13 +32,12 @@ namespace msonlab {
 			free.push(inputNodes[i]);
 		}
 
-		shared_ptr<Chromosome> c(new Chromosome(graph->numberOfNodes()));
-		c->pus = gaoptions->getNumberOfPus();
+		auto c = std::make_shared<Chromosome>(graph->numberOfNodes(), options->getNumberOfPus());
 		while (taskCounter < graph->numberOfNodes())
 		{
 			vector< IProcessable::nPtr > out;
 			int limit = c->pus;
-			while ( !free.empty() && limit > 0 )
+			while (!free.empty() && limit > 0)
 			{
 				IProcessable::nPtr node = free.front();
 				c->mapping[taskCounter] = limit - 1;
@@ -62,71 +61,128 @@ namespace msonlab {
 				for (size_t i = 0; i < successors.size(); ++i)
 				{
 					count[successors[i]->getTo()]++;
-					if ( successors[i]->getTo()->getPredecessorsSize() == count[successors[i]->getTo()])
+					if (successors[i]->getTo()->getPredecessorsSize() == count[successors[i]->getTo()])
 					{
 						free.push(successors[i]->getTo());
 					}
-				}	
+				}
 			}
 		}
 
-		std::cout << "Greedy time: " << timeCounter << std::endl;
 		fitness(c);
-		std::cout << "Greedy fitness: " << c->fitness << std::endl;
 		return c;
 	}
 
 	///
-	// generating a random initial solution
+	/// Schedules the given graph.
 	///
-	shared_ptr<Population> GeneticAlgorithm::generateInitialSolution(Graph::gPtr graph)
+	/// For the schedule the Options of this GeneticAlgorithm is used.
+	/// @param graph The graph to schedule.
+	/// @return the best solution the GA finds.
+	Chromosome::cPtr GeneticAlgorithm::schedule(Graph::gPtr& graph, Options::oPtr options) const {
+		Population::pPtr population = this->generateInitialSolution(graph, options);
+		population->limit();
+		
+		bool doOrderCrossover = options->getFitnessStrategy().compare("reschedule") != 0;
+		for (size_t i = 0; i < options->getNumberOfYears(); ++i)
+		{
+			std::cout << "Round " << i + 1 << std::endl;
+			simulateMating(population, options->getPopMaxSize(), doOrderCrossover);
+			population->limit();
+		}
+
+		return population->best();
+	}
+
+	Population::pPtr GeneticAlgorithm::generateInitialSolution(Graph::gPtr& graph, Options::oPtr options) const
 	{
-		vector<shared_ptr<Chromosome>> solution;
-		vector<IProcessable::nVect> levels = algorithms.createLeveling(graph);
+		Population::pPtr p;
+		if (options->getInitialSolution().compare("cp") == 0) {
+			vector<IProcessable::nVect> levels = algorithms.partialTopologicalSort(graph);
+			size_t numLevels = levels.size();
+			vector<unsigned> levelingLimits;
+			unsigned limits = 0;
+			for (size_t i = numLevels; i > 0; --i)
+			{
+				DEBUG("Level: " << i);
+				for (auto it = levels[i - 1].begin(); it != levels[i - 1].end(); ++it){
+					DEBUG(" " << (*it)->getId());
+				}
+
+				DEBUGLN("");
+				limits += levels[i - 1].size();
+				levelingLimits.push_back(limits);
+			}
+			p = this->generateCPSolution(graph, options);
+			p->setLevelSize(levelingLimits);
+		}
+		else {
+			p = this->generateRndSolution(graph, options);
+		}
+
+		
+		return p;
+	}
+
+	///
+	/// Generating a random initial solution.
+	///
+	/// The mapping part is generated randomly, each task is randomly mapped to a PU.
+	/// The scheduling part is generated using the leveling created by the GraphAlgorithms.
+	/// 
+	/// @param graph The input graph.
+	/// @return The generated population.
+	Population::pPtr GeneticAlgorithm::generateRndSolution(Graph::gPtr& graph, Options::oPtr options) const
+	{
+		cVect solution;
+		vector<IProcessable::nVect> levels = algorithms.partialTopologicalSort(graph);
 		size_t numLevels = levels.size();
-		std::cout << "levels: " << numLevels << std::endl;
+		vector<unsigned> levelingLimits;
 		unsigned limits = 0;
 		for (size_t i = numLevels; i > 0; --i)
 		{
-			limits += levels[i-1].size();
-			std::cout << "Level " << i << " ---" << std::endl;
-			for (size_t j = 0; j < levels[i-1].size(); ++j)
-			{
-				std::cout << levels[i-1][j]->getId() << " ";
+			DEBUG("Level: " << i);
+			for (auto it = levels[i - 1].begin(); it != levels[i - 1].end(); ++it){
+				DEBUG(" " << (*it)->getId());
 			}
 
-			std::cout << "\n---\n";
+			DEBUGLN("");
+			limits += levels[i - 1].size();
 		}
 
-		shared_ptr<Population> population = shared_ptr<Population>(new Population(solution, gaoptions->getKeepSize(), gaoptions->getPopMaxSize(), gaoptions->getKeepBest()));
-		
-		shared_ptr<Chromosome> chr = this->greedyChromosome(graph);
+		Population::pPtr population = std::make_unique<Population>(solution, options->getKeepSize(), options->getPopMaxSize(), options->getKeepBest());
 
-		shared_ptr<Chromosome> cc(new Chromosome(graph->numberOfNodes()));
-		cc->pus = gaoptions->getNumberOfPus();
+		Chromosome::cPtr chr = this->greedyChromosome(graph);
+
+		Chromosome::cPtr cc = std::make_shared<Chromosome>(graph->numberOfNodes(), options->getNumberOfPus());
 		size_t currentPos = 0;
 		unsigned counter = 0;
 		for (size_t i = numLevels; i > 0; --i)
 		{
-			for (size_t j = 0; j < levels[i-1].size(); ++j)
+			// set mapping for the level
+			for (size_t j = 0; j < levels[i - 1].size(); ++j)
 			{
 				cc->mapping[counter] = j % cc->pus;
 				++counter;
 			}
-			std::random_shuffle(levels[i-1].begin(), levels[i-1].end());
-			std::copy(levels[i-1].begin(), levels[i-1].end(), cc->scheduling.begin() + currentPos);
-			currentPos += levels[i-1].size();
+
+			// random shuffle the level
+			std::random_shuffle(levels[i - 1].begin(), levels[i - 1].end());
+			std::copy(levels[i - 1].begin(), levels[i - 1].end(), cc->scheduling.begin() + currentPos);
+			levelingLimits.push_back(currentPos);
+			currentPos += levels[i - 1].size();
 		}
 
-		fitness(cc);
-		std::cout << "First fitness: " << cc->fitness << std::endl;
+		auto initialFitness = fitness(cc);
+		DEBUGLN("Population created. Initial fitness : " << initialFitness);
 		population->addOffspring(cc);
+		population->setLevelSize(levelingLimits);
 
-		counter = gaoptions->getPopMaxSize()-1;
+		// the number of solutions to generate
+		counter = options->getPopMaxSize() - 1;
 		for (; counter > 0; --counter)
 		{
-			shared_ptr<Chromosome> c(new Chromosome(graph->numberOfNodes()));
-			c->pus = gaoptions->getNumberOfPus();
+			auto c = std::make_shared<Chromosome>(graph->numberOfNodes(), options->getNumberOfPus());
 			for (unsigned int i = 0; i < c->mapping.size(); ++i)
 			{
 				c->mapping[i] = rand() % c->pus;
@@ -135,14 +191,9 @@ namespace msonlab {
 			size_t currentPos = 0;
 			for (size_t i = numLevels; i > 0; --i)
 			{
-				if (counter == 1 )
-				{
-					levlingLimits.push_back(currentPos);
-				}
-
-				std::random_shuffle(levels[i-1].begin(), levels[i-1].end());
-				std::copy(levels[i-1].begin(), levels[i-1].end(), c->scheduling.begin() + currentPos);
-				currentPos += levels[i-1].size();
+				std::random_shuffle(levels[i - 1].begin(), levels[i - 1].end());
+				std::copy(levels[i - 1].begin(), levels[i - 1].end(), c->scheduling.begin() + currentPos);
+				currentPos += levels[i - 1].size();
 			}
 
 			fitness(c);
@@ -152,89 +203,59 @@ namespace msonlab {
 		return population;
 	}
 
-	///
-	// calculate fitness for a given chromosem
-	///
-	unsigned int GeneticAlgorithm::fitness(cPtr chromosome)
-	{
-		//if (chromosome->fitness > 0)
-		//{
-		//	return chromosome->fitness;
-		//}
-		typedef unsigned int uint;
-		uint tasks = chromosome->scheduling.size();
-		vector<uint> RT(chromosome->pus); // ready time of the PUs
-		vector<uint> ST(tasks); // start time of the tasks
-		vector<uint> FT(tasks); // finish time of the tasks
-		vector<uint> DAT(tasks); // Data Arrival Time
-		vector<uint> idPuMapping(tasks); // idPuMapping[i] = j means that node[i] is processed by pu[j] // is this necessary?
-
-		uint actId = chromosome->scheduling[0]->getId();
-		ST[actId] = 0;
-		FT[actId] = ST[actId] + gaoptions->getTaskLength(); // it takes
-		DAT[actId] = 0;
-		idPuMapping[actId] = chromosome->mapping[0];
-		RT[chromosome->mapping[0]] = FT[actId];
-
-		// skipping first task
-		for (uint i = 1; i < tasks; ++i)
+	// Generate the chromosome using the scheduling created by the CP scheduler
+	Population::pPtr GeneticAlgorithm::generateCPSolution(Graph::gPtr& graph, Options::oPtr options) const {
+		cVect solution;
+		Population::pPtr population = std::make_unique<Population>(solution, options->getKeepSize(), options->getPopMaxSize(), options->getKeepBest());
+		HusSchedulingAlgorithm cpAlg;
+		auto greedy = greedyChromosome(graph);
+		population->addOffspring(greedy);
+		auto cpC = cpAlg.schedule(graph, options);
+		auto initialFitness = fitness(cpC);
+		population->addOffspring(cpC);
+		unsigned counter = options->getPopMaxSize() - 2; // CP and greedy
+		for (; counter > 0; --counter)
 		{
-			IProcessable::nPtr actNode = chromosome->scheduling[i];
-			uint actId = actNode->getId();
-			uint actPU = chromosome->mapping[i];
-			idPuMapping[actId] = actPU;
-
-			// calculating data arrival time
-			//IProcessable::eVect::iterator it = actNode->getPredecessorBegin();
-			//IProcessable::eVect::iterator end = actNode->getPredecessorEnd();
-			//for (; it != end; ++it)
-			//uint id = (*it)->getFromId();
-			size_t predecessorSize = actNode->getPredecessorsSize();
-			for (uint j = 0; j < predecessorSize; ++j)
+			auto c = std::make_shared<Chromosome>(graph->numberOfNodes(), options->getNumberOfPus());
+			for (unsigned int i = 0; i < c->mapping.size(); ++i)
 			{
-				uint id = actNode->getPredecessor(j)->getFromId();
-				uint comm = actPU == idPuMapping[id] ? 0 : gaoptions->getCommOverhead();
-				if (actPU / gaoptions->getPuGroupSize() != idPuMapping[id] / gaoptions->getPuGroupSize())
-				{
-					comm *= 2;
-				}
-				if ( DAT[actId] < FT[id] + comm)
-				{
-					DAT[actId] = FT[id] + comm;
-				}
-				if (FT[id] == 0)
-				{
-					DAT[actId] = 10000;
-					std::cout<< "Watch out..." << std::endl;
-					chromosome->printChromosome(std::cout);
-					std::cin.get();
-				}
+				c->mapping[i] = rand() % c->pus;
 			}
 
-			ST[actId] = max(RT[actPU], DAT[actId]);
-			FT[actId] = ST[actId] + gaoptions->getTaskLength();
-			RT[actPU] = FT[actId];
-		}
-		uint length = 0;
-		for (uint i = 0; i < tasks; ++i)
-		{
-			if (FT[i] > length)
-			{
-				length = FT[i];
-			}
+			std::copy(cpC->scheduling.begin(), cpC->scheduling.end(), c->scheduling.begin());
+			fitness(c);
+			population->addOffspring(c);
 		}
 
-		chromosome->fitness = length;
-		return length;
+		DEBUGLN("Population created. Initial fitness : " << initialFitness);
+		return population;
 	}
 
 	///
-	// crossover operation between the mapping part of chromosome
-	// creates a brand new chromosome
+	/// calculate fitness for a given chromosem
 	///
-	shared_ptr<Chromosome> GeneticAlgorithm::crossover_map(cPtr father, cPtr mother)
+	/// @param chromosome Which's fitness is calculated.
+	/// @return The fitness of the chromosome.
+	unsigned int GeneticAlgorithm::fitness(Chromosome::cPtr chromosome) const
 	{
-		cPtr offspring(new Chromosome(*father)); 
+		if (chromosome->fitness > 0)
+		{
+			return chromosome->fitness;
+		}
+
+		chromosome->fitness = this->fsstrategy->fitness(chromosome, options);
+		return chromosome->fitness;
+	}
+
+	///
+	/// Crossover operation between the mapping part of chromosome.
+	///
+	/// @param father One parent of the offspring.
+	/// @param mother Another parent of the offspring.
+	/// @return the offspring.
+	Chromosome::cPtr GeneticAlgorithm::crossoverMap(Chromosome::cPtr father, Chromosome::cPtr mother) const
+	{
+		Chromosome::cPtr offspring = std::make_shared<Chromosome>(*father);
 		uint crossoverPoint = rand() % father->mapping.size();
 		std::copy(mother->mapping.begin() + crossoverPoint, mother->mapping.end(), offspring->mapping.begin() + crossoverPoint);
 
@@ -242,81 +263,146 @@ namespace msonlab {
 	}
 
 	///
-	// crossover operation between the scheduling part of chromosome
+	/// Crossover operation between the scheduling part of chromosome.
 	///
-	shared_ptr<Chromosome> GeneticAlgorithm::crossover_order(cPtr father, cPtr mother)
+	/// @param father One parent of the offspring.
+	/// @param mother Another parent of the offspring.
+	/// @return the offspring.
+	Chromosome::cPtr GeneticAlgorithm::crossoverOrder(Chromosome::cPtr father, Chromosome::cPtr mother, const vector<unsigned>& levelingLimits) const
 	{
-		
-		cPtr offsrping(new Chromosome(*father));
-		uint crossoverPoint = rand() % this->levlingLimits.size();
+		Chromosome::cPtr offspring = std::make_shared<Chromosome>(*father);
+		uint crossoverPoint = rand() % levelingLimits.size();
 
-		std::copy(mother->scheduling.begin() + this->levlingLimits[crossoverPoint], mother->scheduling.end(), offsrping->scheduling.begin() + this->levlingLimits[crossoverPoint]);
+		std::copy(mother->scheduling.begin() + levelingLimits[crossoverPoint], mother->scheduling.end(), offspring->scheduling.begin() + levelingLimits[crossoverPoint]);
 
-		return offsrping;
+		return offspring;
 	}
 
 	///
-	// randomly changes one mapping to another pu
+	/// Mutates the mapping part.
 	///
-	void GeneticAlgorithm::mutate(cPtr offspring)
+	/// Changes the mapping of a task to another PU.
+	/// The mutation happens with [MutationPercentage] probablity
+	/// and the number of mutation points are [MutationRate].
+	///
+	/// @param offspring chromosome to mutate
+	void GeneticAlgorithm::mutateMapping(Chromosome::cPtr& offspring) const
 	{
-		for (uint i = 0; i < gaoptions->getMutationRate(); ++i)
+		unsigned rate = rand() % 100;
+		if (rate < this->options->getMapMutationRate())
 		{
-			unsigned rate = rand() % 100;
-			if (rate < gaoptions->getMutationPercentage())
+			int position = rand() % offspring->scheduling.size();
+			int mutation = rand() % (offspring->pus - 1) + 1;
+			offspring->mapping[position] += mutation;
+			if (offspring->mapping[position] >= offspring->pus)
 			{
-				int position = rand() % offspring->scheduling.size();
-				int mutation = rand() % (offspring->pus - 1) + 1;
-				offspring->mapping[position] += mutation;
-				if (offspring->mapping[position] >= offspring->pus)
-				{
-					offspring->mapping[position] -= offspring->pus;
-				}
+				offspring->mapping[position] -= offspring->pus;
 			}
 		}
 	}
 
-	void GeneticAlgorithm::mutateSheduling(cPtr offspring)
+	/// Mutates the scheduling part.
+	///
+	/// The mutation happens with [MutationPercentage] probability.
+	/// In case of a mutation a level is choosen and shuffled.
+	///
+	/// @param offspring The chromosome to mutate.
+	void GeneticAlgorithm::mutateSheduling(Chromosome::cPtr offspring, const vector<unsigned>& levelingLimits) const
 	{
-		//for (uint i = 0; i < gaoptions->getMutationRate(); ++i)
-		{
-			unsigned rate = rand() % 100;
-			if (rate < gaoptions->getMutationPercentage())
-			{
-
-				int position = rand() % levlingLimits.size();
-				IProcessable::nVect::iterator begin = offspring->scheduling.begin() + levlingLimits[position];
-				IProcessable::nVect::iterator end = position == levlingLimits.size() - 1 ? offspring->scheduling.end() : offspring->scheduling.begin() + levlingLimits[position+1];
-				std::random_shuffle(begin, end);
-			}
-		}
+		//unsigned rate = rand() % 100;
+		//if (rate < options->getScheduleMutationRate())
+		//{
+			int position = rand() % levelingLimits.size();
+			IProcessable::nVect::iterator begin = offspring->scheduling.begin() + levelingLimits[position];
+			IProcessable::nVect::iterator end = position == levelingLimits.size() - 1 ? offspring->scheduling.end() : offspring->scheduling.begin() + levelingLimits[position + 1];
+			std::random_shuffle(begin, end);
+		//}
 	}
 
+
+
 	///
-	// generates offsprings
+	/// Generates offsprings.
+	/// 
+	/// Randomly chooses parents from the population, uses a crossover operation on them and
+	/// mutates the offspring. The offspring is added to the population. Totally [offsprings]
+	/// number of offsprings are added to the populationn.
 	///
-	void GeneticAlgorithm::simulateMating(shared_ptr<Population> population, int offsprings)
+	/// @param population A set of chromosomes to choose the parents from.
+	/// @param offsprings The number of offsprings to generate.
+	void GeneticAlgorithm::simulateMating(Population::pPtr& population, int offsprings, bool doOrderCrossover) const
 	{
-		//population->addOffspring(population->best());
-		for (int i = 0; i < offsprings; i++)
+		int faultyGens = 0;
+		int mutations = 0;
+		for (; offsprings > 0;)
 		{
-			cPtr father = population->getParent();
-			cPtr mother = population->getParent();
+			Chromosome::cPtr father = population->getParent();
+			Chromosome::cPtr mother = population->getParent();
 			int crossoverType = rand() % 2;
-			cPtr offspring;
-			if (crossoverType == 0)
+			Chromosome::cPtr offspring;
+			// always mapping crossover
+			if (crossoverType == 0 || !doOrderCrossover)
 			{
-				offspring = crossover_map(father, mother);
+				offspring = crossoverMap(father, mother);
 			}
 			else
 			{
-				offspring = crossover_order(father, mother);
+				offspring = crossoverOrder(father, mother, population->getLevels());
 			}
 
-			mutate(offspring);
-			mutateSheduling(offspring);
-			fitness(offspring);
-			population->addOffspring(offspring);
+			mutateMapping(offspring);
+			unsigned rate = rand() % 100;
+			if (rate < options->getScheduleMutationRate()) {
+				mutateSheduling(offspring, population->getLevels());
+				++mutations;
+			}
+
+			unsigned cost = fitness(offspring);
+			if (cost < UINT32_MAX)
+			{
+				population->addOffspring(offspring);
+				--offsprings;
+			}
+			else ++faultyGens;
+		}
+
+		DEBUGLN("Mutations happened   " << mutations);
+		DEBUGLN("Faulty gens created  " << faultyGens);
+		DEBUGLN("Successful mutations " << mutations - faultyGens);
+	}
+
+	///
+	/// Transform the mapping and scheduling into one vector.
+	///
+	/// Assumes that the id's of the tasks are from 0 to n-1, where n is the number
+	/// nodes in the graph.
+	///
+	/// @param c the chromosome to transform
+	/// @param result the result vector.
+	void GeneticAlgorithm::transfromResult(Chromosome::cPtr c, vector<unsigned>& result) const {
+		auto mapping = c->getMapping();
+		auto scheduling = c->getScheduling();
+		size_t tasks = scheduling.size();
+		if (result.size() != tasks) {
+			result.resize(tasks);
+		}
+
+		for (unsigned i = 0; i < tasks; ++i) {
+			result[scheduling[i]->getId()] = mapping[i];
+		}
+	}
+
+	// EXPERIMENTAL
+
+	void GeneticAlgorithm::swapMutateScheduling(Chromosome::cPtr offspring) const
+	{
+		unsigned rate = rand() % 100;
+		if (rate < options->getScheduleMutationRate())
+		{
+			unsigned toswap = rand() % offspring->scheduling.size() - 2;
+			std::iter_swap(offspring->scheduling.begin() + toswap,
+				offspring->scheduling.begin() + toswap + 1);
+
 		}
 	}
 }

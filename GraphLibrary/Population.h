@@ -1,12 +1,12 @@
 #pragma once
 
-#include <boost/enable_shared_from_this.hpp>
+#include <memory>
 #include <vector>
 #include <queue>
 #include "Chromosome.h"
 
 using std::vector;
-using boost::shared_ptr;
+using std::shared_ptr;
 
 /*********************************
 * This class represents a population
@@ -24,32 +24,44 @@ namespace msonlab
 		}
 	};
 
+	using msonlab::Chromosome;
+
 	class Population
 	{
+		/// this contains the size of the graph's levels
+		vector<size_t> levelSize;
 		vector<shared_ptr<Chromosome>> solution;
-		typedef shared_ptr<Chromosome> cPtr;
-		std::priority_queue<cPtr, vector<cPtr>, chrComparator> newGeneration;
+		//typedef shared_ptr<Chromosome> cPtr;
+		std::priority_queue<Chromosome::cPtr, vector<Chromosome::cPtr>, chrComparator> newGeneration;
 		const size_t POPMAXSIZE;
 		const size_t KEEP;
 		const size_t KEEPBEST;
 		
 	public:
-		typedef shared_ptr<Chromosome> cPtr;
-		Population(vector<cPtr> sol, size_t keepSize, size_t popMaxSize, size_t keepBest);
+		typedef std::unique_ptr<Population> pPtr;
+		Population(const vector<Chromosome::cPtr>& sol, size_t keepSize, size_t popMaxSize, size_t keepBest);
 
-		vector<cPtr> getPopulation();
+		const vector<Chromosome::cPtr>& getPopulation() const;
 
-		// returns a chromosome from the solution
-		cPtr getParent();
-		// adding a new offspring to the population
-		void addOffspring(cPtr offspring);
-		// adds one year to the age of all the chromosome
+		/// Gets a random chromosome from the solution.
+		Chromosome::cPtr getParent() const;
+		/// Adds a new offspring to the population.
+		void addOffspring(Chromosome::cPtr offspring);
+		/// Adds one year to the age of all the chromosome
 		void ageChromosomes();
-		// limits the number of chromosomes to the initial
+		/// Limits the number of chromosomes to the initial.
 		void limit();
-		// gets the best solution in the population
-		cPtr best();
+		/// Gets one solution with the best fitness in the population.
+		Chromosome::cPtr best() const;
 
-		unsigned avarageFittness();
+		/// Sets the levels' size's.
+		void setLevelSize(const vector<size_t>& sizes);
+		/// Gets the number of levels.
+		// TODO: return a pointer to the vector
+		const vector<unsigned>& getLevels() const { return this->levelSize; }
+
+		Population & operator = (Population &);
+
+		unsigned avarageFittness() const;
 	};
 }

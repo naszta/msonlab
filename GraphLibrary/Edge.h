@@ -18,11 +18,7 @@ namespace msonlab
 
 		EdgeTypeEnum edgeType;
 	public:
-		//typedef std::shared_ptr<Edge> ePtr;
-		//typedef vector<std::shared_ptr<Edge>> eVect;
-
-
-		Edge(unsigned int _id, std::string _label, Types::DataType _value, IProcessable::nPtr _from, IProcessable::nPtr _to);
+		Edge(unsigned int _id, Types::LabelType _label, Types::DataPtr _value, IProcessable::nPtr _from, IProcessable::nPtr _to);
 		Edge(const Edge& other);
 
 		bool registerParameter();

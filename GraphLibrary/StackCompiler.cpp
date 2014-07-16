@@ -8,7 +8,7 @@
 
 namespace msonlab
 {
-
+	using std::vector;
 	void StackCompiler::mark_node_with_iteration_number(Node::nPtr to_mark, int iteration_number)
 	{
 		if (to_mark->compile_iteration == -1)
@@ -60,7 +60,7 @@ namespace msonlab
 
 
 
-	StackRunner::srPtr StackCompiler::getStackProgram(msonlab::Graph::gPtr graph, unsigned int number_of_threads, StackRunner::scheduleOrder schedule)
+	StackRunner::srPtr StackCompiler::getStackProgram(msonlab::Graph::gPtr& graph, unsigned int number_of_threads, StackRunner::scheduleOrder schedule)
 	{
 		msonlab::StackRunner::srPtr runner(new msonlab::StackRunner());
 
@@ -129,7 +129,7 @@ namespace msonlab
 
 
 		// create output order - TODO: create order optimalization
-		auto outputs = graph->getOutputNodes();
+	auto outputs = graph->getOutputNodes();
 		vector<unsigned int> output_order;
 		for (unsigned int i = 0; i < outputs.size(); ++i)
 		{
@@ -213,14 +213,14 @@ namespace msonlab
 			unsigned int curr_thread = schedule.at(curr_edge->getId());
 
 			if (schedule.at(curr_edge->getToId()) != curr_thread)
-			{
+	{
 				curr_edge->set_sync_marker();
 
 				unsigned int curr_id = curr_edge->getId();
 
 				promises.insert(curr_id);
 				futures.insert(curr_id);
-			}
+	}
 			if (curr_edge->getTo()->compile_iteration > curr_edge->compile_iteration)
 			{
 				curr_edge->set_sync_marker();
@@ -231,7 +231,7 @@ namespace msonlab
 				promises.insert(curr_id);
 				futures.insert(curr_id);
 			}
-		}
+}
 
 
 
