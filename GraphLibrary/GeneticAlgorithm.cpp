@@ -379,16 +379,21 @@ namespace msonlab {
 	///
 	/// @param c the chromosome to transform
 	/// @param result the result vector.
-	void GeneticAlgorithm::transfromResult(Chromosome::cPtr c, vector<unsigned>& result) const {
+	void GeneticAlgorithm::transfromResult(Chromosome::cPtr c, vector<unsigned>& result) {
 		auto mapping = c->getMapping();
 		auto scheduling = c->getScheduling();
 		size_t tasks = scheduling.size();
-		if (result.size() != tasks) {
-			result.resize(tasks);
+		if (result.size() != 17) {
+			result.resize(17);
 		}
 
 		for (unsigned i = 0; i < tasks; ++i) {
 			result[scheduling[i]->getId()] = mapping[i];
+			Node::nPtr node = scheduling[i];
+			for (auto it = node->getPredecessorBegin(); it != node->getPredecessorEnd(); ++it)
+			{
+				result[(*it)->getId()] = mapping[i];
+			}
 		}
 	}
 

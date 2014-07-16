@@ -51,7 +51,7 @@ namespace msonlab
 
 		void simulateMating(Population::pPtr& population, int offsprings, bool doOrderCrossover) const;
 
-		void transfromResult(Chromosome::cPtr c, vector<unsigned>& result) const;
+		static void transfromResult(Chromosome::cPtr c, vector<unsigned>& result);
 
 		// experimental
 		void swapMutateScheduling(Chromosome::cPtr offspring) const;

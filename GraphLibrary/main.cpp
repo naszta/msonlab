@@ -294,7 +294,7 @@ Graph::gPtr initSampleGraph()
 	return graph;
 }
 
-void test_small_graph()
+void test_small_graph(Options::oPtr options)
 {
 	Graph::gPtr g(new Graph());
 
@@ -335,26 +335,31 @@ void test_small_graph()
 
 	vector<unsigned int> testOrder;
 
-	// 0 - 9
-	testOrder.push_back(0);
-	testOrder.push_back(0);
-	testOrder.push_back(1);//
-	testOrder.push_back(1);//
-	testOrder.push_back(1);//
-	testOrder.push_back(1);//
-	testOrder.push_back(0);
-	testOrder.push_back(0);
-	testOrder.push_back(0);
-	testOrder.push_back(0);
+	HusSchedulingAlgorithm alg;
+	auto result = alg.schedule(g, options);
 
-	// 10 - 16
-	testOrder.push_back(0);
-	testOrder.push_back(1);//
-	testOrder.push_back(1);//
-	testOrder.push_back(0);
-	testOrder.push_back(0);
-	testOrder.push_back(0);
-	testOrder.push_back(0);
+	GeneticAlgorithm::transfromResult(result, testOrder);
+
+	// 0 - 9
+	//testOrder.push_back(0);
+	//testOrder.push_back(0);
+	//testOrder.push_back(1);//
+	//testOrder.push_back(1);//
+	//testOrder.push_back(1);//
+	//testOrder.push_back(1);//
+	//testOrder.push_back(0);
+	//testOrder.push_back(0);
+	//testOrder.push_back(0);
+	//testOrder.push_back(0);
+
+	//// 10 - 16
+	//testOrder.push_back(0);
+	//testOrder.push_back(1);//
+	//testOrder.push_back(1);//
+	//testOrder.push_back(0);
+	//testOrder.push_back(0);
+	//testOrder.push_back(0);
+	//testOrder.push_back(0);
 
 
 	//GraphExchanger ge(g);
@@ -545,7 +550,7 @@ int main(int argc, char *argv[])
 		std::chrono::time_point<std::chrono::high_resolution_clock> startCHRONO, finishCHRONO;
 		startCHRONO = std::chrono::high_resolution_clock::now();
 #endif
-		test_small_graph();
+		test_small_graph(options);
 		//schedule(alg, options);
 #if MEASURE != 0
 		finishCHRONO = std::chrono::high_resolution_clock::now();
