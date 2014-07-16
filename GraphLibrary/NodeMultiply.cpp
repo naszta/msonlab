@@ -1,10 +1,11 @@
 #pragma once
 #include "NodeMultiply.h"
 #include "Edge.h"
+#include "GraphExchanger.h"
 
 namespace msonlab
 {
-	NodeMultiply::NodeMultiply(unsigned int _id, wchar_t _label, Types::DataType _value)
+	NodeMultiply::NodeMultiply(unsigned int _id, std::string _label, Types::DataType _value)
 		: Node(_id, _label, _value)
 	{
 	}
@@ -45,16 +46,72 @@ namespace msonlab
 	}
 
 	// compile
-	void NodeMultiply::compile(msonlab::StackRunner::srPtr stackProgram)
+	void NodeMultiply::compile(int caller_thread, vector<msonlab::StackRunner::program>* programs, StackRunner::scheduleOrder schedule)
 	{
-		for (msonlab::Edge::eVect::iterator it = predecessors.begin(); it != predecessors.end(); ++it)
+		unsigned int thread_id = schedule.at(getId());
+		StackRunner::program* prog = &(programs->at(thread_id));
+
+		// if already synced, just push the associated future object to the stack
+		if (synced)
 		{
-			(*(*it)).compile(stackProgram);
+			StackRunner::addToken(prog, StackRunner::WAIT, StackRunner::dataToken(new std::pair<StackValue::stackvaluePtr, int>(nullptr, getId())));
+			return;
 		}
-		int n = predecessors.size();
-		for (int i = 0; i < n-1; ++i)
+
+
+		// going deeper and calculate predecessors
+		for (IProcessable::pPtr pred : predecessors)
 		{
-			stackProgram->addToken(msonlab::StackRunner::MUL, nullptr);
+			if (pred->compile_iteration < compile_iteration)
+			{
+				// already has value
+				StackRunner::addToken(prog, StackRunner::WAIT, StackRunner::dataToken(new std::pair<StackValue::stackvaluePtr, int>(nullptr, pred->getId())));
+			}
+			else
+			{
+				pred->compile(thread_id, programs, schedule);
+
+				// if predecessor is placed on another thread, add a wait operation
+				if (schedule.at(pred->getId()) != thread_id)
+				{
+					// predecessor is on another thread, need to create a FutureStackValue
+					StackRunner::addToken(prog, StackRunner::WAIT, StackRunner::dataToken(new std::pair<StackValue::stackvaluePtr, int>(nullptr, pred->getId())));
+				}
+			}
 		}
+
+		// add MUL operations
+		for (unsigned int i = 0; i < predecessors.size() - 1; ++i)
+		{
+			StackRunner::addToken(prog, StackRunner::MUL, StackRunner::dataToken(new std::pair<StackValue::stackvaluePtr, int>(nullptr, -1)));
+		}
+	
+
+		// manage sync-s
+		if (!synced && extra_sync_marker)
+		{
+			// if need to sync but called from the same thread, DUP is needed
+			if (caller_thread != -1)
+			{
+				if (caller_thread == thread_id)
+				{
+					StackRunner::addToken(prog, StackRunner::DUP, StackRunner::dataToken(new std::pair<StackValue::stackvaluePtr, int>(nullptr, -1)));
+				}
+			}
+
+			StackRunner::addToken(prog, StackRunner::SYNC, StackRunner::dataToken(new std::pair<StackValue::stackvaluePtr, int>(nullptr, getId())));
+			set_synced();
+		}
+	}
+
+	// exchange
+	std::string NodeMultiply::getTypeString() const
+	{
+		return GraphExchanger::getSupportedNodeTypeName(GraphExchanger::supportedNodeType::MULTIPLY);
+	}
+
+	std::string NodeMultiply::get_color() const
+	{
+		return "#FFFF00";
 	}
 }

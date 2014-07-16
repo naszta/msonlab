@@ -18,11 +18,11 @@ namespace msonlab
 
 		EdgeTypeEnum edgeType;
 	public:
-		//typedef boost::shared_ptr<Edge> ePtr;
-		//typedef vector<boost::shared_ptr<Edge>> eVect;
+		//typedef std::shared_ptr<Edge> ePtr;
+		//typedef vector<std::shared_ptr<Edge>> eVect;
 
 
-		Edge(unsigned int _id, wchar_t _label, Types::DataType _value, IProcessable::nPtr _from, IProcessable::nPtr _to);
+		Edge(unsigned int _id, std::string _label, Types::DataType _value, IProcessable::nPtr _from, IProcessable::nPtr _to);
 		Edge(const Edge& other);
 
 		bool registerParameter();
@@ -38,10 +38,19 @@ namespace msonlab
 		IProcessable::nPtr getTo() const;
 		unsigned getToId() const;
 
+		std::string getIdString() const;
+
 		virtual EdgeTypeEnum getEdgeType() const;
 
 		// compile
-		virtual void compile(msonlab::StackRunner::srPtr stackProgram);
+		virtual void compile(int caller_thread, vector<msonlab::StackRunner::program>* programs, StackRunner::scheduleOrder schedule);
+
+		// exchange
+		virtual DOMElement* serialize(DOMDocument* xmlDocument, std::string yedDataKeyName, std::string typeKeyName, std::string customDataKey);
+		virtual std::string getTypeString() const;
+		virtual std::string get_target_arrow_style() const;
+		virtual std::string get_line_style() const;
+		virtual std::string get_color() const;
 	};
 
 }

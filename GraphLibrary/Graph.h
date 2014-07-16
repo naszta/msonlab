@@ -1,6 +1,5 @@
 #pragma once
 #include "Global.h"
-#include <boost/enable_shared_from_this.hpp>
 #include "IProcessable.h"
 #include "Node.h"
 #include "Edge.h"
@@ -8,7 +7,7 @@
 namespace msonlab
 {
 
-	class Graph : public boost::enable_shared_from_this<Graph>
+	class Graph : public std::enable_shared_from_this<Graph>
 	{
 	private:
 		IProcessable::nVect nodes;
@@ -23,7 +22,7 @@ namespace msonlab
 		friend class DFSIterator;
 
 	public:
-		typedef boost::shared_ptr<Graph> gPtr;
+		typedef std::shared_ptr<Graph> gPtr;
 
 		Graph();
 		Graph(const Graph& other);
@@ -35,8 +34,8 @@ namespace msonlab
 		size_t numberOfNodes() const;
 		size_t numberOfEdges() const;
 
-		bool importGraph(std::istream &in) const;
-		bool exportGraph(std::ostream &out) const;
+		const IProcessable::nVect getNodes() const;
+		const IProcessable::eVect getEdges() const;
 
 		IProcessable::nVect getInputNodes() const;
 		IProcessable::nVect getOutputNodes() const;

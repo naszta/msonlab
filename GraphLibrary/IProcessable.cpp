@@ -23,9 +23,9 @@ namespace msonlab
 
 	// public 
 
-	IProcessable::IProcessable(unsigned int _id, wchar_t _label, Types::DataType _value)
+	IProcessable::IProcessable(unsigned int _id, std::string _label, Types::DataType _value)
 		: id(_id), label(_label), value(_value)
-	{ 
+	{
 	}
 
 	IProcessable::IProcessable() { };
@@ -46,7 +46,13 @@ namespace msonlab
 		return id;
 	}
 
-	wchar_t IProcessable::getLabel() const
+	std::string IProcessable::getIdString() const
+	{
+		return "i" + id;
+	}
+
+
+	std::string IProcessable::getLabel() const
 	{
 		return label;
 	}
@@ -63,7 +69,7 @@ namespace msonlab
 		else
 			throw msonlab::Exceptions::ResultStillNotReadyException("Result for this processable element still not available!");
 	}
-	
+
 	IProcessable::PlaceEnum IProcessable::getPlace() const
 	{
 		return IProcessable::Inside;
@@ -78,9 +84,61 @@ namespace msonlab
 	}
 
 	// compile
-	void IProcessable::compile(msonlab::StackRunner::srPtr stackProgram)
+	void IProcessable::compile(int caller_thread, vector<msonlab::StackRunner::program>* programs, StackRunner::scheduleOrder schedule)
 	{
 
 	}
+
+	void IProcessable::set_sync_marker()
+	{
+		extra_sync_marker = true;
+	}
+
+	void IProcessable::clear_sync_marker()
+	{
+		extra_sync_marker = false;
+	}
+
+	void IProcessable::set_synced()
+	{
+		synced = true;
+	}
+
+	void IProcessable::clear_synced()
+	{
+		synced = false;
+	}
+
+	// exchange
+
+	DOMElement* IProcessable::serialize(DOMDocument* xmlDocument, std::string yedDataKeyName, std::string typeKeyName, std::string customDataKey)
+	{
+		DOMElement* newNode = xmlDocument->createElement(L"node");
+		newNode->setAttribute(L"id", XMLString::transcode(getIdString().c_str()));
+
+		// create data for YED
+		DOMElement* nodeData = xmlDocument->createElement(L"data");
+		nodeData->setAttribute(L"key", XMLString::transcode(yedDataKeyName.c_str()));
+		newNode->appendChild(nodeData);
+
+		// create custom data for deserialization
+		DOMElement* customData = xmlDocument->createElement(L"data");
+		customData->setAttribute(L"id", XMLString::transcode(typeKeyName.c_str()));
+		newNode->appendChild(customData);
+
+		return newNode;
+	}
+
+	std::string IProcessable::getTypeString() const
+	{
+		throw new Exceptions::NodeTypeCanNotBeSerializedException("IProcessable can not be serialized. Please use one inherited class for the graph.");
+		//GraphExchanger::getSupportedNodeTypeName(GraphExchanger::supportedNodeType::ADD);
+	}
+
+	std::string IProcessable::get_custom_data() const
+	{
+		return "";
+	}
+	
 
 }

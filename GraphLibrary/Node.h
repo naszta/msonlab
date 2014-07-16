@@ -13,11 +13,11 @@ namespace msonlab
 		int paramCount;
 
 	public:
-		//typedef boost::shared_ptr<Node> nPtr;
-		//typedef vector<boost::shared_ptr<Node>> nVect;
+		//typedef std::shared_ptr<Node> nPtr;
+		//typedef vector<std::shared_ptr<Node>> nVect;
 		
 
-		Node(unsigned int _id, wchar_t _label, Types::DataType _value);
+		Node(unsigned int _id, std::string _label, Types::DataType _value);
 		Node(const Node& other);
 
 		bool registerParameter();
@@ -33,6 +33,8 @@ namespace msonlab
 		IProcessable::eVect::iterator getPredecessorEnd();
 		IProcessable::eVect getSuccessors() const;
 
+		std::string getIdString() const;
+
 		bool registerPredecessor(IProcessable::ePtr _newPredecessor);
 		bool unregisterPredecessor(IProcessable::ePtr _newPredecessor);
 
@@ -42,7 +44,13 @@ namespace msonlab
 		PlaceEnum getPlace() const;
 
 		// compile
-		virtual void compile(msonlab::StackRunner::srPtr stackProgram);
+		virtual void compile(int caller_thread, vector<msonlab::StackRunner::program>* programs, StackRunner::scheduleOrder schedule);
+
+		// exchange
+		virtual DOMElement* serialize(DOMDocument* xmlDocument, std::string yedDataKeyName, std::string typeKeyName, std::string customDataKey);
+		virtual std::string getTypeString() const;
+		virtual std::string get_shape() const;
+		virtual std::string get_color() const;
 	};
 
 }

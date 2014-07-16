@@ -1,10 +1,20 @@
 #pragma once
 #include <vector>
+#include <map>
 #include <set>
-#include <boost\shared_ptr.hpp>
-#include <boost\variant\variant.hpp>
 #include <iostream>
 #include <algorithm>
+#include <memory>
+#include <string>
+#include <thread>
+#include <future>
+
+#include <xercesc\util\PlatformUtils.hpp>
+#include <xercesc\dom\DOM.hpp>
+#include <xercesc/framework/LocalFileFormatTarget.hpp>
+#include <xercesc\parsers\XercesDOMParser.hpp>
+#include <xercesc\sax\HandlerBase.hpp>
+XERCES_CPP_NAMESPACE_USE
 
 
 
@@ -15,8 +25,10 @@ namespace msonlab
 
 	namespace Types
 	{
-		// typedef boost::variant<int,wchar_t> DataType;
-		typedef boost::shared_ptr<double> DataType;
+		typedef std::shared_ptr<double> DataType;
+		typedef std::shared_ptr<std::shared_future<DataType>> FutureDataType;
+
+
 	}
 
 	namespace Exceptions
@@ -56,6 +68,13 @@ namespace msonlab
 				: msg(_msg){}
 		};
 
+		struct NodeSquareRootPredecessorsAreNotValidException
+		{
+			const char* msg;
+			NodeSquareRootPredecessorsAreNotValidException(const char* _msg)
+				: msg(_msg){}
+		};
+
 		struct ResultStillNotReadyException
 		{
 			const char* msg;
@@ -67,6 +86,27 @@ namespace msonlab
 		{
 			const char* msg;
 			StillNotReadyForProcessException(const char* _msg) 
+				: msg(_msg){}
+		};
+
+		struct NodeTypeCanNotBeSerializedException
+		{
+			const char* msg;
+			NodeTypeCanNotBeSerializedException(const char* _msg)
+				: msg(_msg){}
+		};
+
+		struct UnknownNodeTypeException
+		{
+			const char* msg;
+			UnknownNodeTypeException(const char* _msg)
+				: msg(_msg){}
+		};
+
+		struct UnknownEdgeTypeException
+		{
+			const char* msg;
+			UnknownEdgeTypeException(const char* _msg)
 				: msg(_msg){}
 		};
 

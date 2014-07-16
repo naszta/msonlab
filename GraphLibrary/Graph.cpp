@@ -9,7 +9,7 @@ namespace msonlab
 	{
 		nodes.clear();
 		edges.clear();
-		this->iteratorEnd = IProcessable::nPtr(new msonlab::Node(0, L'0', 0));
+		this->iteratorEnd = IProcessable::nPtr(new msonlab::Node(0, "0", 0));
 	}
 
 	Graph::Graph(const Graph& other)
@@ -86,24 +86,16 @@ namespace msonlab
 		return edges.size();
 	}
 
-	bool Graph::importGraph(std::istream &in) const
+	const IProcessable::nVect Graph::getNodes() const
 	{
-		throw Exceptions::NotImplementedException("Graph::importGraph function");
+		return nodes;
 	}
 
-	bool Graph::exportGraph(std::ostream &out) const
+	const IProcessable::eVect Graph::getEdges() const
 	{
-		out << "digraph G {" << std::endl;
-
-		// print edges from this node
-		for (unsigned j = 0; j < this->edges.size(); ++j)
-		{
-			out << this->edges[j]->getFrom()->getId() << " -> " << this->edges[j]->getTo()->getId() << " ;\n";
-		}
-
-		out << "}";
-		return true;
+		return edges;
 	}
+
 
 	IProcessable::nVect Graph::getInputNodes() const
 	{
