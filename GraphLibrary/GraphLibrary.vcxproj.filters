@@ -126,23 +126,38 @@
     <ClInclude Include="ConfigFile.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GAOptions.h">
-      <Filter>Header Files\Scheduling\Genetic</Filter>
-    </ClInclude>
     <ClInclude Include="StackCompiler.h">
       <Filter>Header Files\Stack</Filter>
     </ClInclude>
     <ClInclude Include="StackRunner.h">
       <Filter>Header Files\Stack</Filter>
     </ClInclude>
-    <ClInclude Include="SchedulerAlgorithm.h">
-      <Filter>Header Files\Scheduling</Filter>
-    </ClInclude>
     <ClInclude Include="FitnessStrategy.h">
       <Filter>Header Files\Scheduling\Genetic\FitnessStrategy</Filter>
     </ClInclude>
-    <ClInclude Include="NodePower.h">
-      <Filter>Header Files\Node</Filter>
+    <ClInclude Include="HusSchedulingAlgorithm.h">
+      <Filter>Header Files\Scheduling</Filter>
+    </ClInclude>
+    <ClInclude Include="Options.h">
+      <Filter>Header Files\Scheduling</Filter>
+    </ClInclude>
+    <ClInclude Include="SchedulingAlgorithm.h">
+      <Filter>Header Files\Scheduling</Filter>
+    </ClInclude>
+    <ClInclude Include="SimpleStackValue.h">
+      <Filter>Header Files\Stack</Filter>
+    </ClInclude>
+    <ClInclude Include="StackValue.h">
+      <Filter>Header Files\Stack</Filter>
+    </ClInclude>
+    <ClInclude Include="FutureStackValue.h">
+      <Filter>Header Files\Stack</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphBuilder.h">
+      <Filter>Header Files\Graph</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphExchanger.h">
+      <Filter>Header Files\Graph</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -165,9 +180,6 @@
       <Filter>Source Files\Scheduling\Genetic</Filter>
     </ClCompile>
     <ClCompile Include="Population .cpp">
-      <Filter>Source Files\Scheduling\Genetic</Filter>
-    </ClCompile>
-    <ClCompile Include="GAOptions.cpp">
       <Filter>Source Files\Scheduling\Genetic</Filter>
     </ClCompile>
     <ClCompile Include="BlueEdge.cpp">
@@ -221,8 +233,26 @@
     <ClCompile Include="FitnessStrategy.cpp">
       <Filter>Source Files\Scheduling\Genetic\FitnessStrategy</Filter>
     </ClCompile>
-    <ClCompile Include="NodePower.cpp">
-      <Filter>Source Files\Node</Filter>
+    <ClCompile Include="HusSchedulingAlgorithm.cpp">
+      <Filter>Source Files\Scheduling</Filter>
+    </ClCompile>
+    <ClCompile Include="Options.cpp">
+      <Filter>Source Files\Scheduling</Filter>
+    </ClCompile>
+    <ClCompile Include="SimpleStackValue.cpp">
+      <Filter>Source Files\Stack</Filter>
+    </ClCompile>
+    <ClCompile Include="StackValue.cpp">
+      <Filter>Source Files\Stack</Filter>
+    </ClCompile>
+    <ClCompile Include="FutureStackValue.cpp">
+      <Filter>Source Files\Stack</Filter>
+    </ClCompile>
+    <ClCompile Include="GraphExchanger.cpp">
+      <Filter>Source Files\Graph</Filter>
+    </ClCompile>
+    <ClCompile Include="GraphBuilder.cpp">
+      <Filter>Source Files\Graph</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

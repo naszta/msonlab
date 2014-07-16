@@ -1,9 +1,10 @@
 #pragma once	
 
-#include "IProcessable.h"
-#include "GraphAlgorithms.h"
-#include "Global.h"
+#include "Options.h"
+#include "Graph.h"
 #include <ostream>
+#include <vector>
+#include <memory>
 
 /// This class represents a solution
 /// a solution is described with
@@ -11,42 +12,48 @@
 
 namespace msonlab
 {
-	class Chromosome
+	class Chromosome : public std::enable_shared_from_this<Chromosome>
 	{
 	private:
-		/// the scheduling part
-		/// this part describes the order of the tasks
+		// the scheduling part, escribes the order of the tasks
 		IProcessable::nVect scheduling;
 
-		/// the mapping part
-		/// this part maps the task to PUs.
+		// the mapping part, maps the task to PUs.
 		vector<unsigned int> mapping;
 
-		/// the number of PUs
+		// the number of PUs
 		unsigned int pus;
 
-		/// the score of this solution
-		/// the less is better
+		// the score of this solution, the less is better
 		unsigned int fitness;
 
+		// the length of the result
+		unsigned int length; 
+
 		friend class chrComparator;
+		friend class GraphAlgorithms;
 		friend class GeneticAlgorithm;
+		friend class GreedySchedulingAlgorithm;
+		friend class HusSchedulingAlgorithm;
+
+		void calcStartTime(Options::oPtr options);
 	public:
 		friend std::ostream& operator<<(std::ostream& os, const Chromosome& chromosome);
 		typedef std::shared_ptr<Chromosome> cPtr;
+		typedef std::shared_ptr<const Chromosome> ccPtr;
 		typedef vector< cPtr > cVect;
 
-		Chromosome();
-		Chromosome(size_t size);
-		Chromosome(Chromosome& chromosome);
+		Chromosome(unsigned pus);
+		Chromosome(size_t size, unsigned pus);
+		Chromosome(const Chromosome& chromosome);
 
 		Chromosome& operator=(const Chromosome &chromosome);
 
 		unsigned int getFitness() const { return fitness; }
-		unsigned int getPUs() const { return pus; }
 		const vector<unsigned int>& getMapping() const { return mapping; }
 		const IProcessable::nVect& getScheduling() const { return scheduling; }
 
 		void printChromosome(std::ostream& o) const;
+		void printTable(std::ostream& o, Options::oPtr options) const;
 	};
 }

@@ -1,8 +1,5 @@
 #pragma once
-#include "Global.h"
-#include "Graph.h"
 #include "GraphIterator.h"
-#include "IProcessable.h"
 #include <queue>
 #include <set>
 
@@ -23,7 +20,7 @@ namespace msonlab
 		virtual bool clear();
 	public:
 		BFSIterator(IProcessable::nPtr endPtr);
-		BFSIterator(Graph::gPtr g);
+		BFSIterator(Graph& g);
 		BFSIterator(BFSIterator& it);
 		BFSIterator& operator=(BFSIterator& it);
 		BFSIterator& operator++(); // prefix

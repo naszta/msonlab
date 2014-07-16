@@ -7,14 +7,14 @@ namespace msonlab
 	{
 	}
 
-	BFSIterator::BFSIterator(Graph::gPtr g) : GraphIterator(g)
+	BFSIterator::BFSIterator(Graph& g) : GraphIterator(g)
 	{
 		// end of the iterator is unique for every graph
 		// but the same for every iterator on the same graph
-		this->end = g->iteratorEnd;
+		this->end = g.iteratorEnd;
 
 		// adding input nodes to the queue.
-		IProcessable::nVect inputNodesVect = g->getInputNodes();
+		IProcessable::nVect inputNodesVect = g.getInputNodes();
 		if (inputNodesVect.size() > 0)
 		{
 			IProcessable::nVect::iterator it = inputNodesVect.begin();
@@ -34,7 +34,7 @@ namespace msonlab
 	}
 
 	// Copy constructor
-	BFSIterator::BFSIterator(BFSIterator& it) : GraphIterator(it.graph)
+	BFSIterator::BFSIterator(BFSIterator& it) : GraphIterator(it)
 	{
 		if (this != &it)
 		{
@@ -46,15 +46,11 @@ namespace msonlab
 	{
 		if (this != &it)
 		{
-			this->clear();
-			this->graph = it.graph;
-			this->node = it.node;
-			this->end = it.end;
+			GraphIterator::operator=(it);
 
 			// copy state
 			this->visited = it.visited;
 			this->toVisit = it.toVisit;
-			this->inputNodes = it.inputNodes;
 		}
 
 		return *this;
@@ -94,9 +90,8 @@ namespace msonlab
 		visited.insert(node);
 
 		// adding neighbours to queue
-		IProcessable::eVect::iterator it;
-		IProcessable::eVect &neighbours = node->getSuccessors();
-		for (it = neighbours.begin(); it != neighbours.end(); ++it)
+		const IProcessable::eVect &neighbours = node->getSuccessors();
+		for (auto it = neighbours.begin(); it != neighbours.end(); ++it)
 		{
 			if (visited.count((*it)->getTo()) == 0)
 			{

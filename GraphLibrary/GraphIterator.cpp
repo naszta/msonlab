@@ -7,7 +7,7 @@ namespace msonlab
 	{
 	}
 
-	GraphIterator::GraphIterator(Graph::gPtr g) : graph(g)
+	GraphIterator::GraphIterator(Graph& g)
 	{
 	}
 
@@ -18,6 +18,28 @@ namespace msonlab
 	/**
 	* PUBLIC METHODS
 	*/
+
+	GraphIterator::GraphIterator(GraphIterator& it)
+	{
+		if (this != &it)
+		{
+			*this = it;
+		}
+	}
+
+	GraphIterator& GraphIterator::operator=(GraphIterator& it)
+	{
+		if (this != &it)
+		{
+			this->clear();
+			this->node = it.node;
+			this->end = it.end;
+
+			this->inputNodes = it.inputNodes;
+		}
+
+		return *this;
+	}
 
 	// Compares by pointer
 	bool GraphIterator::operator==(const GraphIterator& it) const
@@ -32,16 +54,9 @@ namespace msonlab
 	}
 
 	// Sets the start node of the BFS
+	// It is the responsibility of the caller that startnode is part of base graph of this iterator
 	bool GraphIterator::setStartNode(IProcessable::nPtr startNode)
 	{
-		msonlab::IProcessable::nVect::iterator it;
-		it = std::find(this->graph->nodes.begin(), this->graph->nodes.end(), startNode);
-
-		if (it == this->graph->nodes.end())
-		{
-			return false;
-		}
-
 		this->clear();
 		this->node = startNode;
 		return this->moveNext();

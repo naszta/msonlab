@@ -14,15 +14,19 @@ namespace msonlab
 		//wchar_t label;
 		Types::LabelType label;
 
-		Types::DataType value;
+		Types::DataPtr value;
 
 		bool processed;
-		Types::DataType resultValue;
+		Types::DataPtr resultValue;
 
-		bool setProcessed(msonlab::Types::DataType _resultValue);
+		bool setProcessed(msonlab::Types::DataPtr _resultValue);
 		bool clearProcessed();
 
+		// compile
+		bool extra_sync_marker = false;
+
 	public:
+		bool synced = false;
 		typedef std::shared_ptr<IProcessable> pPtr;
 		typedef vector<std::shared_ptr<IProcessable>> pVect;
 
@@ -35,7 +39,7 @@ namespace msonlab
 
 		enum PlaceEnum {Input, Inside, Output};
 
-		IProcessable(unsigned int _id, Types::LabelType _label, Types::DataType _value);
+		IProcessable(unsigned int _id, Types::LabelType _label, Types::DataPtr _value);
 		IProcessable();
 
 		virtual bool registerParameter() = 0;
@@ -46,16 +50,30 @@ namespace msonlab
 		virtual bool resetProcessingState();
 
 		unsigned int getId() const;
-		Types::LabelType getLabel() const;
-		Types::DataType getValue() const;
-		Types::DataType getResultValue() const;
+		virtual std::string getIdString() const;
+		virtual Types::LabelType getLabel() const;
+		Types::DataPtr getValue() const;
+		Types::DataPtr getResultValue() const;
 
 		virtual PlaceEnum getPlace() const;
 
 		bool operator==(const IProcessable& other) const;
 
 		// compile
-		virtual void compile(msonlab::StackRunner::srPtr stackProgram);
+		virtual void compile(int caller_thread, vector<msonlab::StackRunner::program>* programs, StackRunner::scheduleOrder schedule);
+
+		void set_sync_marker();
+		void clear_sync_marker();
+		void set_synced();
+		void clear_synced();
+
+		int compile_iteration;
+
+
+		// exchange
+		virtual DOMElement* serialize(DOMDocument* xmlDocument, std::string yedDataKeyName, std::string typeKeyName, std::string customDataKey);
+		virtual std::string getTypeString() const;
+		virtual std::string get_custom_data() const;
 	};
 
 }

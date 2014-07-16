@@ -1,7 +1,5 @@
 #pragma once
-#include "Global.h"
 #include "Graph.h"
-#include "IProcessable.h"
 #include <queue>
 #include <set>
 
@@ -19,13 +17,15 @@ namespace msonlab
 		IProcessable::nPtr node;
 		IProcessable::nPtr end;
 		queue<IProcessable::nPtr> inputNodes;
-		Graph::gPtr graph;
+		//Graph::gPtr graph;
 		// This method chooses the next node and steps there
 		virtual bool moveNext() = 0;
 		virtual bool clear() = 0;
 	public:
 		GraphIterator(IProcessable::nPtr node, IProcessable::nPtr end);
-		GraphIterator(Graph::gPtr g);
+		GraphIterator(Graph& g);
+		GraphIterator(GraphIterator& it);
+		GraphIterator& operator=(GraphIterator& it);
 		bool operator==(const GraphIterator& it) const;
 		IProcessable::nPtr operator*();
 		bool setStartNode(IProcessable::nPtr startNode);

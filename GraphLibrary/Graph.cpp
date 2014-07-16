@@ -9,7 +9,7 @@ namespace msonlab
 	{
 		nodes.clear();
 		edges.clear();
-		this->iteratorEnd = IProcessable::nPtr(new msonlab::Node(0, L"0", 0));
+		this->iteratorEnd = std::make_shared<Node>(0, L"0", nullptr);
 	}
 
 	Graph::Graph(const Graph& other)
@@ -86,24 +86,16 @@ namespace msonlab
 		return edges.size();
 	}
 
-	bool Graph::importGraph(std::istream &in) const
+	const IProcessable::nVect Graph::getNodes() const
 	{
-		throw Exceptions::NotImplementedException("Graph::importGraph function");
+		return nodes;
 	}
 
-	bool Graph::exportGraph(std::ostream &out) const
+	const IProcessable::eVect Graph::getEdges() const
 	{
-		out << "digraph G {" << std::endl;
-
-		// print edges from this node
-		for (unsigned j = 0; j < this->edges.size(); ++j)
-		{
-			out << this->edges[j]->getFrom()->getId() << " -> " << this->edges[j]->getTo()->getId() << " ;\n";
+		return edges;
 		}
 
-		out << "}";
-		return true;
-	}
 
 	IProcessable::nVect Graph::getInputNodes() const
 	{
@@ -137,7 +129,7 @@ namespace msonlab
 
 	Graph::gPtr Graph::getPartialGraphByEdgeType(Edge::EdgeTypeEnum edgeType) const
 	{
-		Graph::gPtr ptrGraph(new msonlab::Graph());
+		Graph::gPtr ptrGraph = std::make_unique<Graph>();
 
 		IProcessable::eVect::const_iterator it = edges.begin();
 		while (it != edges.end())
@@ -155,7 +147,7 @@ namespace msonlab
 
 	BFSIterator Graph::bfsIteratorBegin()
 	{
-		BFSIterator bfsIT(shared_from_this());
+		BFSIterator bfsIT(*this);
 		return bfsIT;
 	}
 
@@ -167,7 +159,7 @@ namespace msonlab
 
 	DFSIterator Graph::dfsIteratorBegin()
 	{
-		DFSIterator dfsIT(shared_from_this());
+		DFSIterator dfsIT(*this);
 		return dfsIT;
 	}
 

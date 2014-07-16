@@ -1,8 +1,5 @@
 #pragma once
-#include "Global.h"
-#include "Graph.h"
 #include "GraphIterator.h"
-#include "IProcessable.h"
 #include <queue>
 #include <set>
 #include <stack>
@@ -26,7 +23,7 @@ namespace msonlab
 		virtual bool clear();
 	public:
 		DFSIterator(IProcessable::nPtr endPtr);
-		DFSIterator(Graph::gPtr g);
+		DFSIterator(Graph& g);
 		DFSIterator(DFSIterator& it);
 		DFSIterator& operator=(DFSIterator& it);
 		bool operator==(const DFSIterator& it) const;

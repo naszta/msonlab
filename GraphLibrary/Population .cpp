@@ -12,7 +12,7 @@ namespace msonlab
 		return a->getFitness() > b->getFitness();
 	}
 
-	Population::Population(const vector<cPtr>& sol, size_t keepSize, size_t popMaxSize, size_t keepBest) : solution(sol), POPMAXSIZE(popMaxSize), KEEP(keepSize), KEEPBEST(keepBest)
+	Population::Population(const vector<Chromosome::cPtr>& sol, size_t keepSize, size_t popMaxSize, size_t keepBest) : solution(sol), POPMAXSIZE(popMaxSize), KEEP(keepSize), KEEPBEST(keepBest)
 	{
 		this->solution.resize(KEEP);
 	}
@@ -26,7 +26,7 @@ namespace msonlab
 	/// adds a new offspring to the population
 	///
 	/// @param offspring the chromosome to add.
-	void Population::addOffspring(cPtr offspring)
+	void Population::addOffspring(Chromosome::cPtr offspring)
 	{
 		this->newGeneration.push(offspring);
 	}
@@ -108,5 +108,10 @@ namespace msonlab
 		{
 			this->levelSize.push_back(*it);
 		}
+	}
+
+	Population & Population::operator = (Population & p) {
+		std::cout << "Where am I used?";
+		return *this;
 	}
 }

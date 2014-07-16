@@ -1,12 +1,17 @@
 #pragma once
 
-#include "Graph.h"
+#include "SchedulingAlgorithm.h"
 
 namespace msonlab
 {
-	class GreedySchedulingAlgorithm
+	///
+	/// This class implements a greedy scheduling of the graph.
+	///
+	/// Greedy scheduling means, it always schedules the next
+	/// ready to process node to the next available PU.
+	class GreedySchedulingAlgorithm : public SchedulingAlgorithm
 	{
 	public:
-		int schedule(Graph::gPtr graph, int pus) const;
+		Chromosome::cPtr schedule(Graph::gPtr& graph, Options::oPtr options) const;
 	};
 }

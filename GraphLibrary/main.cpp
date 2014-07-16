@@ -1,17 +1,20 @@
 #include "Graph.h"
+#include "GraphExchanger.h"
+#include "StackCompiler.h"
+
 #include "NodeAdd.h"
 #include "NodeConstant.h"
 #include "NodeDivide.h"
 #include "NodeMultiply.h"
-#include "NodePower.h"
 #include "NodeSquareRoot.h"
 #include "BlueEdge.h"
 #include "BFSIterator.h"
 #include "DFSIterator.h"
-#include "GraphAlgorithms.h"
 #include "GraphGenerator.h"
+#include "GreedySchedulingAlgorithm.h"
 #include "GeneticAlgorithm.h"
-#include "GAOptions.h"
+#include "HusSchedulingAlgorithm.h"
+#include "Options.h"
 #include "FitnessStrategy.h"
 #include "StackCompiler.h"
 #include "StackRunner.h"
@@ -19,42 +22,52 @@
 #include <iostream>
 #include <iomanip>
 #include <fstream>
-#include <ctime>
-#include <cstdlib>
+#include <cstdlib>     /* srand, rand */
+#include <ctime>       /* time */
+
+#include <xercesc\util\PlatformUtils.hpp>
+#include <xercesc\dom\DOM.hpp>
+#include <xercesc/framework/LocalFileFormatTarget.hpp>
+#include <xercesc\parsers\XercesDOMParser.hpp>
+#include <xercesc\sax\HandlerBase.hpp>
+XERCES_CPP_NAMESPACE_USE
+
+#define MEASURE 1
+#define WAIT 1
 
 using namespace msonlab;
 using namespace std;
 
-msonlab::Graph::gPtr initGraph()
+Graph::gPtr initGraph()
 {
-	msonlab::Graph::gPtr graph(new Graph());
-	msonlab::Node::nPtr a(new msonlab::NodeConstant(0, L"a", msonlab::Types::DataType(new double(4))));
-	msonlab::Node::nPtr b(new msonlab::NodeConstant(1, L"b", msonlab::Types::DataType(new double(2))));
-	msonlab::Node::nPtr c(new msonlab::NodeConstant(2, L"c", msonlab::Types::DataType(new double(-5))));
+	auto graph = make_unique<Graph>();
+	msonlab::Node::nPtr a = (make_shared<msonlab::NodeConstant>(0, L"a", make_shared<Types::DataType>(4)));
+	msonlab::Node::nPtr b = (make_shared<msonlab::NodeConstant>(1, L"b", make_shared<Types::DataType>(2)));
+	msonlab::Node::nPtr c = (make_shared<msonlab::NodeConstant>(2, L"c", make_shared<Types::DataType>(-5)));
 
-	msonlab::Node::nPtr constNumber_1(new msonlab::NodeConstant(3, L"1", msonlab::Types::DataType(new double(1))));
-	msonlab::Node::nPtr constNumber_2(new msonlab::NodeConstant(4, L"2", msonlab::Types::DataType(new double(2))));
-	msonlab::Node::nPtr constNumber_minus1(new msonlab::NodeConstant(5, L"-1", msonlab::Types::DataType(new double(-1))));
-	msonlab::Node::nPtr constNumber_minus4(new msonlab::NodeConstant(6, L"-4", msonlab::Types::DataType(new double(-4))));
+	msonlab::Node::nPtr constNumber_1 = (make_shared<msonlab::NodeConstant>(3, L"1", make_shared<Types::DataType>(1)));
+	msonlab::Node::nPtr constNumber_2 = (make_shared<msonlab::NodeConstant>(4, L"2", make_shared<Types::DataType>(2)));
+	msonlab::Node::nPtr constNumber_minus1 = (make_shared<msonlab::NodeConstant>(5, L"-1", make_shared<Types::DataType>(-1)));
+	msonlab::Node::nPtr constNumber_minus4 = (make_shared<msonlab::NodeConstant>(6, L"-4", make_shared<Types::DataType>(-4)));
 
-	msonlab::Node::nPtr multiply_2a(new msonlab::NodeMultiply(7, L"2a", msonlab::Types::DataType(new double(0))));
-	msonlab::Node::nPtr multiply_bb(new msonlab::NodeMultiply(8, L"b^2", msonlab::Types::DataType(new double(0))));
-	msonlab::Node::nPtr multiply_minusb(new msonlab::NodeMultiply(9, L"-b", msonlab::Types::DataType(new double(0))));
-	msonlab::Node::nPtr multiply_minus4ac(new msonlab::NodeMultiply(10, L"-4ac", msonlab::Types::DataType(new double(0))));
+	msonlab::Node::nPtr multiply_2a(new msonlab::NodeMultiply(7, L"2a", make_shared<Types::DataType>(0)));
+	msonlab::Node::nPtr multiply_bb(new msonlab::NodeMultiply(8, L"b^2", make_shared<Types::DataType>(0)));
+	msonlab::Node::nPtr multiply_minusb(new msonlab::NodeMultiply(9, L"-b", make_shared<Types::DataType>(0)));
+	msonlab::Node::nPtr multiply_minus4ac(new msonlab::NodeMultiply(10, L"-4ac", make_shared<Types::DataType>(0)));
 
-	msonlab::Node::nPtr divide_1_2a(new msonlab::NodeDivide(11, L"1/2a", msonlab::Types::DataType(new double(0))));
+	msonlab::Node::nPtr divide_1_2a(new msonlab::NodeDivide(11, L"1/2a", make_shared<Types::DataType>(0)));
 
-	msonlab::Node::nPtr add_bb_minus4ac(new msonlab::NodeAdd(12, L"b^2-4ac", msonlab::Types::DataType(new double(0))));
+	msonlab::Node::nPtr add_bb_minus4ac(new msonlab::NodeAdd(12, L"b^2-4ac", make_shared<Types::DataType>(0)));
 
-	msonlab::Node::nPtr squareRoot_bb_minus4ac(new msonlab::NodeSquareRoot(13, L"(b^2-4ac)^0.5", msonlab::Types::DataType(new double(0))));
+	msonlab::Node::nPtr squareRoot_bb_minus4ac(new msonlab::NodeSquareRoot(13, L"(b^2-4ac)^0.5", make_shared<Types::DataType>(0)));
 
-	msonlab::Node::nPtr multiply_minus_squareRoot_bb_minus4ac(new msonlab::NodeMultiply(14, L"-(b^2-4ac)^0.5", msonlab::Types::DataType(new double(0))));
+	msonlab::Node::nPtr multiply_minus_squareRoot_bb_minus4ac(new msonlab::NodeMultiply(14, L"-(b^2-4ac)^0.5", make_shared<Types::DataType>(0)));
 
-	msonlab::Node::nPtr add_toDivide1(new msonlab::NodeAdd(15, L"-b+(b^2-4ac)^0.5", msonlab::Types::DataType(new double(0))));
-	msonlab::Node::nPtr add_toDivide2(new msonlab::NodeAdd(16, L"-b-(b^2-4ac)^0.5", msonlab::Types::DataType(new double(0))));
+	msonlab::Node::nPtr add_toDivide1(new msonlab::NodeAdd(15, L"-b+(b^2-4ac)^0.5", make_shared<Types::DataType>(0)));
+	msonlab::Node::nPtr add_toDivide2(new msonlab::NodeAdd(16, L"-b-(b^2-4ac)^0.5", make_shared<Types::DataType>(0)));
 
-	msonlab::Node::nPtr y1(new msonlab::NodeMultiply(17, L"Y1", msonlab::Types::DataType(new double(0))));
-	msonlab::Node::nPtr y2(new msonlab::NodeMultiply(18, L"Y2", msonlab::Types::DataType(new double(0))));
+	msonlab::Node::nPtr y1(new msonlab::NodeMultiply(17, L"Y1", make_shared<Types::DataType>(0)));
+	msonlab::Node::nPtr y2(new msonlab::NodeMultiply(18, L"Y2", make_shared<Types::DataType>(0)));
 
 
 	msonlab::Edge::ePtr e1 (new msonlab::BlueEdge(1, L"e1",0,a,multiply_2a));
@@ -119,90 +132,109 @@ msonlab::Graph::gPtr initGraph()
 	return graph;
 }
 
-msonlab::Graph::gPtr initTestGraph()
+unique_ptr<Graph> initTestGraph()
 {
-	msonlab::Graph::gPtr testG(new Graph());
+	auto testG = make_unique<Graph>();
 
-	msonlab::Node::nPtr node1(new msonlab::NodeConstant(0, L"5", msonlab::Types::DataType(new double(5))));
-	msonlab::Node::nPtr node2(new msonlab::NodeConstant(1, L"2", msonlab::Types::DataType(new double(2))));
-	msonlab::Node::nPtr node3(new msonlab::NodeConstant(2, L"3", msonlab::Types::DataType(new double(3))));
-	msonlab::Node::nPtr node4(new msonlab::NodeAdd(3, L"*", msonlab::Types::DataType(new double(0))));
-	msonlab::Node::nPtr node5(new msonlab::NodeMultiply(4, L"+", msonlab::Types::DataType(new double(0))));
+	msonlab::Node::nPtr node1 = make_shared<msonlab::Node>(0, L"0", make_shared<Types::DataType>(5), 2);
+	msonlab::Node::nPtr node2 = make_shared<msonlab::Node>(1, L"1", make_shared<Types::DataType>(2), 3);
+	msonlab::Node::nPtr node3 = make_shared<msonlab::Node>(2, L"2", make_shared<Types::DataType>(3), 3);
+	msonlab::Node::nPtr node4 = make_shared<msonlab::Node>(3, L"3", make_shared<Types::DataType>(0), 4);
+	msonlab::Node::nPtr node5 = make_shared<msonlab::Node>(4, L"4", make_shared<Types::DataType>(0), 5);
+	msonlab::Node::nPtr node6 = make_shared<msonlab::Node>(5, L"5", make_shared<Types::DataType>(0), 4);
+	msonlab::Node::nPtr node7 = make_shared<msonlab::Node>(6, L"6", make_shared<Types::DataType>(0), 4);
+	msonlab::Node::nPtr node8 = make_shared<msonlab::Node>(7, L"7", make_shared<Types::DataType>(0), 4);
+	msonlab::Node::nPtr node9 = make_shared<msonlab::Node>(8, L"8", make_shared<Types::DataType>(0), 1);
 
-	msonlab::Edge::ePtr edge1(new msonlab::Edge(0, L"e0", 0, node1, node5));
-	msonlab::Edge::ePtr edge2(new msonlab::Edge(1, L"e1", 0, node2, node4));
-	msonlab::Edge::ePtr edge3(new msonlab::Edge(2, L"e2", 0, node3, node4));
-	msonlab::Edge::ePtr edge4(new msonlab::Edge(3, L"e3", 0, node4, node5));
+	msonlab::Edge::ePtr edge1 = make_shared<msonlab::Edge>(0, L"e12", nullptr, node1, node2);
+	msonlab::Edge::ePtr edge2 = make_shared<msonlab::Edge>(1, L"e13", nullptr, node1, node3);
+	msonlab::Edge::ePtr edge3 = make_shared<msonlab::Edge>(2, L"e14", nullptr, node1, node4);
+	msonlab::Edge::ePtr edge4 = make_shared<msonlab::Edge>(3, L"e15", nullptr, node1, node5);
+	msonlab::Edge::ePtr edge5 = make_shared<msonlab::Edge>(4, L"e17", nullptr, node1, node7);
+	msonlab::Edge::ePtr edge6 = make_shared<msonlab::Edge>(6, L"e26", nullptr, node2, node6);
+	msonlab::Edge::ePtr edge7 = make_shared<msonlab::Edge>(7, L"e27", nullptr, node2, node7);
+	msonlab::Edge::ePtr edge8 = make_shared<msonlab::Edge>(8, L"e38", nullptr, node3, node8);
+	msonlab::Edge::ePtr edge9 = make_shared<msonlab::Edge>(9, L"e48", nullptr, node4, node8);
+	msonlab::Edge::ePtr edge10 = make_shared<msonlab::Edge>(10, L"e69", nullptr, node6, node9);
+	msonlab::Edge::ePtr edge11 = make_shared<msonlab::Edge>(11, L"e79", nullptr, node7, node9);
+	msonlab::Edge::ePtr edge12 = make_shared<msonlab::Edge>(12, L"e89", nullptr, node8, node9);
 
 	testG->addEdge(edge1);
 	testG->addEdge(edge2);
 	testG->addEdge(edge3);
 	testG->addEdge(edge4);
-
+	testG->addEdge(edge5);
+	testG->addEdge(edge6);
+	testG->addEdge(edge7);
+	testG->addEdge(edge8);
+	testG->addEdge(edge9);
+	testG->addEdge(edge10);
+	testG->addEdge(edge11);
+	testG->addEdge(edge12);
 	return testG;
 }
 
-msonlab::Graph::gPtr initRandomGraph(GAOptions::gaPtr gaoptions)
+Graph::gPtr initRandomGraph(Options::oPtr Options)
 {
-	return GraphGenerator::generate(gaoptions->getGraphSize(), gaoptions->getGraphEdgeProb(), gaoptions->getGraphWidening(), gaoptions->getNumberOfPus());
+	return GraphGenerator::generate(Options->getGraphSize(), Options->getGraphEdgeProb(), Options->getGraphWidening(), Options->getNumberOfPus());
 }
 
-msonlab::Graph::gPtr initStackGraph()
+Graph::gPtr initStackGraph()
 {
-	msonlab::Graph::gPtr qeGraph(new msonlab::Graph());
+	auto qeGraph = make_unique<Graph>();
 
-	msonlab::Node::nPtr a(new msonlab::NodeConstant(1, L"a", msonlab::Types::DataType(new double(2))));
-	msonlab::Node::nPtr b(new msonlab::NodeConstant(2, L"b", msonlab::Types::DataType(new double(4))));
-	msonlab::Node::nPtr c(new msonlab::NodeConstant(3, L"c", msonlab::Types::DataType(new double(-4))));
+	msonlab::Node::nPtr a = (make_shared<msonlab::NodeConstant>(1, L"a", make_shared<Types::DataType>(2)));
+	msonlab::Node::nPtr b = (make_shared<msonlab::NodeConstant>(2, L"b", make_shared<Types::DataType>(4)));
+	msonlab::Node::nPtr c = (make_shared<msonlab::NodeConstant>(3, L"c", make_shared<Types::DataType>(-4)));
 
-	msonlab::Node::nPtr constNumber_1(new msonlab::NodeConstant(4, L"1", msonlab::Types::DataType(new double(1.0))));
-	msonlab::Node::nPtr constNumber_2(new msonlab::NodeConstant(5, L"2", msonlab::Types::DataType(new double(2.0))));
-	msonlab::Node::nPtr constNumber_minus1(new msonlab::NodeConstant(6, L"-1", msonlab::Types::DataType(new double(-1.0))));
-	msonlab::Node::nPtr constNumber_minus4(new msonlab::NodeConstant(7, L"-4", msonlab::Types::DataType(new double(-4.0))));
-	msonlab::Node::nPtr constNumber_05(new msonlab::NodeConstant(20, L"0.5", msonlab::Types::DataType(new double(0.5))));
+	msonlab::Node::nPtr constNumber_1 = (make_shared<msonlab::NodeConstant>(4, L"1", make_shared<Types::DataType>(1.0)));
+	msonlab::Node::nPtr constNumber_2 = (make_shared<msonlab::NodeConstant>(5, L"2", make_shared<Types::DataType>(2.0)));
+	msonlab::Node::nPtr constNumber_minus1 = (make_shared<msonlab::NodeConstant>(6, L"-1", make_shared<Types::DataType>(-1.0)));
+	msonlab::Node::nPtr constNumber_minus4 = (make_shared<msonlab::NodeConstant>(7, L"-4", make_shared<Types::DataType>(-4.0)));
+	msonlab::Node::nPtr constNumber_05 = (make_shared<msonlab::NodeConstant>(20, L"0.5", make_shared<Types::DataType>(0.5)));
 
-	msonlab::Node::nPtr multiply_2a(new msonlab::NodeMultiply(8, L"2a", msonlab::Types::DataType(new double(0.0))));
-	msonlab::Node::nPtr multiply_bb(new msonlab::NodeMultiply(9, L"b^2", msonlab::Types::DataType(new double(0.0))));
-	msonlab::Node::nPtr multiply_minusb(new msonlab::NodeMultiply(10, L"-b", msonlab::Types::DataType(new double(0.0))));
-	msonlab::Node::nPtr multiply_minus4ac(new msonlab::NodeMultiply(11, L"-4ac", msonlab::Types::DataType(new double(0.0))));
+	msonlab::Node::nPtr multiply_2a(new msonlab::NodeMultiply(8, L"2a", make_shared<Types::DataType>(0.0)));
+	msonlab::Node::nPtr multiply_bb(new msonlab::NodeMultiply(9, L"b^2", make_shared<Types::DataType>(0.0)));
+	msonlab::Node::nPtr multiply_minusb(new msonlab::NodeMultiply(10, L"-b", make_shared<Types::DataType>(0.0)));
+	msonlab::Node::nPtr multiply_minus4ac(new msonlab::NodeMultiply(11, L"-4ac", make_shared<Types::DataType>(0.0)));
 
-	msonlab::Node::nPtr divide_1_2a(new msonlab::NodeDivide(12, L"1/2a", msonlab::Types::DataType(new double(0.0))));
+	msonlab::Node::nPtr divide_1_2a(new msonlab::NodeDivide(12, L"1/2a", make_shared<Types::DataType>(0.0)));
 
-	msonlab::Node::nPtr add_bb_minus4ac(new msonlab::NodeAdd(13, L"b^2-4ac", msonlab::Types::DataType(new double(0.0))));
+	msonlab::Node::nPtr add_bb_minus4ac(new msonlab::NodeAdd(13, L"b^2-4ac", make_shared<Types::DataType>(0.0)));
 
-	msonlab::Node::nPtr squareRoot_bb_minus4ac(new msonlab::NodePower(14, L"(b^2-4ac)^0.5", msonlab::Types::DataType(new double(0.0))));
+	msonlab::Node::nPtr squareRoot_bb_minus4ac(new msonlab::NodeSquareRoot(14, L"(b^2-4ac)^0.5", make_shared<Types::DataType>(0.0)));
 
-	msonlab::Node::nPtr add_toDivide1(new msonlab::NodeAdd(16, L"-b+(b^2-4ac)^0.5", msonlab::Types::DataType(new double(0.0))));
+	msonlab::Node::nPtr add_toDivide1(new msonlab::NodeAdd(16, L"-b+(b^2-4ac)^0.5", make_shared<Types::DataType>(0.0)));
 
-	msonlab::Node::nPtr y1(new msonlab::NodeMultiply(18, L"Y1", msonlab::Types::DataType(new double(0.0))));
-
-
-	msonlab::Edge::ePtr e1(new msonlab::BlueEdge(1, L"e1", msonlab::Types::DataType(new double(0.0)), a, multiply_2a));
-	msonlab::Edge::ePtr e2(new msonlab::BlueEdge(2, L"e2", msonlab::Types::DataType(new double(0.0)), constNumber_2, multiply_2a));
-	msonlab::Edge::ePtr e3(new msonlab::BlueEdge(3, L"e3", msonlab::Types::DataType(new double(0.0)), a, multiply_minus4ac));
-
-	msonlab::Edge::ePtr e4(new msonlab::BlueEdge(4, L"e4", msonlab::Types::DataType(new double(0.0)), b, multiply_bb));
-	msonlab::Edge::ePtr e5(new msonlab::BlueEdge(5, L"e5", msonlab::Types::DataType(new double(0.0)), b, multiply_bb));
-	msonlab::Edge::ePtr e6(new msonlab::BlueEdge(6, L"e6", msonlab::Types::DataType(new double(0.0)), b, multiply_minusb));
-	msonlab::Edge::ePtr e7(new msonlab::BlueEdge(7, L"e7", msonlab::Types::DataType(new double(0.0)), constNumber_minus1, multiply_minusb));
-
-	msonlab::Edge::ePtr e8(new msonlab::Edge(8, L"e8", msonlab::Types::DataType(new double(0.0)), c, multiply_minus4ac));
-	msonlab::Edge::ePtr e9(new msonlab::BlueEdge(9, L"e9", msonlab::Types::DataType(new double(0.0)), constNumber_minus4, multiply_minus4ac));
-
-	msonlab::Edge::ePtr e10(new msonlab::Edge(10, L"e10", msonlab::Types::DataType(new double(0.0)), constNumber_1, divide_1_2a));
-	msonlab::Edge::ePtr e11(new msonlab::Edge(11, L"e11", msonlab::Types::DataType(new double(0.0)), multiply_2a, divide_1_2a));
-
-	msonlab::Edge::ePtr e12(new msonlab::Edge(12, L"e12", msonlab::Types::DataType(new double(0.0)), multiply_bb, add_bb_minus4ac));
-	msonlab::Edge::ePtr e13(new msonlab::Edge(13, L"e13", msonlab::Types::DataType(new double(0.0)), multiply_minus4ac, add_bb_minus4ac));
-
-	msonlab::Edge::ePtr e14(new msonlab::Edge(14, L"e14", msonlab::Types::DataType(new double(0.0)), add_bb_minus4ac, squareRoot_bb_minus4ac));
-
-	msonlab::Edge::ePtr e16(new msonlab::Edge(16, L"e16", msonlab::Types::DataType(new double(0.0)), multiply_minusb, add_toDivide1));
-	msonlab::Edge::ePtr e17(new msonlab::Edge(17, L"e17", msonlab::Types::DataType(new double(0.0)), squareRoot_bb_minus4ac, add_toDivide1));
+	msonlab::Node::nPtr y1(new msonlab::NodeMultiply(18, L"Y1", make_shared<Types::DataType>(0.0)));
 
 
-	msonlab::Edge::ePtr e20(new msonlab::Edge(20, L"e20", msonlab::Types::DataType(new double(0.0)), add_toDivide1, y1));
-	msonlab::Edge::ePtr e21(new msonlab::Edge(21, L"e21", msonlab::Types::DataType(new double(0.0)), divide_1_2a, y1));
+	msonlab::Edge::ePtr e1(new msonlab::BlueEdge(1, L"e1", make_shared<Types::DataType>(0.0), a, multiply_2a));
+	msonlab::Edge::ePtr e2(new msonlab::BlueEdge(2, L"e2", make_shared<Types::DataType>(0.0), constNumber_2, multiply_2a));
+	msonlab::Edge::ePtr e3(new msonlab::BlueEdge(3, L"e3", make_shared<Types::DataType>(0.0), a, multiply_minus4ac));
+
+	msonlab::Edge::ePtr e4(new msonlab::BlueEdge(4, L"e4", make_shared<Types::DataType>(0.0), b, multiply_bb));
+	msonlab::Edge::ePtr e5(new msonlab::BlueEdge(5, L"e5", make_shared<Types::DataType>(0.0), b, multiply_bb));
+	msonlab::Edge::ePtr e6(new msonlab::BlueEdge(6, L"e6", make_shared<Types::DataType>(0.0), b, multiply_minusb));
+	msonlab::Edge::ePtr e7(new msonlab::BlueEdge(7, L"e7", make_shared<Types::DataType>(0.0), constNumber_minus1, multiply_minusb));
+
+	msonlab::Edge::ePtr e8(new msonlab::Edge(8, L"e8", make_shared<Types::DataType>(0.0), c, multiply_minus4ac));
+	msonlab::Edge::ePtr e9(new msonlab::BlueEdge(9, L"e9", make_shared<Types::DataType>(0.0), constNumber_minus4, multiply_minus4ac));
+
+	msonlab::Edge::ePtr e10(new msonlab::Edge(10, L"e10", make_shared<Types::DataType>(0.0), constNumber_1, divide_1_2a));
+	msonlab::Edge::ePtr e11(new msonlab::Edge(11, L"e11", make_shared<Types::DataType>(0.0), multiply_2a, divide_1_2a));
+
+	msonlab::Edge::ePtr e12(new msonlab::Edge(12, L"e12", make_shared<Types::DataType>(0.0), multiply_bb, add_bb_minus4ac));
+	msonlab::Edge::ePtr e13(new msonlab::Edge(13, L"e13", make_shared<Types::DataType>(0.0), multiply_minus4ac, add_bb_minus4ac));
+
+	msonlab::Edge::ePtr e14(new msonlab::Edge(14, L"e14", make_shared<Types::DataType>(0.0), add_bb_minus4ac, squareRoot_bb_minus4ac));
+
+	msonlab::Edge::ePtr e16(new msonlab::Edge(16, L"e16", make_shared<Types::DataType>(0.0), multiply_minusb, add_toDivide1));
+	msonlab::Edge::ePtr e17(new msonlab::Edge(17, L"e17", make_shared<Types::DataType>(0.0), squareRoot_bb_minus4ac, add_toDivide1));
+
+
+	msonlab::Edge::ePtr e20(new msonlab::Edge(20, L"e20", make_shared<Types::DataType>(0.0), add_toDivide1, y1));
+	msonlab::Edge::ePtr e21(new msonlab::Edge(21, L"e21", make_shared<Types::DataType>(0.0), divide_1_2a, y1));
 
 
 	msonlab::Edge::ePtr e24(new msonlab::Edge(24, L"e24", 0, constNumber_05, squareRoot_bb_minus4ac));
@@ -235,10 +267,10 @@ Graph::gPtr initSampleGraph()
 {
 	Graph::gPtr graph(new Graph());
 	
-	Node::nPtr nc0(new NodeConstant(0, L"nc0", Types::DataType(new double(1.0))));
-	Node::nPtr nc1(new NodeConstant(1, L"nc1", Types::DataType(new double(5.0))));
-	Node::nPtr nc2(new NodeConstant(2, L"nc2", Types::DataType(new double(3.0))));
-	Node::nPtr nc3(new NodeConstant(3, L"nc3", Types::DataType(new double(4.0))));
+	Node::nPtr nc0(new NodeConstant(0, L"nc0", std::make_shared<Types::DataType>(1.0)));
+	Node::nPtr nc1(new NodeConstant(1, L"nc1", std::make_shared<Types::DataType>(5.0)));
+	Node::nPtr nc2(new NodeConstant(2, L"nc2", std::make_shared<Types::DataType>(3.0)));
+	Node::nPtr nc3(new NodeConstant(3, L"nc3", std::make_shared<Types::DataType>(4.0)));
 	Node::nPtr na(new NodeAdd(4, L"na", nullptr));
 	Node::nPtr nm1(new NodeMultiply(5, L"nm1", nullptr));
 	Node::nPtr nm2(new NodeMultiply(6, L"nm2", nullptr));
@@ -262,170 +294,277 @@ Graph::gPtr initSampleGraph()
 	return graph;
 }
 
-void runCompile(Graph::gPtr graph)
+void test_small_graph(Options::oPtr options)
 {
-	msonlab::StackCompiler sc(graph);
+	Graph::gPtr g(new Graph());
 
-	// CPU idõ mérése
-	clock_t startCPU, finishCPU;
+	msonlab::Node::nPtr a(new msonlab::NodeConstant(0, L"a", make_shared<Types::DataType>(2)));
+	msonlab::Node::nPtr b(new msonlab::NodeConstant(1, L"b", make_shared<Types::DataType>(3)));
+	msonlab::Node::nPtr c(new msonlab::NodeConstant(2, L"c", make_shared<Types::DataType>(2)));
+	msonlab::Node::nPtr d(new msonlab::NodeConstant(3, L"d", make_shared<Types::DataType>(3)));
 
-	startCPU = clock();
-	auto stackProg = sc.getStackProgram();
-	finishCPU = clock();
+	msonlab::Node::nPtr ab(new msonlab::NodeMultiply(4, L"a*b", nullptr));
+	msonlab::Node::nPtr cd(new msonlab::NodeMultiply(5, L"c*d", nullptr));
 
-	std::cout << "Printing complied program\n";
-	std::cout << *stackProg << std::endl;
+	msonlab::Node::nPtr ab2(new msonlab::NodeMultiply(6, L"2*a*b", nullptr));
+	msonlab::Node::nPtr c2(new msonlab::NodeConstant(7, L"2", make_shared<Types::DataType>(2)));
 
-	clock_t timeCPU = (finishCPU - startCPU);
-	double elapsedCPU = timeCPU;
+	msonlab::Node::nPtr res(new msonlab::NodeAdd(8, L"2*a*b + c*d", nullptr));
 
-	// CHRONO idõ mérése
+	msonlab::Edge::ePtr e1(new msonlab::Edge(9, L"e1", 0, a, ab));
+	msonlab::Edge::ePtr e2(new msonlab::Edge(10, L"e2", 0, b, ab));
 
-	std::chrono::high_resolution_clock clockCHRONO;
-	std::chrono::time_point<std::chrono::high_resolution_clock> startCHRONO, finishCHRONO;
+	msonlab::Edge::ePtr e3(new msonlab::Edge(11, L"e3", 0, c, cd));
+	msonlab::Edge::ePtr e4(new msonlab::Edge(12, L"e4", 0, d, cd));
 
-	startCHRONO = clockCHRONO.now();
-	auto stackProg2 = sc.getStackProgram();
-	finishCHRONO = clockCHRONO.now();
+	msonlab::Edge::ePtr e5(new msonlab::Edge(13, L"e5", 0, ab, ab2));
+	msonlab::Edge::ePtr e6(new msonlab::Edge(14, L"e6", 0, c2, ab2));
 
-	double elapsedCHRONO = (finishCHRONO - startCHRONO).count();
+	msonlab::Edge::ePtr e7(new msonlab::Edge(15, L"e7", 0, ab2, res));
 
-	auto result = stackProg->run(1);
+	msonlab::Edge::ePtr e8(new msonlab::Edge(16, L"e8", 0, cd, res));
 
-	std::cout << std::setprecision(100) << elapsedCHRONO << std::endl;
-	std::cout << std::setprecision(100) << elapsedCPU;
+	g->addEdge(e1);
+	g->addEdge(e2);
+	g->addEdge(e3);
+	g->addEdge(e4);
+	g->addEdge(e5);
+	g->addEdge(e6);
+	g->addEdge(e7);
+	g->addEdge(e8);
+
+	vector<unsigned int> testOrder;
+
+	HusSchedulingAlgorithm alg;
+	auto result = alg.schedule(g, options);
+
+	GeneticAlgorithm::transfromResult(result, testOrder);
+
+	// 0 - 9
+	//testOrder.push_back(0);
+	//testOrder.push_back(0);
+	//testOrder.push_back(1);//
+	//testOrder.push_back(1);//
+	//testOrder.push_back(1);//
+	//testOrder.push_back(1);//
+	//testOrder.push_back(0);
+	//testOrder.push_back(0);
+	//testOrder.push_back(0);
+	//testOrder.push_back(0);
+
+	//// 10 - 16
+	//testOrder.push_back(0);
+	//testOrder.push_back(1);//
+	//testOrder.push_back(1);//
+	//testOrder.push_back(0);
+	//testOrder.push_back(0);
+	//testOrder.push_back(0);
+	//testOrder.push_back(0);
+
+
+	//GraphExchanger ge(g);
+	//ge.ExportGraph("test.msg");
+	//
+	//Graph::gPtr imported = GraphExchanger::ImportGraph("test.msg");
+	//GraphExchanger ge2(imported);
+	//ge2.ExportGraph("test2.msg");
+
+
+	auto sp1 = StackCompiler::getStackProgram(g, 2, testOrder);
+	sp1->print_out_programs();
+	sp1->run(sp1, 2);
+
+
+	/*auto sp2 = StackCompiler::getStackProgram(imported, 2, testOrder);
+	sp2->print_out_programs();
+	*/
 }
 
-void runStackModel()
+msonlab::GraphAlgorithms ga;
+
+void runGA(Options::oPtr options)
 {
-	const int runCount = 10000;
-
-	msonlab::StackRunner runner;
-
-	msonlab::Types::DataType a(new double(2.0));
-	msonlab::Types::DataType b(new double(4.0));
-	msonlab::Types::DataType c(new double(-4.0));
-
-	msonlab::Types::DataType c1(new double(-1.0));
-	msonlab::Types::DataType c2(new double(2));
-	msonlab::Types::DataType c3(new double(4));
-	msonlab::Types::DataType c4(new double(0.5));
-	msonlab::Types::DataType c5(new double(2));
-
-	runner.addToken(msonlab::StackRunner::PUSH, c1);
-	runner.addToken(msonlab::StackRunner::PUSH, b);
-	runner.addToken(msonlab::StackRunner::MUL, nullptr);
-	runner.addToken(msonlab::StackRunner::PUSH, b);
-	runner.addToken(msonlab::StackRunner::PUSH, c2);
-	runner.addToken(msonlab::StackRunner::POW, nullptr);
-	runner.addToken(msonlab::StackRunner::PUSH, c3);
-	runner.addToken(msonlab::StackRunner::PUSH, a);
-	runner.addToken(msonlab::StackRunner::PUSH, c);
-	runner.addToken(msonlab::StackRunner::MUL, nullptr);
-	runner.addToken(msonlab::StackRunner::MUL, nullptr);
-	runner.addToken(msonlab::StackRunner::SUB, nullptr);
-	runner.addToken(msonlab::StackRunner::PUSH, c4);
-	runner.addToken(msonlab::StackRunner::POW, nullptr);
-	runner.addToken(msonlab::StackRunner::ADD, nullptr);
-	runner.addToken(msonlab::StackRunner::PUSH, c5);
-	runner.addToken(msonlab::StackRunner::PUSH, a);
-	runner.addToken(msonlab::StackRunner::MUL, nullptr);
-	runner.addToken(msonlab::StackRunner::DIV, nullptr);
-
-	// setup measure
-	msonlab::Types::DataType ret = nullptr;
-
-	// CHRONO idõ mérése
-
-	std::chrono::high_resolution_clock clockCHRONO;
-	std::chrono::time_point<std::chrono::high_resolution_clock> startCHRONO, finishCHRONO;
-
-	startCHRONO = clockCHRONO.now();
-	ret = runner.run(runCount);
-	finishCHRONO = clockCHRONO.now();
-
-	double elapsedCHRONO = (finishCHRONO - startCHRONO).count();
-
-	std::cout << std::setprecision(100) << elapsedCHRONO << std::endl;
-
-	// CPU idõ mérése
-
-	clock_t startCPU, finishCPU;
-
-	startCPU = clock();
-	ret = runner.run(runCount);
-	finishCPU = clock();
-
-	clock_t timeCPU = (finishCPU - startCPU);
-	double elapsedCPU = timeCPU;
-
-	std::cout << std::setprecision(100) << elapsedCPU << std::endl;
-
-	//	char ch;
-	//	std::cin >> ch;
-
-}
-
-void runGA()
-{
-	msonlab::GraphAlgorithms ga;
-
-	// loading GA configuration
-	GAOptions::gaPtr gaoptions(new GAOptions("Options.cfg"));
-
 	// choosing fitness strategy for the GA
 	FitnessStrategy::fsPtr fsstrategy(new LengthFitnessStartegy());
+	//FitnessStrategy::fsPtr fsstrategy(new PUUsageFitnessStrategy());
 
 	// initializing GA
-	GeneticAlgorithm gena(gaoptions, fsstrategy);
+	GeneticAlgorithm gena(options, fsstrategy);
 
 	// getting the graph
-	//auto graph = initRandomGraph(gaoptions);
-	auto graph = initSampleGraph();
+	auto graph = initRandomGraph(options);
+	//auto graph = initGraph();
 
-	int greedy = ga.scheduleGreedy(graph, gaoptions->getNumberOfPus());
-	
-	shared_ptr<Population> population = gena.generateInitialSolution(graph);
+	GreedySchedulingAlgorithm greedyAlg;
+	auto greedy = greedyAlg.schedule(graph, options);
+
+	LengthFitnessStartegy lengtFS;
+	std::cout << "Greedy length: " << lengtFS.fitness(greedy, options) << std::endl;
+	std::cout << "Greedy fitness: " << fsstrategy->fitness(greedy, options) << std::endl;
+
+	Population::pPtr population = gena.generateInitialSolution(graph, options);
 	population->limit();
 
 	unsigned last = population->best()->getFitness();
-	unsigned not_changed = 0;
+	unsigned bests_round = 0;
 
-	for (size_t i = 0; i < gaoptions->getNumberOfYears(); ++i)
+	for (size_t i = 0; i < options->getNumberOfYears(); ++i)
 	{
-		gena.simulateMating(population, gaoptions->getPopMaxSize());
+		gena.simulateMating(population, options->getPopMaxSize(), false);
 		population->limit();
 		unsigned best = population->best()->getFitness();
-		//std::cout << "Generation " << i + 1 << std::endl;
-		//std::cout << "Best fitness: " << best << std::endl;
-		//std::cout << "Avarage fitness: " << population->avarageFittness() << std::endl;
-		if (best == last)
+		DEBUG("Generation " << i + 1);
+		DEBUG("Best fitness: " << best);
+		DEBUG("Avarage fitness: " << population->avarageFittness());
+		if (best != last)
 		{
-			++not_changed;
-		}
-		else
-		{
-			not_changed = 0;
 			last = best;
-		}
-		if (i == gaoptions->getNumberOfYears() - 1 && not_changed < 10)
-		{
-			i -= 2 * not_changed;
+			bests_round = i;
 		}
 	}
 
 	auto best = population->best();
-	std::cout << "Best fitness: " << best->getFitness() << std::endl;
 	best->printChromosome(std::cout);
-	//std::cout << best;
+	std::cout << "Best found in round " << bests_round << std::endl;
+	DEBUG("Best fitness: " << best->getFitness());
+	std::cout << "Best length: " << lengtFS.fitness(best, options) << std::endl;
+	best->printTable(std::cout, options);
+	std::vector<unsigned> result;
+	gena.transfromResult(best, result);
+	std::copy(result.begin(), result.end(), ostream_iterator<unsigned>(std::cout, " "));
 }
 
-int main(int argc, char *argv[])
+void runHusScheduling(Options::oPtr options) 
 {
-	runGA();
-	//runCompile(initSampleGraph());
+	// choosing fitness strategy for the GA
+	FitnessStrategy::fsPtr fsstrategy(new LengthFitnessStartegy());
+
+	HusSchedulingAlgorithm alg;
+
+	// getting the graph
+	//auto graph = initRandomGraph(Options);
+	auto graph = initGraph();
+
+	auto result = alg.schedule(graph, options);
+	result->printTable(std::cout, options);
+	unsigned fitness = fsstrategy->fitness(result, options);
+	std::cout << fitness << std::endl;
+}
+
+void schedule(SchedulingAlgorithm::algPtr alg, Options::oPtr options)
+{
+	//auto graph = initSampleGraph();
+	auto graph = initRandomGraph(options);
+	//auto graph = initGraph();
+	auto best = alg->schedule(graph, options);
+	std::cout << "Best length: " << best->getFitness() << std::endl;
+	//best->printTable(std::cout, options->getCommOverhead());
+	unsigned l = GraphAlgorithms::computeLengthAndReuseIdleTime(best, options);
+	std::cout << "Rescheduled length: " << l << std::endl;
+	LengthFitnessStartegy fs;
+	l = fs.fitness(best, options);
+	std::cout << "Length: " << l << std::endl;
+	best->printTable(std::cout, options);
+}
+
+// used for running the algorithm with changing one parameter
+void scheduleTest(SchedulingAlgorithm::algPtr alg, Options::oPtr options, ofstream& resfile)
+{
+	//auto graph = initSampleGraph();
+	auto graph = initRandomGraph(options);
+	//auto graph = initGraph();
+	auto best = alg->schedule(graph, options);
+	resfile << ", preResult=" << best->getFitness();
+	//best->printTable(std::cout, options->getCommOverhead());
+	unsigned l = GraphAlgorithms::computeLengthAndReuseIdleTime(best, options);
+	resfile << ", result=" << l;
+}
+
+void doTest(SchedulingAlgorithm::algPtr alg, Options::oPtr options)
+{
+	ofstream resfile;
+	resfile.open("result.txt");
+	for (unsigned i = 10; i <= 30; i += 10) {
+		srand(161803);
+		std::cout << "Testing " << i << std::endl;
+		Options::oPtr opt = make_shared<const Options>(*options.get(), i);
+		resfile << "{type=genetic, scheduleMutationRate=" << i;
+		double elapsed = 0.0;
+		std::chrono::time_point<std::chrono::high_resolution_clock> startCHRONO, finishCHRONO;
+		startCHRONO = std::chrono::high_resolution_clock::now();
+		scheduleTest(alg, opt, resfile);
+		finishCHRONO = std::chrono::high_resolution_clock::now();
+		std::chrono::duration<Types::DataType> elapsedCHRONO = finishCHRONO - startCHRONO;
+		elapsed = elapsedCHRONO.count();
+		resfile << ", time=" << elapsed << "}\n";
+	}
+	resfile.close();
+			}
+
+int main(int argc, char *argv[])
+			{
+	/* initialize random seed: */
+	srand(161803);
+	// loading GA configuration
+	Options::oPtr options = std::make_shared<const Options>("Options.cfg");
+
+	SchedulingAlgorithm::algPtr alg;
+	std::cout << "Using ";
+	if (options->getAlgorithm().compare("genetic") == 0) {
+		std::cout << "Genetic";
+		FitnessStrategy::fsPtr fs;
+		if (options->getFitnessStrategy().compare("puUsage") == 0) {
+			fs = std::make_shared<PUUsageFitnessStrategy>();
+			std::cout << "Fitness set to pu usage.\n";
+		}
+		else if (options->getFitnessStrategy().compare("loadBalance") == 0) {
+			fs = std::make_shared<LoadBalanceFitnessStrategy>();
+			std::cout << "Fitness set to load balance.\n";
+		}
+		else if (options->getFitnessStrategy().compare("reschedule") == 0) {
+			fs = std::make_shared<RescheduleIdleTimeFitnessStartegy>();
+			std::cout << "Fitness set to reschedule idle time.\n";
+		}
+		else {
+			fs = std::make_shared<LengthFitnessStartegy>();
+			std::cout << "Fitness set to Length.\n";
+		}
+
+		alg = std::make_shared<GeneticAlgorithm>(options, fs);
+	}
+	else if (options->getAlgorithm().compare("criticalPath") == 0) {
+		std::cout << "Critical Path";
+		alg = std::make_shared<HusSchedulingAlgorithm>();
+	}
+	else {
+		std::cout << "Greedy";
+		alg = std::make_shared<GreedySchedulingAlgorithm>();
+	}
+
+	std::cout << " algorithm.\n";
+	//doTest(alg, options);
+#if MEASURE != 0
+	double average = 0.0;
+	for (int i = 0; i < MEASURE; ++i)
+	{
+		std::chrono::time_point<std::chrono::high_resolution_clock> startCHRONO, finishCHRONO;
+		startCHRONO = std::chrono::high_resolution_clock::now();
+#endif
+		test_small_graph(options);
+		//schedule(alg, options);
+#if MEASURE != 0
+		finishCHRONO = std::chrono::high_resolution_clock::now();
+		std::chrono::duration<Types::DataType> elapsedCHRONO = finishCHRONO - startCHRONO;
+		average += elapsedCHRONO.count();
+	}
+	average /= MEASURE;
+	std::cout << "Elapsed time " << std::setprecision(10) << average << std::endl;
+#endif
+#if WAIT == 1
 	std::cout << "Press a key to continue...";
 	std::cin.get();
+#endif
 
 	return 0;
 }
+

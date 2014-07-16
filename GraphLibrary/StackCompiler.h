@@ -1,21 +1,20 @@
 #pragma once
 
 #include "Graph.h"
-#include "StackRunner.h"
 
 namespace msonlab
 {
 	class StackCompiler
 	{
 	private:
-		msonlab::Graph::gPtr graph;
+
+		static void mark_node_with_iteration_number(Node::nPtr to_mark, int iteration_number);
+		static void mark_edge_with_iteration_number(Edge::ePtr to_mark, int iteration_number);
 
 
 	public:
 
-		StackCompiler(msonlab::Graph::gPtr toCompile);
-
-		msonlab::StackRunner::srPtr getStackProgram();
+		static StackRunner::srPtr getStackProgram(msonlab::Graph::gPtr& graph, unsigned int number_of_threads, StackRunner::scheduleOrder schedule);
 
 	};
 

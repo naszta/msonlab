@@ -1,5 +1,4 @@
 #pragma once
-#include "Global.h"
 #include "IProcessable.h"
 
 namespace msonlab
@@ -11,9 +10,11 @@ namespace msonlab
 		IProcessable::eVect successors;
 
 		int paramCount;
+		unsigned compTime;
 
 	public:
-		Node(unsigned int _id, Types::LabelType _label, Types::DataType _value);
+		Node(unsigned int _id, Types::LabelType _label, Types::DataPtr _value);
+		Node(unsigned int _id, Types::LabelType _label, Types::DataPtr _value, unsigned compTime);
 		Node(const Node& other);
 
 		bool registerParameter();
@@ -22,12 +23,16 @@ namespace msonlab
 		virtual bool isReadyForProcess() const;
 		virtual bool resetProcessingState();
 
-		IProcessable::eVect getPredecessors() const;
+		const IProcessable::eVect& getPredecessors() const;
 		size_t getPredecessorsSize() const;
-		IProcessable::ePtr getPredecessor(size_t index) const;
+		unsigned getPredecessorNodeId(size_t index) const;
+		const IProcessable::ePtr& getPredecessor(size_t index) const;
 		IProcessable::eVect::iterator getPredecessorBegin();
 		IProcessable::eVect::iterator getPredecessorEnd();
-		IProcessable::eVect getSuccessors() const;
+		const IProcessable::eVect& getSuccessors() const;
+		size_t getSuccessorsSize() const;
+
+		std::string getIdString() const;
 
 		bool registerPredecessor(IProcessable::ePtr _newPredecessor);
 		bool unregisterPredecessor(IProcessable::ePtr _newPredecessor);
@@ -37,8 +42,16 @@ namespace msonlab
 
 		PlaceEnum getPlace() const;
 
+		virtual unsigned getComputationTime() { return compTime; }
+
 		// compile
-		virtual void compile(msonlab::StackRunner::srPtr stackProgram);
+		virtual void compile(int caller_thread, vector<msonlab::StackRunner::program>* programs, StackRunner::scheduleOrder schedule);
+
+		// exchange
+		virtual DOMElement* serialize(DOMDocument* xmlDocument, std::string yedDataKeyName, std::string typeKeyName, std::string customDataKey);
+		virtual std::string getTypeString() const;
+		virtual std::string get_shape() const;
+		virtual std::string get_color() const;
 	};
 
 }

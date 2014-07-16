@@ -4,26 +4,19 @@
 namespace msonlab
 {
 
-	Processor::Processor(Graph::gPtr toProcess)
+	IProcessable::nVect Processor::process(Graph::gPtr graph)
 	{
-		graph = toProcess;
-	}
-
-	IProcessable::nVect Processor::process()
-	{
-		// reset helper lists
-		readyToProcess = IProcessable::pVect();
-		processed = IProcessable::pVect();
+		IProcessable::pVect readyToProcess;
+		IProcessable::pVect processed;
 
 		// get input nodes
-		IProcessable::nVect inodes = (*graph).getInputNodes();
+		IProcessable::nVect inodes = graph->getInputNodes();
 		IProcessable::nVect::const_iterator it = inodes.begin();
 		while (it != inodes.end())
 		{
 			readyToProcess.insert(readyToProcess.end(),(*it));
 			++it;
 		}
-
 
 		// start processing
 		IProcessable::pVect::iterator i = readyToProcess.begin();
@@ -35,16 +28,10 @@ namespace msonlab
 			{
 				readyToProcess.insert(readyToProcess.end(), (*j));
 			}
+
 			i = readyToProcess.begin();
 		}
 
-		
-
 		return graph->getOutputNodes();;
 	}
-
-	
-
-
-
 }
