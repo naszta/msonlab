@@ -36,38 +36,39 @@ XERCES_CPP_NAMESPACE_USE
 #define WAIT 1
 
 using namespace msonlab;
+using namespace msonlab::scheduling;
 using namespace std;
 
 Graph::gPtr initGraph()
 {
 	auto graph = make_unique<Graph>();
-	msonlab::Node::nPtr a = (make_shared<msonlab::NodeConstant>(0, L"a", make_shared<Types::DataType>(4)));
-	msonlab::Node::nPtr b = (make_shared<msonlab::NodeConstant>(1, L"b", make_shared<Types::DataType>(2)));
-	msonlab::Node::nPtr c = (make_shared<msonlab::NodeConstant>(2, L"c", make_shared<Types::DataType>(-5)));
+	msonlab::Node::nPtr a = (make_shared<msonlab::NodeConstant>(0, L"a", make_shared<types::DataType>(4)));
+	msonlab::Node::nPtr b = (make_shared<msonlab::NodeConstant>(1, L"b", make_shared<types::DataType>(2)));
+	msonlab::Node::nPtr c = (make_shared<msonlab::NodeConstant>(2, L"c", make_shared<types::DataType>(-5)));
 
-	msonlab::Node::nPtr constNumber_1 = (make_shared<msonlab::NodeConstant>(3, L"1", make_shared<Types::DataType>(1)));
-	msonlab::Node::nPtr constNumber_2 = (make_shared<msonlab::NodeConstant>(4, L"2", make_shared<Types::DataType>(2)));
-	msonlab::Node::nPtr constNumber_minus1 = (make_shared<msonlab::NodeConstant>(5, L"-1", make_shared<Types::DataType>(-1)));
-	msonlab::Node::nPtr constNumber_minus4 = (make_shared<msonlab::NodeConstant>(6, L"-4", make_shared<Types::DataType>(-4)));
+	msonlab::Node::nPtr constNumber_1 = (make_shared<msonlab::NodeConstant>(3, L"1", make_shared<types::DataType>(1)));
+	msonlab::Node::nPtr constNumber_2 = (make_shared<msonlab::NodeConstant>(4, L"2", make_shared<types::DataType>(2)));
+	msonlab::Node::nPtr constNumber_minus1 = (make_shared<msonlab::NodeConstant>(5, L"-1", make_shared<types::DataType>(-1)));
+	msonlab::Node::nPtr constNumber_minus4 = (make_shared<msonlab::NodeConstant>(6, L"-4", make_shared<types::DataType>(-4)));
 
-	msonlab::Node::nPtr multiply_2a(new msonlab::NodeMultiply(7, L"2a", make_shared<Types::DataType>(0)));
-	msonlab::Node::nPtr multiply_bb(new msonlab::NodeMultiply(8, L"b^2", make_shared<Types::DataType>(0)));
-	msonlab::Node::nPtr multiply_minusb(new msonlab::NodeMultiply(9, L"-b", make_shared<Types::DataType>(0)));
-	msonlab::Node::nPtr multiply_minus4ac(new msonlab::NodeMultiply(10, L"-4ac", make_shared<Types::DataType>(0)));
+	msonlab::Node::nPtr multiply_2a(new msonlab::NodeMultiply(7, L"2a", make_shared<types::DataType>(0)));
+	msonlab::Node::nPtr multiply_bb(new msonlab::NodeMultiply(8, L"b^2", make_shared<types::DataType>(0)));
+	msonlab::Node::nPtr multiply_minusb(new msonlab::NodeMultiply(9, L"-b", make_shared<types::DataType>(0)));
+	msonlab::Node::nPtr multiply_minus4ac(new msonlab::NodeMultiply(10, L"-4ac", make_shared<types::DataType>(0)));
 
-	msonlab::Node::nPtr divide_1_2a(new msonlab::NodeDivide(11, L"1/2a", make_shared<Types::DataType>(0)));
+	msonlab::Node::nPtr divide_1_2a(new msonlab::NodeDivide(11, L"1/2a", make_shared<types::DataType>(0)));
 
-	msonlab::Node::nPtr add_bb_minus4ac(new msonlab::NodeAdd(12, L"b^2-4ac", make_shared<Types::DataType>(0)));
+	msonlab::Node::nPtr add_bb_minus4ac(new msonlab::NodeAdd(12, L"b^2-4ac", make_shared<types::DataType>(0)));
 
-	msonlab::Node::nPtr squareRoot_bb_minus4ac(new msonlab::NodeSquareRoot(13, L"(b^2-4ac)^0.5", make_shared<Types::DataType>(0)));
+	msonlab::Node::nPtr squareRoot_bb_minus4ac(new msonlab::NodeSquareRoot(13, L"(b^2-4ac)^0.5", make_shared<types::DataType>(0)));
 
-	msonlab::Node::nPtr multiply_minus_squareRoot_bb_minus4ac(new msonlab::NodeMultiply(14, L"-(b^2-4ac)^0.5", make_shared<Types::DataType>(0)));
+	msonlab::Node::nPtr multiply_minus_squareRoot_bb_minus4ac(new msonlab::NodeMultiply(14, L"-(b^2-4ac)^0.5", make_shared<types::DataType>(0)));
 
-	msonlab::Node::nPtr add_toDivide1(new msonlab::NodeAdd(15, L"-b+(b^2-4ac)^0.5", make_shared<Types::DataType>(0)));
-	msonlab::Node::nPtr add_toDivide2(new msonlab::NodeAdd(16, L"-b-(b^2-4ac)^0.5", make_shared<Types::DataType>(0)));
+	msonlab::Node::nPtr add_toDivide1(new msonlab::NodeAdd(15, L"-b+(b^2-4ac)^0.5", make_shared<types::DataType>(0)));
+	msonlab::Node::nPtr add_toDivide2(new msonlab::NodeAdd(16, L"-b-(b^2-4ac)^0.5", make_shared<types::DataType>(0)));
 
-	msonlab::Node::nPtr y1(new msonlab::NodeMultiply(17, L"Y1", make_shared<Types::DataType>(0)));
-	msonlab::Node::nPtr y2(new msonlab::NodeMultiply(18, L"Y2", make_shared<Types::DataType>(0)));
+	msonlab::Node::nPtr y1(new msonlab::NodeMultiply(17, L"Y1", make_shared<types::DataType>(0)));
+	msonlab::Node::nPtr y2(new msonlab::NodeMultiply(18, L"Y2", make_shared<types::DataType>(0)));
 
 
 	msonlab::Edge::ePtr e1 (new msonlab::BlueEdge(1, L"e1",0,a,multiply_2a));
@@ -136,15 +137,15 @@ Graph::gPtr initTestGraph()
 {
 	auto testG = make_unique<Graph>();
 
-	msonlab::Node::nPtr node1 = make_shared<msonlab::Node>(0, L"0", make_shared<Types::DataType>(5), 2);
-	msonlab::Node::nPtr node2 = make_shared<msonlab::Node>(1, L"1", make_shared<Types::DataType>(2), 3);
-	msonlab::Node::nPtr node3 = make_shared<msonlab::Node>(2, L"2", make_shared<Types::DataType>(3), 3);
-	msonlab::Node::nPtr node4 = make_shared<msonlab::Node>(3, L"3", make_shared<Types::DataType>(0), 4);
-	msonlab::Node::nPtr node5 = make_shared<msonlab::Node>(4, L"4", make_shared<Types::DataType>(0), 5);
-	msonlab::Node::nPtr node6 = make_shared<msonlab::Node>(5, L"5", make_shared<Types::DataType>(0), 4);
-	msonlab::Node::nPtr node7 = make_shared<msonlab::Node>(6, L"6", make_shared<Types::DataType>(0), 4);
-	msonlab::Node::nPtr node8 = make_shared<msonlab::Node>(7, L"7", make_shared<Types::DataType>(0), 4);
-	msonlab::Node::nPtr node9 = make_shared<msonlab::Node>(8, L"8", make_shared<Types::DataType>(0), 1);
+	msonlab::Node::nPtr node1 = make_shared<msonlab::Node>(0, L"0", make_shared<types::DataType>(5), 2);
+	msonlab::Node::nPtr node2 = make_shared<msonlab::Node>(1, L"1", make_shared<types::DataType>(2), 3);
+	msonlab::Node::nPtr node3 = make_shared<msonlab::Node>(2, L"2", make_shared<types::DataType>(3), 3);
+	msonlab::Node::nPtr node4 = make_shared<msonlab::Node>(3, L"3", make_shared<types::DataType>(0), 4);
+	msonlab::Node::nPtr node5 = make_shared<msonlab::Node>(4, L"4", make_shared<types::DataType>(0), 5);
+	msonlab::Node::nPtr node6 = make_shared<msonlab::Node>(5, L"5", make_shared<types::DataType>(0), 4);
+	msonlab::Node::nPtr node7 = make_shared<msonlab::Node>(6, L"6", make_shared<types::DataType>(0), 4);
+	msonlab::Node::nPtr node8 = make_shared<msonlab::Node>(7, L"7", make_shared<types::DataType>(0), 4);
+	msonlab::Node::nPtr node9 = make_shared<msonlab::Node>(8, L"8", make_shared<types::DataType>(0), 1);
 
 	msonlab::Edge::ePtr edge1 = make_shared<msonlab::Edge>(0, L"e12", nullptr, node1, node2);
 	msonlab::Edge::ePtr edge2 = make_shared<msonlab::Edge>(1, L"e13", nullptr, node1, node3);
@@ -178,16 +179,16 @@ Graph::gPtr initSampleGraph()
 {
 	Graph::gPtr g = make_unique<Graph>();
 
-	msonlab::Node::nPtr a(new msonlab::NodeConstant(0, L"a", make_shared<Types::DataType>(2)));
-	msonlab::Node::nPtr b(new msonlab::NodeConstant(1, L"b", make_shared<Types::DataType>(3)));
-	msonlab::Node::nPtr c(new msonlab::NodeConstant(2, L"c", make_shared<Types::DataType>(2)));
-	msonlab::Node::nPtr d(new msonlab::NodeConstant(3, L"d", make_shared<Types::DataType>(3)));
+	msonlab::Node::nPtr a(new msonlab::NodeConstant(0, L"a", make_shared<types::DataType>(2)));
+	msonlab::Node::nPtr b(new msonlab::NodeConstant(1, L"b", make_shared<types::DataType>(3)));
+	msonlab::Node::nPtr c(new msonlab::NodeConstant(2, L"c", make_shared<types::DataType>(2)));
+	msonlab::Node::nPtr d(new msonlab::NodeConstant(3, L"d", make_shared<types::DataType>(3)));
 
 	msonlab::Node::nPtr ab(new msonlab::NodeMultiply(4, L"a*b", nullptr));
 	msonlab::Node::nPtr cd(new msonlab::NodeMultiply(5, L"c*d", nullptr));
 
 	msonlab::Node::nPtr ab2(new msonlab::NodeMultiply(6, L"2*a*b", nullptr));
-	msonlab::Node::nPtr c2(new msonlab::NodeConstant(7, L"2", make_shared<Types::DataType>(2)));
+	msonlab::Node::nPtr c2(new msonlab::NodeConstant(7, L"2", make_shared<types::DataType>(2)));
 
 	msonlab::Node::nPtr res(new msonlab::NodeAdd(8, L"2*a*b + c*d", nullptr));
 
@@ -225,58 +226,58 @@ Graph::gPtr initStackGraph()
 {
 	auto qeGraph = make_unique<Graph>();
 
-	msonlab::Node::nPtr a = (make_shared<msonlab::NodeConstant>(1, L"a", make_shared<Types::DataType>(2)));
-	msonlab::Node::nPtr b = (make_shared<msonlab::NodeConstant>(2, L"b", make_shared<Types::DataType>(4)));
-	msonlab::Node::nPtr c = (make_shared<msonlab::NodeConstant>(3, L"c", make_shared<Types::DataType>(-4)));
+	msonlab::Node::nPtr a = (make_shared<msonlab::NodeConstant>(1, L"a", make_shared<types::DataType>(2)));
+	msonlab::Node::nPtr b = (make_shared<msonlab::NodeConstant>(2, L"b", make_shared<types::DataType>(4)));
+	msonlab::Node::nPtr c = (make_shared<msonlab::NodeConstant>(3, L"c", make_shared<types::DataType>(-4)));
 
-	msonlab::Node::nPtr constNumber_1 = (make_shared<msonlab::NodeConstant>(4, L"1", make_shared<Types::DataType>(1.0)));
-	msonlab::Node::nPtr constNumber_2 = (make_shared<msonlab::NodeConstant>(5, L"2", make_shared<Types::DataType>(2.0)));
-	msonlab::Node::nPtr constNumber_minus1 = (make_shared<msonlab::NodeConstant>(6, L"-1", make_shared<Types::DataType>(-1.0)));
-	msonlab::Node::nPtr constNumber_minus4 = (make_shared<msonlab::NodeConstant>(7, L"-4", make_shared<Types::DataType>(-4.0)));
-	msonlab::Node::nPtr constNumber_05 = (make_shared<msonlab::NodeConstant>(20, L"0.5", make_shared<Types::DataType>(0.5)));
+	msonlab::Node::nPtr constNumber_1 = (make_shared<msonlab::NodeConstant>(4, L"1", make_shared<types::DataType>(1.0)));
+	msonlab::Node::nPtr constNumber_2 = (make_shared<msonlab::NodeConstant>(5, L"2", make_shared<types::DataType>(2.0)));
+	msonlab::Node::nPtr constNumber_minus1 = (make_shared<msonlab::NodeConstant>(6, L"-1", make_shared<types::DataType>(-1.0)));
+	msonlab::Node::nPtr constNumber_minus4 = (make_shared<msonlab::NodeConstant>(7, L"-4", make_shared<types::DataType>(-4.0)));
+	msonlab::Node::nPtr constNumber_05 = (make_shared<msonlab::NodeConstant>(20, L"0.5", make_shared<types::DataType>(0.5)));
 
-	msonlab::Node::nPtr multiply_2a(new msonlab::NodeMultiply(8, L"2a", make_shared<Types::DataType>(0.0)));
-	msonlab::Node::nPtr multiply_bb(new msonlab::NodeMultiply(9, L"b^2", make_shared<Types::DataType>(0.0)));
-	msonlab::Node::nPtr multiply_minusb(new msonlab::NodeMultiply(10, L"-b", make_shared<Types::DataType>(0.0)));
-	msonlab::Node::nPtr multiply_minus4ac(new msonlab::NodeMultiply(11, L"-4ac", make_shared<Types::DataType>(0.0)));
+	msonlab::Node::nPtr multiply_2a(new msonlab::NodeMultiply(8, L"2a", make_shared<types::DataType>(0.0)));
+	msonlab::Node::nPtr multiply_bb(new msonlab::NodeMultiply(9, L"b^2", make_shared<types::DataType>(0.0)));
+	msonlab::Node::nPtr multiply_minusb(new msonlab::NodeMultiply(10, L"-b", make_shared<types::DataType>(0.0)));
+	msonlab::Node::nPtr multiply_minus4ac(new msonlab::NodeMultiply(11, L"-4ac", make_shared<types::DataType>(0.0)));
 
-	msonlab::Node::nPtr divide_1_2a(new msonlab::NodeDivide(12, L"1/2a", make_shared<Types::DataType>(0.0)));
+	msonlab::Node::nPtr divide_1_2a(new msonlab::NodeDivide(12, L"1/2a", make_shared<types::DataType>(0.0)));
 
-	msonlab::Node::nPtr add_bb_minus4ac(new msonlab::NodeAdd(13, L"b^2-4ac", make_shared<Types::DataType>(0.0)));
+	msonlab::Node::nPtr add_bb_minus4ac(new msonlab::NodeAdd(13, L"b^2-4ac", make_shared<types::DataType>(0.0)));
 
-	msonlab::Node::nPtr squareRoot_bb_minus4ac(new msonlab::NodeSquareRoot(14, L"(b^2-4ac)^0.5", make_shared<Types::DataType>(0.0)));
+	msonlab::Node::nPtr squareRoot_bb_minus4ac(new msonlab::NodeSquareRoot(14, L"(b^2-4ac)^0.5", make_shared<types::DataType>(0.0)));
 
-	msonlab::Node::nPtr add_toDivide1(new msonlab::NodeAdd(16, L"-b+(b^2-4ac)^0.5", make_shared<Types::DataType>(0.0)));
+	msonlab::Node::nPtr add_toDivide1(new msonlab::NodeAdd(16, L"-b+(b^2-4ac)^0.5", make_shared<types::DataType>(0.0)));
 
-	msonlab::Node::nPtr y1(new msonlab::NodeMultiply(18, L"Y1", make_shared<Types::DataType>(0.0)));
-
-
-	msonlab::Edge::ePtr e1(new msonlab::BlueEdge(1, L"e1", make_shared<Types::DataType>(0.0), a, multiply_2a));
-	msonlab::Edge::ePtr e2(new msonlab::BlueEdge(2, L"e2", make_shared<Types::DataType>(0.0), constNumber_2, multiply_2a));
-	msonlab::Edge::ePtr e3(new msonlab::BlueEdge(3, L"e3", make_shared<Types::DataType>(0.0), a, multiply_minus4ac));
-
-	msonlab::Edge::ePtr e4(new msonlab::BlueEdge(4, L"e4", make_shared<Types::DataType>(0.0), b, multiply_bb));
-	msonlab::Edge::ePtr e5(new msonlab::BlueEdge(5, L"e5", make_shared<Types::DataType>(0.0), b, multiply_bb));
-	msonlab::Edge::ePtr e6(new msonlab::BlueEdge(6, L"e6", make_shared<Types::DataType>(0.0), b, multiply_minusb));
-	msonlab::Edge::ePtr e7(new msonlab::BlueEdge(7, L"e7", make_shared<Types::DataType>(0.0), constNumber_minus1, multiply_minusb));
-
-	msonlab::Edge::ePtr e8(new msonlab::Edge(8, L"e8", make_shared<Types::DataType>(0.0), c, multiply_minus4ac));
-	msonlab::Edge::ePtr e9(new msonlab::BlueEdge(9, L"e9", make_shared<Types::DataType>(0.0), constNumber_minus4, multiply_minus4ac));
-
-	msonlab::Edge::ePtr e10(new msonlab::Edge(10, L"e10", make_shared<Types::DataType>(0.0), constNumber_1, divide_1_2a));
-	msonlab::Edge::ePtr e11(new msonlab::Edge(11, L"e11", make_shared<Types::DataType>(0.0), multiply_2a, divide_1_2a));
-
-	msonlab::Edge::ePtr e12(new msonlab::Edge(12, L"e12", make_shared<Types::DataType>(0.0), multiply_bb, add_bb_minus4ac));
-	msonlab::Edge::ePtr e13(new msonlab::Edge(13, L"e13", make_shared<Types::DataType>(0.0), multiply_minus4ac, add_bb_minus4ac));
-
-	msonlab::Edge::ePtr e14(new msonlab::Edge(14, L"e14", make_shared<Types::DataType>(0.0), add_bb_minus4ac, squareRoot_bb_minus4ac));
-
-	msonlab::Edge::ePtr e16(new msonlab::Edge(16, L"e16", make_shared<Types::DataType>(0.0), multiply_minusb, add_toDivide1));
-	msonlab::Edge::ePtr e17(new msonlab::Edge(17, L"e17", make_shared<Types::DataType>(0.0), squareRoot_bb_minus4ac, add_toDivide1));
+	msonlab::Node::nPtr y1(new msonlab::NodeMultiply(18, L"Y1", make_shared<types::DataType>(0.0)));
 
 
-	msonlab::Edge::ePtr e20(new msonlab::Edge(20, L"e20", make_shared<Types::DataType>(0.0), add_toDivide1, y1));
-	msonlab::Edge::ePtr e21(new msonlab::Edge(21, L"e21", make_shared<Types::DataType>(0.0), divide_1_2a, y1));
+	msonlab::Edge::ePtr e1(new msonlab::BlueEdge(1, L"e1", make_shared<types::DataType>(0.0), a, multiply_2a));
+	msonlab::Edge::ePtr e2(new msonlab::BlueEdge(2, L"e2", make_shared<types::DataType>(0.0), constNumber_2, multiply_2a));
+	msonlab::Edge::ePtr e3(new msonlab::BlueEdge(3, L"e3", make_shared<types::DataType>(0.0), a, multiply_minus4ac));
+
+	msonlab::Edge::ePtr e4(new msonlab::BlueEdge(4, L"e4", make_shared<types::DataType>(0.0), b, multiply_bb));
+	msonlab::Edge::ePtr e5(new msonlab::BlueEdge(5, L"e5", make_shared<types::DataType>(0.0), b, multiply_bb));
+	msonlab::Edge::ePtr e6(new msonlab::BlueEdge(6, L"e6", make_shared<types::DataType>(0.0), b, multiply_minusb));
+	msonlab::Edge::ePtr e7(new msonlab::BlueEdge(7, L"e7", make_shared<types::DataType>(0.0), constNumber_minus1, multiply_minusb));
+
+	msonlab::Edge::ePtr e8(new msonlab::Edge(8, L"e8", make_shared<types::DataType>(0.0), c, multiply_minus4ac));
+	msonlab::Edge::ePtr e9(new msonlab::BlueEdge(9, L"e9", make_shared<types::DataType>(0.0), constNumber_minus4, multiply_minus4ac));
+
+	msonlab::Edge::ePtr e10(new msonlab::Edge(10, L"e10", make_shared<types::DataType>(0.0), constNumber_1, divide_1_2a));
+	msonlab::Edge::ePtr e11(new msonlab::Edge(11, L"e11", make_shared<types::DataType>(0.0), multiply_2a, divide_1_2a));
+
+	msonlab::Edge::ePtr e12(new msonlab::Edge(12, L"e12", make_shared<types::DataType>(0.0), multiply_bb, add_bb_minus4ac));
+	msonlab::Edge::ePtr e13(new msonlab::Edge(13, L"e13", make_shared<types::DataType>(0.0), multiply_minus4ac, add_bb_minus4ac));
+
+	msonlab::Edge::ePtr e14(new msonlab::Edge(14, L"e14", make_shared<types::DataType>(0.0), add_bb_minus4ac, squareRoot_bb_minus4ac));
+
+	msonlab::Edge::ePtr e16(new msonlab::Edge(16, L"e16", make_shared<types::DataType>(0.0), multiply_minusb, add_toDivide1));
+	msonlab::Edge::ePtr e17(new msonlab::Edge(17, L"e17", make_shared<types::DataType>(0.0), squareRoot_bb_minus4ac, add_toDivide1));
+
+
+	msonlab::Edge::ePtr e20(new msonlab::Edge(20, L"e20", make_shared<types::DataType>(0.0), add_toDivide1, y1));
+	msonlab::Edge::ePtr e21(new msonlab::Edge(21, L"e21", make_shared<types::DataType>(0.0), divide_1_2a, y1));
 
 
 	msonlab::Edge::ePtr e24(new msonlab::Edge(24, L"e24", 0, constNumber_05, squareRoot_bb_minus4ac));
@@ -467,7 +468,7 @@ void doTest(SchedulingAlgorithm::algPtr alg, Options::oPtr options)
 		startCHRONO = std::chrono::high_resolution_clock::now();
 		scheduleTest(alg, opt, resfile);
 		finishCHRONO = std::chrono::high_resolution_clock::now();
-		std::chrono::duration<Types::DataType> elapsedCHRONO = finishCHRONO - startCHRONO;
+		std::chrono::duration<types::DataType> elapsedCHRONO = finishCHRONO - startCHRONO;
 		elapsed = elapsedCHRONO.count();
 		resfile << ", time=" << elapsed << "}\n";
 	}
@@ -527,7 +528,7 @@ int main(int argc, char *argv[])
 		//schedule(alg, options);
 #if MEASURE != 0
 		finishCHRONO = std::chrono::high_resolution_clock::now();
-		std::chrono::duration<Types::DataType> elapsedCHRONO = finishCHRONO - startCHRONO;
+		std::chrono::duration<types::DataType> elapsedCHRONO = finishCHRONO - startCHRONO;
 		average += elapsedCHRONO.count();
 	}
 	average /= MEASURE;

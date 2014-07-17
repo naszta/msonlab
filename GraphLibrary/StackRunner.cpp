@@ -12,7 +12,7 @@
 namespace msonlab
 {
 	using std::make_shared;
-	using namespace Types;
+	using namespace types;
 
 
 	void msonlab::StackRunner::push(dPtrStack* stack, StackValue::stackvaluePtr data, srPtr runner, int sync_id)
@@ -22,60 +22,60 @@ namespace msonlab
 
 	void msonlab::StackRunner::mul(dPtrStack* stack, StackValue::stackvaluePtr data, srPtr runner, int sync_id)
 	{
-		msonlab::Types::DataPtr t1 = (stack->top())->getValue();
+		msonlab::types::DataPtr t1 = (stack->top())->getValue();
 		stack->pop();
-		msonlab::Types::DataPtr t2 = (stack->top())->getValue();
+		msonlab::types::DataPtr t2 = (stack->top())->getValue();
 		stack->pop();
 
-		DataPtr ret = make_shared<Types::DataType>(*t1 * *t2);
+		DataPtr ret = make_shared<types::DataType>(*t1 * *t2);
 		StackValue::stackvaluePtr ptr = make_shared<SimpleStackValue>(ret);
 		stack->push(ptr);
 	}
 
 	void msonlab::StackRunner::power(dPtrStack* stack, StackValue::stackvaluePtr data, srPtr runner, int sync_id)
 	{
-		msonlab::Types::DataPtr t1 = (stack->top())->getValue();
+		msonlab::types::DataPtr t1 = (stack->top())->getValue();
 		stack->pop();
-		msonlab::Types::DataPtr t2 = (stack->top())->getValue();
+		msonlab::types::DataPtr t2 = (stack->top())->getValue();
 		stack->pop();
 
-		DataPtr ret = make_shared<Types::DataType>(pow(*t2, *t1));
+		DataPtr ret = make_shared<types::DataType>(pow(*t2, *t1));
 		StackValue::stackvaluePtr ptr = make_shared<SimpleStackValue>(ret);
 		stack->push(ptr);
 	}
 
 	void msonlab::StackRunner::sub(dPtrStack* stack, StackValue::stackvaluePtr data, srPtr runner, int sync_id)
 	{
-		msonlab::Types::DataPtr t1 = (stack->top())->getValue();
+		msonlab::types::DataPtr t1 = (stack->top())->getValue();
 		stack->pop();
-		msonlab::Types::DataPtr t2 = (stack->top())->getValue();
+		msonlab::types::DataPtr t2 = (stack->top())->getValue();
 		stack->pop();
 
-		DataPtr ret = make_shared<Types::DataType>(*t2 - *t1);
+		DataPtr ret = make_shared<types::DataType>(*t2 - *t1);
 		StackValue::stackvaluePtr ptr = make_shared<SimpleStackValue>(ret);
 		stack->push(ptr);
 	}
 
 	void msonlab::StackRunner::add(dPtrStack* stack, StackValue::stackvaluePtr data, srPtr runner, int sync_id)
 	{
-		msonlab::Types::DataPtr t1 = (stack->top())->getValue();
+		msonlab::types::DataPtr t1 = (stack->top())->getValue();
 		stack->pop();
-		msonlab::Types::DataPtr t2 = (stack->top())->getValue();
+		msonlab::types::DataPtr t2 = (stack->top())->getValue();
 		stack->pop();
 
-		DataPtr ret = make_shared<Types::DataType>(*t2 + *t1);
+		DataPtr ret = make_shared<types::DataType>(*t2 + *t1);
 		StackValue::stackvaluePtr ptr = make_shared<SimpleStackValue>(ret);
 		stack->push(ptr);
 	}
 
 	void msonlab::StackRunner::div(dPtrStack* stack, StackValue::stackvaluePtr data, srPtr runner, int sync_id)
 	{
-		msonlab::Types::DataPtr t1 = (stack->top())->getValue();
+		msonlab::types::DataPtr t1 = (stack->top())->getValue();
 		stack->pop();
-		msonlab::Types::DataPtr t2 = (stack->top())->getValue();
+		msonlab::types::DataPtr t2 = (stack->top())->getValue();
 		stack->pop();
 
-		DataPtr ret = make_shared<Types::DataType>(*t2 / *t1);
+		DataPtr ret = make_shared<types::DataType>(*t2 / *t1);
 		StackValue::stackvaluePtr ptr = make_shared<SimpleStackValue>(ret);
 		stack->push(ptr);
 	}
@@ -108,7 +108,7 @@ namespace msonlab
 			}
 		}
 
-		stack->push(StackValue::stackvaluePtr(new FutureStackValue(Types::FutureDataType(fut.second))));
+		stack->push(StackValue::stackvaluePtr(new FutureStackValue(types::FutureDataType(fut.second))));
 	}
 
 	void msonlab::StackRunner::dup(dPtrStack* stack, StackValue::stackvaluePtr data, srPtr runner, int sync_id)
@@ -190,9 +190,9 @@ namespace msonlab
 
 			for (auto i_id : promise_candidates)
 			{
-				auto prom = std::make_shared<std::promise<Types::DataPtr>>();
+				auto prom = std::make_shared<std::promise<types::DataPtr>>();
 				promises.push_back(std::pair<unsigned int, StackRunner::promisePtr>(i_id, prom));
-				futures.push_back(std::pair<unsigned int, StackRunner::futurePtr>(i_id, StackRunner::futurePtr(new std::shared_future<Types::DataPtr>(prom->get_future()))));
+				futures.push_back(std::pair<unsigned int, StackRunner::futurePtr>(i_id, StackRunner::futurePtr(new std::shared_future<types::DataPtr>(prom->get_future()))));
 			}
 
 

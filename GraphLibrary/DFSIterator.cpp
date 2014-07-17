@@ -12,7 +12,7 @@ namespace msonlab
 	{
 	}
 
-	DFSIterator::DFSIterator(Graph& g) : GraphIterator(g)
+	DFSIterator::DFSIterator(Graph& g)
 	{
 		// end of the iterator is unique for every graph
 		// but the same for every iterator on the same graph
@@ -75,7 +75,8 @@ namespace msonlab
 		}
 
 		IProcessable::nPtr tempNode = this->node;
-		while (true)
+		bool explored = false;
+		while (!explored)
 		{
 			while (this->toDiscover.empty())
 			{
@@ -95,26 +96,25 @@ namespace msonlab
 			this->discovered.insert(tempNode);
 			IProcessable::eVect neighbours = tempNode->getSuccessors();
 			IProcessable::eVect::const_iterator cit;
-			bool isExplored = true;
+			explored = true;
 			for(cit = neighbours.cbegin(); cit != neighbours.cend(); ++cit)
 			{
 				if (this->discovered.count((*cit)->getTo()) == 0)
 				{
 					this->toDiscover.push((*cit)->getTo());
-					isExplored = false;
+					explored = false;
 				}
 			}
 
-			if (isExplored)
+			if (explored)
 			{
 				this->explored.insert(tempNode);
 				this->node = tempNode;
 				this->toDiscover.pop();
-				return true;
-			}
+			}	
 		}
 
-		return false;
+		return explored;
 	}
 
 	bool DFSIterator::clear()

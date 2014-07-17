@@ -6,7 +6,7 @@ namespace msonlab
 	class NodeMultiply : public Node
 	{
 	public:
-		NodeMultiply(unsigned int _id, Types::LabelType _label, Types::DataPtr _value);
+		NodeMultiply(unsigned int _id, types::LabelType _label, types::DataPtr _value);
 
 		virtual IProcessable::pVect process();
 

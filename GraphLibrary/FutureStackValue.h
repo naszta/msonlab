@@ -7,12 +7,12 @@ namespace msonlab
 		public StackValue
 	{
 	private:
-		Types::FutureDataType value;
+		types::FutureDataType value;
 
 	public:
-		FutureStackValue(Types::FutureDataType val);
+		FutureStackValue(types::FutureDataType val);
 
-		Types::DataPtr getValue();
+		types::DataPtr getValue();
 
 		~FutureStackValue();
 	};

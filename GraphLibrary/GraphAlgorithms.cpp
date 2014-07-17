@@ -12,6 +12,8 @@ namespace msonlab
 	using std::pair;
 	using std::make_pair;
 
+	using namespace msonlab::scheduling;
+
 	typedef pair<unsigned, unsigned> puu;
 
 	unsigned int GraphAlgorithms::doComputeLengthSTAndRT(std::shared_ptr<const Solution> solution, const Options::oPtr options,
@@ -21,7 +23,7 @@ namespace msonlab
 		// const vector references
 
 		unsigned commOverhead = options->getCommOverhead();
-		unsigned puGroupSize = options->getPuGroupSize();
+		//unsigned puGroupSize = options->getPuGroupSize();
 		// const vector references
 		auto mapping = solution->getMapping();
 		auto scheduling = solution->getScheduling();
@@ -119,7 +121,7 @@ namespace msonlab
 		IProcessable::nVect outputNodes = graph->getOutputNodes();
 		vector<IProcessable::nVect> result;
 		result.push_back(outputNodes);
-		std::map< IProcessable::nPtr, int> count;
+		std::map< IProcessable::nPtr, unsigned> count;
 
 		size_t added = outputNodes.size();
 		IProcessable::nVect::iterator it;
@@ -156,7 +158,7 @@ namespace msonlab
 		vector<IProcessable::nVect> result;
 		// first level, the input nodes
 		result.push_back(inputNodes);
-		std::map< IProcessable::nPtr, int> count;
+		std::map< IProcessable::nPtr, unsigned> count;
 
 		// this number of nodes added to the leveling
 		size_t added = inputNodes.size();
@@ -195,7 +197,7 @@ namespace msonlab
 		IProcessable::nVect allNodes = graph->nodes;
 		IProcessable::nVect inputNodes = graph->getInputNodes();
 		IProcessable::nVect::iterator it;
-		std::map< IProcessable::nPtr, int> count;
+		std::map< IProcessable::nPtr, unsigned> count;
 		std::queue< IProcessable::nPtr> q;
 
 		// pushing input nodes into a queue
@@ -360,7 +362,7 @@ namespace msonlab
 	{
 		int timeCounter = 0;
 		unsigned taskCounter = 0;
-		std::map< IProcessable::nPtr, int> count;
+		std::map< IProcessable::nPtr, unsigned> count;
 		IProcessable::nVect inputNodes = graph->getInputNodes();
 		std::queue < IProcessable::nPtr> free;
 		for (size_t i = 0; i < inputNodes.size(); ++i)
@@ -405,11 +407,8 @@ namespace msonlab
 	unsigned int GraphAlgorithms::computeLengthAndReuseIdleTime(Solution::sPtr& solution, const Options::oPtr& options)
 	{
 		typedef unsigned int uint;
-		unsigned communication = 0;
-		// const vector references
 
 		unsigned commOverhead = options->getCommOverhead();
-		unsigned puGroupSize = options->getPuGroupSize();
 		// const vector references
 		auto mapping = solution->getMapping();
 		auto scheduling = solution->getScheduling();

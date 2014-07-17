@@ -23,7 +23,7 @@ namespace msonlab
 		virtual bool clear() = 0;
 	public:
 		GraphIterator(IProcessable::nPtr node, IProcessable::nPtr end);
-		GraphIterator(Graph& g);
+		GraphIterator();
 		GraphIterator(GraphIterator& it);
 		GraphIterator& operator=(GraphIterator& it);
 		bool operator==(const GraphIterator& it) const;

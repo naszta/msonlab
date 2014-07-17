@@ -7,58 +7,61 @@
 
 namespace msonlab
 {
-	using std::string;
-
-	class Options
+	namespace scheduling
 	{
-		typedef unsigned int uint;
-		// algorithm parameters
-		uint scheduleMutationRate;
-		uint mapMutationRate; // ?
-		uint popMaxSize; // the max size of the population
-		uint keepSize; // the size of population to be kept
-		uint keepBest; //
-		uint numberOfYears; // number of rounds in genetic alg.
-		double mc; // rate of mutation
+		using std::string;
 
-		uint taskLength; // length of tasks
-		uint commOverhead;
-		uint numberOfPus;
-		uint puGroupSize;
+		class Options
+		{
+			typedef unsigned int uint;
+			// algorithm parameters
+			uint scheduleMutationRate;
+			uint mapMutationRate; // ?
+			uint popMaxSize; // the max size of the population
+			uint keepSize; // the size of population to be kept
+			uint keepBest; //
+			uint numberOfYears; // number of rounds in genetic alg.
+			double mc; // rate of mutation
 
-		uint graphSize;
-		uint graphEdgeProb;
-		uint graphWidening;
+			uint taskLength; // length of tasks
+			uint commOverhead;
+			uint numberOfPus;
+			uint puGroupSize;
 
-		string initialSolution;
-		string algorithm;
-		string fitnessStrategy;
-	public:
-		typedef std::shared_ptr<const Options> oPtr;
+			uint graphSize;
+			uint graphEdgeProb;
+			uint graphWidening;
 
-		Options(const char * configFilePath);
+			string initialSolution;
+			string algorithm;
+			string fitnessStrategy;
+		public:
+			typedef std::shared_ptr<const Options> oPtr;
 
-		// for testing purposes.
-		Options(const Options& opt, unsigned value);
+			Options(const char * configFilePath);
 
-		unsigned getScheduleMutationRate() const { return scheduleMutationRate; }
-		unsigned getMapMutationRate() const { return mapMutationRate; }
-		unsigned getPopMaxSize() const { return popMaxSize; }
-		unsigned getKeepSize() const { return keepSize; }
-		unsigned getKeepBest() const { return keepBest; }
-		unsigned getNumberOfYears() const { return numberOfYears; }
+			// for testing purposes.
+			Options(const Options& opt, unsigned value);
 
-		unsigned getCommOverhead() const { return commOverhead; }
-		unsigned getTaskLength() const { return taskLength; }
-		unsigned getNumberOfPus() const { return numberOfPus; }
-		unsigned getPuGroupSize() const { return puGroupSize; }
+			unsigned getScheduleMutationRate() const { return scheduleMutationRate; }
+			unsigned getMapMutationRate() const { return mapMutationRate; }
+			unsigned getPopMaxSize() const { return popMaxSize; }
+			unsigned getKeepSize() const { return keepSize; }
+			unsigned getKeepBest() const { return keepBest; }
+			unsigned getNumberOfYears() const { return numberOfYears; }
 
-		unsigned getGraphSize() const { return graphSize; }
-		unsigned getGraphEdgeProb() const { return graphEdgeProb; }
-		unsigned getGraphWidening() const { return graphWidening; }
+			unsigned getCommOverhead() const { return commOverhead; }
+			unsigned getTaskLength() const { return taskLength; }
+			unsigned getNumberOfPus() const { return numberOfPus; }
+			unsigned getPuGroupSize() const { return puGroupSize; }
 
-		string getAlgorithm() const { return algorithm; }
-		string getFitnessStrategy() const { return fitnessStrategy; }
-		string getInitialSolution() const { return initialSolution; }
-	};
+			unsigned getGraphSize() const { return graphSize; }
+			unsigned getGraphEdgeProb() const { return graphEdgeProb; }
+			unsigned getGraphWidening() const { return graphWidening; }
+
+			string getAlgorithm() const { return algorithm; }
+			string getFitnessStrategy() const { return fitnessStrategy; }
+			string getInitialSolution() const { return initialSolution; }
+		};
+	}
 }

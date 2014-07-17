@@ -6,12 +6,12 @@
 
 namespace msonlab
 {
-	Node::Node(unsigned int _id, Types::LabelType _label, Types::DataPtr _value)
+	Node::Node(unsigned int _id, types::LabelType _label, types::DataPtr _value)
 		: IProcessable(_id, _label, _value), paramCount(0), compTime(1)
 	{
 	}
 
-	Node::Node(unsigned int _id, Types::LabelType _label, Types::DataPtr _value, unsigned compTime)
+	Node::Node(unsigned int _id, types::LabelType _label, types::DataPtr _value, unsigned compTime)
 		: IProcessable(_id, _label, _value), paramCount(0), compTime(compTime)
 	{
 	}

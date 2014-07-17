@@ -6,7 +6,7 @@
 
 namespace msonlab
 {
-	MultiplierEdge::MultiplierEdge(unsigned int _id, Types::LabelType _label, Types::DataPtr _value, IProcessable::nPtr _from, IProcessable::nPtr _to, Types::DataType _multiplier)
+	MultiplierEdge::MultiplierEdge(unsigned int _id, types::LabelType _label, types::DataPtr _value, IProcessable::nPtr _from, IProcessable::nPtr _to, types::DataType _multiplier)
 		: Edge(_id, _label, _value, _from, _to)
 	{
 		multiplier = _multiplier;
@@ -70,7 +70,7 @@ namespace msonlab
 		}
 
 		// add MUL operation
-		Types::DataPtr data = std::make_shared<Types::DataType>(multiplier);
+		types::DataPtr data = std::make_shared<types::DataType>(multiplier);
 		StackValue::stackvaluePtr stackVal = std::make_shared<SimpleStackValue>(data);
 		StackRunner::addToken(prog, StackRunner::PUSH, StackRunner::dataToken(new std::pair<StackValue::stackvaluePtr, int>(stackVal, -1)));
 		StackRunner::addToken(prog, StackRunner::MUL, StackRunner::dataToken(new std::pair<StackValue::stackvaluePtr, int>(nullptr, -1)));

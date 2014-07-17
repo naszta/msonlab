@@ -19,7 +19,6 @@ namespace msonlab
 
 		IProcessable::nPtr iteratorEnd; // this is a sign for every iterator
 
-		friend class GeneticAlgorithm;
 		friend class GraphAlgorithms;
 		friend class GraphIterator;
 		friend class BFSIterator;

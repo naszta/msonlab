@@ -5,16 +5,19 @@
 #include "GraphAlgorithms.h"
 
 namespace msonlab {
+	namespace scheduling {
 
-	class HusSchedulingAlgorithm : public SchedulingAlgorithm
-	{
-		GraphAlgorithms algorithms;
+		using namespace msonlab;
 
-		unsigned findNextToSchedule(const vector<unsigned>& dependencies, const vector<unsigned>& distances) const;
+		class HusSchedulingAlgorithm : public SchedulingAlgorithm
+		{
+			GraphAlgorithms algorithms;
 
-	public:
-		Solution::sPtr schedule(Graph::gPtr& graph, Options::oPtr options) const;
-	};
+			unsigned findNextToSchedule(const vector<unsigned>& dependencies, const vector<unsigned>& distances) const;
 
+		public:
+			Solution::sPtr schedule(Graph::gPtr& graph, Options::oPtr options) const;
+		};
+	}
 }
 #endif

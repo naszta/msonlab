@@ -7,6 +7,9 @@
 
 namespace msonlab
 {
+	using msonlab::scheduling::Solution;
+	using msonlab::scheduling::Options;
+
 	class GraphAlgorithms
 	{
 		static unsigned int doComputeLengthSTAndRT(Solution::csPtr solution, Options::oPtr options,

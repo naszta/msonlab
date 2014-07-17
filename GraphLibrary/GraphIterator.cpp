@@ -7,7 +7,7 @@ namespace msonlab
 	{
 	}
 
-	GraphIterator::GraphIterator(Graph& g)
+	GraphIterator::GraphIterator()
 	{
 	}
 

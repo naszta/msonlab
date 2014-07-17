@@ -31,7 +31,7 @@ using std::vector;
 namespace msonlab
 {
 
-	namespace Types
+	namespace types
 	{
 		typedef double DataType;
 		typedef std::shared_ptr<DataType> DataPtr;

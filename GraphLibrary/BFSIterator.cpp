@@ -7,7 +7,7 @@ namespace msonlab
 	{
 	}
 
-	BFSIterator::BFSIterator(Graph& g) : GraphIterator(g)
+	BFSIterator::BFSIterator(Graph& g)
 	{
 		// end of the iterator is unique for every graph
 		// but the same for every iterator on the same graph

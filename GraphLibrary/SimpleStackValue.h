@@ -8,12 +8,12 @@ namespace msonlab
 	{
 
 	private:
-		Types::DataPtr value;
+		types::DataPtr value;
 
 	public:
-		SimpleStackValue(Types::DataPtr val);
+		SimpleStackValue(types::DataPtr val);
 
-		Types::DataPtr getValue();
+		types::DataPtr getValue();
 
 		std::string to_string();
 	};

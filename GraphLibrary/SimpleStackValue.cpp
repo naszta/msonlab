@@ -10,12 +10,12 @@
 namespace msonlab
 {
 
-	SimpleStackValue::SimpleStackValue(Types::DataPtr val)
+	SimpleStackValue::SimpleStackValue(types::DataPtr val)
 	{
 		value = val;
 	}
 
-	Types::DataPtr msonlab::SimpleStackValue::getValue()
+	types::DataPtr msonlab::SimpleStackValue::getValue()
 	{
 		return value;
 	}

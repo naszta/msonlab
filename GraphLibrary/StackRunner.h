@@ -34,8 +34,8 @@ namespace msonlab
 			DUP
 		};
 
-		typedef std::shared_ptr<std::promise<Types::DataPtr>> promisePtr;
-		typedef std::shared_ptr<std::shared_future<Types::DataPtr>> futurePtr;
+		typedef std::shared_ptr<std::promise<types::DataPtr>> promisePtr;
+		typedef std::shared_ptr<std::shared_future<types::DataPtr>> futurePtr;
 		typedef vector<unsigned int> scheduleOrder;
 
 	private:

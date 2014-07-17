@@ -4,7 +4,7 @@
 
 namespace msonlab
 {
-	Types::DataPtr StackValue::getValue()
+	types::DataPtr StackValue::getValue()
 	{
 		throw new Exceptions::NotImplementedException("StackValue can't be used. Use one inherited class.");
 	}

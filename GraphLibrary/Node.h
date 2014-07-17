@@ -13,8 +13,8 @@ namespace msonlab
 		unsigned compTime;
 
 	public:
-		Node(unsigned int _id, Types::LabelType _label, Types::DataPtr _value);
-		Node(unsigned int _id, Types::LabelType _label, Types::DataPtr _value, unsigned compTime);
+		Node(unsigned int _id, types::LabelType _label, types::DataPtr _value);
+		Node(unsigned int _id, types::LabelType _label, types::DataPtr _value, unsigned compTime);
 		Node(const Node& other);
 
 		bool registerParameter();

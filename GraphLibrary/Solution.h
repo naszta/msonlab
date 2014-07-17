@@ -10,53 +10,59 @@
 /// a solution is described with
 /// a mapping and a scheduling part
 
-namespace msonlab
-{
-	class Solution : public std::enable_shared_from_this<Solution>
-	{
-	private:
-		// the scheduling part, escribes the order of the tasks
-		IProcessable::nVect scheduling;
+namespace msonlab {
+	namespace scheduling {
 
-		// the mapping part, maps the task to PUs.
-		vector<unsigned int> mapping;
+		using namespace msonlab;
 
-		// the number of edges
-		unsigned int edges;
+		class Solution : public std::enable_shared_from_this<Solution>
+		{
+		private:
+			// the scheduling part, escribes the order of the tasks
+			IProcessable::nVect scheduling;
 
-		// the number of PUs
-		unsigned int pus;
+			// the mapping part, maps the task to PUs.
+			vector<unsigned int> mapping;
 
-		// the score of this solution, the less is better
-		unsigned int fitness;
+			// the number of edges
+			unsigned int edges;
 
-		// the length of the result
-		unsigned int length; 
+			// the number of PUs
+			unsigned int pus;
 
-		friend class chrComparator;
-		friend class GraphAlgorithms;
-		friend class GeneticAlgorithm;
-		friend class GreedySchedulingAlgorithm;
-		friend class HusSchedulingAlgorithm;
+			// the score of this solution, the less is better
+			unsigned int fitness;
 
-		void calcStartTime(Options::oPtr options);
-	public:
-		friend std::ostream& operator<<(std::ostream& os, const Solution& solution);
-		typedef std::shared_ptr<Solution> sPtr;
-		typedef std::shared_ptr<const Solution> csPtr;
-		typedef vector< sPtr > cVect;
+			// the length of the result
+			unsigned int length;
 
-		//Solution(unsigned pus, unsigned edges);
-		Solution(size_t size, unsigned pus, unsigned edges);
-		Solution(const Solution& solution);
+			friend class chrComparator;
+			friend class GraphAlgorithms;
 
-		Solution& operator=(const Solution &solution);
+			// scheduling algorithms
+			friend class GeneticAlgorithm;
+			friend class GreedySchedulingAlgorithm;
+			friend class HusSchedulingAlgorithm;
 
-		unsigned int getFitness() const { return fitness; }
-		const vector<unsigned int>& getMapping() const { return mapping; }
-		const IProcessable::nVect& getScheduling() const { return scheduling; }
+			void calcStartTime(Options::oPtr options);
+		public:
+			friend std::ostream& operator<<(std::ostream& os, const Solution& solution);
+			typedef std::shared_ptr<Solution> sPtr;
+			typedef std::shared_ptr<const Solution> csPtr;
+			typedef vector< sPtr > cVect;
 
-		void printSolution(std::ostream& o) const;
-		void printTable(std::ostream& o, Options::oPtr options) const;
-	};
+			//Solution(unsigned pus, unsigned edges);
+			Solution(size_t size, unsigned pus, unsigned edges);
+			Solution(const Solution& solution);
+
+			Solution& operator=(const Solution &solution);
+
+			unsigned int getFitness() const { return fitness; }
+			const vector<unsigned int>& getMapping() const { return mapping; }
+			const IProcessable::nVect& getScheduling() const { return scheduling; }
+
+			void printSolution(std::ostream& o) const;
+			void printTable(std::ostream& o, Options::oPtr options) const;
+		};
+	}
 }

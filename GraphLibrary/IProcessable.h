@@ -12,14 +12,14 @@ namespace msonlab
 	protected:
 		unsigned int id;
 		//wchar_t label;
-		Types::LabelType label;
+		types::LabelType label;
 
-		Types::DataPtr value;
+		types::DataPtr value;
 
 		bool processed;
-		Types::DataPtr resultValue;
+		types::DataPtr resultValue;
 
-		bool setProcessed(msonlab::Types::DataPtr _resultValue);
+		bool setProcessed(msonlab::types::DataPtr _resultValue);
 		bool clearProcessed();
 
 		// compile
@@ -39,7 +39,7 @@ namespace msonlab
 
 		enum PlaceEnum {Input, Inside, Output};
 
-		IProcessable(unsigned int _id, Types::LabelType _label, Types::DataPtr _value);
+		IProcessable(unsigned int _id, types::LabelType _label, types::DataPtr _value);
 		IProcessable();
 
 		virtual bool registerParameter() = 0;
@@ -51,9 +51,9 @@ namespace msonlab
 
 		unsigned int getId() const;
 		virtual std::string getIdString() const;
-		virtual Types::LabelType getLabel() const;
-		Types::DataPtr getValue() const;
-		Types::DataPtr getResultValue() const;
+		virtual types::LabelType getLabel() const;
+		types::DataPtr getValue() const;
+		types::DataPtr getResultValue() const;
 
 		virtual PlaceEnum getPlace() const;
 

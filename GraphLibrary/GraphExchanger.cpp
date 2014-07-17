@@ -108,7 +108,7 @@ namespace msonlab
 
 			std::string node_type;
 			std::string custom_data;
-			Types::LabelType nodegraphics_label;
+			types::LabelType nodegraphics_label;
 			unsigned int node_id = -1;
 
 			std::string id_string = XMLString::transcode(curr_node_xml->getAttribute(XMLString::transcode(std::string("id").c_str())));

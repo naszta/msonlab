@@ -5,13 +5,13 @@
 
 namespace msonlab
 {
-	FutureStackValue::FutureStackValue(Types::FutureDataType val)
+	FutureStackValue::FutureStackValue(types::FutureDataType val)
 	{
 		value = val;
 	}
 
 
-	Types::DataPtr FutureStackValue::getValue()
+	types::DataPtr FutureStackValue::getValue()
 	{
 		return (*value).get();
 	}

@@ -11,49 +11,53 @@
 // GeneticAlgoritm implementation for project laboratory
 // created by Zoltan Szekeres
 
-namespace msonlab
-{
-	using std::vector;
-	using std::shared_ptr;
-	using std::unique_ptr;
-	using msonlab::SolutionSet;
+namespace msonlab {
+	namespace scheduling {
 
-	class GeneticAlgorithm : public SchedulingAlgorithm
-	{
-		typedef unsigned int uint;
-		// num of PUs
-		GraphAlgorithms algorithms;
+		using std::vector;
+		using std::shared_ptr;
+		using std::unique_ptr;
+		
+		//using msonlab::Graph;
+		using namespace msonlab;
 
-		// algorithm parameters
-		Options::oPtr options;
-		FitnessStrategy::fsPtr fsstrategy;
-		// remove from here
-		//vector<unsigned> levelingLimits;
-	public:
-		//typedef shared_ptr<Solution> cPtr;
-		typedef vector< Solution::sPtr > cVect;
-		//typedef unique_ptr<Population> pPtr;
+		class GeneticAlgorithm : public SchedulingAlgorithm
+		{
+			typedef unsigned int uint;
+			// num of PUs
+			GraphAlgorithms algorithms;
 
-		GeneticAlgorithm(Options::oPtr options, FitnessStrategy::fsPtr strategy);
+			// algorithm parameters
+			Options::oPtr options;
+			FitnessStrategy::fsPtr fsstrategy;
+			// remove from here
+			//vector<unsigned> levelingLimits;
+		public:
+			//typedef shared_ptr<Solution> cPtr;
+			typedef vector< Solution::sPtr > cVect;
+			//typedef unique_ptr<Population> pPtr;
 
-		virtual Solution::sPtr schedule(Graph::gPtr& graph, Options::oPtr options) const;
+			GeneticAlgorithm(Options::oPtr options, FitnessStrategy::fsPtr strategy);
 
-		Solution::sPtr greedySolution(Graph::gPtr& graph) const;
-		SolutionSet::setPtr generateInitialSolution(Graph::gPtr& graph, Options::oPtr options) const;
-		SolutionSet::setPtr generateCPSolution(Graph::gPtr& graph, Options::oPtr options) const;
-		SolutionSet::setPtr generateRndSolution(Graph::gPtr& graph, Options::oPtr options) const;
-		unsigned int fitness(Solution::sPtr solution) const;
+			virtual Solution::sPtr schedule(Graph::gPtr& graph, Options::oPtr options) const;
 
-		Solution::sPtr crossoverMap(Solution::sPtr father, Solution::sPtr mother) const;
-		Solution::sPtr crossoverOrder(Solution::sPtr father, Solution::sPtr mother, const vector<unsigned>& levelingLimits) const;
-		void mutateMapping(Solution::sPtr& offspring) const;
-		void mutateSheduling(Solution::sPtr offspring, const vector<unsigned>& levelingLimits) const;
+			Solution::sPtr greedySolution(Graph::gPtr& graph) const;
+			SolutionSet::setPtr generateInitialSolution(Graph::gPtr& graph, Options::oPtr options) const;
+			SolutionSet::setPtr generateCPSolution(Graph::gPtr& graph, Options::oPtr options) const;
+			SolutionSet::setPtr generateRndSolution(Graph::gPtr& graph, Options::oPtr options) const;
+			unsigned int fitness(Solution::sPtr solution) const;
 
-		void simulateMating(SolutionSet::setPtr& set, int offsprings, bool doOrderCrossover) const;
+			Solution::sPtr crossoverMap(Solution::sPtr father, Solution::sPtr mother) const;
+			Solution::sPtr crossoverOrder(Solution::sPtr father, Solution::sPtr mother, const vector<unsigned>& levelingLimits) const;
+			void mutateMapping(Solution::sPtr& offspring) const;
+			void mutateSheduling(Solution::sPtr offspring, const vector<unsigned>& levelingLimits) const;
 
-		static void transfromResult(Solution::sPtr c, vector<unsigned>& result);
+			void simulateMating(SolutionSet::setPtr& set, int offsprings, bool doOrderCrossover) const;
 
-		// experimental
-		void swapMutateScheduling(Solution::sPtr offspring) const;
-	};
+			static void transfromResult(Solution::sPtr c, vector<unsigned>& result);
+
+			// experimental
+			void swapMutateScheduling(Solution::sPtr offspring) const;
+		};
+	}
 }

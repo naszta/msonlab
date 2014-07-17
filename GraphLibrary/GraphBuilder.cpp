@@ -6,9 +6,9 @@ namespace msonlab
 	std::map<unsigned int, Node::nPtr> GraphBuilder::nodes;
 	std::map<unsigned int, Edge::ePtr> GraphBuilder::edges;
 
-	using namespace Types;
+	using namespace types;
 
-	void GraphBuilder::add_node(unsigned int id, std::string node_type, Types::LabelType label, std::string custom_data)
+	void GraphBuilder::add_node(unsigned int id, std::string node_type, types::LabelType label, std::string custom_data)
 	{
 		if (node_type == std::string("ADD"))
 		{
