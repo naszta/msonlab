@@ -26,7 +26,7 @@ namespace msonlab
 
 	using msonlab::Solution;
 
-	class Population
+	class SolutionSet
 	{
 		/// this contains the size of the graph's levels
 		vector<size_t> levelSize;
@@ -38,10 +38,10 @@ namespace msonlab
 		const size_t KEEPBEST;
 		
 	public:
-		typedef std::unique_ptr<Population> pPtr;
-		Population(const vector<Solution::sPtr>& sol, size_t keepSize, size_t popMaxSize, size_t keepBest);
+		typedef std::unique_ptr<SolutionSet> setPtr;
+		SolutionSet(const vector<Solution::sPtr>& sol, size_t keepSize, size_t popMaxSize, size_t keepBest);
 
-		const vector<Solution::sPtr>& getPopulation() const;
+		const vector<Solution::sPtr>& getSolutionSet() const;
 
 		/// Gets a random solution from the solution.
 		Solution::sPtr getParent() const;
@@ -60,7 +60,7 @@ namespace msonlab
 		// TODO: return a pointer to the vector
 		const vector<unsigned>& getLevels() const { return this->levelSize; }
 
-		Population & operator = (Population &);
+		SolutionSet & operator = (SolutionSet &);
 
 		unsigned avarageFittness() const;
 	};

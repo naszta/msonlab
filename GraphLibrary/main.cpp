@@ -375,20 +375,20 @@ void runGA(Options::oPtr options)
 	std::cout << "Greedy length: " << lengtFS.fitness(greedy, options) << std::endl;
 	std::cout << "Greedy fitness: " << fsstrategy->fitness(greedy, options) << std::endl;
 
-	Population::pPtr population = gena.generateInitialSolution(graph, options);
-	population->limit();
+	auto set = gena.generateInitialSolution(graph, options);
+	set->limit();
 
-	unsigned last = population->best()->getFitness();
+	unsigned last = set->best()->getFitness();
 	unsigned bests_round = 0;
 
 	for (size_t i = 0; i < options->getNumberOfYears(); ++i)
 	{
-		gena.simulateMating(population, options->getPopMaxSize(), false);
-		population->limit();
-		unsigned best = population->best()->getFitness();
+		gena.simulateMating(set, options->getPopMaxSize(), false);
+		set->limit();
+		unsigned best = set->best()->getFitness();
 		DEBUG("Generation " << i + 1);
 		DEBUG("Best fitness: " << best);
-		DEBUG("Avarage fitness: " << population->avarageFittness());
+		DEBUG("Avarage fitness: " << set->avarageFittness());
 		if (best != last)
 		{
 			last = best;
@@ -396,7 +396,7 @@ void runGA(Options::oPtr options)
 		}
 	}
 
-	auto best = population->best();
+	auto best = set->best();
 	best->printSolution(std::cout);
 	std::cout << "Best found in round " << bests_round << std::endl;
 	DEBUG("Best fitness: " << best->getFitness());

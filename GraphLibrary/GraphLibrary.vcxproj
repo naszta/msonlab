@@ -96,7 +96,7 @@
     <ClCompile Include="NodeDivide.cpp" />
     <ClCompile Include="NodeMultiply.cpp" />
     <ClCompile Include="NodeSquareRoot.cpp" />
-    <ClCompile Include="Population .cpp" />
+    <ClCompile Include="SolutionSet.cpp" />
     <ClCompile Include="Processor.cpp" />
     <ClCompile Include="SimpleStackValue.cpp" />
     <ClCompile Include="StackCompiler.cpp" />
@@ -132,7 +132,7 @@
     <ClInclude Include="NodeMultiply.h" />
     <ClInclude Include="NodeSquareRoot.h" />
     <ClInclude Include="Options.h" />
-    <ClInclude Include="Population.h" />
+    <ClInclude Include="SolutionSet.h" />
     <ClInclude Include="Processor.h" />
     <ClInclude Include="SimpleStackValue.h" />
     <ClInclude Include="StackCompiler.h" />

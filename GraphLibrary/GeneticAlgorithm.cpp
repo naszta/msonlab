@@ -80,23 +80,23 @@ namespace msonlab {
 	/// @param graph The graph to schedule.
 	/// @return the best solution the GA finds.
 	Solution::sPtr GeneticAlgorithm::schedule(Graph::gPtr& graph, Options::oPtr options) const {
-		Population::pPtr population = this->generateInitialSolution(graph, options);
-		population->limit();
+		auto set = this->generateInitialSolution(graph, options);
+		set->limit();
 		
 		bool doOrderCrossover = options->getFitnessStrategy().compare("reschedule") != 0;
 		for (size_t i = 0; i < options->getNumberOfYears(); ++i)
 		{
 			std::cout << "Round " << i + 1 << std::endl;
-			simulateMating(population, options->getPopMaxSize(), doOrderCrossover);
-			population->limit();
+			simulateMating(set, options->getPopMaxSize(), doOrderCrossover);
+			set->limit();
 		}
 
-		return population->best();
+		return set->best();
 	}
 
-	Population::pPtr GeneticAlgorithm::generateInitialSolution(Graph::gPtr& graph, Options::oPtr options) const
+	SolutionSet::setPtr GeneticAlgorithm::generateInitialSolution(Graph::gPtr& graph, Options::oPtr options) const
 	{
-		Population::pPtr p;
+		SolutionSet::setPtr p;
 		if (options->getInitialSolution().compare("cp") == 0) {
 			vector<IProcessable::nVect> levels = algorithms.partialTopologicalSort(graph);
 			size_t numLevels = levels.size();
@@ -132,7 +132,7 @@ namespace msonlab {
 	/// 
 	/// @param graph The input graph.
 	/// @return The generated population.
-	Population::pPtr GeneticAlgorithm::generateRndSolution(Graph::gPtr& graph, Options::oPtr options) const
+	SolutionSet::setPtr GeneticAlgorithm::generateRndSolution(Graph::gPtr& graph, Options::oPtr options) const
 	{
 		cVect solution;
 		vector<IProcessable::nVect> levels = algorithms.partialTopologicalSort(graph);
@@ -150,7 +150,7 @@ namespace msonlab {
 			limits += levels[i - 1].size();
 		}
 
-		Population::pPtr population = std::make_unique<Population>(solution, options->getKeepSize(), options->getPopMaxSize(), options->getKeepBest());
+		auto set = std::make_unique<SolutionSet>(solution, options->getKeepSize(), options->getPopMaxSize(), options->getKeepBest());
 
 		Solution::sPtr chr = this->greedySolution(graph);
 
@@ -175,8 +175,8 @@ namespace msonlab {
 
 		auto initialFitness = fitness(cc);
 		DEBUGLN("Population created. Initial fitness : " << initialFitness);
-		population->addOffspring(cc);
-		population->setLevelSize(levelingLimits);
+		set->addOffspring(cc);
+		set->setLevelSize(levelingLimits);
 
 		// the number of solutions to generate
 		counter = options->getPopMaxSize() - 1;
@@ -198,22 +198,22 @@ namespace msonlab {
 			}
 
 			fitness(sol);
-			population->addOffspring(sol);
+			set->addOffspring(sol);
 		}
 
-		return population;
+		return set;
 	}
 
 	// Generate the solution using the scheduling created by the CP scheduler
-	Population::pPtr GeneticAlgorithm::generateCPSolution(Graph::gPtr& graph, Options::oPtr options) const {
+	SolutionSet::setPtr GeneticAlgorithm::generateCPSolution(Graph::gPtr& graph, Options::oPtr options) const {
 		cVect solution;
-		Population::pPtr population = std::make_unique<Population>(solution, options->getKeepSize(), options->getPopMaxSize(), options->getKeepBest());
+		auto set = std::make_unique<SolutionSet>(solution, options->getKeepSize(), options->getPopMaxSize(), options->getKeepBest());
 		HusSchedulingAlgorithm cpAlg;
 		auto greedy = greedySolution(graph);
-		population->addOffspring(greedy);
+		set->addOffspring(greedy);
 		auto cpC = cpAlg.schedule(graph, options);
 		auto initialFitness = fitness(cpC);
-		population->addOffspring(cpC);
+		set->addOffspring(cpC);
 		unsigned counter = options->getPopMaxSize() - 2; // CP and greedy
 		for (; counter > 0; --counter)
 		{
@@ -225,11 +225,11 @@ namespace msonlab {
 
 			std::copy(cpC->scheduling.begin(), cpC->scheduling.end(), c->scheduling.begin());
 			fitness(c);
-			population->addOffspring(c);
+			set->addOffspring(c);
 		}
 
-		DEBUGLN("Population created. Initial fitness : " << initialFitness);
-		return population;
+		DEBUGLN("Solution set created. Initial fitness : " << initialFitness);
+		return set;
 	}
 
 	///
@@ -331,14 +331,14 @@ namespace msonlab {
 	///
 	/// @param population A set of solutions to choose the parents from.
 	/// @param offsprings The number of offsprings to generate.
-	void GeneticAlgorithm::simulateMating(Population::pPtr& population, int offsprings, bool doOrderCrossover) const
+	void GeneticAlgorithm::simulateMating(SolutionSet::setPtr& set, int offsprings, bool doOrderCrossover) const
 	{
 		int faultyGens = 0;
 		int mutations = 0;
 		for (; offsprings > 0;)
 		{
-			Solution::sPtr father = population->getParent();
-			Solution::sPtr mother = population->getParent();
+			Solution::sPtr father = set->getParent();
+			Solution::sPtr mother = set->getParent();
 			int crossoverType = rand() % 2;
 			Solution::sPtr offspring;
 			// always mapping crossover
@@ -348,20 +348,20 @@ namespace msonlab {
 			}
 			else
 			{
-				offspring = crossoverOrder(father, mother, population->getLevels());
+				offspring = crossoverOrder(father, mother, set->getLevels());
 			}
 
 			mutateMapping(offspring);
 			unsigned rate = rand() % 100;
 			if (rate < options->getScheduleMutationRate()) {
-				mutateSheduling(offspring, population->getLevels());
+				mutateSheduling(offspring, set->getLevels());
 				++mutations;
 			}
 
 			unsigned cost = fitness(offspring);
 			if (cost < UINT32_MAX)
 			{
-				population->addOffspring(offspring);
+				set->addOffspring(offspring);
 				--offsprings;
 			}
 			else ++faultyGens;

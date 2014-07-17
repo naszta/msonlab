@@ -2,7 +2,7 @@
 
 #include <memory>
 #include <vector>
-#include "Population.h"
+#include "SolutionSet.h"
 #include "SchedulingAlgorithm.h"
 #include "FitnessStrategy.h"
 #include "GraphAlgorithms.h"
@@ -16,7 +16,7 @@ namespace msonlab
 	using std::vector;
 	using std::shared_ptr;
 	using std::unique_ptr;
-	using msonlab::Population;
+	using msonlab::SolutionSet;
 
 	class GeneticAlgorithm : public SchedulingAlgorithm
 	{
@@ -39,9 +39,9 @@ namespace msonlab
 		virtual Solution::sPtr schedule(Graph::gPtr& graph, Options::oPtr options) const;
 
 		Solution::sPtr greedySolution(Graph::gPtr& graph) const;
-		Population::pPtr generateInitialSolution(Graph::gPtr& graph, Options::oPtr options) const;
-		Population::pPtr generateCPSolution(Graph::gPtr& graph, Options::oPtr options) const;
-		Population::pPtr generateRndSolution(Graph::gPtr& graph, Options::oPtr options) const;
+		SolutionSet::setPtr generateInitialSolution(Graph::gPtr& graph, Options::oPtr options) const;
+		SolutionSet::setPtr generateCPSolution(Graph::gPtr& graph, Options::oPtr options) const;
+		SolutionSet::setPtr generateRndSolution(Graph::gPtr& graph, Options::oPtr options) const;
 		unsigned int fitness(Solution::sPtr solution) const;
 
 		Solution::sPtr crossoverMap(Solution::sPtr father, Solution::sPtr mother) const;
@@ -49,7 +49,7 @@ namespace msonlab
 		void mutateMapping(Solution::sPtr& offspring) const;
 		void mutateSheduling(Solution::sPtr offspring, const vector<unsigned>& levelingLimits) const;
 
-		void simulateMating(Population::pPtr& population, int offsprings, bool doOrderCrossover) const;
+		void simulateMating(SolutionSet::setPtr& set, int offsprings, bool doOrderCrossover) const;
 
 		static void transfromResult(Solution::sPtr c, vector<unsigned>& result);
 
