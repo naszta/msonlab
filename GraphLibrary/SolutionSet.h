@@ -16,8 +16,6 @@ using std::shared_ptr;
 namespace msonlab {
 	namespace scheduling {
 
-		using namespace msonlab;
-
 		class chrComparator
 		{
 		public:
@@ -60,8 +58,6 @@ namespace msonlab {
 			/// Gets the number of levels.
 			// TODO: return a pointer to the vector
 			const vector<unsigned>& getLevels() const { return this->levelSize; }
-
-			SolutionSet & operator = (SolutionSet &);
 
 			unsigned avarageFittness() const;
 		};

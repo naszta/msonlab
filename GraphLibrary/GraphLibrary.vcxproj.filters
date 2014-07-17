@@ -159,6 +159,9 @@
     <ClInclude Include="SolutionSet.h">
       <Filter>Header Files\Scheduling\Genetic</Filter>
     </ClInclude>
+    <ClInclude Include="SchedulingHelper.h">
+      <Filter>Header Files\Scheduling</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="IProcessable.cpp">
@@ -253,6 +256,9 @@
     </ClCompile>
     <ClCompile Include="SolutionSet.cpp">
       <Filter>Source Files\Scheduling\Genetic</Filter>
+    </ClCompile>
+    <ClCompile Include="SchedulingHelper.cpp">
+      <Filter>Source Files\Scheduling</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

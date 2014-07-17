@@ -1,5 +1,5 @@
 #include "Solution.h"
-#include "GraphAlgorithms.h"
+#include "SchedulingHelper.h"
 
 namespace msonlab {
 	namespace scheduling {
@@ -72,7 +72,7 @@ namespace msonlab {
 			auto tasks = scheduling.size();
 
 			vector<unsigned> ST(tasks);
-			unsigned length = GraphAlgorithms::computeLengthAndST(shared_from_this(), options, ST);
+			unsigned length = SchedulingHelper::computeLengthAndST(shared_from_this(), options, ST);
 
 			// initialize table
 			//unsigned length = *std::max_element(FT.begin(), FT.end());

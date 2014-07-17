@@ -8,7 +8,7 @@
 namespace msonlab {
 	namespace scheduling {
 		
-		using namespace msonlab;
+		using msonlab::Graph;
 
 		///
 		/// Abstract class for schedule algorithms.

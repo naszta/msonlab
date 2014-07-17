@@ -16,6 +16,7 @@
 #include "HusSchedulingAlgorithm.h"
 #include "Options.h"
 #include "FitnessStrategy.h"
+#include "SchedulingHelper.h"
 #include "StackCompiler.h"
 #include "StackRunner.h"
 #include <chrono>
@@ -433,7 +434,7 @@ void schedule(SchedulingAlgorithm::algPtr alg, Options::oPtr options)
 	auto best = alg->schedule(graph, options);
 	std::cout << "Best length: " << best->getFitness() << std::endl;
 	//best->printTable(std::cout, options->getCommOverhead());
-	unsigned l = GraphAlgorithms::computeLengthAndReuseIdleTime(best, options);
+	unsigned l = SchedulingHelper::computeLengthAndReuseIdleTime(best, options);
 	std::cout << "Rescheduled length: " << l << std::endl;
 	LengthFitnessStartegy fs;
 	l = fs.fitness(best, options);
@@ -450,7 +451,7 @@ void scheduleTest(SchedulingAlgorithm::algPtr alg, Options::oPtr options, ofstre
 	auto best = alg->schedule(graph, options);
 	resfile << ", preResult=" << best->getFitness();
 	//best->printTable(std::cout, options->getCommOverhead());
-	unsigned l = GraphAlgorithms::computeLengthAndReuseIdleTime(best, options);
+	unsigned l = SchedulingHelper::computeLengthAndReuseIdleTime(best, options);
 	resfile << ", result=" << l;
 }
 

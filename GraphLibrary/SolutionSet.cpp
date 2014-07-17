@@ -109,10 +109,5 @@ namespace msonlab {
 				this->levelSize.push_back(*it);
 			}
 		}
-
-		SolutionSet & SolutionSet::operator = (SolutionSet & p) {
-			std::cout << "Where am I used?";
-			return *this;
-		}
 	}
 }

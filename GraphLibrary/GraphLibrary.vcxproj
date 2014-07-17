@@ -73,6 +73,7 @@
   <ItemGroup>
     <ClCompile Include="BFSIterator.cpp" />
     <ClCompile Include="BlueEdge.cpp" />
+    <ClCompile Include="SchedulingHelper.cpp" />
     <ClCompile Include="Solution.cpp" />
     <ClCompile Include="DFSIterator.cpp" />
     <ClCompile Include="Edge.cpp" />
@@ -106,6 +107,7 @@
   <ItemGroup>
     <ClInclude Include="BFSIterator.h" />
     <ClInclude Include="BlueEdge.h" />
+    <ClInclude Include="SchedulingHelper.h" />
     <ClInclude Include="Solution.h" />
     <ClInclude Include="ConfigFile.h" />
     <ClInclude Include="DFSIterator.h" />

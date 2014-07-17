@@ -14,12 +14,12 @@
 namespace msonlab {
 	namespace scheduling {
 
+		using msonlab::Graph;
+		using msonlab::GraphAlgorithms;
+
 		using std::vector;
 		using std::shared_ptr;
 		using std::unique_ptr;
-		
-		//using msonlab::Graph;
-		using namespace msonlab;
 
 		class GeneticAlgorithm : public SchedulingAlgorithm
 		{

@@ -1,26 +1,24 @@
 #include "FitnessStrategy.h"
-#include "GraphAlgorithms.h"
+#include "SchedulingHelper.h"
 #include <algorithm>
 #include <numeric>
 
 namespace msonlab {
 	namespace scheduling {
 
-		using msonlab::GraphAlgorithms;
-
 		unsigned int LengthFitnessStartegy::fitness(Solution::sPtr solution, const Options::oPtr options)
 		{
-			return GraphAlgorithms::computeLength(solution, options);
+			return SchedulingHelper::computeLength(solution, options);
 		}
 
 		unsigned int RescheduleIdleTimeFitnessStartegy::fitness(Solution::sPtr solution, const Options::oPtr options)
 		{
-			return GraphAlgorithms::computeLengthAndReuseIdleTime(solution, options);
+			return SchedulingHelper::computeLengthAndReuseIdleTime(solution, options);
 		}
 
 		unsigned int PUUsageFitnessStrategy::fitness(Solution::sPtr solution, const Options::oPtr options)
 		{
-			unsigned length = GraphAlgorithms::computeLength(solution, options);
+			unsigned length = SchedulingHelper::computeLength(solution, options);
 
 			unsigned sumUsedTime = length * options->getNumberOfPus();
 			unsigned sumWorkTime = 0;
@@ -39,7 +37,7 @@ namespace msonlab {
 		unsigned int LoadBalanceFitnessStrategy::fitness(Solution::sPtr solution, const Options::oPtr options)
 		{
 			vector<unsigned> RT(options->getNumberOfPus());
-			int length = GraphAlgorithms::computeLengthAndRT(solution, options, RT);
+			int length = SchedulingHelper::computeLengthAndRT(solution, options, RT);
 			double avg = std::accumulate(RT.begin(), RT.end(), 0) / options->getNumberOfPus();
 			double load_balance = length / avg;
 			return (unsigned)(load_balance * 1000);

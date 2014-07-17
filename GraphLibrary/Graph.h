@@ -11,7 +11,7 @@ namespace msonlab
 	/// std::enable_shared_from_this allows an object that is currently managed by a
 	/// std::shared_ptr named p to safely generate std::shared_ptr instances pt1, pt2 ...
 	/// that all share ownership of t with pt.
-	class Graph : public std::enable_shared_from_this<Graph>
+	class Graph
 	{
 	private:
 		IProcessable::nVect nodes; // vector of nodes

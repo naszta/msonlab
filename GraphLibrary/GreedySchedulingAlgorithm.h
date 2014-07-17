@@ -5,7 +5,7 @@
 namespace msonlab {
 	namespace scheduling {
 
-		using namespace msonlab;
+		using msonlab::Graph;
 
 		///
 		/// This class implements a greedy scheduling of the graph.

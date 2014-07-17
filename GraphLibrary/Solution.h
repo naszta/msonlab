@@ -36,8 +36,8 @@ namespace msonlab {
 			// the length of the result
 			unsigned int length;
 
-			friend class chrComparator;
-			friend class GraphAlgorithms;
+			//friend class GraphAlgorithms;
+			friend class SchedulingHelper;
 
 			// scheduling algorithms
 			friend class GeneticAlgorithm;
