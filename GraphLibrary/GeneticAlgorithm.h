@@ -30,30 +30,30 @@ namespace msonlab
 		// remove from here
 		//vector<unsigned> levelingLimits;
 	public:
-		//typedef shared_ptr<Chromosome> cPtr;
-		typedef vector< Chromosome::cPtr > cVect;
+		//typedef shared_ptr<Solution> cPtr;
+		typedef vector< Solution::sPtr > cVect;
 		//typedef unique_ptr<Population> pPtr;
 
 		GeneticAlgorithm(Options::oPtr options, FitnessStrategy::fsPtr strategy);
 
-		virtual Chromosome::cPtr schedule(Graph::gPtr& graph, Options::oPtr options) const;
+		virtual Solution::sPtr schedule(Graph::gPtr& graph, Options::oPtr options) const;
 
-		Chromosome::cPtr greedyChromosome(Graph::gPtr& graph) const;
+		Solution::sPtr greedySolution(Graph::gPtr& graph) const;
 		Population::pPtr generateInitialSolution(Graph::gPtr& graph, Options::oPtr options) const;
 		Population::pPtr generateCPSolution(Graph::gPtr& graph, Options::oPtr options) const;
 		Population::pPtr generateRndSolution(Graph::gPtr& graph, Options::oPtr options) const;
-		unsigned int fitness(Chromosome::cPtr chromosome) const;
+		unsigned int fitness(Solution::sPtr solution) const;
 
-		Chromosome::cPtr crossoverMap(Chromosome::cPtr father, Chromosome::cPtr mother) const;
-		Chromosome::cPtr crossoverOrder(Chromosome::cPtr father, Chromosome::cPtr mother, const vector<unsigned>& levelingLimits) const;
-		void mutateMapping(Chromosome::cPtr& offspring) const;
-		void mutateSheduling(Chromosome::cPtr offspring, const vector<unsigned>& levelingLimits) const;
+		Solution::sPtr crossoverMap(Solution::sPtr father, Solution::sPtr mother) const;
+		Solution::sPtr crossoverOrder(Solution::sPtr father, Solution::sPtr mother, const vector<unsigned>& levelingLimits) const;
+		void mutateMapping(Solution::sPtr& offspring) const;
+		void mutateSheduling(Solution::sPtr offspring, const vector<unsigned>& levelingLimits) const;
 
 		void simulateMating(Population::pPtr& population, int offsprings, bool doOrderCrossover) const;
 
-		static void transfromResult(Chromosome::cPtr c, vector<unsigned>& result);
+		static void transfromResult(Solution::sPtr c, vector<unsigned>& result);
 
 		// experimental
-		void swapMutateScheduling(Chromosome::cPtr offspring) const;
+		void swapMutateScheduling(Solution::sPtr offspring) const;
 	};
 }

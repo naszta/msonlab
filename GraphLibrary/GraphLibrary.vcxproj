@@ -73,7 +73,7 @@
   <ItemGroup>
     <ClCompile Include="BFSIterator.cpp" />
     <ClCompile Include="BlueEdge.cpp" />
-    <ClCompile Include="Chromosome.cpp" />
+    <ClCompile Include="Solution.cpp" />
     <ClCompile Include="DFSIterator.cpp" />
     <ClCompile Include="Edge.cpp" />
     <ClCompile Include="FitnessStrategy.cpp" />
@@ -106,7 +106,7 @@
   <ItemGroup>
     <ClInclude Include="BFSIterator.h" />
     <ClInclude Include="BlueEdge.h" />
-    <ClInclude Include="Chromosome.h" />
+    <ClInclude Include="Solution.h" />
     <ClInclude Include="ConfigFile.h" />
     <ClInclude Include="DFSIterator.h" />
     <ClInclude Include="Edge.h" />

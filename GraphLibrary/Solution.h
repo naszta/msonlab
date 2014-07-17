@@ -12,7 +12,7 @@
 
 namespace msonlab
 {
-	class Chromosome : public std::enable_shared_from_this<Chromosome>
+	class Solution : public std::enable_shared_from_this<Solution>
 	{
 	private:
 		// the scheduling part, escribes the order of the tasks
@@ -41,22 +41,22 @@ namespace msonlab
 
 		void calcStartTime(Options::oPtr options);
 	public:
-		friend std::ostream& operator<<(std::ostream& os, const Chromosome& chromosome);
-		typedef std::shared_ptr<Chromosome> cPtr;
-		typedef std::shared_ptr<const Chromosome> ccPtr;
-		typedef vector< cPtr > cVect;
+		friend std::ostream& operator<<(std::ostream& os, const Solution& solution);
+		typedef std::shared_ptr<Solution> sPtr;
+		typedef std::shared_ptr<const Solution> csPtr;
+		typedef vector< sPtr > cVect;
 
-		//Chromosome(unsigned pus, unsigned edges);
-		Chromosome(size_t size, unsigned pus, unsigned edges);
-		Chromosome(const Chromosome& chromosome);
+		//Solution(unsigned pus, unsigned edges);
+		Solution(size_t size, unsigned pus, unsigned edges);
+		Solution(const Solution& solution);
 
-		Chromosome& operator=(const Chromosome &chromosome);
+		Solution& operator=(const Solution &solution);
 
 		unsigned int getFitness() const { return fitness; }
 		const vector<unsigned int>& getMapping() const { return mapping; }
 		const IProcessable::nVect& getScheduling() const { return scheduling; }
 
-		void printChromosome(std::ostream& o) const;
+		void printSolution(std::ostream& o) const;
 		void printTable(std::ostream& o, Options::oPtr options) const;
 	};
 }

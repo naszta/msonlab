@@ -4,7 +4,7 @@
 
 namespace msonlab
 {
-	Chromosome::cPtr GreedySchedulingAlgorithm::schedule(Graph::gPtr& graph, Options::oPtr options) const
+	Solution::sPtr GreedySchedulingAlgorithm::schedule(Graph::gPtr& graph, Options::oPtr options) const
 	{
 		unsigned timeCounter = 0;
 		unsigned taskCounter = 0;
@@ -16,7 +16,7 @@ namespace msonlab
 			free.push(inputNodes[i]);
 		}
 
-		Chromosome::cPtr c = std::make_shared<Chromosome>(graph->numberOfNodes(), options->getNumberOfPus(), graph->numberOfEdges());
+		Solution::sPtr sol = std::make_shared<Solution>(graph->numberOfNodes(), options->getNumberOfPus(), graph->numberOfEdges());
 		while (taskCounter < graph->numberOfNodes())
 		{
 			vector< IProcessable::nPtr > out;
@@ -24,8 +24,8 @@ namespace msonlab
 			while (!free.empty() && limit > 0)
 			{
 				IProcessable::nPtr node = free.front();
-				c->mapping[taskCounter] = limit - 1;
-				c->scheduling[taskCounter] = node;
+				sol->mapping[taskCounter] = limit - 1;
+				sol->scheduling[taskCounter] = node;
 
 				out.push_back(node);
 				free.pop();
@@ -53,6 +53,6 @@ namespace msonlab
 			}
 		}
 
-		return c;
+		return sol;
 	}	
 }

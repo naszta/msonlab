@@ -1,5 +1,5 @@
 #pragma once
-#include "Chromosome.h"
+#include "Solution.h"
 #include "Options.h"
 #include <memory>
 #include <vector>
@@ -9,7 +9,7 @@ namespace msonlab
 {
 	class GraphAlgorithms
 	{
-		static unsigned int doComputeLengthSTAndRT(Chromosome::ccPtr chromosome, Options::oPtr options,
+		static unsigned int doComputeLengthSTAndRT(Solution::csPtr solution, Options::oPtr options,
 		vector<unsigned>& ST, vector<unsigned>& RT);
 	public:
 		///
@@ -95,22 +95,22 @@ namespace msonlab
 		int scheduleGreedy(const Graph::gPtr& graph, int pus) const;
 
 		///
-		/// Computes the length of the chromosome with the given option.
+		/// Computes the length of the solution with the given option.
 		///
-		/// @param chromosome the result to use
+		/// @param solution the result to use
 		/// @param options the options to use
 		/// @return the length
-		static unsigned int computeLength(Chromosome::ccPtr chromosome, const Options::oPtr options);
+		static unsigned int computeLength(Solution::csPtr solution, const Options::oPtr options);
 
-		static unsigned int computeLengthAndST(Chromosome::ccPtr chromosome, const Options::oPtr options,
+		static unsigned int computeLengthAndST(Solution::csPtr solution, const Options::oPtr options,
 			vector<unsigned>& ST);
 
-		static unsigned int computeLengthAndRT(Chromosome::ccPtr chromosome, const Options::oPtr options,
+		static unsigned int computeLengthAndRT(Solution::csPtr solution, const Options::oPtr options,
 			vector<unsigned>& RT);
 
-		static unsigned int computeLengthSTAndRT(Chromosome::ccPtr chromosome, const Options::oPtr options,
+		static unsigned int computeLengthSTAndRT(Solution::csPtr solution, const Options::oPtr options,
 			vector<unsigned>& ST, vector<unsigned>& RT);
 
-		static unsigned int computeLengthAndReuseIdleTime(Chromosome::cPtr& chromosome, const Options::oPtr& options);
+		static unsigned int computeLengthAndReuseIdleTime(Solution::sPtr& solution, const Options::oPtr& options);
 	};
 }

@@ -93,9 +93,6 @@
     <ClInclude Include="Population.h">
       <Filter>Header Files\Scheduling\Genetic</Filter>
     </ClInclude>
-    <ClInclude Include="Chromosome.h">
-      <Filter>Header Files\Scheduling\Genetic</Filter>
-    </ClInclude>
     <ClInclude Include="Graph.h">
       <Filter>Header Files\Graph</Filter>
     </ClInclude>
@@ -159,6 +156,9 @@
     <ClInclude Include="GraphExchanger.h">
       <Filter>Header Files\Graph</Filter>
     </ClInclude>
+    <ClInclude Include="Solution.h">
+      <Filter>Header Files\Scheduling\Genetic</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="IProcessable.cpp">
@@ -174,9 +174,6 @@
       <Filter>Source Files\Scheduling</Filter>
     </ClCompile>
     <ClCompile Include="GeneticAlgorithm.cpp">
-      <Filter>Source Files\Scheduling\Genetic</Filter>
-    </ClCompile>
-    <ClCompile Include="Chromosome.cpp">
       <Filter>Source Files\Scheduling\Genetic</Filter>
     </ClCompile>
     <ClCompile Include="Population .cpp">
@@ -253,6 +250,9 @@
     </ClCompile>
     <ClCompile Include="GraphBuilder.cpp">
       <Filter>Source Files\Graph</Filter>
+    </ClCompile>
+    <ClCompile Include="Solution.cpp">
+      <Filter>Source Files\Scheduling\Genetic</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -1,17 +1,17 @@
-#include "Chromosome.h"
+#include "Solution.h"
 #include "GraphAlgorithms.h"
 
 namespace msonlab
 {
-	/// Initialises a new instance of the Chromosome class.
+	/// Initialises a new instance of the Solution class.
 	/// The size is the number of tasks.
-	/*Chromosome::Chromosome(unsigned pus, unsigned edges) : fitness(0), pus(pus), edges(edges)
+	/*Solution::Solution(unsigned pus, unsigned edges) : fitness(0), pus(pus), edges(edges)
 	{
 	}*/
 
-	/// Initialises a new instance of the Chromosome class.
+	/// Initialises a new instance of the Solution class.
 	/// The size is the number of tasks.
-	Chromosome::Chromosome(size_t size, unsigned pus, unsigned edges) : fitness(0), pus(pus), edges(edges)
+	Solution::Solution(size_t size, unsigned pus, unsigned edges) : fitness(0), pus(pus), edges(edges)
 	{
 		scheduling.resize(size);
 		mapping.resize(size);
@@ -19,31 +19,31 @@ namespace msonlab
 
 	/// Copy constructor.
 	/// Sets the fitness to zero.
-	Chromosome::Chromosome(const Chromosome& chromosome)
+	Solution::Solution(const Solution& solution)
 	{
-		*this = chromosome;
+		*this = solution;
 		this->fitness = 0;
 	}
 
 	/// operator =
 	/// It DOES copy the fitness.
-	Chromosome& Chromosome::operator=(const Chromosome &chromosome)
+	Solution& Solution::operator=(const Solution &solution)
 	{
-		if (this != &chromosome)
+		if (this != &solution)
 		{
-			this->mapping = chromosome.mapping;
-			this->scheduling = chromosome.scheduling;
-			this->fitness = chromosome.fitness;
-			this->pus = chromosome.pus;
-			this->edges = chromosome.edges;
+			this->mapping = solution.mapping;
+			this->scheduling = solution.scheduling;
+			this->fitness = solution.fitness;
+			this->pus = solution.pus;
+			this->edges = solution.edges;
 		}
 
 		return *this;
 	}
 
-	/// prints this Chromosome's instance to the
+	/// prints this Solution's instance to the
 	/// given output stream
-	void Chromosome::printChromosome(std::ostream& o) const
+	void Solution::printSolution(std::ostream& o) const
 	{
 		for (size_t i = 0; i < mapping.size(); ++i)
 		{
@@ -60,13 +60,13 @@ namespace msonlab
 		o << "| length = " << fitness << std::endl;
 	}
 
-	std::ostream& operator<<(std::ostream& os, const Chromosome& chromosome)
+	std::ostream& operator<<(std::ostream& os, const Solution& solution)
 	{
-		chromosome.printChromosome(os);
+		solution.printSolution(os);
 		return os;
 	}
 
-	void Chromosome::printTable(std::ostream& os, Options::oPtr options) const
+	void Solution::printTable(std::ostream& os, Options::oPtr options) const
 	{
 		auto tasks = scheduling.size();
 

@@ -305,37 +305,6 @@ Graph::gPtr initStackGraph()
 	return qeGraph;
 }
 
-Graph::gPtr initSampleGraph()
-{
-	Graph::gPtr graph(new Graph());
-	
-	Node::nPtr nc0(new NodeConstant(0, L"nc0", std::make_shared<Types::DataType>(1.0)));
-	Node::nPtr nc1(new NodeConstant(1, L"nc1", std::make_shared<Types::DataType>(5.0)));
-	Node::nPtr nc2(new NodeConstant(2, L"nc2", std::make_shared<Types::DataType>(3.0)));
-	Node::nPtr nc3(new NodeConstant(3, L"nc3", std::make_shared<Types::DataType>(4.0)));
-	Node::nPtr na(new NodeAdd(4, L"na", nullptr));
-	Node::nPtr nm1(new NodeMultiply(5, L"nm1", nullptr));
-	Node::nPtr nm2(new NodeMultiply(6, L"nm2", nullptr));
-
-	Edge::ePtr e0(new Edge(0, L"e0", nullptr, nc0, na));
-	Edge::ePtr e1(new Edge(1, L"e1", nullptr, nc1, na));
-	Edge::ePtr e2(new Edge(2, L"e2", nullptr, nc2, na));
-	Edge::ePtr e3(new Edge(3, L"e3", nullptr, na, nm2));
-	Edge::ePtr e4(new Edge(4, L"e4", nullptr, nc2, nm1));
-	Edge::ePtr e5(new Edge(5, L"e5", nullptr, nc3, nm1));
-	Edge::ePtr e6(new Edge(6, L"e6", nullptr, nm1, nm2));
-
-	graph->addEdge(e0);
-	graph->addEdge(e1);
-	graph->addEdge(e2);
-	graph->addEdge(e3);
-	graph->addEdge(e4);
-	graph->addEdge(e5);
-	graph->addEdge(e6);
-
-	return graph;
-}
-
 void test_small_graph(Options::oPtr options)
 {
 	Graph::gPtr g = initSampleGraph();
@@ -428,7 +397,7 @@ void runGA(Options::oPtr options)
 	}
 
 	auto best = population->best();
-	best->printChromosome(std::cout);
+	best->printSolution(std::cout);
 	std::cout << "Best found in round " << bests_round << std::endl;
 	DEBUG("Best fitness: " << best->getFitness());
 	std::cout << "Best length: " << lengtFS.fitness(best, options) << std::endl;

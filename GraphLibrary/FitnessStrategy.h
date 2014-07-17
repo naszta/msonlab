@@ -1,7 +1,7 @@
 #ifndef GRAPHLIB_FITNESSSTRATEGY_H
 #define GRAPHLIB_FITNESSSTRATEGY_H
 
-#include "Chromosome.h"
+#include "Solution.h"
 #include "Options.h"
 
 namespace msonlab
@@ -12,7 +12,7 @@ namespace msonlab
 	class FitnessStrategy
 	{
 	public:
-		virtual unsigned int fitness(Chromosome::cPtr chromosome, const Options::oPtr options) = 0;
+		virtual unsigned int fitness(Solution::sPtr solution, const Options::oPtr options) = 0;
 
 		typedef std::shared_ptr<FitnessStrategy> fsPtr;
 	};
@@ -20,31 +20,31 @@ namespace msonlab
 	class LengthFitnessStartegy : public FitnessStrategy
 	{
 	public:
-		virtual unsigned int fitness(Chromosome::cPtr chromosome, const Options::oPtr options);
+		virtual unsigned int fitness(Solution::sPtr solution, const Options::oPtr options);
 	};
 
 	class RescheduleIdleTimeFitnessStartegy : public FitnessStrategy
 	{
 	public:
-		virtual unsigned int fitness(Chromosome::cPtr chromosome, const Options::oPtr options);
+		virtual unsigned int fitness(Solution::sPtr solution, const Options::oPtr options);
 	};
 
 	class PUUsageFitnessStrategy : public FitnessStrategy
 	{
 	public:
-		virtual unsigned int fitness(Chromosome::cPtr chromosome, const Options::oPtr options);
+		virtual unsigned int fitness(Solution::sPtr solution, const Options::oPtr options);
 	};
 
 	class LoadBalanceFitnessStrategy : public FitnessStrategy
 	{
 	public:
-		virtual unsigned int fitness(Chromosome::cPtr chromosome, const Options::oPtr options);
+		virtual unsigned int fitness(Solution::sPtr solution, const Options::oPtr options);
 	};
 
 	class OpenEdgesFitnessStrategy : public FitnessStrategy
 	{
 	public:
-		virtual unsigned int fitness(Chromosome::cPtr chromosome, const Options::oPtr options);
+		virtual unsigned int fitness(Solution::sPtr solution, const Options::oPtr options);
 	};
 }
 

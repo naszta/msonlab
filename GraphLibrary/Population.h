@@ -3,14 +3,14 @@
 #include <memory>
 #include <vector>
 #include <queue>
-#include "Chromosome.h"
+#include "Solution.h"
 
 using std::vector;
 using std::shared_ptr;
 
 /*********************************
 * This class represents a population
-* of chromosomes.
+* of solutions.
 **********************************/
 
 namespace msonlab
@@ -18,41 +18,41 @@ namespace msonlab
 	class chrComparator
 	{
 	public:
-		bool operator() (const shared_ptr<Chromosome>& a, const shared_ptr<Chromosome>& b) const
+		bool operator() (const shared_ptr<Solution>& a, const shared_ptr<Solution>& b) const
 		{
 			return a->getFitness() > b->getFitness();
 		}
 	};
 
-	using msonlab::Chromosome;
+	using msonlab::Solution;
 
 	class Population
 	{
 		/// this contains the size of the graph's levels
 		vector<size_t> levelSize;
-		vector<shared_ptr<Chromosome>> solution;
-		//typedef shared_ptr<Chromosome> cPtr;
-		std::priority_queue<Chromosome::cPtr, vector<Chromosome::cPtr>, chrComparator> newGeneration;
+		vector<shared_ptr<Solution>> solution;
+		//typedef shared_ptr<Solution> cPtr;
+		std::priority_queue<Solution::sPtr, vector<Solution::sPtr>, chrComparator> newGeneration;
 		const size_t POPMAXSIZE;
 		const size_t KEEP;
 		const size_t KEEPBEST;
 		
 	public:
 		typedef std::unique_ptr<Population> pPtr;
-		Population(const vector<Chromosome::cPtr>& sol, size_t keepSize, size_t popMaxSize, size_t keepBest);
+		Population(const vector<Solution::sPtr>& sol, size_t keepSize, size_t popMaxSize, size_t keepBest);
 
-		const vector<Chromosome::cPtr>& getPopulation() const;
+		const vector<Solution::sPtr>& getPopulation() const;
 
-		/// Gets a random chromosome from the solution.
-		Chromosome::cPtr getParent() const;
+		/// Gets a random solution from the solution.
+		Solution::sPtr getParent() const;
 		/// Adds a new offspring to the population.
-		void addOffspring(Chromosome::cPtr offspring);
-		/// Adds one year to the age of all the chromosome
-		void ageChromosomes();
-		/// Limits the number of chromosomes to the initial.
+		void addOffspring(Solution::sPtr offspring);
+		/// Adds one year to the age of all the solution
+		void ageSolutions();
+		/// Limits the number of solutions to the initial.
 		void limit();
 		/// Gets one solution with the best fitness in the population.
-		Chromosome::cPtr best() const;
+		Solution::sPtr best() const;
 
 		/// Sets the levels' size's.
 		void setLevelSize(const vector<size_t>& sizes);

@@ -14,7 +14,7 @@ namespace msonlab
 
 	typedef pair<unsigned, unsigned> puu;
 
-	unsigned int GraphAlgorithms::doComputeLengthSTAndRT(std::shared_ptr<const Chromosome> chromosome, const Options::oPtr options,
+	unsigned int GraphAlgorithms::doComputeLengthSTAndRT(std::shared_ptr<const Solution> solution, const Options::oPtr options,
 		vector<unsigned>& ST, vector<unsigned>& RT)
 	{
 		typedef unsigned int uint;
@@ -23,8 +23,8 @@ namespace msonlab
 		unsigned commOverhead = options->getCommOverhead();
 		unsigned puGroupSize = options->getPuGroupSize();
 		// const vector references
-		auto mapping = chromosome->getMapping();
-		auto scheduling = chromosome->getScheduling();
+		auto mapping = solution->getMapping();
+		auto scheduling = solution->getScheduling();
 		auto tasks = scheduling.size();
 		vector<uint> FT(tasks); // finish time of the tasks
 		vector<uint> DAT(tasks); // Data Arrival Time
@@ -62,8 +62,8 @@ namespace msonlab
 				//if (FT[id] == 0)
 				//{
 				//	// TODO: remove, when ensured, cannot happen
-				//	std::cout << "Flawed chromosome" << std::endl;
-				//	chromosome->printChromosome(std::cout);
+				//	std::cout << "Flawed solution" << std::endl;
+				//	solution->printSolution(std::cout);
 				//	std::cin.get();
 				//	return UINT32_MAX;
 				//}
@@ -78,39 +78,39 @@ namespace msonlab
 		return length;
 	}
 
-	unsigned int GraphAlgorithms::computeLength(Chromosome::ccPtr chromosome, const Options::oPtr options)
+	unsigned int GraphAlgorithms::computeLength(Solution::csPtr solution, const Options::oPtr options)
 	{
-		vector<unsigned> ST(chromosome->getScheduling().size());
+		vector<unsigned> ST(solution->getScheduling().size());
 		vector<unsigned> RT(options->getNumberOfPus());
 
-		return doComputeLengthSTAndRT(chromosome, options, ST, RT);
+		return doComputeLengthSTAndRT(solution, options, ST, RT);
 	}
 
-	unsigned int GraphAlgorithms::computeLengthAndST(Chromosome::ccPtr chromosome, const Options::oPtr options,
+	unsigned int GraphAlgorithms::computeLengthAndST(Solution::csPtr solution, const Options::oPtr options,
 		vector<unsigned>& ST)
 	{
-		ST.resize(chromosome->getScheduling().size());
+		ST.resize(solution->getScheduling().size());
 		vector<unsigned> RT(options->getNumberOfPus());
 
-		return doComputeLengthSTAndRT(chromosome, options, ST, RT);
+		return doComputeLengthSTAndRT(solution, options, ST, RT);
 	}
 
-	unsigned int GraphAlgorithms::computeLengthAndRT(Chromosome::ccPtr chromosome, const Options::oPtr options,
+	unsigned int GraphAlgorithms::computeLengthAndRT(Solution::csPtr solution, const Options::oPtr options,
 		vector<unsigned>& RT)
 	{
-		vector<unsigned> ST(chromosome->getScheduling().size());
+		vector<unsigned> ST(solution->getScheduling().size());
 		RT.resize(options->getNumberOfPus());
 
-		return doComputeLengthSTAndRT(chromosome, options, ST, RT);
+		return doComputeLengthSTAndRT(solution, options, ST, RT);
 	}
 
-	unsigned int GraphAlgorithms::computeLengthSTAndRT(Chromosome::ccPtr chromosome, Options::oPtr options,
+	unsigned int GraphAlgorithms::computeLengthSTAndRT(Solution::csPtr solution, Options::oPtr options,
 		vector<unsigned>& ST, vector<unsigned>& RT)
 	{
-		ST.resize(chromosome->getScheduling().size());
+		ST.resize(solution->getScheduling().size());
 		RT.resize(options->getNumberOfPus());
 
-		return doComputeLengthSTAndRT(chromosome, options, ST, RT);
+		return doComputeLengthSTAndRT(solution, options, ST, RT);
 	}
 
 	// creates partial topological order starting with the outputs
@@ -402,7 +402,7 @@ namespace msonlab
 		return timeCounter;
 	}
 
-	unsigned int GraphAlgorithms::computeLengthAndReuseIdleTime(Chromosome::cPtr& chromosome, const Options::oPtr& options)
+	unsigned int GraphAlgorithms::computeLengthAndReuseIdleTime(Solution::sPtr& solution, const Options::oPtr& options)
 	{
 		typedef unsigned int uint;
 		unsigned communication = 0;
@@ -411,8 +411,8 @@ namespace msonlab
 		unsigned commOverhead = options->getCommOverhead();
 		unsigned puGroupSize = options->getPuGroupSize();
 		// const vector references
-		auto mapping = chromosome->getMapping();
-		auto scheduling = chromosome->getScheduling();
+		auto mapping = solution->getMapping();
+		auto scheduling = solution->getScheduling();
 		auto tasks = scheduling.size();
 		vector<uint> ST(tasks);
 		vector<uint> FT(tasks); // finish time of the tasks
@@ -533,7 +533,7 @@ namespace msonlab
 
 		uint length = *std::max_element(FT.begin(), FT.end());
 
-		// how to create the new chromosome?
+		// how to create the new solution?
 
 		Node::nVect nodes(tasks);
 		vector<pair<unsigned, unsigned>> STS;
@@ -548,11 +548,11 @@ namespace msonlab
 
 		for (size_t i = 0; i < tasks; ++i)
 		{
-			chromosome->scheduling[i] = nodes[STS[i].second];
-			chromosome->mapping[i] = idPuMapping[STS[i].second];
+			solution->scheduling[i] = nodes[STS[i].second];
+			solution->mapping[i] = idPuMapping[STS[i].second];
 		}
 
-		//Chromosome::cVect nSched;
+		//Solution::cVect nSched;
 
 		//// right know just use the idle time on the same PU
 		//for (auto it = scheduling.begin(); it != scheduling.end(); ++it)
