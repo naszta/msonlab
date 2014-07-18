@@ -58,6 +58,14 @@ namespace msonlab {
 			Solution& operator=(const Solution &solution);
 
 			unsigned int getFitness() const { return fitness; }
+			void setFitness(unsigned f) {
+				if (fitness == 0) {
+					fitness = f;
+				}
+				else {
+					// throw exception, this cannot happen
+				}
+			}
 			const vector<unsigned int>& getMapping() const { return mapping; }
 			const IProcessable::nVect& getScheduling() const { return scheduling; }
 

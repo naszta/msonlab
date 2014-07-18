@@ -8,6 +8,9 @@
 #include <map>
 #include <memory>
 
+#include "tbb\task_scheduler_init.h"
+#include "tbb\task.h"
+
 namespace msonlab {
 	namespace scheduling {
 
@@ -87,8 +90,13 @@ namespace msonlab {
 			bool doOrderCrossover = options->getFitnessStrategy().compare("reschedule") != 0;
 			for (size_t i = 0; i < options->getNumberOfYears(); ++i)
 			{
-				std::cout << "Round " << i + 1 << std::endl;
-				simulateMating(set, options->getPopMaxSize(), doOrderCrossover);
+				if (options->isParallel()) {
+					parallelSimulateMating(set, options->getPopMaxSize(), doOrderCrossover);
+				}
+				else {
+					simulateMating(set, options->getPopMaxSize(), doOrderCrossover);
+				}
+
 				set->limit();
 			}
 
@@ -321,8 +329,6 @@ namespace msonlab {
 			//}
 		}
 
-
-
 		///
 		/// Generates offsprings.
 		/// 
@@ -368,9 +374,83 @@ namespace msonlab {
 				else ++faultyGens;
 			}
 
-			DEBUGLN("Mutations happened   " << mutations);
+			/*DEBUGLN("Mutations happened   " << mutations);
 			DEBUGLN("Faulty gens created  " << faultyGens);
-			DEBUGLN("Successful mutations " << mutations - faultyGens);
+			DEBUGLN("Successful mutations " << mutations - faultyGens);*/
+		}
+
+		class fitness_calculator : public tbb::task {
+			const Solution::sPtr solution;
+			const FitnessStrategy::fsPtr strategy;
+			const Options::oPtr options;
+		public:
+			fitness_calculator(const Solution::sPtr sol, const FitnessStrategy::fsPtr strat, const Options::oPtr opt)
+				: solution(sol), strategy(strat), options(opt) {}
+
+			tbb::task* execute() {
+				unsigned f = strategy->fitness(solution, options);
+				solution->setFitness(f);
+				return nullptr;
+			}
+		};
+
+		class round_simulator : public tbb::task {
+			const GeneticAlgorithm& alg;
+			SolutionSet::setPtr& set;
+			int offsprings;
+			bool doOrderCrossover;
+		public:
+			round_simulator(const GeneticAlgorithm& genalg, SolutionSet::setPtr& set, int offsprings, bool doOrderCrossover) :
+				alg(genalg), set(set), offsprings(offsprings), doOrderCrossover(doOrderCrossover) {}
+
+			tbb::task* execute() {
+				set_ref_count(offsprings + 1);
+				vector<Solution::sPtr> new_solutions;
+				for (; offsprings > 0; --offsprings)
+				{
+					Solution::sPtr father = set->getParent();
+					Solution::sPtr mother = set->getParent();
+					int crossoverType = rand() % 2;
+					Solution::sPtr offspring;
+					// always mapping crossover, if order is not allowed
+					if (crossoverType == 0 || !doOrderCrossover)
+					{
+						offspring = alg.crossoverMap(father, mother);
+					}
+					else
+					{
+						offspring = alg.crossoverOrder(father, mother, set->getLevels());
+					}
+
+					alg.mutateMapping(offspring);
+					unsigned rate = rand() % 100;
+					if (rate < alg.options->getScheduleMutationRate()) {
+						alg.mutateSheduling(offspring, set->getLevels());
+					}
+
+					new_solutions.push_back(offspring);
+					fitness_calculator& fc = *new(allocate_child()) fitness_calculator(offspring, alg.fsstrategy, alg.options);
+					spawn(fc);
+				}
+
+				wait_for_all();
+				for (auto it = new_solutions.begin(); it != new_solutions.end(); ++it) {
+					if ((*it)->getFitness() < INT32_MAX)
+					{
+						set->addOffspring((*it));
+					}
+				}
+				return nullptr;
+			}
+		};
+
+		void GeneticAlgorithm::parallelSimulateMating(SolutionSet::setPtr& set, int offsprings, bool doOrderCrossover) const
+		{
+			/* This is the TBB runtime... */
+			tbb::task_scheduler_init init;
+			
+			round_simulator& rs = *new(tbb::task::allocate_root()) round_simulator(*this, set, offsprings, doOrderCrossover);
+			tbb::task::spawn_root_and_wait(rs);
 		}
 
 		///

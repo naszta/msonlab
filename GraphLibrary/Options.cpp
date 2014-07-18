@@ -20,6 +20,7 @@ namespace msonlab
 			graphEdgeProb = config.getValueOfKey<unsigned>("graphEdgeProb");
 			graphWidening = config.getValueOfKey<unsigned>("graphWidening");
 			numberOfYears = config.getValueOfKey<unsigned>("numberOfYears");
+			parallel = config.getValueOfKey<bool>("parallel");
 			algorithm = config.getValueOfKey<string>("algorithm");
 			if (algorithm.length() == 0) {
 				algorithm = "greedy";

@@ -49,12 +49,6 @@
     <Filter Include="Source Files\Stack">
       <UniqueIdentifier>{12755bff-b42f-4456-8a35-f836cca53806}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Scheduling\Genetic\FitnessStrategy">
-      <UniqueIdentifier>{bb4553d1-c5dc-4861-b30a-4bd28d5754e6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Scheduling\Genetic\FitnessStrategy">
-      <UniqueIdentifier>{f59c4609-bb38-49f1-91c7-99f9ce6917e6}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Global.h">
@@ -126,9 +120,6 @@
     <ClInclude Include="StackRunner.h">
       <Filter>Header Files\Stack</Filter>
     </ClInclude>
-    <ClInclude Include="FitnessStrategy.h">
-      <Filter>Header Files\Scheduling\Genetic\FitnessStrategy</Filter>
-    </ClInclude>
     <ClInclude Include="HusSchedulingAlgorithm.h">
       <Filter>Header Files\Scheduling</Filter>
     </ClInclude>
@@ -161,6 +152,9 @@
     </ClInclude>
     <ClInclude Include="SchedulingHelper.h">
       <Filter>Header Files\Scheduling</Filter>
+    </ClInclude>
+    <ClInclude Include="FitnessStrategy.h">
+      <Filter>Header Files\Scheduling\Genetic</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -227,9 +221,6 @@
     <ClCompile Include="StackRunner.cpp">
       <Filter>Source Files\Stack</Filter>
     </ClCompile>
-    <ClCompile Include="FitnessStrategy.cpp">
-      <Filter>Source Files\Scheduling\Genetic\FitnessStrategy</Filter>
-    </ClCompile>
     <ClCompile Include="HusSchedulingAlgorithm.cpp">
       <Filter>Source Files\Scheduling</Filter>
     </ClCompile>
@@ -259,6 +250,9 @@
     </ClCompile>
     <ClCompile Include="SchedulingHelper.cpp">
       <Filter>Source Files\Scheduling</Filter>
+    </ClCompile>
+    <ClCompile Include="FitnessStrategy.cpp">
+      <Filter>Source Files\Scheduling\Genetic</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

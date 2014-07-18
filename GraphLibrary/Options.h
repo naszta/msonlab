@@ -22,6 +22,7 @@ namespace msonlab
 			uint keepBest; //
 			uint numberOfYears; // number of rounds in genetic alg.
 			double mc; // rate of mutation
+			bool parallel;
 
 			uint taskLength; // length of tasks
 			uint commOverhead;
@@ -49,6 +50,7 @@ namespace msonlab
 			unsigned getKeepSize() const { return keepSize; }
 			unsigned getKeepBest() const { return keepBest; }
 			unsigned getNumberOfYears() const { return numberOfYears; }
+			bool isParallel() const { return parallel; }
 
 			unsigned getCommOverhead() const { return commOverhead; }
 			unsigned getTaskLength() const { return taskLength; }

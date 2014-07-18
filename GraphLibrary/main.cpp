@@ -357,58 +357,6 @@ void test_small_graph(Options::oPtr options)
 
 msonlab::GraphAlgorithms ga;
 
-void runGA(Options::oPtr options)
-{
-	// choosing fitness strategy for the GA
-	FitnessStrategy::fsPtr fsstrategy(new LengthFitnessStartegy());
-	//FitnessStrategy::fsPtr fsstrategy(new PUUsageFitnessStrategy());
-
-	// initializing GA
-	GeneticAlgorithm gena(options, fsstrategy);
-
-	// getting the graph
-	auto graph = initRandomGraph(options);
-	//auto graph = initGraph();
-
-	GreedySchedulingAlgorithm greedyAlg;
-	auto greedy = greedyAlg.schedule(graph, options);
-
-	LengthFitnessStartegy lengtFS;
-	std::cout << "Greedy length: " << lengtFS.fitness(greedy, options) << std::endl;
-	std::cout << "Greedy fitness: " << fsstrategy->fitness(greedy, options) << std::endl;
-
-	auto set = gena.generateInitialSolution(graph, options);
-	set->limit();
-
-	unsigned last = set->best()->getFitness();
-	unsigned bests_round = 0;
-
-	for (size_t i = 0; i < options->getNumberOfYears(); ++i)
-	{
-		gena.simulateMating(set, options->getPopMaxSize(), false);
-		set->limit();
-		unsigned best = set->best()->getFitness();
-		DEBUG("Generation " << i + 1);
-		DEBUG("Best fitness: " << best);
-		DEBUG("Avarage fitness: " << set->avarageFittness());
-		if (best != last)
-		{
-			last = best;
-			bests_round = i;
-		}
-	}
-
-	auto best = set->best();
-	best->printSolution(std::cout);
-	std::cout << "Best found in round " << bests_round << std::endl;
-	DEBUG("Best fitness: " << best->getFitness());
-	std::cout << "Best length: " << lengtFS.fitness(best, options) << std::endl;
-	best->printTable(std::cout, options);
-	std::vector<unsigned> result;
-	gena.transfromResult(best, result);
-	std::copy(result.begin(), result.end(), ostream_iterator<unsigned>(std::cout, " "));
-}
-
 void runHusScheduling(Options::oPtr options) 
 {
 	// choosing fitness strategy for the GA
@@ -525,11 +473,11 @@ int main(int argc, char *argv[])
 		std::chrono::time_point<std::chrono::high_resolution_clock> startCHRONO, finishCHRONO;
 		startCHRONO = std::chrono::high_resolution_clock::now();
 #endif
-		test_small_graph(options);
-		//schedule(alg, options);
+		//test_small_graph(options);
+		schedule(alg, options);
 #if MEASURE != 0
 		finishCHRONO = std::chrono::high_resolution_clock::now();
-		std::chrono::duration<types::DataType> elapsedCHRONO = finishCHRONO - startCHRONO;
+		std::chrono::duration<double> elapsedCHRONO = finishCHRONO - startCHRONO;
 		average += elapsedCHRONO.count();
 	}
 	average /= MEASURE;
