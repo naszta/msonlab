@@ -11,6 +11,9 @@
 #include "tbb\task_scheduler_init.h"
 #include "tbb\task.h"
 
+//temp
+#include "SchedulingHelper.h"
+
 namespace msonlab {
 	namespace scheduling {
 
@@ -365,6 +368,15 @@ namespace msonlab {
 					++mutations;
 				}
 
+				/*bool correct = SchedulingHelper::ensureCorrectness(offspring);
+				if (!correct) {
+					std::cout << "Sol not correct" << std::endl;
+				}
+				if (!correct && cost < UINT32_MAX)
+				{
+					std::cout << "gebasz" << std::endl;
+
+				}*/
 				unsigned cost = fitness(offspring);
 				if (cost < UINT32_MAX)
 				{

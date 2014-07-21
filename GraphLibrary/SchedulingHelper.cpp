@@ -44,22 +44,19 @@ namespace msonlab {
 				{
 					// skipping edge
 					uint id = actNode->getPredecessorNodeId(j);
+
+					// check whether a flaw is present in this solution
+					// if a predecessor is not scheduled yet, that is a flaw
+					if (FT[id] == 0) {
+						return UINT32_MAX;
+					}
+
 					uint comm = 0;
 					if (actPU != idPuMapping[id]) {
 						comm = commOverhead;
 					}
 
 					DAT[actId] = std::max(DAT[actId], FT[id] + comm);
-
-					// check whether a flaw is present in this solution
-					//if (FT[id] == 0)
-					//{
-					//	// TODO: remove, when ensured, cannot happen
-					//	std::cout << "Flawed solution" << std::endl;
-					//	solution->printSolution(std::cout);
-					//	std::cin.get();
-					//	return UINT32_MAX;
-					//}
 				}
 
 				ST[actId] = std::max(RT[actPU], DAT[actId]);
@@ -79,6 +76,7 @@ namespace msonlab {
 			return doComputeLengthSTAndRT(solution, options, ST, RT);
 		}
 
+		// compute length with returning start time
 		unsigned int SchedulingHelper::computeLengthAndST(Solution::csPtr solution, const Options::oPtr options,
 			vector<unsigned>& ST)
 		{
@@ -97,6 +95,7 @@ namespace msonlab {
 			return doComputeLengthSTAndRT(solution, options, ST, RT);
 		}
 
+		// compute length with returning start time and ready time
 		unsigned int SchedulingHelper::computeLengthSTAndRT(Solution::csPtr solution, Options::oPtr options,
 			vector<unsigned>& ST, vector<unsigned>& RT)
 		{
@@ -115,118 +114,113 @@ namespace msonlab {
 			auto mapping = solution->getMapping();
 			auto scheduling = solution->getScheduling();
 			auto tasks = scheduling.size();
-			vector<uint> ST(tasks);
+			vector<uint> ST(tasks); // start time of the tasks
 			vector<uint> FT(tasks); // finish time of the tasks
-			vector<uint> RT(options->getNumberOfPus());
+			vector<uint> RT(options->getNumberOfPus()); // ready time of the pus
 			vector<vector<uint>> DAT(options->getNumberOfPus()); // Data Arrival Time
 			vector<uint> idPuMapping(tasks); // idPuMapping[i] = j means that node[i] is processed by pu[j]
 
+			// start the with the first node in the list
 			uint actId = scheduling[0]->getId();
-			ST[actId] = 0;
+			ST[actId] = 0; // start time is 0
 			FT[actId] = ST[actId] + scheduling[0]->getComputationTime(); // task length, TODO: create a distribution
 			idPuMapping[actId] = mapping[0];
 			RT[mapping[0]] = FT[actId];
 
 			// first  of pair is the start of the idle time
 			// second of pair is the  end  of the idle time
-			vector<vector<pair<uint, uint>>> LT;
+			// the first vector stores the idle slots for each pu
+			// the second vector stores the idle slots in one pu
+			vector<vector<pair<uint, uint>>> slots;
 			for (unsigned i = 0; i < options->getNumberOfPus(); ++i){
 				DAT[i].resize(tasks);
 				DAT[i][actId] = 0;
-				LT.push_back(vector<pair<uint, uint>>());
+				// initializing with empty vectors
+				slots.push_back(vector<pair<uint, uint>>());
 			}
 
-			// skipping first task
+			// skipping first task, already computed
 			for (uint i = 1; i < tasks; ++i)
 			{
-				auto actNode = scheduling[i];
+				auto& actNode = scheduling[i];
 				uint actId = actNode->getId();
 				uint actPU = mapping[i];
 				idPuMapping[actId] = actPU;
 
 				// calculating data arrival time
 				size_t predecessorSize = actNode->getPredecessorsSize();
-				for (unsigned p = 0; p < options->getNumberOfPus(); ++p)
+				for (uint j = 0; j < predecessorSize; ++j)
 				{
-					for (uint j = 0; j < predecessorSize; ++j)
+					uint id = actNode->getPredecessor(j)->getFromId();
+					if (FT[id] == 0) {
+						// this solutuion is not good
+						return UINT32_MAX;
+					}
+
+					// check dat for all pus, for possible reschedule
+					for (unsigned p = 0; p < options->getNumberOfPus(); ++p)
 					{
-						uint id = actNode->getPredecessor(j)->getFromId();
 						uint comm = p != idPuMapping[id] ? commOverhead : 0;
-
-						if (FT[id] == 0)
-						{
-							// this solutuion is not good
-							return UINT32_MAX;
-						}
-
 						DAT[p][actId] = std::max(DAT[p][actId], FT[id] + comm);
 					}
 				}
 
+				// start time on the scheduled pu.
 				uint st = std::max(RT[actPU], DAT[actPU][actId]);
 
 				uint min_st = st;
 				uint pu = actPU;
 				vector<pair<uint, uint>>::iterator min_it;
+				// iterating over every idle time slots
 				for (unsigned p = 0; p < options->getNumberOfPus(); ++p)
 				{
-					for (auto pit = LT[p].begin(); pit != LT[p].end(); ++pit)
+					// the start time at pu p
+					unsigned stp = std::max(RT[p], DAT[p][actId]);
+					for (auto pit = slots[p].begin(); pit != slots[p].end(); ++pit)
 					{
-						unsigned start = std::max(DAT[p][actId], pit->first);
+						// possible first start in this idle time
+						unsigned start = std::max(stp, pit->first);
+						// it's better if
+						// 1) the start is earlier than the calculated
+						// 2) the finish is earlier than the end of the idle time
 						if (start < min_st && start + actNode->getComputationTime() <= pit->second)
 						{
-							//std::cout << "Reschedule " << actId << " ID to " << pit->first << std::endl;
-							//std::cout << "DAT[" << actId << "] is " << DAT[actId] << std::endl;
 							min_st = start;
 							pu = p;
 							min_it = pit;
-							//if (start > pit->first) {
-							//	LT[actPU].push_back(make_pair(pit->first, start));
-							//}
-
-							//if (pit->second > start + actNode->getComputationTime()) {
-							//	LT[actPU].push_back(make_pair(start + actNode->getComputationTime(), pit->second));
-							//}
-
-							//pit->first = 0;
-							//pit->second = 0;
-							////pit = LT[actPU].erase(pit);
-							//break;
 						}
 					}
 				}
 
+				// if better found, reschedule
 				if (st != min_st)
 				{
+					//std::cout << "Reschedule " << actId << " ID to " << pit->first << std::endl;
+					//std::cout << "DAT[" << actId << "] is " << DAT[actId] << std::endl;
 					st = min_st;
 					actPU = pu;
-					min_it->first = 0;
-					min_it->second = 0;
+
+					//if (st - min_it->first > 1) {
+					//	slots[pu].push_back(make_pair(min_it->first, st-1));
+					//}
+
+					//if (min_it->second - st + actNode->getComputationTime() > 1) {
+					//	slots[pu].push_back(make_pair(st + actNode->getComputationTime() + 1, min_it->second));
+					//}
+					
+					slots[pu].erase(min_it);
 					idPuMapping[actId] = actPU;
 				}
 
 				ST[actId] = st;
 				FT[actId] = ST[actId] + actNode->getComputationTime();
 
-				//if (pit != LT[actPU].end())
-				//{
-				//	// remove used idle time
-				//	uint end = pit->second;
-				//LT[actPU].erase(pit);
-				//	if (FT[actId] < end)
-				//	{
-				//		// add idle time to the list
-				//		LT[actPU].push_back(make_pair(FT[actId], end));
-				//	}
-				//}
-
-
-				if (ST[actId] > 0 && RT[actPU] + 1  < ST[actId])
+				if (ST[actId] > 0 && RT[actPU] + 1 < ST[actId])
 				{
 					// add idle time to the list
 					//std::cout << "Sceduling " << actId << ", ";
 					//std::cout << "Idle time " << RT[actPU] + 1 << " -> " << ST[actId] << std::endl;
-					LT[actPU].push_back(make_pair(RT[actPU] + 1, ST[actId]));
+					slots[actPU].push_back(make_pair(RT[actPU] + 1, ST[actId]));
 				}
 
 				RT[actPU] = std::max(RT[actPU], FT[actId]);
@@ -236,42 +230,53 @@ namespace msonlab {
 
 			// how to create the new solution?
 
+			// collecting the nodes
 			Node::nVect nodes(tasks);
 			vector<pair<unsigned, unsigned>> STS;
 			for (size_t i = 0; i < tasks; ++i)
 			{
+				// first is the start time of the task
+				// second is the id of the task
 				puu p = make_pair(ST[i], i);
 				STS.push_back(p);
 				nodes[scheduling[i]->getId()] = scheduling[i];
 			}
 
+			// sort taks by start time
 			std::sort(STS.begin(), STS.end());
 
+			// updating the scheduling and mapping
 			for (size_t i = 0; i < tasks; ++i)
 			{
 				solution->scheduling[i] = nodes[STS[i].second];
 				solution->mapping[i] = idPuMapping[STS[i].second];
 			}
 
-			//Solution::cVect nSched;
-
-			//// right know just use the idle time on the same PU
-			//for (auto it = scheduling.begin(); it != scheduling.end(); ++it)
-			//{
-			//	uint id = (*it)->getId();
-			//	uint pu = idPuMapping[id];
-			//	for (auto pit = LT[pu].begin(); pit != LT[pu].end(); ++pit)
-			//	{
-			//		if (pit->second - pit->first >= (*it)->getComputationTime() &&
-			//			DAT[id] >= pit->first)
-			//		{
-			//			std::cout << "Reschedlue " << id << " ID to " << pit->first << std::endl;
-			//		}
-			//		
-			//	}
-			//}
-
 			return length;
+		}
+
+		// a helper method for development
+		// fast checks, whether is solution is correct or not
+		bool SchedulingHelper::ensureCorrectness(const Solution::csPtr& sol)
+		{
+			const IProcessable::nVect& scheduling = sol->scheduling;
+			vector<bool> scheduled(scheduling.size(), false);
+			for (auto& node : scheduling)
+			{
+				auto end = (node->getPredecessorEnd());
+				for (auto inner_it = node->getPredecessorBegin(); inner_it != end; ++inner_it)
+				{
+					if (!scheduled[(*inner_it)->getFromId()])
+					{
+						std::cout << (*inner_it)->getFromId() << " is not scheduled before " << node->getId() << std::endl;
+						return false;
+					}
+				}
+
+				scheduled[node->getId()] = true;
+			}
+
+			return true;
 		}
 	}
 }

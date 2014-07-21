@@ -32,13 +32,14 @@ namespace msonlab  {
 			auto levels = algorithms.partialTopologicalSort(graph);
 			vector<unsigned> distance(graph->numberOfNodes());
 
+			// finding the max time needed to compute (distance)
+			// O(|V| + |E|)
+
 			for (auto i = levels[0].begin(); i != levels[0].end(); ++i)
 			{
 				distance[(*i)->getId()] = (*i)->getComputationTime();
 			}
 
-			// finding the max time needed to compute (distance)
-			// O(|V| + |E|)
 			for (size_t i = 1; i < levels.size(); ++i)
 			{
 				for (auto it = levels[i].begin(); it != levels[i].end(); ++it)
@@ -55,6 +56,7 @@ namespace msonlab  {
 				}
 			}
 
+			// counts the number of dependencies of each graph
 			vector<int> dependencies(graph->numberOfNodes());
 			algorithms.createDependencyVector(graph, dependencies);
 

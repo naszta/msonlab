@@ -72,39 +72,39 @@ Graph::gPtr initGraph()
 	msonlab::Node::nPtr y2(new msonlab::NodeMultiply(18, L"Y2", make_shared<types::DataType>(0)));
 
 
-	msonlab::Edge::ePtr e1 (new msonlab::BlueEdge(1, L"e1",0,a,multiply_2a));
-	msonlab::Edge::ePtr e2 (new msonlab::BlueEdge(2, L"e2",0,constNumber_2,multiply_2a));
+	msonlab::Edge::ePtr e1(new msonlab::BlueEdge(1, L"e1", 0, a, multiply_2a));
+	msonlab::Edge::ePtr e2(new msonlab::BlueEdge(2, L"e2", 0, constNumber_2, multiply_2a));
 	msonlab::Edge::ePtr e3(new msonlab::BlueEdge(3, L"e3", 0, a, multiply_minus4ac));
 
-	msonlab::Edge::ePtr e4 (new msonlab::BlueEdge(4,L"e4",0,b,multiply_bb));
-	msonlab::Edge::ePtr e5 (new msonlab::BlueEdge(5,L"e5",0,b,multiply_bb));
-	msonlab::Edge::ePtr e6 (new msonlab::BlueEdge(6,L"e6",0,b,multiply_minusb));
-	msonlab::Edge::ePtr e7 (new msonlab::BlueEdge(7,L"e7",0,constNumber_minus1,multiply_minusb));
+	msonlab::Edge::ePtr e4(new msonlab::BlueEdge(4, L"e4", 0, b, multiply_bb));
+	msonlab::Edge::ePtr e5(new msonlab::BlueEdge(5, L"e5", 0, b, multiply_bb));
+	msonlab::Edge::ePtr e6(new msonlab::BlueEdge(6, L"e6", 0, b, multiply_minusb));
+	msonlab::Edge::ePtr e7(new msonlab::BlueEdge(7, L"e7", 0, constNumber_minus1, multiply_minusb));
 
-	msonlab::Edge::ePtr e8 (new msonlab::Edge(8,L"e8",0,c,multiply_minus4ac));
-	msonlab::Edge::ePtr e9 (new msonlab::BlueEdge(9,L"e9",0,constNumber_minus4,multiply_minus4ac));
+	msonlab::Edge::ePtr e8(new msonlab::Edge(8, L"e8", 0, c, multiply_minus4ac));
+	msonlab::Edge::ePtr e9(new msonlab::BlueEdge(9, L"e9", 0, constNumber_minus4, multiply_minus4ac));
 
-	msonlab::Edge::ePtr e10 (new msonlab::Edge(10,L"e10",0,constNumber_1,divide_1_2a));
-	msonlab::Edge::ePtr e11 (new msonlab::Edge(11,L"e11",0,multiply_2a,divide_1_2a));
+	msonlab::Edge::ePtr e10(new msonlab::Edge(10, L"e10", 0, constNumber_1, divide_1_2a));
+	msonlab::Edge::ePtr e11(new msonlab::Edge(11, L"e11", 0, multiply_2a, divide_1_2a));
 
-	msonlab::Edge::ePtr e12 (new msonlab::Edge(12,L"e12",0,multiply_bb,add_bb_minus4ac));
-	msonlab::Edge::ePtr e13 (new msonlab::Edge(13,L"e13",0,multiply_minus4ac,add_bb_minus4ac));
+	msonlab::Edge::ePtr e12(new msonlab::Edge(12, L"e12", 0, multiply_bb, add_bb_minus4ac));
+	msonlab::Edge::ePtr e13(new msonlab::Edge(13, L"e13", 0, multiply_minus4ac, add_bb_minus4ac));
 
-	msonlab::Edge::ePtr e14 (new msonlab::Edge(14,L"e14",0,add_bb_minus4ac,squareRoot_bb_minus4ac));
+	msonlab::Edge::ePtr e14(new msonlab::Edge(14, L"e14", 0, add_bb_minus4ac, squareRoot_bb_minus4ac));
 
-	msonlab::Edge::ePtr e15 (new msonlab::BlueEdge(15,L"e15",0,squareRoot_bb_minus4ac,multiply_minus_squareRoot_bb_minus4ac));
+	msonlab::Edge::ePtr e15(new msonlab::BlueEdge(15, L"e15", 0, squareRoot_bb_minus4ac, multiply_minus_squareRoot_bb_minus4ac));
 
-	msonlab::Edge::ePtr e16 (new msonlab::Edge(16,L"e16",0,multiply_minusb,add_toDivide1));
-	msonlab::Edge::ePtr e17 (new msonlab::Edge(17,L"e17",0,squareRoot_bb_minus4ac,add_toDivide1));
+	msonlab::Edge::ePtr e16(new msonlab::Edge(16, L"e16", 0, multiply_minusb, add_toDivide1));
+	msonlab::Edge::ePtr e17(new msonlab::Edge(17, L"e17", 0, squareRoot_bb_minus4ac, add_toDivide1));
 
-	msonlab::Edge::ePtr e18 (new msonlab::Edge(18,L"e18",0,multiply_minusb,add_toDivide2));
-	msonlab::Edge::ePtr e19 (new msonlab::Edge(19,L"e19",0,multiply_minus_squareRoot_bb_minus4ac,add_toDivide2));
+	msonlab::Edge::ePtr e18(new msonlab::Edge(18, L"e18", 0, multiply_minusb, add_toDivide2));
+	msonlab::Edge::ePtr e19(new msonlab::Edge(19, L"e19", 0, multiply_minus_squareRoot_bb_minus4ac, add_toDivide2));
 
-	msonlab::Edge::ePtr e20 (new msonlab::Edge(20,L"e20",0,add_toDivide1,y1));
-	msonlab::Edge::ePtr e21 (new msonlab::Edge(21,L"e21",0,divide_1_2a,y1));
+	msonlab::Edge::ePtr e20(new msonlab::Edge(20, L"e20", 0, add_toDivide1, y1));
+	msonlab::Edge::ePtr e21(new msonlab::Edge(21, L"e21", 0, divide_1_2a, y1));
 
-	msonlab::Edge::ePtr e22 (new msonlab::Edge(22,L"e22",0,add_toDivide2,y2));
-	msonlab::Edge::ePtr e23 (new msonlab::Edge(23,L"e23",0,divide_1_2a,y2));
+	msonlab::Edge::ePtr e22(new msonlab::Edge(22, L"e22", 0, add_toDivide2, y2));
+	msonlab::Edge::ePtr e23(new msonlab::Edge(23, L"e23", 0, divide_1_2a, y2));
 
 
 	graph->addEdge(e1);
@@ -357,7 +357,7 @@ void test_small_graph(Options::oPtr options)
 
 msonlab::GraphAlgorithms ga;
 
-void runHusScheduling(Options::oPtr options) 
+void runHusScheduling(Options::oPtr options)
 {
 	// choosing fitness strategy for the GA
 	FitnessStrategy::fsPtr fsstrategy(new LengthFitnessStartegy());
@@ -374,12 +374,11 @@ void runHusScheduling(Options::oPtr options)
 	std::cout << fitness << std::endl;
 }
 
-void schedule(SchedulingAlgorithm::algPtr alg, Options::oPtr options)
+
+Solution::sPtr schedule(Graph::gPtr& graph, SchedulingAlgorithm::algPtr alg, Options::oPtr options)
 {
-	//auto graph = initSampleGraph();
-	auto graph = initRandomGraph(options);
-	//auto graph = initGraph();
 	auto best = alg->schedule(graph, options);
+	cout << "Correct " << SchedulingHelper::ensureCorrectness(best) << endl;
 	std::cout << "Best length: " << best->getFitness() << std::endl;
 	//best->printTable(std::cout, options->getCommOverhead());
 	unsigned l = SchedulingHelper::computeLengthAndReuseIdleTime(best, options);
@@ -388,6 +387,8 @@ void schedule(SchedulingAlgorithm::algPtr alg, Options::oPtr options)
 	l = fs.fitness(best, options);
 	std::cout << "Length: " << l << std::endl;
 	best->printTable(std::cout, options);
+	cout << "Correct " << SchedulingHelper::ensureCorrectness(best) << endl;
+	return best;
 }
 
 // used for running the algorithm with changing one parameter
@@ -422,15 +423,16 @@ void doTest(SchedulingAlgorithm::algPtr alg, Options::oPtr options)
 		resfile << ", time=" << elapsed << "}\n";
 	}
 	resfile.close();
-			}
+}
 
 int main(int argc, char *argv[])
-			{
+{
 	/* initialize random seed: */
 	srand(161803);
 	// loading GA configuration
 	Options::oPtr options = std::make_shared<const Options>("Options.cfg");
 
+	// choosing algorithm
 	SchedulingAlgorithm::algPtr alg;
 	std::cout << "Using ";
 	if (options->getAlgorithm().compare("genetic") == 0) {
@@ -465,23 +467,40 @@ int main(int argc, char *argv[])
 	}
 
 	std::cout << " algorithm.\n";
-	//doTest(alg, options);
-#if MEASURE != 0
-	double average = 0.0;
-	for (int i = 0; i < MEASURE; ++i)
-	{
-		std::chrono::time_point<std::chrono::high_resolution_clock> startCHRONO, finishCHRONO;
-		startCHRONO = std::chrono::high_resolution_clock::now();
+
+	// init graph
+	auto graph = initRandomGraph(options);
+	//auto graph = initSampleGraph();
+	//auto graph = initGraph();
+#if MEASURE != 0	
+	std::chrono::time_point<std::chrono::high_resolution_clock> startCHRONO, finishCHRONO;
+	startCHRONO = std::chrono::high_resolution_clock::now();
 #endif
-		//test_small_graph(options);
-		schedule(alg, options);
+	// the function that is measured
+
+	//test_small_graph(options);
+	auto best = alg->schedule(graph, options);
 #if MEASURE != 0
-		finishCHRONO = std::chrono::high_resolution_clock::now();
-		std::chrono::duration<double> elapsedCHRONO = finishCHRONO - startCHRONO;
-		average += elapsedCHRONO.count();
+	finishCHRONO = std::chrono::high_resolution_clock::now();
+	std::chrono::duration<double> elapsedCHRONO = finishCHRONO - startCHRONO;
+#endif
+	// check correctness
+	LengthFitnessStartegy fs;
+	bool correct = SchedulingHelper::ensureCorrectness(best);
+	cout << "Correct " << correct << endl;
+	std::cout << "Best length: " << best->getFitness() << std::endl;
+	if (!correct) {
+		fs.fitness(best, options);
 	}
-	average /= MEASURE;
-	std::cout << "Elapsed time " << std::setprecision(10) << average << std::endl;
+	//best->printTable(std::cout, options->getCommOverhead());
+	unsigned l = SchedulingHelper::computeLengthAndReuseIdleTime(best, options);
+	std::cout << "Rescheduled length: " << l << std::endl;
+	l = fs.fitness(best, options);
+	std::cout << "Length: " << l << std::endl;
+	//best->printTable(std::cout, options);
+	cout << "Correct " << SchedulingHelper::ensureCorrectness(best) << endl;
+#if MEASURE != 0
+	std::cout << "Elapsed time " << std::setprecision(10) << elapsedCHRONO.count() << std::endl;
 #endif
 #if WAIT == 1
 	std::cout << "Press a key to continue...";

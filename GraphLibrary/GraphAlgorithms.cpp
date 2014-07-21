@@ -206,9 +206,9 @@ namespace msonlab
 
 	void GraphAlgorithms::computeNextFreeNodes(vector<int>& dependencies, Node::nPtr node) const
 	{
-		for (auto it = node->getSuccessors().begin(); it != node->getSuccessors().end(); ++it)
+		for (auto& edge : node->getSuccessors())
 		{
-			unsigned id = (*it)->getToId();
+			unsigned id = edge->getToId();
 			--dependencies[id];
 		}
 
@@ -235,9 +235,8 @@ namespace msonlab
 			dependencies.resize(graph->numberOfNodes());
 		}
 
-		auto end = graph->nodes.end();
-		for (auto it = graph->nodes.begin(); it != end; ++it) {
-			dependencies[(*it)->getId()] = (*it)->getPredecessorsSize();
+		for (auto& node : graph->nodes) {
+			dependencies[node->getId()] = node->getPredecessorsSize();
 		}
 	}
 
@@ -247,8 +246,8 @@ namespace msonlab
 		}
 
 		auto end = graph->nodes.end();
-		for (auto it = graph->nodes.begin(); it != end; ++it) {
-			nodes[(*it)->getId()] = (*it);
+		for (auto& node : graph->nodes) {
+			nodes[node->getId()] = node;
 		}
 	}
 

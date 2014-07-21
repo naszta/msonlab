@@ -38,6 +38,8 @@ namespace msonlab {
 				vector<unsigned>& ST, vector<unsigned>& RT);
 
 			static unsigned int computeLengthAndReuseIdleTime(Solution::sPtr& solution, const Options::oPtr& options);
+
+			static bool ensureCorrectness(const Solution::csPtr& sol);
 		};
 	}
 }
