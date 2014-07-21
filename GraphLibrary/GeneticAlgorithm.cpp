@@ -1,6 +1,6 @@
 #include "GeneticAlgorithm.h"
-#include "GraphAlgorithms.h"
-#include "HusSchedulingAlgorithm.h"
+#include "Algorithms.h"
+#include "CriticalPathSchedulingAlgorithm.h"
 #include <cstdlib>
 #include <ctime>
 #include <set>
@@ -110,7 +110,7 @@ namespace msonlab {
 		{
 			SolutionSet::setPtr p;
 			if (options->getInitialSolution().compare("cp") == 0) {
-				vector<IProcessable::nVect> levels = algorithms.partialTopologicalSort(graph);
+				vector<IProcessable::nVect> levels = graph::algorithms::partialTopologicalSort(graph);
 				size_t numLevels = levels.size();
 				vector<unsigned> levelingLimits;
 				unsigned limits = 0;
@@ -140,14 +140,14 @@ namespace msonlab {
 		/// Generating a random initial solution.
 		///
 		/// The mapping part is generated randomly, each task is randomly mapped to a PU.
-		/// The scheduling part is generated using the leveling created by the GraphAlgorithms.
+		/// The scheduling part is generated using the leveling created by the graph algorithms.
 		/// 
 		/// @param graph The input graph.
 		/// @return The generated population.
 		SolutionSet::setPtr GeneticAlgorithm::generateRndSolution(Graph::gPtr& graph, Options::oPtr options) const
 		{
 			cVect solution;
-			vector<IProcessable::nVect> levels = algorithms.partialTopologicalSort(graph);
+			vector<IProcessable::nVect> levels = graph::algorithms::partialTopologicalSort(graph);
 			size_t numLevels = levels.size();
 			vector<unsigned> levelingLimits;
 			unsigned limits = 0;
@@ -220,7 +220,7 @@ namespace msonlab {
 		SolutionSet::setPtr GeneticAlgorithm::generateCPSolution(Graph::gPtr& graph, Options::oPtr options) const {
 			cVect solution;
 			auto set = std::make_unique<SolutionSet>(solution, options->getKeepSize(), options->getPopMaxSize(), options->getKeepBest());
-			HusSchedulingAlgorithm cpAlg;
+			CriticalPathSchedulingAlgorithm cpAlg;
 			auto greedy = greedySolution(graph);
 			set->addOffspring(greedy);
 			auto cpC = cpAlg.schedule(graph, options);

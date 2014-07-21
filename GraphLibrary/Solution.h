@@ -36,13 +36,12 @@ namespace msonlab {
 			// the length of the result
 			unsigned int length;
 
-			//friend class GraphAlgorithms;
 			friend class SchedulingHelper;
 
 			// scheduling algorithms
 			friend class GeneticAlgorithm;
 			friend class GreedySchedulingAlgorithm;
-			friend class HusSchedulingAlgorithm;
+			friend class CriticalPathSchedulingAlgorithm;
 
 			void calcStartTime(Options::oPtr options);
 		public:

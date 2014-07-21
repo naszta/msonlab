@@ -87,9 +87,6 @@
     <ClInclude Include="Graph.h">
       <Filter>Header Files\Graph</Filter>
     </ClInclude>
-    <ClInclude Include="GraphAlgorithms.h">
-      <Filter>Header Files\Graph</Filter>
-    </ClInclude>
     <ClInclude Include="GraphGenerator.h">
       <Filter>Header Files\Graph</Filter>
     </ClInclude>
@@ -119,9 +116,6 @@
     </ClInclude>
     <ClInclude Include="StackRunner.h">
       <Filter>Header Files\Stack</Filter>
-    </ClInclude>
-    <ClInclude Include="HusSchedulingAlgorithm.h">
-      <Filter>Header Files\Scheduling</Filter>
     </ClInclude>
     <ClInclude Include="Options.h">
       <Filter>Header Files\Scheduling</Filter>
@@ -155,6 +149,12 @@
     </ClInclude>
     <ClInclude Include="FitnessStrategy.h">
       <Filter>Header Files\Scheduling\Genetic</Filter>
+    </ClInclude>
+    <ClInclude Include="Algorithms.h">
+      <Filter>Header Files\Graph</Filter>
+    </ClInclude>
+    <ClInclude Include="CriticalPathSchedulingAlgorithm.h">
+      <Filter>Header Files\Scheduling</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -191,9 +191,6 @@
     <ClCompile Include="Graph.cpp">
       <Filter>Source Files\Graph</Filter>
     </ClCompile>
-    <ClCompile Include="GraphAlgorithms.cpp">
-      <Filter>Source Files\Graph</Filter>
-    </ClCompile>
     <ClCompile Include="GraphIterator.cpp">
       <Filter>Source Files\Graph</Filter>
     </ClCompile>
@@ -220,9 +217,6 @@
     </ClCompile>
     <ClCompile Include="StackRunner.cpp">
       <Filter>Source Files\Stack</Filter>
-    </ClCompile>
-    <ClCompile Include="HusSchedulingAlgorithm.cpp">
-      <Filter>Source Files\Scheduling</Filter>
     </ClCompile>
     <ClCompile Include="Options.cpp">
       <Filter>Source Files\Scheduling</Filter>
@@ -253,6 +247,12 @@
     </ClCompile>
     <ClCompile Include="FitnessStrategy.cpp">
       <Filter>Source Files\Scheduling\Genetic</Filter>
+    </ClCompile>
+    <ClCompile Include="Algorithms.cpp">
+      <Filter>Source Files\Graph</Filter>
+    </ClCompile>
+    <ClCompile Include="CriticalPathSchedulingAlgorithm.cpp">
+      <Filter>Source Files\Scheduling</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

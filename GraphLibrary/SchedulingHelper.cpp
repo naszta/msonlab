@@ -200,13 +200,13 @@ namespace msonlab {
 					st = min_st;
 					actPU = pu;
 
-					//if (st - min_it->first > 1) {
-					//	slots[pu].push_back(make_pair(min_it->first, st-1));
-					//}
+					if (st - min_it->first > 1) {
+						slots[pu].push_back(make_pair(min_it->first, st-1));
+					}
 
-					//if (min_it->second - st + actNode->getComputationTime() > 1) {
-					//	slots[pu].push_back(make_pair(st + actNode->getComputationTime() + 1, min_it->second));
-					//}
+					if (min_it->second - st + actNode->getComputationTime() > 1) {
+						slots[pu].push_back(make_pair(st + actNode->getComputationTime() + 1, min_it->second));
+					}
 					
 					slots[pu].erase(min_it);
 					idPuMapping[actId] = actPU;
@@ -223,7 +223,7 @@ namespace msonlab {
 					slots[actPU].push_back(make_pair(RT[actPU] + 1, ST[actId]));
 				}
 
-				RT[actPU] = std::max(RT[actPU], FT[actId]);
+				RT[actPU] = FT[actId];
 			}
 
 			uint length = *std::max_element(FT.begin(), FT.end());

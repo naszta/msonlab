@@ -86,12 +86,12 @@ namespace msonlab
 		return edges.size();
 	}
 
-	const IProcessable::nVect Graph::getNodes() const
+	const IProcessable::nVect& Graph::getNodes() const
 	{
 		return nodes;
 	}
 
-	const IProcessable::eVect Graph::getEdges() const
+	const IProcessable::eVect& Graph::getEdges() const
 	{
 		return edges;
 		}

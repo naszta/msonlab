@@ -74,6 +74,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Algorithms.cpp" />
     <ClCompile Include="BFSIterator.cpp" />
     <ClCompile Include="BlueEdge.cpp" />
     <ClCompile Include="SchedulingHelper.cpp" />
@@ -87,9 +88,8 @@
     <ClCompile Include="Options.cpp" />
     <ClCompile Include="GeneticAlgorithm.cpp" />
     <ClCompile Include="Graph.cpp" />
-    <ClCompile Include="GraphAlgorithms.cpp" />
     <ClCompile Include="GreedySchedulingAlgorithm.cpp" />
-    <ClCompile Include="HusSchedulingAlgorithm.cpp" />
+    <ClCompile Include="CriticalPathSchedulingAlgorithm.cpp" />
     <ClCompile Include="IProcessable.cpp" />
     <ClCompile Include="GraphIterator.cpp" />
     <ClCompile Include="main.cpp" />
@@ -108,6 +108,7 @@
     <ClCompile Include="StackValue.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Algorithms.h" />
     <ClInclude Include="BFSIterator.h" />
     <ClInclude Include="BlueEdge.h" />
     <ClInclude Include="SchedulingHelper.h" />
@@ -120,13 +121,12 @@
     <ClInclude Include="GeneticAlgorithm.h" />
     <ClInclude Include="Global.h" />
     <ClInclude Include="Graph.h" />
-    <ClInclude Include="GraphAlgorithms.h" />
     <ClInclude Include="GraphBuilder.h" />
     <ClInclude Include="GraphExchanger.h" />
     <ClInclude Include="GraphGenerator.h" />
     <ClInclude Include="GraphIterator.h" />
     <ClInclude Include="GreedySchedulingAlgorithm.h" />
-    <ClInclude Include="HusSchedulingAlgorithm.h" />
+    <ClInclude Include="CriticalPathSchedulingAlgorithm.h" />
     <ClInclude Include="SchedulingAlgorithm.h" />
     <ClInclude Include="IProcessable.h" />
     <ClInclude Include="MultiplierEdge.h" />

@@ -5,8 +5,6 @@
 #include "SolutionSet.h"
 #include "SchedulingAlgorithm.h"
 #include "FitnessStrategy.h"
-#include "GraphAlgorithms.h"
-
 
 // GeneticAlgoritm implementation for project laboratory
 // created by Zoltan Szekeres
@@ -15,7 +13,7 @@ namespace msonlab {
 	namespace scheduling {
 
 		using msonlab::Graph;
-		using msonlab::GraphAlgorithms;
+		//using msonlab::GraphAlgorithms;
 
 		using std::vector;
 		using std::shared_ptr;
@@ -25,7 +23,7 @@ namespace msonlab {
 		{
 			typedef unsigned int uint;
 			// num of PUs
-			GraphAlgorithms algorithms;
+			//GraphAlgorithms algorithms;
 
 			// algorithm parameters
 			Options::oPtr options;

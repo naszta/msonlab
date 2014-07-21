@@ -13,7 +13,7 @@
 #include "GraphGenerator.h"
 #include "GreedySchedulingAlgorithm.h"
 #include "GeneticAlgorithm.h"
-#include "HusSchedulingAlgorithm.h"
+#include "CriticalPathSchedulingAlgorithm.h"
 #include "Options.h"
 #include "FitnessStrategy.h"
 #include "SchedulingHelper.h"
@@ -311,7 +311,7 @@ void test_small_graph(Options::oPtr options)
 {
 	Graph::gPtr g = initSampleGraph();
 
-	HusSchedulingAlgorithm alg;
+	CriticalPathSchedulingAlgorithm alg;
 	auto result = alg.schedule(g, options);
 
 	vector<unsigned int> testOrder;
@@ -355,14 +355,12 @@ void test_small_graph(Options::oPtr options)
 	*/
 }
 
-msonlab::GraphAlgorithms ga;
-
 void runHusScheduling(Options::oPtr options)
 {
 	// choosing fitness strategy for the GA
 	FitnessStrategy::fsPtr fsstrategy(new LengthFitnessStartegy());
 
-	HusSchedulingAlgorithm alg;
+	CriticalPathSchedulingAlgorithm alg;
 
 	// getting the graph
 	//auto graph = initRandomGraph(Options);
@@ -459,7 +457,7 @@ int main(int argc, char *argv[])
 	}
 	else if (options->getAlgorithm().compare("criticalPath") == 0) {
 		std::cout << "Critical Path";
-		alg = std::make_shared<HusSchedulingAlgorithm>();
+		alg = std::make_shared<CriticalPathSchedulingAlgorithm>();
 	}
 	else {
 		std::cout << "Greedy";

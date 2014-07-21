@@ -19,7 +19,6 @@ namespace msonlab
 
 		IProcessable::nPtr iteratorEnd; // this is a sign for every iterator
 
-		friend class GraphAlgorithms;
 		friend class GraphIterator;
 		friend class BFSIterator;
 		friend class DFSIterator;
@@ -37,8 +36,8 @@ namespace msonlab
 		size_t numberOfNodes() const; // gets the # of nodes
 		size_t numberOfEdges() const; // gets the # of edges
 
-		const IProcessable::nVect getNodes() const;
-		const IProcessable::eVect getEdges() const;
+		const IProcessable::nVect& getNodes() const;
+		const IProcessable::eVect& getEdges() const;
 
 		IProcessable::nVect getInputNodes() const; // gets the input nodes
 		IProcessable::nVect getOutputNodes() const; // gets the output nodes

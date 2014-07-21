@@ -2,17 +2,14 @@
 #define HUS_SCHEDULERALGORITHM_H
 
 #include "SchedulingAlgorithm.h"
-#include "GraphAlgorithms.h"
 
 namespace msonlab {
 	namespace scheduling {
 
 		using namespace msonlab;
 
-		class HusSchedulingAlgorithm : public SchedulingAlgorithm
+		class CriticalPathSchedulingAlgorithm : public SchedulingAlgorithm
 		{
-			GraphAlgorithms algorithms;
-
 			unsigned findNextToSchedule(const vector<unsigned>& dependencies, const vector<unsigned>& distances) const;
 
 		public:

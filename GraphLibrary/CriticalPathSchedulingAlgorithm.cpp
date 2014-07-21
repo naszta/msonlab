@@ -1,5 +1,6 @@
-#include "HusSchedulingAlgorithm.h"
+#include "CriticalPathSchedulingAlgorithm.h"
 #include "Edge.h"
+#include "Algorithms.h"
 #include <memory>
 #include <algorithm>
 #include <vector>
@@ -13,7 +14,7 @@ namespace msonlab  {
 
 		using namespace msonlab;
 
-		unsigned HusSchedulingAlgorithm::findNextToSchedule(const vector<unsigned>& dependencies, const vector<unsigned>& distances) const
+		unsigned CriticalPathSchedulingAlgorithm::findNextToSchedule(const vector<unsigned>& dependencies, const vector<unsigned>& distances) const
 		{
 			unsigned id;
 			unsigned max = 0;
@@ -27,9 +28,9 @@ namespace msonlab  {
 			return id;
 		}
 
-		Solution::sPtr HusSchedulingAlgorithm::schedule(Graph::gPtr& graph, Options::oPtr options) const
+		Solution::sPtr CriticalPathSchedulingAlgorithm::schedule(Graph::gPtr& graph, Options::oPtr options) const
 		{
-			auto levels = algorithms.partialTopologicalSort(graph);
+			auto levels = graph::algorithms::partialTopologicalSort(graph);
 			vector<unsigned> distance(graph->numberOfNodes());
 
 			// finding the max time needed to compute (distance)
@@ -42,26 +43,25 @@ namespace msonlab  {
 
 			for (size_t i = 1; i < levels.size(); ++i)
 			{
-				for (auto it = levels[i].begin(); it != levels[i].end(); ++it)
+				for (auto& node : levels[i])
 				{
 					unsigned max = 0;
-					for (auto it_e = (*it)->getSuccessors().begin();
-						it_e != (*it)->getSuccessors().end(); ++it_e) {
-						if (distance[(*it_e)->getToId()] > max) {
-							max = distance[(*it_e)->getToId()];
+					for (auto& edge : node->getSuccessors()) {
+						if (distance[edge->getToId()] > max) {
+							max = distance[edge->getToId()];
 						}
 					}
 
-					distance[(*it)->getId()] = max + (*it)->getComputationTime();
+					distance[node->getId()] = max + node->getComputationTime();
 				}
 			}
 
 			// counts the number of dependencies of each graph
 			vector<int> dependencies(graph->numberOfNodes());
-			algorithms.createDependencyVector(graph, dependencies);
+			graph::algorithms::createDependencyVector(graph, dependencies);
 
 			vector<Node::nPtr> nodes(graph->numberOfNodes());
-			GraphAlgorithms::listNodes(graph, nodes);
+			graph::algorithms::list_nodes(graph, nodes);
 
 			int tasks = graph->numberOfNodes();
 			int comm = options->getCommOverhead();
@@ -73,7 +73,7 @@ namespace msonlab  {
 			vector<unsigned> idPuMapping(tasks); // idPuMapping[i] = j means that node[i] is processed by pu[j]
 			int next = 0;
 			for (int i = 0; i < tasks; ++i) {
-				next = algorithms.findMaxDistanceWithoutDependency(dependencies, distance);
+				next = graph::algorithms::findMaxDistanceWithoutDependency(dependencies, distance);
 				auto actNode = nodes[next];
 				// calculating data arrival time
 				size_t predecessorSize = actNode->getPredecessorsSize();
@@ -98,8 +98,7 @@ namespace msonlab  {
 				result->mapping[i] = pu;
 				result->scheduling[i] = actNode;
 
-				// TODO: update distance vector
-				algorithms.computeNextFreeNodes(dependencies, actNode);
+				graph::algorithms::computeNextFreeNodes(dependencies, actNode);
 			}
 
 			return result;
