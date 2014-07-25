@@ -89,6 +89,12 @@ namespace msonlab {
 			/// @param pus Number of PUs.
 			/// @return The execution time.
 			int scheduleGreedy(const Graph::gPtr& graph, int pus);
+
+			///
+			/// Creates a new graph, with the transitive dependecies removed.
+			/// 
+			/// 
+			Graph::gPtr transitive_reduction(const Graph::gPtr&);
 		}
 	}
 }

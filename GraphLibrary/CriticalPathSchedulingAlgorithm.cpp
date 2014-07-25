@@ -5,7 +5,7 @@
 #include <algorithm>
 #include <vector>
 
-namespace msonlab  {
+namespace msonlab {
 	namespace scheduling {
 
 		using std::shared_ptr;
@@ -46,13 +46,14 @@ namespace msonlab  {
 				for (auto& node : levels[i])
 				{
 					unsigned max = 0;
+					unsigned count = node->getSuccessorsSize();
 					for (auto& edge : node->getSuccessors()) {
 						if (distance[edge->getToId()] > max) {
 							max = distance[edge->getToId()];
 						}
 					}
 
-					distance[node->getId()] = max + node->getComputationTime();
+					distance[node->getId()] = i + max + node->getComputationTime();
 				}
 			}
 

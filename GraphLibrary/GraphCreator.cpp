@@ -1,0 +1,279 @@
+#include "GraphCreator.h"
+
+#include "NodeConstant.h"
+#include "NodeAdd.h"
+#include "NodeMultiply.h"
+#include "NodeDivide.h"
+#include "NodeSquareRoot.h"
+
+#include "BlueEdge.h"
+
+namespace msonlab {
+	namespace graph {
+		namespace creator {
+
+			using std::make_shared;
+			using std::make_unique;
+
+			Graph::gPtr createRandom(size_t size, unsigned edgeProb, unsigned widening, unsigned pus)
+			{
+				IProcessable::nVect nodes(size);
+				Graph::gPtr graph = make_unique<Graph>();
+
+
+
+				size_t input_size = pus + 4 < size ? pus + 4 : size / 3;
+				size_t output_size = input_size - 1 > widening ? widening : input_size - 1;
+				unsigned closer_favor = widening - 1;
+
+				size_t i;
+				for (i = 0; i < input_size; ++i)
+				{
+					nodes[i] = make_shared<NodeConstant>(i, L"input", make_shared<types::DataType>(i));
+					graph->addNode(nodes[i]);
+				}
+
+				for (i = input_size; i < size; ++i)
+				{
+					nodes[i] = make_shared<NodeAdd>(i, L"add", make_shared<types::DataType>(i));
+					graph->addNode(nodes[i]);
+				}
+
+				// adding inputs
+				size_t edge_counter = size;
+				for (size_t i = 0; i < input_size; ++i)
+				{
+					unsigned edges = i < pus ? (rand() % (edgeProb - 1)) + 1 : edgeProb + 1;
+					unsigned space = size - input_size + closer_favor * widening;
+					for (size_t j = 0; j < edges; ++j)
+					{
+						unsigned nodeId = (rand() % (space - 1)) + 1;
+						if (nodeId < (closer_favor + 1)*widening)
+						{
+							nodeId /= (closer_favor + 1);
+						}
+						else
+						{
+							nodeId -= closer_favor*widening;
+						}
+
+						nodeId += input_size;
+						IProcessable::ePtr e = make_shared<Edge>(edge_counter, L"a", make_shared<types::DataType>(i + nodeId), nodes[i], nodes[nodeId]);
+						++edge_counter;
+						graph->addEdge(e);
+					}
+				}
+
+				for (size_t i = input_size; i < size - output_size; ++i)
+				{
+					unsigned edges = rand() % edgeProb;
+					unsigned favored = size - i - 1 < widening ? size - i - 1 : widening;
+					unsigned space = size - i + closer_favor* favored;
+					if (edges == edgeProb - 1) edges += widening;
+					for (size_t j = 0; j < edges; ++j)
+					{
+						unsigned nodeId = (rand() % (space - 1)) + 1;
+						if (nodeId < (closer_favor + 1)*favored)
+						{
+							nodeId /= (closer_favor + 1);
+							++nodeId;
+						}
+						else
+						{
+							nodeId -= closer_favor*favored;
+						}
+
+						nodeId += i;
+						IProcessable::ePtr e = make_shared<Edge>(i + nodeId, L"a", make_shared<types::DataType>(i + nodeId), nodes[i], nodes[nodeId]);
+						graph->addEdge(e);
+					}
+				}
+
+				return graph;
+			}
+
+			Graph::gPtr createQuadrant(){
+				auto graph = make_unique<Graph>();
+				msonlab::Node::nPtr a = (make_shared<msonlab::NodeConstant>(0, L"a", make_shared<types::DataType>(4)));
+				msonlab::Node::nPtr b = (make_shared<msonlab::NodeConstant>(1, L"b", make_shared<types::DataType>(2)));
+				msonlab::Node::nPtr c = (make_shared<msonlab::NodeConstant>(2, L"c", make_shared<types::DataType>(-5)));
+
+				msonlab::Node::nPtr constNumber_1 = (make_shared<msonlab::NodeConstant>(3, L"1", make_shared<types::DataType>(1)));
+				msonlab::Node::nPtr constNumber_2 = (make_shared<msonlab::NodeConstant>(4, L"2", make_shared<types::DataType>(2)));
+				msonlab::Node::nPtr constNumber_minus1 = (make_shared<msonlab::NodeConstant>(5, L"-1", make_shared<types::DataType>(-1)));
+				msonlab::Node::nPtr constNumber_minus4 = (make_shared<msonlab::NodeConstant>(6, L"-4", make_shared<types::DataType>(-4)));
+
+				msonlab::Node::nPtr multiply_2a(new msonlab::NodeMultiply(7, L"2a", make_shared<types::DataType>(0)));
+				msonlab::Node::nPtr multiply_bb(new msonlab::NodeMultiply(8, L"b^2", make_shared<types::DataType>(0)));
+				msonlab::Node::nPtr multiply_minusb(new msonlab::NodeMultiply(9, L"-b", make_shared<types::DataType>(0)));
+				msonlab::Node::nPtr multiply_minus4ac(new msonlab::NodeMultiply(10, L"-4ac", make_shared<types::DataType>(0)));
+
+				msonlab::Node::nPtr divide_1_2a(new msonlab::NodeDivide(11, L"1/2a", make_shared<types::DataType>(0)));
+
+				msonlab::Node::nPtr add_bb_minus4ac(new msonlab::NodeAdd(12, L"b^2-4ac", make_shared<types::DataType>(0)));
+
+				msonlab::Node::nPtr squareRoot_bb_minus4ac(new msonlab::NodeSquareRoot(13, L"(b^2-4ac)^0.5", make_shared<types::DataType>(0)));
+
+				msonlab::Node::nPtr multiply_minus_squareRoot_bb_minus4ac(new msonlab::NodeMultiply(14, L"-(b^2-4ac)^0.5", make_shared<types::DataType>(0)));
+
+				msonlab::Node::nPtr add_toDivide1(new msonlab::NodeAdd(15, L"-b+(b^2-4ac)^0.5", make_shared<types::DataType>(0)));
+				msonlab::Node::nPtr add_toDivide2(new msonlab::NodeAdd(16, L"-b-(b^2-4ac)^0.5", make_shared<types::DataType>(0)));
+
+				msonlab::Node::nPtr y1(new msonlab::NodeMultiply(17, L"Y1", make_shared<types::DataType>(0)));
+				msonlab::Node::nPtr y2(new msonlab::NodeMultiply(18, L"Y2", make_shared<types::DataType>(0)));
+
+
+				msonlab::Edge::ePtr e1(new msonlab::BlueEdge(19, L"e1", 0, a, multiply_2a));
+				msonlab::Edge::ePtr e2(new msonlab::BlueEdge(20, L"e2", 0, constNumber_2, multiply_2a));
+				msonlab::Edge::ePtr e3(new msonlab::BlueEdge(21, L"e3", 0, a, multiply_minus4ac));
+
+				msonlab::Edge::ePtr e4(new msonlab::BlueEdge(22, L"e4", 0, b, multiply_bb));
+				msonlab::Edge::ePtr e5(new msonlab::BlueEdge(23, L"e5", 0, b, multiply_bb));
+				msonlab::Edge::ePtr e6(new msonlab::BlueEdge(24, L"e6", 0, b, multiply_minusb));
+				msonlab::Edge::ePtr e7(new msonlab::BlueEdge(25, L"e7", 0, constNumber_minus1, multiply_minusb));
+
+				msonlab::Edge::ePtr e8(new msonlab::Edge(26, L"e8", 0, c, multiply_minus4ac));
+				msonlab::Edge::ePtr e9(new msonlab::BlueEdge(27, L"e9", 0, constNumber_minus4, multiply_minus4ac));
+
+				msonlab::Edge::ePtr e10(new msonlab::Edge(28, L"e10", 0, constNumber_1, divide_1_2a));
+				msonlab::Edge::ePtr e11(new msonlab::Edge(29, L"e11", 0, multiply_2a, divide_1_2a));
+
+				msonlab::Edge::ePtr e12(new msonlab::Edge(30, L"e12", 0, multiply_bb, add_bb_minus4ac));
+				msonlab::Edge::ePtr e13(new msonlab::Edge(31, L"e13", 0, multiply_minus4ac, add_bb_minus4ac));
+
+				msonlab::Edge::ePtr e14(new msonlab::Edge(32, L"e14", 0, add_bb_minus4ac, squareRoot_bb_minus4ac));
+
+				msonlab::Edge::ePtr e15(new msonlab::BlueEdge(33, L"e15", 0, squareRoot_bb_minus4ac, multiply_minus_squareRoot_bb_minus4ac));
+
+				msonlab::Edge::ePtr e16(new msonlab::Edge(34, L"e16", 0, multiply_minusb, add_toDivide1));
+				msonlab::Edge::ePtr e17(new msonlab::Edge(35, L"e17", 0, squareRoot_bb_minus4ac, add_toDivide1));
+
+				msonlab::Edge::ePtr e18(new msonlab::Edge(36, L"e18", 0, multiply_minusb, add_toDivide2));
+				msonlab::Edge::ePtr e19(new msonlab::Edge(37, L"e19", 0, multiply_minus_squareRoot_bb_minus4ac, add_toDivide2));
+
+				msonlab::Edge::ePtr e20(new msonlab::Edge(38, L"e20", 0, add_toDivide1, y1));
+				msonlab::Edge::ePtr e21(new msonlab::Edge(39, L"e21", 0, divide_1_2a, y1));
+
+				msonlab::Edge::ePtr e22(new msonlab::Edge(40, L"e22", 0, add_toDivide2, y2));
+				msonlab::Edge::ePtr e23(new msonlab::Edge(41, L"e23", 0, divide_1_2a, y2));
+
+
+				graph->addEdge(e1);
+				graph->addEdge(e2);
+				graph->addEdge(e3);
+				graph->addEdge(e4);
+				graph->addEdge(e5);
+				graph->addEdge(e6);
+				graph->addEdge(e7);
+				graph->addEdge(e8);
+				graph->addEdge(e9);
+				graph->addEdge(e10);
+				graph->addEdge(e11);
+				graph->addEdge(e12);
+				graph->addEdge(e13);
+				graph->addEdge(e14);
+				graph->addEdge(e15);
+				graph->addEdge(e16);
+				graph->addEdge(e17);
+				graph->addEdge(e18);
+				graph->addEdge(e19);
+				graph->addEdge(e20);
+				graph->addEdge(e21);
+				graph->addEdge(e22);
+				graph->addEdge(e23);
+
+				return graph;
+			}
+
+			Graph::gPtr createSample() {
+				Graph::gPtr g = make_unique<Graph>();
+
+				msonlab::Node::nPtr a(new msonlab::NodeConstant(0, L"a", make_shared<types::DataType>(2)));
+				msonlab::Node::nPtr b(new msonlab::NodeConstant(1, L"b", make_shared<types::DataType>(3)));
+				msonlab::Node::nPtr c(new msonlab::NodeConstant(2, L"c", make_shared<types::DataType>(2)));
+				msonlab::Node::nPtr d(new msonlab::NodeConstant(3, L"d", make_shared<types::DataType>(3)));
+
+				msonlab::Node::nPtr ab(new msonlab::NodeMultiply(4, L"a*b", nullptr));
+				msonlab::Node::nPtr cd(new msonlab::NodeMultiply(5, L"c*d", nullptr));
+
+				msonlab::Node::nPtr ab2(new msonlab::NodeMultiply(6, L"2*a*b", nullptr));
+				msonlab::Node::nPtr c2(new msonlab::NodeConstant(7, L"2", make_shared<types::DataType>(2)));
+
+				msonlab::Node::nPtr res(new msonlab::NodeAdd(8, L"2*a*b + c*d", nullptr));
+
+				msonlab::Edge::ePtr e1(new msonlab::Edge(9, L"e1", 0, a, ab));
+				msonlab::Edge::ePtr e2(new msonlab::Edge(10, L"e2", 0, b, ab));
+
+				msonlab::Edge::ePtr e3(new msonlab::Edge(11, L"e3", 0, c, cd));
+				msonlab::Edge::ePtr e4(new msonlab::Edge(12, L"e4", 0, d, cd));
+
+				msonlab::Edge::ePtr e5(new msonlab::Edge(13, L"e5", 0, ab, ab2));
+				msonlab::Edge::ePtr e6(new msonlab::Edge(14, L"e6", 0, c2, ab2));
+
+				msonlab::Edge::ePtr e7(new msonlab::Edge(15, L"e7", 0, ab2, res));
+
+				msonlab::Edge::ePtr e8(new msonlab::Edge(16, L"e8", 0, cd, res));
+
+				g->addEdge(e1);
+				g->addEdge(e2);
+				g->addEdge(e3);
+				g->addEdge(e4);
+				g->addEdge(e5);
+				g->addEdge(e6);
+				g->addEdge(e7);
+				g->addEdge(e8);
+
+				return g;
+			}
+
+			Graph::gPtr createTest() {
+				auto testG = make_unique<Graph>();
+
+				Node::nPtr node0 = make_shared<NodeConstant>(0, L"0", make_shared<types::DataType>(5));
+				Node::nPtr node1 = make_shared<NodeConstant>(1, L"1", make_shared<types::DataType>(2));
+				Node::nPtr node2 = make_shared<NodeAdd>(2, L"2", make_shared<types::DataType>(3));
+				Node::nPtr node3 = make_shared<NodeAdd>(3, L"3", make_shared<types::DataType>(2));
+				Node::nPtr node4 = make_shared<NodeAdd>(4, L"4", make_shared<types::DataType>(9));
+				Node::nPtr node5 = make_shared<NodeAdd>(5, L"5", make_shared<types::DataType>(2));
+				Node::nPtr node6 = make_shared<NodeAdd>(6, L"6", make_shared<types::DataType>(6));
+				Node::nPtr node7 = make_shared<NodeAdd>(7, L"7", make_shared<types::DataType>(5));
+				Node::nPtr node8 = make_shared<NodeAdd>(8, L"8", make_shared<types::DataType>(4));
+
+				Edge::ePtr edge1 = make_shared<Edge>(9, L"e19", nullptr, node0, node8);
+				Edge::ePtr edge2 = make_shared<Edge>(10, L"e69", nullptr, node5, node8);
+				Edge::ePtr edge3 = make_shared<Edge>(11, L"e13", nullptr, node0, node2);
+				Edge::ePtr edge4 = make_shared<Edge>(12, L"e14", nullptr, node0, node3);
+				Edge::ePtr edge5 = make_shared<Edge>(13, L"e15", nullptr, node0, node4);
+				Edge::ePtr edge6 = make_shared<Edge>(14, L"e17", nullptr, node0, node6);
+				Edge::ePtr edge7 = make_shared<Edge>(16, L"e26", nullptr, node1, node5);
+				Edge::ePtr edge8 = make_shared<Edge>(17, L"e27", nullptr, node1, node6);
+				Edge::ePtr edge9 = make_shared<Edge>(18, L"e38", nullptr, node2, node7);
+				Edge::ePtr edge10 = make_shared<Edge>(19, L"e48", nullptr, node3, node7);
+				Edge::ePtr edge11 = make_shared<Edge>(20, L"e79", nullptr, node6, node8);
+				Edge::ePtr edge12 = make_shared<Edge>(21, L"e89", nullptr, node7, node8);
+				Edge::ePtr edge13 = make_shared<Edge>(22, L"e89", nullptr, node4, node5);
+				Edge::ePtr edge14 = make_shared<Edge>(23, L"e89", nullptr, node4, node8);
+				Edge::ePtr edge15 = make_shared<Edge>(24, L"e89", nullptr, node2, node8);
+				Edge::ePtr edge16 = make_shared<Edge>(25, L"e07", nullptr, node0, node7);
+
+				testG->addEdge(edge1);
+				testG->addEdge(edge2);
+				testG->addEdge(edge3);
+				testG->addEdge(edge4);
+				testG->addEdge(edge5);
+				testG->addEdge(edge6);
+				testG->addEdge(edge7);
+				testG->addEdge(edge8);
+				testG->addEdge(edge9);
+				testG->addEdge(edge10);
+				testG->addEdge(edge11);
+				testG->addEdge(edge12);
+				testG->addEdge(edge13);
+				testG->addEdge(edge14);
+				testG->addEdge(edge15);
+				testG->addEdge(edge16);
+				return testG;
+			}
+		}
+	}
+}

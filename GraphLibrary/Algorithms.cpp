@@ -1,11 +1,16 @@
 #include "Algorithms.h"
 #include "BFSIterator.h"
 #include <queue>
+#include <set>
+#include <map>
 
 namespace msonlab {
 	namespace graph {
 		namespace algorithms {
 			using std::queue;
+			using std::set;
+			using std::map;
+			using std::unique_ptr;
 
 			// creates partial topological order starting with the outputs
 			vector<IProcessable::nVect> partialTopologicalSort(const Graph::gPtr& graph)
@@ -39,7 +44,7 @@ namespace msonlab {
 			}
 
 			// creates partial topological order starting with the inputs
-			vector<IProcessable::nVect> partialTopologicalSortFromBottom(const Graph::gPtr& graph) 
+			vector<IProcessable::nVect> partialTopologicalSortFromBottom(const Graph::gPtr& graph)
 			{
 				IProcessable::nVect inputNodes = graph->getInputNodes();
 				vector<IProcessable::nVect> result;
@@ -229,6 +234,55 @@ namespace msonlab {
 				for (auto& node : graph->getNodes()) {
 					nodes[node->getId()] = node;
 				}
+			}
+
+			Graph::gPtr transitive_reduction(const Graph::gPtr& g) {
+				unsigned reductions = 0;
+				Graph::gPtr g2 = std::make_unique<Graph>();
+				for (auto& node : g->getNodes()) {
+					g2->addNode(std::make_shared<Node>(*node));
+				}
+
+				unsigned id = g->numberOfNodes();
+
+				BFSIterator itr(*g);
+
+				for (auto& node : g->getNodes()) {
+					map < Node::nPtr, Edge::ePtr> suc_map;
+					// add all successors to the set
+					for (auto& suc : node->getSuccessors()) {
+						suc_map.insert(std::make_pair(suc->getTo(), suc));
+					}
+
+					for (auto& edge : node->getSuccessors()) {
+						itr.setStartNode(edge->getTo());
+						while (itr.hasMoreNode())
+						{
+							if (itr.depth() > 0 && suc_map.count(*itr) > 0) {
+								suc_map.erase(*itr);
+								++reductions;
+							}
+
+							++itr;
+						}
+					}
+
+					for (auto& suc : suc_map) {
+						auto edge = std::make_shared<Edge>(id, suc.second->getLabel(), suc.second->getValue(), node, suc.first);
+						g2->addEdge(edge);
+						++id;
+					}
+
+				}
+
+				std::cout << "#" << reductions << " reductions made.\n";
+				return g2;
+			}
+
+			unique_ptr<set<Node::nPtr>> get_all_dependencies(const Node::nPtr& node) {
+				auto result = std::make_unique<set<Node::nPtr>>();
+
+				return result;
 			}
 		}
 	}

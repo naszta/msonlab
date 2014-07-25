@@ -16,9 +16,10 @@ namespace msonlab
 	{
 	}
 
-	Node::Node(const Node& other)
+	Node::Node(const Node& other) : IProcessable(other.id, other.label, other.value)
 	{
-		throw Exceptions::NotImplementedException("Node copy constructor");
+		this->paramCount = other.paramCount;
+		this->value = other.value;
 	}
 
 	bool Node::registerParameter()

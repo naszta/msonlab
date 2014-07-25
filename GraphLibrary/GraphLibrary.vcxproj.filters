@@ -87,9 +87,6 @@
     <ClInclude Include="Graph.h">
       <Filter>Header Files\Graph</Filter>
     </ClInclude>
-    <ClInclude Include="GraphGenerator.h">
-      <Filter>Header Files\Graph</Filter>
-    </ClInclude>
     <ClInclude Include="GraphIterator.h">
       <Filter>Header Files\Graph</Filter>
     </ClInclude>
@@ -155,6 +152,12 @@
     </ClInclude>
     <ClInclude Include="CriticalPathSchedulingAlgorithm.h">
       <Filter>Header Files\Scheduling</Filter>
+    </ClInclude>
+    <ClInclude Include="CoffmanGrahamSchedulingAlgorithm.h">
+      <Filter>Header Files\Scheduling</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphCreator.h">
+      <Filter>Header Files\Graph</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -253,6 +256,12 @@
     </ClCompile>
     <ClCompile Include="CriticalPathSchedulingAlgorithm.cpp">
       <Filter>Source Files\Scheduling</Filter>
+    </ClCompile>
+    <ClCompile Include="CoffmanGrahamSchedulingAlgorithm.cpp">
+      <Filter>Source Files\Scheduling</Filter>
+    </ClCompile>
+    <ClCompile Include="GraphCreator.cpp">
+      <Filter>Source Files\Graph</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

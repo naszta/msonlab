@@ -12,17 +12,16 @@ namespace msonlab
 		// end of the iterator is unique for every graph
 		// but the same for every iterator on the same graph
 		this->end = g.iteratorEnd;
+		this->current_depth = 0;
 
 		// adding input nodes to the queue.
 		IProcessable::nVect inputNodesVect = g.getInputNodes();
 		if (inputNodesVect.size() > 0)
 		{
-			IProcessable::nVect::iterator it = inputNodesVect.begin();
-			this->node = *it;
-			++it; // can skip first from the queue
-			for (; it != inputNodesVect.end(); ++it)
+			this->node = inputNodesVect[0];
+			for (auto node : inputNodesVect)
 			{
-				this->inputNodes.push(*it);
+				this->inputNodes.push(node);
 			}
 		}
 		else
@@ -50,7 +49,7 @@ namespace msonlab
 
 			// copy state
 			this->visited = it.visited;
-			this->toVisit = it.toVisit;
+			this->to_visit = it.to_visit;
 		}
 
 		return *this;
@@ -64,10 +63,12 @@ namespace msonlab
 	// return true if there are any node to visit; otherwise false.
 	bool BFSIterator::moveNext()
 	{
+		// find a node that haven't been visited yet
 		while (visited.count(node) > 0)
 		{
-			if (node == end || toVisit.empty())
+			if (node == end || to_visit.empty())
 			{
+				// use the next input node
 				if (this->inputNodes.size() > 0)
 				{
 					this->node = this->inputNodes.front();
@@ -81,21 +82,24 @@ namespace msonlab
 			}
 			else
 			{
-				this->node = this->toVisit.front();
-				this->toVisit.pop();
+				// there are nodes in the toVisit queue, choose the first
+				auto front = this->to_visit.front();
+				this->node = front.first;
+				this->current_depth = front.second;
+				this->to_visit.pop();
 			}
 		}
 
 		// add node to visited
 		visited.insert(node);
 
-		// adding neighbours to queue
+		// adding neighbours to the toVisit queue
 		const IProcessable::eVect &neighbours = node->getSuccessors();
-		for (auto it = neighbours.begin(); it != neighbours.end(); ++it)
+		for (auto& edge : neighbours)
 		{
-			if (visited.count((*it)->getTo()) == 0)
+			if (visited.count(edge->getTo()) == 0)
 			{
-				toVisit.push((*it)->getTo());
+				to_visit.push(make_pair(edge->getTo(), current_depth +1));
 			}
 		}
 
@@ -106,10 +110,13 @@ namespace msonlab
 	bool BFSIterator::clear()
 	{
 		this->node = this->end;
-		std::queue<IProcessable::nPtr> emptyQueue;
-		std::swap(this->toVisit, emptyQueue);
+		this->current_depth = 0;
+		std::queue<pair<IProcessable::nPtr, unsigned>> emptyQueue;
+		std::swap(this->to_visit, emptyQueue);
 		std::set<IProcessable::nPtr> emptySet;
 		std::swap(this->visited, emptySet);
+		std::queue<IProcessable::nPtr> emptyInputQueue;
+		std::swap(this->inputNodes, emptyInputQueue);
 
 		return true;
 	}
