@@ -20,6 +20,7 @@ namespace msonlab
 	public:
 		Edge(unsigned int _id, types::LabelType _label, types::DataPtr _value, IProcessable::nPtr _from, IProcessable::nPtr _to);
 		Edge(const Edge& other);
+		Edge& operator=(const Edge& other);
 
 		bool registerParameter();
 

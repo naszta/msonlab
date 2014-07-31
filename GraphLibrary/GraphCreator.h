@@ -10,6 +10,7 @@ namespace msonlab {
 			Graph::gPtr createQuadrant();
 			Graph::gPtr createSample();
 			Graph::gPtr createTest();
+			Graph::gPtr createCoffmanExample(unsigned);
 		}
 	}
 }

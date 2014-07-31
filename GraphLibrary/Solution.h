@@ -41,7 +41,9 @@ namespace msonlab {
 			// scheduling algorithms
 			friend class GeneticAlgorithm;
 			friend class GreedySchedulingAlgorithm;
+			friend class ListSchedulingAlgorithm;
 			friend class CriticalPathSchedulingAlgorithm;
+			friend class CoffmanGrahamSchedulingAlgorithm;
 
 			void calcStartTime(Options::oPtr options);
 		public:

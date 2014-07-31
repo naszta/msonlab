@@ -6,8 +6,28 @@
 namespace msonlab
 {
 	NodeDivide::NodeDivide(unsigned int _id, types::LabelType _label, types::DataPtr _value)
-		: Node(_id, _label, _value)
+		: Node(_id, _label, _value, 5)
 	{
+		this->type_string = GraphExchanger::getSupportedNodeTypeName(GraphExchanger::supportedNodeType::DIVIDE);
+	}
+
+	NodeDivide::NodeDivide(const NodeDivide& other) : Node(other)
+	{
+		if (this != &other)
+		{
+			*this = other;
+		}
+	}
+
+	// does NOT copy connections
+	NodeDivide& NodeDivide::operator=(const NodeDivide& other)
+	{
+		Node::operator=(other);
+		return *this;
+	}
+
+	Node::nPtr NodeDivide::clone() {
+		return std::make_shared<NodeDivide>(*this);
 	}
 
 	IProcessable::pVect NodeDivide::process()
@@ -114,10 +134,10 @@ namespace msonlab
 	}
 
 	// exchange
-	std::string NodeDivide::getTypeString() const
+	/*std::string NodeDivide::getTypeString() const
 	{
 		return GraphExchanger::getSupportedNodeTypeName(GraphExchanger::supportedNodeType::DIVIDE);
-	}
+	}*/
 
 	std::string NodeDivide::get_color() const
 	{

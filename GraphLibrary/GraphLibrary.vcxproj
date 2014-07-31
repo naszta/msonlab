@@ -79,6 +79,7 @@
     <ClCompile Include="BlueEdge.cpp" />
     <ClCompile Include="CoffmanGrahamSchedulingAlgorithm.cpp" />
     <ClCompile Include="GraphCreator.cpp" />
+    <ClCompile Include="ListSchedulingAlgorithm.cpp" />
     <ClCompile Include="SchedulingHelper.cpp" />
     <ClCompile Include="Solution.cpp" />
     <ClCompile Include="DFSIterator.cpp" />
@@ -114,6 +115,7 @@
     <ClInclude Include="BFSIterator.h" />
     <ClInclude Include="BlueEdge.h" />
     <ClInclude Include="CoffmanGrahamSchedulingAlgorithm.h" />
+    <ClInclude Include="ListSchedulingAlgorithm.h" />
     <ClInclude Include="SchedulingHelper.h" />
     <ClInclude Include="Solution.h" />
     <ClInclude Include="ConfigFile.h" />

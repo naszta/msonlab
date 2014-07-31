@@ -201,14 +201,14 @@ namespace msonlab {
 				dependencies[node->getId()] = -1;
 			}
 
-			unsigned findMaxDistanceWithoutDependency(const vector<int>& dependencies, const vector<unsigned>& distances)
+			unsigned findMaxCostWithoutDependency(const vector<int>& dependencies, const vector<unsigned>& costs)
 			{
 				unsigned id = -1;
 				unsigned max = 0;
-				for (unsigned i = 0; i < distances.size(); ++i) {
-					if (dependencies[i] == 0 && (id == -1 || distances[i] > max)) {
+				for (unsigned i = 0; i < costs.size(); ++i) {
+					if (dependencies[i] == 0 && (id == -1 || costs[i] > max)) {
 						id = i;
-						max = distances[i];
+						max = costs[i];
 					}
 				}
 
@@ -240,7 +240,7 @@ namespace msonlab {
 				unsigned reductions = 0;
 				Graph::gPtr g2 = std::make_unique<Graph>();
 				for (auto& node : g->getNodes()) {
-					g2->addNode(std::make_shared<Node>(*node));
+					g2->addNode(node->clone());
 				}
 
 				unsigned id = g->numberOfNodes();

@@ -11,11 +11,14 @@ namespace msonlab
 
 		int paramCount;
 		unsigned compTime;
+		std::string type_string;
 
 	public:
 		Node(unsigned int _id, types::LabelType _label, types::DataPtr _value);
 		Node(unsigned int _id, types::LabelType _label, types::DataPtr _value, unsigned compTime);
 		Node(const Node& other);
+
+		Node& operator=(const Node& other);
 
 		bool registerParameter();
 
@@ -43,6 +46,8 @@ namespace msonlab
 		PlaceEnum getPlace() const;
 
 		virtual unsigned getComputationTime() { return compTime; }
+
+		virtual nPtr clone();
 
 		// compile
 		virtual void compile(int caller_thread, vector<msonlab::StackRunner::program>* programs, StackRunner::scheduleOrder schedule);

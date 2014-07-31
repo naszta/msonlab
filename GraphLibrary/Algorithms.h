@@ -71,7 +71,7 @@ namespace msonlab {
 			///
 			/// @param dependencies The actual dependency vector.
 			/// @param distances The distance of each node to the furthest output node.
-			unsigned findMaxDistanceWithoutDependency(const vector<int>& dependencies, const vector<unsigned>& distances);
+			unsigned findMaxCostWithoutDependency(const vector<int>& dependencies, const vector<unsigned>& costs);
 
 			///
 			/// Puts the nodes into a vector.

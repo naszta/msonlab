@@ -10,9 +10,23 @@ namespace msonlab
 	{
 	}
 
-	Edge::Edge(const Edge& other)
+	Edge::Edge(const Edge& other) : IProcessable(other)
 	{
-		throw Exceptions::NotImplementedException("Edge copy constructor");
+		if (this != &other)
+		{
+			*this = other;
+		}
+	}
+
+	Edge& Edge::operator=(const Edge& other) 
+	{
+		IProcessable::operator=(other);
+
+		this->paramReady = other.paramReady;
+		this->from = other.from;
+		this->to = other.to;
+
+		return *this;
 	}
 
 	bool Edge::registerParameter()

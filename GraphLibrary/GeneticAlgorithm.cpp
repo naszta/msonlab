@@ -116,9 +116,9 @@ namespace msonlab {
 				unsigned limits = 0;
 				for (size_t i = numLevels; i > 0; --i)
 				{
-					DEBUG("Level: " << i);
+					DEBUG("Level: " << i - 1);
 					for (auto it = levels[i - 1].begin(); it != levels[i - 1].end(); ++it){
-						DEBUG(" " << (*it)->getId());
+						std::wcout << " " << (*it)->getLabel();
 					}
 
 					DEBUGLN("");
@@ -155,7 +155,7 @@ namespace msonlab {
 			{
 				DEBUG("Level: " << i);
 				for (auto it = levels[i - 1].begin(); it != levels[i - 1].end(); ++it){
-					DEBUG(" " << (*it)->getId());
+					std::wcout << " " << (*it)->getLabel();
 				}
 
 				DEBUGLN("");

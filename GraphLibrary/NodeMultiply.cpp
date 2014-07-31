@@ -6,8 +6,28 @@
 namespace msonlab
 {
 	NodeMultiply::NodeMultiply(unsigned int _id, types::LabelType _label, types::DataPtr _value)
-		: Node(_id, _label, _value)
+		: Node(_id, _label, _value, 5)
 	{
+		this->type_string = GraphExchanger::getSupportedNodeTypeName(GraphExchanger::supportedNodeType::MULTIPLY);
+	}
+
+	NodeMultiply::NodeMultiply(const NodeMultiply& other) : Node(other)
+	{
+		if (this != &other)
+		{
+			*this = other;
+		}
+	}
+
+	// does NOT copy connections
+	NodeMultiply& NodeMultiply::operator=(const NodeMultiply& other)
+	{
+		Node::operator=(other);
+		return *this;
+	}
+
+	Node::nPtr NodeMultiply::clone() {
+		return std::make_shared<NodeMultiply>(*this);
 	}
 
 	IProcessable::pVect NodeMultiply::process()
@@ -105,10 +125,10 @@ namespace msonlab
 		}
 
 	// exchange
-	std::string NodeMultiply::getTypeString() const
+	/*std::string NodeMultiply::getTypeString() const
 		{
 		return GraphExchanger::getSupportedNodeTypeName(GraphExchanger::supportedNodeType::MULTIPLY);
-		}
+		}*/
 
 	std::string NodeMultiply::get_color() const
 	{

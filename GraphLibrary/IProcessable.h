@@ -40,7 +40,8 @@ namespace msonlab
 		enum PlaceEnum {Input, Inside, Output};
 
 		IProcessable(unsigned int _id, types::LabelType _label, types::DataPtr _value);
-		IProcessable();
+		IProcessable(const IProcessable& other);
+		IProcessable& operator=(const IProcessable& other);
 
 		virtual bool registerParameter() = 0;
 
@@ -68,7 +69,6 @@ namespace msonlab
 		void clear_synced();
 
 		int compile_iteration;
-
 
 		// exchange
 		virtual DOMElement* serialize(DOMDocument* xmlDocument, std::string yedDataKeyName, std::string typeKeyName, std::string customDataKey);

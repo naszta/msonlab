@@ -14,6 +14,7 @@
 #include "GreedySchedulingAlgorithm.h"
 #include "GeneticAlgorithm.h"
 #include "CriticalPathSchedulingAlgorithm.h"
+#include "CoffmanGrahamSchedulingAlgorithm.h"
 #include "Options.h"
 #include "FitnessStrategy.h"
 #include "SchedulingHelper.h"
@@ -162,22 +163,6 @@ int main(int argc, char *argv[])
 	// loading GA configuration
 	Options::oPtr options = std::make_shared<const Options>("Options.cfg");
 
-	//GraphExchanger ge;
-	//for (int i = 0; i < 5; ++i) {
-	//	auto g = initRandomGraph(options);
-	//	stringstream ss;
-	//	ss << "random" << i << ".graphml";
-	//	ge.ExportGraph(g, ss.str());
-	//	auto g2 = msonlab::graph::algorithms::transitive_reduction(g);
-	//	stringstream ss1;
-	//	ss1 << "random_reducfuck" << i << ".graphml";
-	//	ge.ExportGraph(g, ss1.str());
-	//}
-
-	//std::cin.get();
-	//return 0;
-
-
 	// choosing algorithm
 	SchedulingAlgorithm::algPtr alg;
 	std::cout << "Using ";
@@ -207,6 +192,10 @@ int main(int argc, char *argv[])
 		std::cout << "Critical Path";
 		alg = std::make_shared<CriticalPathSchedulingAlgorithm>();
 	}
+	else if (options->getAlgorithm().compare("coffman") == 0) {
+		std::cout << "Coffman";
+		alg = std::make_shared<CoffmanGrahamSchedulingAlgorithm>();
+	}
 	else {
 		std::cout << "Greedy";
 		alg = std::make_shared<GreedySchedulingAlgorithm>();
@@ -215,8 +204,9 @@ int main(int argc, char *argv[])
 	std::cout << " algorithm.\n";
 
 	// init graph
+	//auto graph = graph::creator::createCoffmanExample(1);
 	auto graph = initRandomGraph(options);
-	auto g2 = msonlab::graph::algorithms::transitive_reduction(graph);
+	//auto g2 = msonlab::graph::algorithms::transitive_reduction(graph);
 	//auto graph = initSampleGraph();
 	//auto graph = initGraph();
 #if MEASURE != 0	
@@ -226,7 +216,7 @@ int main(int argc, char *argv[])
 	// the function that is measured
 
 	//test_small_graph(options);
-	auto best = alg->schedule(g2, options);
+	auto best = alg->schedule(graph, options);
 #if MEASURE != 0
 	finishCHRONO = std::chrono::high_resolution_clock::now();
 	std::chrono::duration<double> elapsedCHRONO = finishCHRONO - startCHRONO;
@@ -240,7 +230,11 @@ int main(int argc, char *argv[])
 		fs.fitness(best, options);
 	}
 
+	best->printTable(std::cout, options);
+	best->printSolution(std::cout);
 	unsigned l = SchedulingHelper::computeLengthAndReuseIdleTime(best, options);
+	best->printTable(std::cout, options);
+	best->printSolution(std::cout);
 	std::cout << "Rescheduled length: " << l << std::endl;
 	l = fs.fitness(best, options);
 	std::cout << "Length: " << l << std::endl;

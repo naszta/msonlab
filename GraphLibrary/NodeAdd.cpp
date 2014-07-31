@@ -2,12 +2,33 @@
 #include "NodeAdd.h"
 #include "Edge.h"
 #include "GraphExchanger.h"
+#include <memory>
 
 namespace msonlab
 {
 	NodeAdd::NodeAdd(unsigned int _id, types::LabelType _label, types::DataPtr _value)
-		: Node(_id, _label, _value)
+		: Node(_id, _label, _value, 5)
 	{
+			this->type_string = GraphExchanger::getSupportedNodeTypeName(GraphExchanger::supportedNodeType::ADD);
+	}
+
+	NodeAdd::NodeAdd(const NodeAdd& other) : Node(other)
+	{
+		if (this != &other)
+		{
+			*this = other;
+		}
+	}
+
+	// does NOT copy connections
+	NodeAdd& NodeAdd::operator=(const NodeAdd& other)
+	{
+		Node::operator=(other);
+		return *this;
+	}
+
+	Node::nPtr NodeAdd::clone() {
+		return std::make_shared<NodeAdd>(*this);
 	}
 
 	IProcessable::pVect NodeAdd::process()
@@ -106,10 +127,10 @@ namespace msonlab
 	}
 
 	// exchange
-	std::string NodeAdd::getTypeString() const
-	{
-		return GraphExchanger::getSupportedNodeTypeName(GraphExchanger::supportedNodeType::ADD);
-	}
+	//std::string NodeAdd::getTypeString() const
+	//{
+	//	return GraphExchanger::getSupportedNodeTypeName(GraphExchanger::supportedNodeType::ADD);
+	//}
 
 	std::string NodeAdd::get_color() const
 	{

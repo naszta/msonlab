@@ -1,5 +1,5 @@
-#ifndef HUS_SCHEDULERALGORITHM_H
-#define HUS_SCHEDULERALGORITHM_H
+#ifndef COFFMANGRAHAM_SCHEDULERALGORITHM_H
+#define COFFMANGRAHAM_SCHEDULERALGORITHM_H
 
 #include "ListSchedulingAlgorithm.h"
 
@@ -8,7 +8,7 @@ namespace msonlab {
 
 		using namespace msonlab;
 
-		class CriticalPathSchedulingAlgorithm : public ListSchedulingAlgorithm
+		class CoffmanGrahamSchedulingAlgorithm : public ListSchedulingAlgorithm
 		{
 		protected:
 			virtual void determineCosts(const Graph::gPtr& graph, vector<unsigned>& costs) const;

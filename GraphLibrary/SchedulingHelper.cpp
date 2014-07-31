@@ -175,11 +175,11 @@ namespace msonlab {
 				for (unsigned p = 0; p < options->getNumberOfPus(); ++p)
 				{
 					// the start time at pu p
-					unsigned stp = std::max(RT[p], DAT[p][actId]);
+					//unsigned stp = std::max(RT[p], DAT[p][actId]);
 					for (auto pit = slots[p].begin(); pit != slots[p].end(); ++pit)
 					{
 						// possible first start in this idle time
-						unsigned start = std::max(stp, pit->first);
+						unsigned start = std::max(DAT[p][actId], pit->first);
 						// it's better if
 						// 1) the start is earlier than the calculated
 						// 2) the finish is earlier than the end of the idle time
@@ -195,40 +195,39 @@ namespace msonlab {
 				// if better found, reschedule
 				if (st != min_st)
 				{
-					//std::cout << "Reschedule " << actId << " ID to " << pit->first << std::endl;
-					//std::cout << "DAT[" << actId << "] is " << DAT[actId] << std::endl;
 					st = min_st;
 					actPU = pu;
 
-					if (st - min_it->first > 1) {
-						slots[pu].push_back(make_pair(min_it->first, st-1));
+					pair<unsigned, unsigned> it = *min_it;
+					slots[pu].erase(min_it);
+
+					if (st - it.first > 1) {
+						slots[pu].push_back(make_pair(it.first, st-1));
 					}
 
-					if (min_it->second - st + actNode->getComputationTime() > 1) {
-						slots[pu].push_back(make_pair(st + actNode->getComputationTime() + 1, min_it->second));
+					if (it.second - (st + actNode->getComputationTime()) > 1) {
+						slots[pu].push_back(make_pair(st + actNode->getComputationTime() + 1, it.second));
 					}
 					
-					slots[pu].erase(min_it);
 					idPuMapping[actId] = actPU;
 				}
 
 				ST[actId] = st;
 				FT[actId] = ST[actId] + actNode->getComputationTime();
 
-				if (ST[actId] > 0 && RT[actPU] + 1 < ST[actId])
+				// add idle time slot if there is one
+				if (ST[actId] > 0 && RT[actPU] < ST[actId])
 				{
-					// add idle time to the list
-					//std::cout << "Sceduling " << actId << ", ";
-					//std::cout << "Idle time " << RT[actPU] + 1 << " -> " << ST[actId] << std::endl;
-					slots[actPU].push_back(make_pair(RT[actPU] + 1, ST[actId]));
+					slots[actPU].push_back(make_pair(RT[actPU], ST[actId]));
 				}
 
-				RT[actPU] = FT[actId];
+				// in case an idle time is used, the finish time is smaller
+				// than the ready time of the pu, because there are already other
+				// task scheduled after the one scheduled in this round
+				RT[actPU] = std::max(RT[actPU], FT[actId]);
 			}
 
 			uint length = *std::max_element(FT.begin(), FT.end());
-
-			// how to create the new solution?
 
 			// collecting the nodes
 			Node::nVect nodes(tasks);
@@ -237,8 +236,7 @@ namespace msonlab {
 			{
 				// first is the start time of the task
 				// second is the id of the task
-				puu p = make_pair(ST[i], i);
-				STS.push_back(p);
+				STS.push_back(make_pair(ST[i], i));
 				nodes[scheduling[i]->getId()] = scheduling[i];
 			}
 

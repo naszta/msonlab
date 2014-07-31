@@ -20,10 +20,8 @@ namespace msonlab {
 				IProcessable::nVect nodes(size);
 				Graph::gPtr graph = make_unique<Graph>();
 
-
-
 				size_t input_size = pus + 4 < size ? pus + 4 : size / 3;
-				size_t output_size = input_size - 1 > widening ? widening : input_size - 1;
+				size_t output_size = std::min(input_size - 1, widening);
 				unsigned closer_favor = widening - 1;
 
 				size_t i;
@@ -35,7 +33,8 @@ namespace msonlab {
 
 				for (i = input_size; i < size; ++i)
 				{
-					nodes[i] = make_shared<NodeAdd>(i, L"add", make_shared<types::DataType>(i));
+					int ct = rand() % 4 + 2;
+					nodes[i] = make_shared<Node>(i, L"rnd", make_shared<types::DataType>(i), ct);
 					graph->addNode(nodes[i]);
 				}
 
@@ -273,6 +272,58 @@ namespace msonlab {
 				testG->addEdge(edge15);
 				testG->addEdge(edge16);
 				return testG;
+			}
+
+			Graph::gPtr createCoffmanExample(unsigned comp_time) {
+				auto graph = make_unique<Graph>();
+
+				Node::nPtr nodeA = make_shared<Node>(0, L"A", make_shared<types::DataType>(5), comp_time);
+				Node::nPtr nodeB = make_shared<Node>(1, L"B", make_shared<types::DataType>(2), comp_time);
+				Node::nPtr nodeC = make_shared<Node>(2, L"C", make_shared<types::DataType>(3), comp_time);
+				Node::nPtr nodeD = make_shared<Node>(3, L"D", make_shared<types::DataType>(2), comp_time);
+				Node::nPtr nodeE = make_shared<Node>(4, L"E", make_shared<types::DataType>(9), comp_time);
+				Node::nPtr nodeF = make_shared<Node>(5, L"F", make_shared<types::DataType>(2), comp_time);
+				Node::nPtr nodeG = make_shared<Node>(6, L"G", make_shared<types::DataType>(6), comp_time);
+				Node::nPtr nodeH = make_shared<Node>(7, L"H", make_shared<types::DataType>(5), comp_time);
+				Node::nPtr nodeI = make_shared<Node>(8, L"I", make_shared<types::DataType>(4), comp_time);
+				Node::nPtr nodeJ = make_shared<Node>(9, L"J", make_shared<types::DataType>(4), comp_time);
+
+				auto edge_value = make_shared<types::DataType>(1);
+				Edge::ePtr gh = make_shared<Edge>(10, L"GH", edge_value, nodeG, nodeH);
+				Edge::ePtr dg = make_shared<Edge>(11, L"DG", edge_value, nodeD, nodeG);
+				Edge::ePtr eg = make_shared<Edge>(12, L"EG", edge_value, nodeE, nodeG);
+				Edge::ePtr fg = make_shared<Edge>(13, L"FG", edge_value, nodeF, nodeG);
+				Edge::ePtr ad = make_shared<Edge>(14, L"AD", edge_value, nodeA, nodeD);
+				Edge::ePtr ae = make_shared<Edge>(15, L"AE", edge_value, nodeA, nodeE);
+				Edge::ePtr af = make_shared<Edge>(16, L"AF", edge_value, nodeA, nodeF);
+
+				Edge::ePtr be = make_shared<Edge>(15, L"BE", edge_value, nodeB, nodeE);
+				Edge::ePtr bf = make_shared<Edge>(16, L"BF", edge_value, nodeB, nodeD);
+				Edge::ePtr bi = make_shared<Edge>(17, L"BI", edge_value, nodeB, nodeI);
+				Edge::ePtr bj = make_shared<Edge>(18, L"BJ", edge_value, nodeB, nodeJ);
+
+				Edge::ePtr ce = make_shared<Edge>(19, L"CE", edge_value, nodeC, nodeE);
+				Edge::ePtr cf = make_shared<Edge>(20, L"CF", edge_value, nodeC, nodeD);
+				Edge::ePtr ci = make_shared<Edge>(21, L"CI", edge_value, nodeC, nodeI);
+				Edge::ePtr cj = make_shared<Edge>(22, L"CJ", edge_value, nodeC, nodeJ);
+
+				graph->addEdge(gh);
+				graph->addEdge(dg);
+				graph->addEdge(eg);
+				graph->addEdge(fg);
+				graph->addEdge(ad);
+				graph->addEdge(ae);
+				graph->addEdge(af);
+				graph->addEdge(be);
+				graph->addEdge(bf);
+				graph->addEdge(bi);
+				graph->addEdge(bj);
+				graph->addEdge(ce);
+				graph->addEdge(cf);
+				graph->addEdge(ci);
+				graph->addEdge(cj);
+
+				return graph;
 			}
 		}
 	}

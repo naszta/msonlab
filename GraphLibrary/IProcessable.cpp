@@ -27,7 +27,21 @@ namespace msonlab
 	{ 
 	}
 
-	IProcessable::IProcessable() { };
+	IProcessable::IProcessable(const IProcessable& other) 
+	{
+		if (this != &other) {
+			*this = other;
+		}
+	};
+
+	IProcessable& IProcessable::operator=(const IProcessable& other)
+	{
+		this->id = other.id;
+		this->label = other.label;
+		this->value = other.value;
+
+		return *this;
+	}
 
 	bool IProcessable::isProcessed() const
 	{

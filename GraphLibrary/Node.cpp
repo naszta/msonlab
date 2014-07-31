@@ -16,10 +16,28 @@ namespace msonlab
 	{
 	}
 
-	Node::Node(const Node& other) : IProcessable(other.id, other.label, other.value)
+	Node::Node(const Node& other) : IProcessable(other)
 	{
+		if (this != &other)
+		{
+			*this = other;
+		}
+	}
+
+	// does NOT copy connections
+	Node& Node::operator=(const Node& other)
+	{
+		IProcessable::operator=(other);
+
 		this->paramCount = other.paramCount;
-		this->value = other.value;
+		this->type_string = other.type_string;
+		this->compTime = other.compTime;
+
+		return *this;
+	}
+
+	Node::nPtr Node::clone() {
+		return std::make_shared<Node>(*this);
 	}
 
 	bool Node::registerParameter()
@@ -241,7 +259,11 @@ namespace msonlab
 
 	std::string Node::getTypeString() const
 	{
-		throw new Exceptions::NodeTypeCanNotBeSerializedException("NodeType can not be serialized. Please use one inherited class for the graph.");
+		if (type_string.empty()) {
+			throw new Exceptions::NodeTypeCanNotBeSerializedException("NodeType can not be serialized. Please use one inherited class for the graph.");
+		}
+
+		return type_string;
 		//GraphExchanger::getSupportedNodeTypeName(GraphExchanger::supportedNodeType::ADD);
 	}
 

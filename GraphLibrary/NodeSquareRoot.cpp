@@ -8,8 +8,28 @@
 namespace msonlab
 {
 	NodeSquareRoot::NodeSquareRoot(unsigned int _id, types::LabelType _label, types::DataPtr _value)
-		: Node(_id, _label, _value)
+		: Node(_id, _label, _value, 7)
 	{
+		this->type_string = GraphExchanger::getSupportedNodeTypeName(GraphExchanger::supportedNodeType::SQUAREROOT);
+	}
+
+	NodeSquareRoot::NodeSquareRoot(const NodeSquareRoot& other) : Node(other)
+	{
+		if (this != &other)
+		{
+			*this = other;
+		}
+	}
+
+	// does NOT copy connections
+	NodeSquareRoot& NodeSquareRoot::operator=(const NodeSquareRoot& other)
+	{
+		Node::operator=(other);
+		return *this;
+	}
+
+	Node::nPtr NodeSquareRoot::clone() {
+		return std::make_shared<NodeSquareRoot>(*this);
 	}
 
 	IProcessable::pVect NodeSquareRoot::process()
@@ -111,10 +131,10 @@ namespace msonlab
 	}
 
 	// exchange
-	std::string NodeSquareRoot::getTypeString() const
+	/*std::string NodeSquareRoot::getTypeString() const
 	{
 		return GraphExchanger::getSupportedNodeTypeName(GraphExchanger::supportedNodeType::SQUAREROOT);
-	}
+	}*/
 
 	std::string NodeSquareRoot::get_color() const
 	{
