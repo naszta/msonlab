@@ -39,7 +39,7 @@ namespace msonlab {
 
 			static unsigned int computeLengthAndReuseIdleTime(Solution::sPtr& solution, const Options::oPtr& options);
 
-			static bool ensureCorrectness(const Solution::csPtr& sol);
+			static bool is_correct(const Solution::csPtr& sol);
 		};
 	}
 }

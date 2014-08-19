@@ -242,9 +242,6 @@
     <ClCompile Include="GraphBuilder.cpp">
       <Filter>Source Files\Graph</Filter>
     </ClCompile>
-    <ClCompile Include="Solution.cpp">
-      <Filter>Source Files\Scheduling\Genetic</Filter>
-    </ClCompile>
     <ClCompile Include="SolutionSet.cpp">
       <Filter>Source Files\Scheduling\Genetic</Filter>
     </ClCompile>
@@ -267,6 +264,9 @@
       <Filter>Source Files\Graph</Filter>
     </ClCompile>
     <ClCompile Include="ListSchedulingAlgorithm.cpp">
+      <Filter>Source Files\Scheduling</Filter>
+    </ClCompile>
+    <ClCompile Include="Solution.cpp">
       <Filter>Source Files\Scheduling</Filter>
     </ClCompile>
   </ItemGroup>

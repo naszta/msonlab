@@ -10,6 +10,11 @@ namespace msonlab {
 		unsigned int SchedulingHelper::doComputeLengthSTAndRT(std::shared_ptr<const Solution> solution, const Options::oPtr options,
 			vector<unsigned>& ST, vector<unsigned>& RT)
 		{
+			// ensure correctness before start to compute length
+			if (!is_correct(solution)) {
+				return UINT32_MAX;
+			}
+
 			typedef unsigned int uint;
 			// const vector references
 
@@ -48,6 +53,7 @@ namespace msonlab {
 					// check whether a flaw is present in this solution
 					// if a predecessor is not scheduled yet, that is a flaw
 					if (FT[id] == 0) {
+						std::cout << "Solution is checked before. This CANNOT happen.\n";
 						return UINT32_MAX;
 					}
 
@@ -107,6 +113,11 @@ namespace msonlab {
 
 		unsigned int SchedulingHelper::computeLengthAndReuseIdleTime(Solution::sPtr& solution, const Options::oPtr& options)
 		{
+			// ensure correctness before start to compute length
+			if (!is_correct(solution)) {
+				return UINT32_MAX;
+			}
+
 			typedef unsigned int uint;
 
 			unsigned commOverhead = options->getCommOverhead();
@@ -154,6 +165,7 @@ namespace msonlab {
 					uint id = actNode->getPredecessor(j)->getFromId();
 					if (FT[id] == 0) {
 						// this solutuion is not good
+						std::cout << "Solution is checked before. This CANNOT happen.\n";
 						return UINT32_MAX;
 					}
 
@@ -255,18 +267,27 @@ namespace msonlab {
 
 		// a helper method for development
 		// fast checks, whether is solution is correct or not
-		bool SchedulingHelper::ensureCorrectness(const Solution::csPtr& sol)
+		bool SchedulingHelper::is_correct(const Solution::csPtr& sol)
 		{
 			const IProcessable::nVect& scheduling = sol->scheduling;
+
+			// ensure there is no duplication in the scheduling
+
 			vector<bool> scheduled(scheduling.size(), false);
 			for (auto& node : scheduling)
 			{
+				// ensure there is no duplication
+				if (scheduled[node->getId()]) {
+					//std::cout << node->getId() << " is duplicated in the solution.\n";
+					return false;
+				}
+
 				auto end = (node->getPredecessorEnd());
 				for (auto inner_it = node->getPredecessorBegin(); inner_it != end; ++inner_it)
 				{
 					if (!scheduled[(*inner_it)->getFromId()])
 					{
-						std::cout << (*inner_it)->getFromId() << " is not scheduled before " << node->getId() << std::endl;
+						//std::cout << (*inner_it)->getFromId() << " is not scheduled before " << node->getId() << std::endl;
 						return false;
 					}
 				}

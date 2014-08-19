@@ -116,12 +116,6 @@ namespace msonlab {
 				unsigned limits = 0;
 				for (size_t i = numLevels; i > 0; --i)
 				{
-					DEBUG("Level: " << i - 1);
-					for (auto it = levels[i - 1].begin(); it != levels[i - 1].end(); ++it){
-						std::wcout << " " << (*it)->getLabel();
-					}
-
-					DEBUGLN("");
 					limits += levels[i - 1].size();
 					levelingLimits.push_back(limits);
 				}
@@ -150,17 +144,11 @@ namespace msonlab {
 			vector<IProcessable::nVect> levels = graph::algorithms::partialTopologicalSort(graph);
 			size_t numLevels = levels.size();
 			vector<unsigned> levelingLimits;
-			unsigned limits = 0;
-			for (size_t i = numLevels; i > 0; --i)
-			{
-				DEBUG("Level: " << i);
-				for (auto it = levels[i - 1].begin(); it != levels[i - 1].end(); ++it){
-					std::wcout << " " << (*it)->getLabel();
-				}
-
-				DEBUGLN("");
-				limits += levels[i - 1].size();
-			}
+			//unsigned limits = 0;
+			//for (size_t i = numLevels; i > 0; --i)
+			//{
+			//	limits += levels[i - 1].size();
+			//}
 
 			auto set = std::make_unique<SolutionSet>(solution, options->getKeepSize(), options->getPopMaxSize(), options->getKeepBest());
 
@@ -186,7 +174,7 @@ namespace msonlab {
 			}
 
 			auto initialFitness = fitness(cc);
-			DEBUGLN("Population created. Initial fitness : " << initialFitness);
+			DEBUGLN("SolutionSet created. Initial fitness : " << initialFitness);
 			set->addOffspring(cc);
 			set->setLevelSize(levelingLimits);
 
@@ -343,9 +331,12 @@ namespace msonlab {
 		/// @param offsprings The number of offsprings to generate.
 		void GeneticAlgorithm::simulateMating(SolutionSet::setPtr& set, int offsprings, bool doOrderCrossover) const
 		{
-			int faultyGens = 0;
-			int mutations = 0;
-			for (; offsprings > 0;)
+			//int failed_crossovers = 0;
+			//int crossovers = 0;
+			//int failed_mutations = 0;
+			//int mutations = 0;
+			//doOrderCrossover = true; // REMOVE it
+			for (; offsprings > 0; --offsprings)
 			{
 				Solution::sPtr father = set->getParent();
 				Solution::sPtr mother = set->getParent();
@@ -359,38 +350,31 @@ namespace msonlab {
 				else
 				{
 					offspring = crossoverOrder(father, mother, set->getLevels());
+					//++crossovers;
+
 				}
 
 				mutateMapping(offspring);
 				unsigned rate = rand() % 100;
 				if (rate < options->getScheduleMutationRate()) {
 					mutateSheduling(offspring, set->getLevels());
-					++mutations;
+					//++mutations;
 				}
 
-				/*bool correct = SchedulingHelper::ensureCorrectness(offspring);
-				if (!correct) {
-					std::cout << "Sol not correct" << std::endl;
-				}
-				if (!correct && cost < UINT32_MAX)
-				{
-					std::cout << "gebasz" << std::endl;
-
-				}*/
 				unsigned cost = fitness(offspring);
 				if (cost < UINT32_MAX)
 				{
 					set->addOffspring(offspring);
-					--offsprings;
+					//--offsprings;
 				}
-				else ++faultyGens;
+				//else ++failed_mutations;
 			}
 
-			/*DEBUGLN("Mutations happened   " << mutations);
-			DEBUGLN("Faulty gens created  " << faultyGens);
-			DEBUGLN("Successful mutations " << mutations - faultyGens);*/
+			//std::cout << "Crossovers: " << crossovers << " failed: " << failed_crossovers << std::endl;
+			//std::cout << "Mutations: " << mutations << " failed: " << failed_mutations << std::endl;
 		}
 
+		// parallel task to calculate the fitness of one solution
 		class fitness_calculator : public tbb::task {
 			const Solution::sPtr solution;
 			const FitnessStrategy::fsPtr strategy;
@@ -406,6 +390,7 @@ namespace msonlab {
 			}
 		};
 
+		//  parallel task to simulate a round
 		class round_simulator : public tbb::task {
 			const GeneticAlgorithm& alg;
 			SolutionSet::setPtr& set;
@@ -460,7 +445,7 @@ namespace msonlab {
 		{
 			/* This is the TBB runtime... */
 			tbb::task_scheduler_init init;
-			
+
 			round_simulator& rs = *new(tbb::task::allocate_root()) round_simulator(*this, set, offsprings, doOrderCrossover);
 			tbb::task::spawn_root_and_wait(rs);
 		}

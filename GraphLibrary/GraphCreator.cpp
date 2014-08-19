@@ -8,6 +8,8 @@
 
 #include "BlueEdge.h"
 
+#include <sstream>
+
 namespace msonlab {
 	namespace graph {
 		namespace creator {
@@ -15,14 +17,91 @@ namespace msonlab {
 			using std::make_shared;
 			using std::make_unique;
 
+			Graph::gPtr createRandomLeveledDAG(size_t node_size, size_t level_size, unsigned edge_limit) {
+				Graph::gPtr graph = make_unique<Graph>();
+				IProcessable::nVect nodes(node_size);
+				vector<unsigned> in_count(node_size);
+				vector<unsigned> out_count(node_size); // sure?
+
+				// per level nodes
+				unsigned pln = node_size / level_size;
+
+				// current level size
+				unsigned cls = pln + 1;
+				// next level size
+				unsigned nls = (rand() % ((pln + 1) / 2)) + (3 * pln + 1) / 4;
+				// the first node in the next level
+				unsigned first = cls;
+
+				// generating nodes for the graph
+				size_t i;
+				for (i = 0; i < cls; ++i)
+				{
+					nodes[i] = make_shared<NodeConstant>(i, L"input", make_shared<types::DataType>(i));
+					graph->addNode(nodes[i]);
+				}
+
+				for (i = cls; i < node_size; ++i)
+				{
+					//int ct = rand() % 4 + 2;
+					std::wstringstream wss;
+					wss << "#" << i;
+					nodes[i] = make_shared<NodeAdd>(i, wss.str(), make_shared<types::DataType>(i));
+					graph->addNode(nodes[i]);
+				}
+
+				// the actual node's id that's out edges are generated
+				//unsigned node_counter = 0;
+				unsigned edge_counter = node_size;
+				// for each level
+				for (unsigned i = 0; i < level_size - 1; ++i) {
+					for (unsigned c = 0; c < cls; ++c) {
+						// number of out edges from this node
+						unsigned out = rand() % edge_limit + 1;
+						unsigned from_id = first - cls + c;
+						for (unsigned j = 0; j < out; ++j) {
+							unsigned to = rand() % nls;
+							unsigned to_id = first + to;
+							unsigned retries = nls - 1;
+							while (in_count[to_id] == edge_limit && --retries > 0) {
+								to_id = first + (to + retries) % nls;
+							}
+							
+							// if the limit lets it, add the edge
+							if (in_count[to_id] < edge_limit) {
+								auto edge = std::make_shared<Edge>(edge_counter, L"a", make_shared<types::DataType>(edge_counter), nodes[from_id], nodes[to_id]);
+								graph->addEdge(edge);
+								++in_count[to_id];
+								++edge_counter;
+							}
+						}
+
+						//++node_counter;
+					}
+
+					// update level information
+					first += nls;
+					cls = nls;
+					nls = (rand() % ((pln + 1) / 2)) + (3 * pln + 1) / 4;
+					if (first + nls > node_size){
+						nls = node_size - first;
+					}
+					else if (level_size - 3 == i && first + nls < node_size) {
+						nls = node_size - first;
+					}
+				}
+
+				return graph;
+			}
+
 			Graph::gPtr createRandom(size_t size, unsigned edgeProb, unsigned widening, unsigned pus)
 			{
 				IProcessable::nVect nodes(size);
 				Graph::gPtr graph = make_unique<Graph>();
 
-				size_t input_size = pus + 4 < size ? pus + 4 : size / 3;
+				size_t input_size = 2 * pus < size ? 2 * pus : size / 3;
 				size_t output_size = std::min(input_size - 1, widening);
-				unsigned closer_favor = widening - 1;
+				unsigned closer_favor = widening;
 
 				size_t i;
 				for (i = 0; i < input_size; ++i)
@@ -34,30 +113,37 @@ namespace msonlab {
 				for (i = input_size; i < size; ++i)
 				{
 					int ct = rand() % 4 + 2;
-					nodes[i] = make_shared<Node>(i, L"rnd", make_shared<types::DataType>(i), ct);
+					std::wstringstream wss;
+					wss << "#" << i;
+					nodes[i] = make_shared<Node>(i, wss.str(), make_shared<types::DataType>(i), ct);
 					graph->addNode(nodes[i]);
 				}
 
 				// adding inputs
 				size_t edge_counter = size;
+				// generating edges from the input nodes
 				for (size_t i = 0; i < input_size; ++i)
 				{
-					unsigned edges = i < pus ? (rand() % (edgeProb - 1)) + 1 : edgeProb + 1;
-					unsigned space = size - input_size + closer_favor * widening;
+					// the number of output edges from node with id i
+					unsigned edges = rand() % (edgeProb - 1) + 1;
+					// space of id-s to randomly choose an end node for the edge
+					// the first 'widening' number of nodes has 'close_favor' more chance
+					// to get elected than the other nodes
+					unsigned space = size - input_size + (closer_favor - 1) * widening;
 					for (size_t j = 0; j < edges; ++j)
 					{
-						unsigned nodeId = (rand() % (space - 1)) + 1;
-						if (nodeId < (closer_favor + 1)*widening)
+						unsigned node_id = (rand() % (space - 1)) + 1;
+						if (node_id < closer_favor * widening)
 						{
-							nodeId /= (closer_favor + 1);
+							node_id /= closer_favor;
 						}
 						else
 						{
-							nodeId -= closer_favor*widening;
+							node_id -= (closer_favor - 1) * widening;
 						}
 
-						nodeId += input_size;
-						IProcessable::ePtr e = make_shared<Edge>(edge_counter, L"a", make_shared<types::DataType>(i + nodeId), nodes[i], nodes[nodeId]);
+						node_id += input_size;
+						IProcessable::ePtr e = make_shared<Edge>(edge_counter, L"a", make_shared<types::DataType>(i + node_id), nodes[i], nodes[node_id]);
 						++edge_counter;
 						graph->addEdge(e);
 					}
@@ -65,29 +151,31 @@ namespace msonlab {
 
 				for (size_t i = input_size; i < size - output_size; ++i)
 				{
+					// number of edges of the node with id 'i'
 					unsigned edges = rand() % edgeProb;
 					unsigned favored = size - i - 1 < widening ? size - i - 1 : widening;
-					unsigned space = size - i + closer_favor* favored;
-					if (edges == edgeProb - 1) edges += widening;
+					unsigned space = size - i + (closer_favor - 1) * favored;
 					for (size_t j = 0; j < edges; ++j)
 					{
-						unsigned nodeId = (rand() % (space - 1)) + 1;
-						if (nodeId < (closer_favor + 1)*favored)
+						unsigned node_id = (rand() % (space - 1)) + 1;
+						if (node_id < closer_favor * favored)
 						{
-							nodeId /= (closer_favor + 1);
-							++nodeId;
+							node_id /= closer_favor;
 						}
 						else
 						{
-							nodeId -= closer_favor*favored;
+							node_id -= (closer_favor - 1) * favored;
 						}
 
-						nodeId += i;
-						IProcessable::ePtr e = make_shared<Edge>(i + nodeId, L"a", make_shared<types::DataType>(i + nodeId), nodes[i], nodes[nodeId]);
+						if (node_id == 0) ++node_id;
+						node_id += i;
+						IProcessable::ePtr e = make_shared<Edge>(edge_counter, L"a", make_shared<types::DataType>(i + node_id), nodes[i], nodes[node_id]);
+						++edge_counter;
 						graph->addEdge(e);
 					}
 				}
 
+				std::cout << "Random graph created\n";
 				return graph;
 			}
 

@@ -108,7 +108,7 @@ void runHusScheduling(Options::oPtr options)
 Solution::sPtr schedule(Graph::gPtr& graph, SchedulingAlgorithm::algPtr alg, Options::oPtr options)
 {
 	auto best = alg->schedule(graph, options);
-	cout << "Correct " << SchedulingHelper::ensureCorrectness(best) << endl;
+	cout << "Correct " << SchedulingHelper::is_correct(best) << endl;
 	std::cout << "Best length: " << best->getFitness() << std::endl;
 	//best->printTable(std::cout, options->getCommOverhead());
 	unsigned l = SchedulingHelper::computeLengthAndReuseIdleTime(best, options);
@@ -117,7 +117,7 @@ Solution::sPtr schedule(Graph::gPtr& graph, SchedulingAlgorithm::algPtr alg, Opt
 	l = fs.fitness(best, options);
 	std::cout << "Length: " << l << std::endl;
 	best->printTable(std::cout, options);
-	cout << "Correct " << SchedulingHelper::ensureCorrectness(best) << endl;
+	cout << "Correct " << SchedulingHelper::is_correct(best) << endl;
 	return best;
 }
 
@@ -163,41 +163,51 @@ int main(int argc, char *argv[])
 	// loading GA configuration
 	Options::oPtr options = std::make_shared<const Options>("Options.cfg");
 
+	//auto graph = graph::creator::createRandomLeveledDAG(options->getGraphSize(), options->getGraphWidening(), options->getGraphEdgeProb());
+	auto graph = initRandomGraph(options);
+	GraphExchanger ge;
+	try {
+		ge.ExportGraph(graph, "leveled.graphml");
+	}
+	catch (...) {
+		std::cerr << "Graph cannot be serialized.\n";
+	}
+
 	// choosing algorithm
 	SchedulingAlgorithm::algPtr alg;
 	std::cout << "Using ";
 	if (options->getAlgorithm().compare("genetic") == 0) {
-		std::cout << "Genetic";
+		std::cout << "Genetic algorithm with ";
 		FitnessStrategy::fsPtr fs;
 		if (options->getFitnessStrategy().compare("puUsage") == 0) {
 			fs = std::make_shared<PUUsageFitnessStrategy>();
-			std::cout << "Fitness set to pu usage.\n";
+			std::cout << "pu usage fitness.\n";
 		}
 		else if (options->getFitnessStrategy().compare("loadBalance") == 0) {
 			fs = std::make_shared<LoadBalanceFitnessStrategy>();
-			std::cout << "Fitness set to load balance.\n";
+			std::cout << "load balance fitness.\n";
 		}
 		else if (options->getFitnessStrategy().compare("reschedule") == 0) {
 			fs = std::make_shared<RescheduleIdleTimeFitnessStartegy>();
-			std::cout << "Fitness set to reschedule idle time.\n";
+			std::cout << "reschedule idle time fitness.\n";
 		}
 		else {
 			fs = std::make_shared<LengthFitnessStartegy>();
-			std::cout << "Fitness set to Length.\n";
+			std::cout << "length fitness.\n";
 		}
 
 		alg = std::make_shared<GeneticAlgorithm>(options, fs);
 	}
 	else if (options->getAlgorithm().compare("criticalPath") == 0) {
-		std::cout << "Critical Path";
+		std::cout << "Critical Path algorithm.\n";
 		alg = std::make_shared<CriticalPathSchedulingAlgorithm>();
 	}
 	else if (options->getAlgorithm().compare("coffman") == 0) {
-		std::cout << "Coffman";
+		std::cout << "CoffmanGraham algorithm.\n";
 		alg = std::make_shared<CoffmanGrahamSchedulingAlgorithm>();
 	}
 	else {
-		std::cout << "Greedy";
+		std::cout << "Greedy algorithm.\n";
 		alg = std::make_shared<GreedySchedulingAlgorithm>();
 	}
 
@@ -205,7 +215,6 @@ int main(int argc, char *argv[])
 
 	// init graph
 	//auto graph = graph::creator::createCoffmanExample(1);
-	auto graph = initRandomGraph(options);
 	//auto g2 = msonlab::graph::algorithms::transitive_reduction(graph);
 	//auto graph = initSampleGraph();
 	//auto graph = initGraph();
@@ -223,23 +232,19 @@ int main(int argc, char *argv[])
 #endif
 	// check correctness
 	LengthFitnessStartegy fs;
-	bool correct = SchedulingHelper::ensureCorrectness(best);
+	bool correct = SchedulingHelper::is_correct(best);
 	cout << "Correct " << correct << endl;
 	std::cout << "Best length: " << best->getFitness() << std::endl;
 	if (!correct) {
 		fs.fitness(best, options);
 	}
 
-	best->printTable(std::cout, options);
-	best->printSolution(std::cout);
 	unsigned l = SchedulingHelper::computeLengthAndReuseIdleTime(best, options);
-	best->printTable(std::cout, options);
-	best->printSolution(std::cout);
 	std::cout << "Rescheduled length: " << l << std::endl;
 	l = fs.fitness(best, options);
-	std::cout << "Length: " << l << std::endl;
+	std::cout << "Recalculated Length: " << l << std::endl;
 	//best->printTable(std::cout, options);
-	cout << "Correct " << SchedulingHelper::ensureCorrectness(best) << endl;
+	cout << "Correct " << SchedulingHelper::is_correct(best) << endl;
 #if MEASURE != 0
 	std::cout << "Elapsed time " << std::setprecision(10) << elapsedCHRONO.count() << std::endl;
 #endif
