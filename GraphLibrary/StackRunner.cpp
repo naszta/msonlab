@@ -182,7 +182,7 @@ namespace msonlab
 	// public running functions
 	void msonlab::StackRunner::run(srPtr runner, int count)
 	{
-		for (size_t i = 0; i < count; ++i)
+		for (int i = 0; i < count; ++i)
 		{
 			// create promises and futures
 			promises = std::vector<std::pair<unsigned int, promisePtr>>();
