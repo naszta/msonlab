@@ -57,8 +57,7 @@ namespace msonlab {
 				}
 				++timeCounter;
 
-				if (taskCounter == graph->numberOfNodes())
-				{
+				if (taskCounter == graph->numberOfNodes()) {
 					break;
 				}
 
@@ -126,7 +125,6 @@ namespace msonlab {
 				p = this->generateRndSolution(graph, options);
 			}
 
-
 			return p;
 		}
 
@@ -144,11 +142,6 @@ namespace msonlab {
 			vector<IProcessable::nVect> levels = graph::algorithms::partialTopologicalSort(graph);
 			size_t numLevels = levels.size();
 			vector<unsigned> levelingLimits;
-			//unsigned limits = 0;
-			//for (size_t i = numLevels; i > 0; --i)
-			//{
-			//	limits += levels[i - 1].size();
-			//}
 
 			auto set = std::make_unique<SolutionSet>(solution, options->getKeepSize(), options->getPopMaxSize(), options->getKeepBest());
 
@@ -218,8 +211,7 @@ namespace msonlab {
 			for (; counter > 0; --counter)
 			{
 				auto c = std::make_shared<Solution>(graph->numberOfNodes(), options->getNumberOfPus(), graph->numberOfEdges());
-				for (unsigned int i = 0; i < c->mapping.size(); ++i)
-				{
+				for (auto i = 0; i < c->mapping.size(); ++i) {
 					c->mapping[i] = rand() % c->pus;
 				}
 
@@ -228,7 +220,6 @@ namespace msonlab {
 				set->addOffspring(c);
 			}
 
-			DEBUGLN("Solution set created. Initial fitness : " << initialFitness);
 			return set;
 		}
 
@@ -239,8 +230,8 @@ namespace msonlab {
 		/// @return The fitness of the solution.
 		unsigned int GeneticAlgorithm::fitness(Solution::sPtr solution) const
 		{
-			if (solution->fitness > 0)
-			{
+			// fitness is zero if it has never been calculated before
+			if (solution->fitness > 0) {
 				return solution->fitness;
 			}
 
@@ -289,16 +280,12 @@ namespace msonlab {
 		/// @param offspring solution to mutate
 		void GeneticAlgorithm::mutateMapping(Solution::sPtr& offspring) const
 		{
-			unsigned rate = rand() % 100;
-			if (rate < this->options->getMapMutationRate())
-			{
-				int position = rand() % offspring->scheduling.size();
-				int mutation = rand() % (offspring->pus - 1) + 1;
-				offspring->mapping[position] += mutation;
-				if (offspring->mapping[position] >= offspring->pus)
-				{
-					offspring->mapping[position] -= offspring->pus;
-				}
+			int position = rand() % offspring->scheduling.size();
+			int mutation = rand() % (offspring->pus - 1) + 1; // to ensure the mapping changes
+			offspring->mapping[position] += mutation;
+			// corrigate
+			if (offspring->mapping[position] >= offspring->pus) {
+				offspring->mapping[position] -= offspring->pus;
 			}
 		}
 
@@ -310,14 +297,10 @@ namespace msonlab {
 		/// @param offspring The solution to mutate.
 		void GeneticAlgorithm::mutateSheduling(Solution::sPtr offspring, const vector<unsigned>& levelingLimits) const
 		{
-			//unsigned rate = rand() % 100;
-			//if (rate < options->getScheduleMutationRate())
-			//{
 			size_t position = rand() % levelingLimits.size();
 			IProcessable::nVect::iterator begin = offspring->scheduling.begin() + levelingLimits[position];
 			IProcessable::nVect::iterator end = position == levelingLimits.size() - 1 ? offspring->scheduling.end() : offspring->scheduling.begin() + levelingLimits[position + 1];
 			std::random_shuffle(begin, end);
-			//}
 		}
 
 		///
@@ -331,47 +314,33 @@ namespace msonlab {
 		/// @param offsprings The number of offsprings to generate.
 		void GeneticAlgorithm::simulateMating(SolutionSet::setPtr& set, int offsprings, bool doOrderCrossover) const
 		{
-			//int failed_crossovers = 0;
-			//int crossovers = 0;
-			//int failed_mutations = 0;
-			//int mutations = 0;
-			//doOrderCrossover = true; // REMOVE it
 			for (; offsprings > 0; --offsprings)
 			{
 				Solution::sPtr father = set->getParent();
 				Solution::sPtr mother = set->getParent();
 				int crossoverType = rand() % 2;
 				Solution::sPtr offspring;
-				// always mapping crossover
-				if (crossoverType == 0 || !doOrderCrossover)
-				{
+				if (crossoverType == 0 || !doOrderCrossover) {
 					offspring = crossoverMap(father, mother);
 				}
-				else
-				{
+				else {
 					offspring = crossoverOrder(father, mother, set->getLevels());
-					//++crossovers;
-
 				}
 
-				mutateMapping(offspring);
-				unsigned rate = rand() % 100;
-				if (rate < options->getScheduleMutationRate()) {
+				if ((rand() % 100) < options->getMapMutationRate()) {
+					mutateMapping(offspring);
+				}
+
+				if ((rand() % 100) < options->getScheduleMutationRate()) {
 					mutateSheduling(offspring, set->getLevels());
-					//++mutations;
 				}
 
 				unsigned cost = fitness(offspring);
-				if (cost < UINT32_MAX)
-				{
+				// cost is UINT32_MAX it has a defect
+				if (cost < UINT32_MAX) {
 					set->addOffspring(offspring);
-					//--offsprings;
 				}
-				//else ++failed_mutations;
 			}
-
-			//std::cout << "Crossovers: " << crossovers << " failed: " << failed_crossovers << std::endl;
-			//std::cout << "Mutations: " << mutations << " failed: " << failed_mutations << std::endl;
 		}
 
 		// parallel task to calculate the fitness of one solution
@@ -410,18 +379,18 @@ namespace msonlab {
 					int crossoverType = rand() % 2;
 					Solution::sPtr offspring;
 					// always mapping crossover, if order is not allowed
-					if (crossoverType == 0 || !doOrderCrossover)
-					{
+					if (crossoverType == 0 || !doOrderCrossover) {
 						offspring = alg.crossoverMap(father, mother);
 					}
-					else
-					{
+					else {
 						offspring = alg.crossoverOrder(father, mother, set->getLevels());
 					}
 
-					alg.mutateMapping(offspring);
-					unsigned rate = rand() % 100;
-					if (rate < alg.options->getScheduleMutationRate()) {
+					if ((rand() % 100) < alg.options->getMapMutationRate()) {
+						alg.mutateMapping(offspring);
+					}
+
+					if ((rand() % 100) < alg.options->getScheduleMutationRate()) {
 						alg.mutateSheduling(offspring, set->getLevels());
 					}
 
