@@ -6,13 +6,8 @@
 
 namespace msonlab
 {
-	Node::Node(unsigned int _id, types::LabelType _label, types::DataPtr _value)
-		: IProcessable(_id, _label, _value), paramCount(0), compTime(1)
-	{
-	}
-
-	Node::Node(unsigned int _id, types::LabelType _label, types::DataPtr _value, unsigned compTime)
-		: IProcessable(_id, _label, _value), paramCount(0), compTime(compTime)
+	Node::Node(unsigned int _id, types::LabelType _label, types::DataPtr _value, string _type_string, unsigned _compTime)
+		: IProcessable(_id, _label, _value), type_string(_type_string), paramCount(0), compTime(_compTime)
 	{
 	}
 
@@ -36,20 +31,11 @@ namespace msonlab
 		return *this;
 	}
 
-	Node::nPtr Node::clone() {
-		return std::make_shared<Node>(*this);
-	}
-
 	bool Node::registerParameter()
 	{
 		++paramCount;
 
 		return isReadyForProcess();
-	}
-
-	IProcessable::pVect Node::process()
-	{
-		throw Exceptions::NotImplementedException("Node::process function");
 	}
 
 	bool Node::isReadyForProcess() const
@@ -114,6 +100,14 @@ namespace msonlab
 		return successors.size();
 	}
 
+	void Node::addPreNode(IProcessable::nPtr toAdd) {
+		preNodes.push_back(toAdd);
+	}
+
+	void Node::addSucNode(IProcessable::nPtr toAdd) {
+		sucNodes.push_back(toAdd);
+	}
+
 	bool Node::registerPredecessor(IProcessable::ePtr _newPredecessor)
 	{
 		msonlab::IProcessable::eVect::iterator it;
@@ -123,6 +117,7 @@ namespace msonlab
 			return false;
 
 		it = predecessors.insert(predecessors.end(),_newPredecessor);
+		addPreNode(_newPredecessor->getFrom());
 
 		if (*it == _newPredecessor)
 			return true;
@@ -148,6 +143,7 @@ namespace msonlab
 			return false;
 
 		it = successors.insert(successors.end(),_newSuccessor);
+		addSucNode(_newSuccessor->getTo());
 
 		if (*it == _newSuccessor)
 			return true;
@@ -264,7 +260,6 @@ namespace msonlab
 		}
 
 		return type_string;
-		//GraphExchanger::getSupportedNodeTypeName(GraphExchanger::supportedNodeType::ADD);
 	}
 
 	std::string Node::get_shape() const

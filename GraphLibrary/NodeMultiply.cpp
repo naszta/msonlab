@@ -6,9 +6,8 @@
 namespace msonlab
 {
 	NodeMultiply::NodeMultiply(unsigned int _id, types::LabelType _label, types::DataPtr _value)
-		: Node(_id, _label, _value, 5)
+		: Node(_id, _label, _value, GraphExchanger::getSupportedNodeTypeName(GraphExchanger::supportedNodeType::MULTIPLY), 5)
 	{
-		this->type_string = GraphExchanger::getSupportedNodeTypeName(GraphExchanger::supportedNodeType::MULTIPLY);
 	}
 
 	NodeMultiply::NodeMultiply(const NodeMultiply& other) : Node(other)
@@ -38,24 +37,26 @@ namespace msonlab
 		{
 			types::DataPtr newVal = std::make_shared<types::DataType>(1.0);
 
-			for (IProcessable::eVect::iterator it = predecessors.begin(); it != predecessors.end(); ++it)
+			for (auto edge : getPredecessors())
 			{
-				*newVal *= *(*(*it)).getResultValue();
+				*newVal *= *(edge->getResultValue());
 			}
 
 			if (setProcessed(newVal))
 			{
-				for (IProcessable::eVect::iterator it = successors.begin(); it != successors.end(); ++it)
+				for (auto edge : getSuccessors())
 				{
-					if((*(*it)).registerParameter())
+					if (edge->registerParameter())
 					{
-						ret.insert(ret.begin(),(*it));
+						ret.insert(ret.begin(), edge);
 					}
 				}
 				return ret;
 			}
 			else
+			{
 				throw msonlab::Exceptions::GeneralErrorException("Error while setting the result of processing on this processable element!");
+			}
 		}
 		else
 		{
@@ -80,7 +81,7 @@ namespace msonlab
 
 
 		// going deeper and calculate predecessors
-		for (IProcessable::pPtr pred : predecessors)
+		for (IProcessable::pPtr pred : getPredecessors())
 		{
 			if (pred->compile_iteration < compile_iteration)
 			{
@@ -101,20 +102,20 @@ namespace msonlab
 		}
 
 		// add MUL operations
-		for (unsigned int i = 0; i < predecessors.size() - 1; ++i)
+		for (unsigned int i = 0; i < getPredecessorsSize() - 1; ++i)
 		{
 			StackRunner::addToken(prog, StackRunner::MUL, StackRunner::dataToken(new std::pair<StackValue::stackvaluePtr, int>(nullptr, -1)));
 		}
-	
+
 
 		// manage sync-s
 		if (!synced && extra_sync_marker)
 		{
 			// if need to sync but called from the same thread, DUP is needed
 			if (caller_thread != -1)
-	{
+			{
 				if (caller_thread == thread_id)
-		{
+				{
 					StackRunner::addToken(prog, StackRunner::DUP, StackRunner::dataToken(new std::pair<StackValue::stackvaluePtr, int>(nullptr, -1)));
 				}
 			}
@@ -122,13 +123,7 @@ namespace msonlab
 			StackRunner::addToken(prog, StackRunner::SYNC, StackRunner::dataToken(new std::pair<StackValue::stackvaluePtr, int>(nullptr, getId())));
 			set_synced();
 		}
-		}
-
-	// exchange
-	/*std::string NodeMultiply::getTypeString() const
-		{
-		return GraphExchanger::getSupportedNodeTypeName(GraphExchanger::supportedNodeType::MULTIPLY);
-		}*/
+	}
 
 	std::string NodeMultiply::get_color() const
 	{

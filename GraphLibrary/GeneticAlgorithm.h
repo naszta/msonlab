@@ -22,9 +22,6 @@ namespace msonlab {
 		class GeneticAlgorithm : public SchedulingAlgorithm
 		{
 			typedef unsigned int uint;
-			// num of PUs
-			//GraphAlgorithms algorithms;
-
 			// algorithm parameters
 			Options::oPtr options;
 			FitnessStrategy::fsPtr fsstrategy;

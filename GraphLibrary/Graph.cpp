@@ -2,6 +2,7 @@
 #include "Graph.h"
 #include "BFSIterator.h"
 #include "DFSIterator.h"
+#include "NodeTest.h"
 
 namespace msonlab
 {
@@ -9,24 +10,7 @@ namespace msonlab
 	{
 		nodes.clear();
 		edges.clear();
-		this->iteratorEnd = std::make_shared<Node>(0, L"0", nullptr);
-	}
-
-	Graph::Graph(const Graph& other)
-	{
-		*this = other;
-	}
-
-	// TODO: rewrite as deep copy
-	Graph& Graph::operator=(const Graph& other)
-	{
-		if (this != &other)
-		{
-			this->nodes = other.nodes;
-			this->edges = other.edges;
-		}
-
-		return *this;
+		this->iteratorEnd = std::make_shared<NodeTest>(0, L"0", nullptr, 0);
 	}
 
 	bool Graph::addNode(IProcessable::nPtr toAdd)
@@ -94,8 +78,7 @@ namespace msonlab
 	const IProcessable::eVect& Graph::getEdges() const
 	{
 		return edges;
-		}
-
+	}
 
 	IProcessable::nVect Graph::getInputNodes() const
 	{

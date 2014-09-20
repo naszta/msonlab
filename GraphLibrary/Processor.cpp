@@ -32,6 +32,6 @@ namespace msonlab
 			i = readyToProcess.begin();
 		}
 
-		return graph->getOutputNodes();;
+		return graph->getOutputNodes();
 	}
 }

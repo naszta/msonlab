@@ -7,9 +7,8 @@
 namespace msonlab
 {
 	NodeAdd::NodeAdd(unsigned int _id, types::LabelType _label, types::DataPtr _value)
-		: Node(_id, _label, _value, 5)
+		: Node(_id, _label, _value, GraphExchanger::getSupportedNodeTypeName(GraphExchanger::supportedNodeType::ADD), 5)
 	{
-			this->type_string = GraphExchanger::getSupportedNodeTypeName(GraphExchanger::supportedNodeType::ADD);
 	}
 
 	NodeAdd::NodeAdd(const NodeAdd& other) : Node(other)
@@ -35,31 +34,29 @@ namespace msonlab
 	{
 		IProcessable::pVect ret;
 
-		if (isReadyForProcess())
-		{
+		if (isReadyForProcess()) {
 			types::DataPtr newVal = std::make_shared<types::DataType>(0.0);
 
-			for (IProcessable::eVect::iterator it = predecessors.begin(); it != predecessors.end(); ++it)
-			{
-				*newVal += *(*(*it)).getResultValue();
+			for (auto edge : getPredecessors()) {
+				*newVal += *(edge->getResultValue());
 			}
 
 			if (setProcessed(newVal))
 			{
-				for (IProcessable::eVect::iterator it = successors.begin(); it != successors.end(); ++it)
+				for (auto edge : getSuccessors())
 				{
-					if ((*(*it)).registerParameter())
+					if (edge->registerParameter())
 					{
-						ret.insert(ret.begin(), (*it));
+						ret.insert(ret.begin(), edge);
 					}
 				}
 				return ret;
 			}
-			else
+			else {
 				throw msonlab::Exceptions::GeneralErrorException("Error while setting the result of processing on this processable element!");
+			}
 		}
-		else
-		{
+		else {
 			throw msonlab::Exceptions::StillNotReadyForProcessException("This processable element is not yet ready for processing!");
 		}
 
@@ -81,7 +78,7 @@ namespace msonlab
 		}
 
 		// going deeper and calculate predecessors
-		for (IProcessable::pPtr pred : predecessors)
+		for (IProcessable::pPtr pred : getPredecessors())
 		{
 			if (pred->compile_iteration < compile_iteration)
 			{
@@ -102,7 +99,8 @@ namespace msonlab
 		}
 
 		// add ADD operations
-		for (unsigned int i = 0; i < predecessors.size() - 1; ++i)
+		size_t count = this->getPredecessorsSize();
+		for (unsigned int i = 0; i < count - 1; ++i)
 		{
 			StackRunner::addToken(prog, StackRunner::ADD, StackRunner::dataToken(new std::pair<StackValue::stackvaluePtr, int>(nullptr, -1)));
 		}
@@ -126,15 +124,8 @@ namespace msonlab
 	
 	}
 
-	// exchange
-	//std::string NodeAdd::getTypeString() const
-	//{
-	//	return GraphExchanger::getSupportedNodeTypeName(GraphExchanger::supportedNodeType::ADD);
-	//}
-
 	std::string NodeAdd::get_color() const
 	{
 		return "#00FF00";
 	}
-
 }

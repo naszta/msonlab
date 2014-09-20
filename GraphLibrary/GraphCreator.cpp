@@ -5,6 +5,7 @@
 #include "NodeMultiply.h"
 #include "NodeDivide.h"
 #include "NodeSquareRoot.h"
+#include "NodeTest.h"
 
 #include "BlueEdge.h"
 
@@ -115,7 +116,7 @@ namespace msonlab {
 					int ct = rand() % 4 + 2;
 					std::wstringstream wss;
 					wss << "#" << i;
-					nodes[i] = make_shared<Node>(i, wss.str(), make_shared<types::DataType>(i), ct);
+					nodes[i] = make_shared<NodeTest>(i, wss.str(), make_shared<types::DataType>(i), ct);
 					graph->addNode(nodes[i]);
 				}
 
@@ -365,16 +366,16 @@ namespace msonlab {
 			Graph::gPtr createCoffmanExample(unsigned comp_time) {
 				auto graph = make_unique<Graph>();
 
-				Node::nPtr nodeA = make_shared<Node>(0, L"A", make_shared<types::DataType>(5), comp_time);
-				Node::nPtr nodeB = make_shared<Node>(1, L"B", make_shared<types::DataType>(2), comp_time);
-				Node::nPtr nodeC = make_shared<Node>(2, L"C", make_shared<types::DataType>(3), comp_time);
-				Node::nPtr nodeD = make_shared<Node>(3, L"D", make_shared<types::DataType>(2), comp_time);
-				Node::nPtr nodeE = make_shared<Node>(4, L"E", make_shared<types::DataType>(9), comp_time);
-				Node::nPtr nodeF = make_shared<Node>(5, L"F", make_shared<types::DataType>(2), comp_time);
-				Node::nPtr nodeG = make_shared<Node>(6, L"G", make_shared<types::DataType>(6), comp_time);
-				Node::nPtr nodeH = make_shared<Node>(7, L"H", make_shared<types::DataType>(5), comp_time);
-				Node::nPtr nodeI = make_shared<Node>(8, L"I", make_shared<types::DataType>(4), comp_time);
-				Node::nPtr nodeJ = make_shared<Node>(9, L"J", make_shared<types::DataType>(4), comp_time);
+				Node::nPtr nodeA = make_shared<NodeTest>(0, L"A", make_shared<types::DataType>(5), comp_time);
+				Node::nPtr nodeB = make_shared<NodeTest>(1, L"B", make_shared<types::DataType>(2), comp_time);
+				Node::nPtr nodeC = make_shared<NodeTest>(2, L"C", make_shared<types::DataType>(3), comp_time);
+				Node::nPtr nodeD = make_shared<NodeTest>(3, L"D", make_shared<types::DataType>(2), comp_time);
+				Node::nPtr nodeE = make_shared<NodeTest>(4, L"E", make_shared<types::DataType>(9), comp_time);
+				Node::nPtr nodeF = make_shared<NodeTest>(5, L"F", make_shared<types::DataType>(2), comp_time);
+				Node::nPtr nodeG = make_shared<NodeTest>(6, L"G", make_shared<types::DataType>(6), comp_time);
+				Node::nPtr nodeH = make_shared<NodeTest>(7, L"H", make_shared<types::DataType>(5), comp_time);
+				Node::nPtr nodeI = make_shared<NodeTest>(8, L"I", make_shared<types::DataType>(4), comp_time);
+				Node::nPtr nodeJ = make_shared<NodeTest>(9, L"J", make_shared<types::DataType>(4), comp_time);
 
 				auto edge_value = make_shared<types::DataType>(1);
 				Edge::ePtr gh = make_shared<Edge>(10, L"GH", edge_value, nodeG, nodeH);

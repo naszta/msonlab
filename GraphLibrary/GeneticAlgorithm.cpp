@@ -211,7 +211,7 @@ namespace msonlab {
 			for (; counter > 0; --counter)
 			{
 				auto c = std::make_shared<Solution>(graph->numberOfNodes(), options->getNumberOfPus(), graph->numberOfEdges());
-				for (auto i = 0; i < c->mapping.size(); ++i) {
+				for (size_t i = 0; i < c->mapping.size(); ++i) {
 					c->mapping[i] = rand() % c->pus;
 				}
 

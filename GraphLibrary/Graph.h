@@ -27,8 +27,8 @@ namespace msonlab
 		typedef std::unique_ptr<Graph> gPtr;
 
 		Graph(); // empty constructor
-		Graph(const Graph& other); // copy constructor
-		Graph& operator=(const Graph& other); // assignment operator
+		Graph(const Graph& other) = delete; // copy constructor
+		Graph& operator=(const Graph& other) = delete; // assignment operator
 
 		bool addNode(IProcessable::nPtr toAdd); // adds a node to the graph
 		bool addEdge(IProcessable::ePtr toAdd); // adds an edge to the graph

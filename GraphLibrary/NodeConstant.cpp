@@ -7,9 +7,8 @@
 namespace msonlab
 {
 	NodeConstant::NodeConstant(unsigned int _id, types::LabelType _label, types::DataPtr _value)
-		: Node(_id, _label, _value, 2)
+		: Node(_id, _label, _value, GraphExchanger::getSupportedNodeTypeName(GraphExchanger::supportedNodeType::CONSTANT), 2)
 	{
-		this->type_string = GraphExchanger::getSupportedNodeTypeName(GraphExchanger::supportedNodeType::CONSTANT);
 	}
 
 	NodeConstant::NodeConstant(const NodeConstant& other) : Node(other)
@@ -27,7 +26,8 @@ namespace msonlab
 		return *this;
 	}
 
-	Node::nPtr NodeConstant::clone() {
+	Node::nPtr NodeConstant::clone() 
+	{
 		return std::make_shared<NodeConstant>(*this);
 	}
 
@@ -39,11 +39,11 @@ namespace msonlab
 		{
 			if (setProcessed(value))
 			{
-				for (IProcessable::eVect::iterator it = successors.begin(); it != successors.end(); ++it)
+				for (auto edge : getSuccessors())
 				{
-					if ((*(*it)).registerParameter())
+					if (edge->registerParameter())
 					{
-						ret.insert(ret.begin(), (*it));
+						ret.insert(ret.begin(), edge);
 					}
 				}
 				return ret;
@@ -94,12 +94,6 @@ namespace msonlab
 			}
 		}
 	}
-
-	// exchange
-	/*std::string NodeConstant::getTypeString() const
-	{
-		return GraphExchanger::getSupportedNodeTypeName(GraphExchanger::supportedNodeType::CONSTANT);
-	}*/
 
 	std::string NodeConstant::get_shape() const
 	{

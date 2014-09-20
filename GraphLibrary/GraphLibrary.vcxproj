@@ -42,7 +42,9 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level4</WarningLevel>
@@ -80,6 +82,7 @@
     <ClCompile Include="CoffmanGrahamSchedulingAlgorithm.cpp" />
     <ClCompile Include="GraphCreator.cpp" />
     <ClCompile Include="ListSchedulingAlgorithm.cpp" />
+    <ClCompile Include="NodeTest.cpp" />
     <ClCompile Include="SchedulingHelper.cpp" />
     <ClCompile Include="Solution.cpp" />
     <ClCompile Include="DFSIterator.cpp" />
@@ -116,6 +119,7 @@
     <ClInclude Include="BlueEdge.h" />
     <ClInclude Include="CoffmanGrahamSchedulingAlgorithm.h" />
     <ClInclude Include="ListSchedulingAlgorithm.h" />
+    <ClInclude Include="NodeTest.h" />
     <ClInclude Include="SchedulingHelper.h" />
     <ClInclude Include="Solution.h" />
     <ClInclude Include="ConfigFile.h" />

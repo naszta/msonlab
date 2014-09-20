@@ -8,9 +8,8 @@
 namespace msonlab
 {
 	NodeSquareRoot::NodeSquareRoot(unsigned int _id, types::LabelType _label, types::DataPtr _value)
-		: Node(_id, _label, _value, 7)
+		: Node(_id, _label, _value, GraphExchanger::getSupportedNodeTypeName(GraphExchanger::supportedNodeType::SQUAREROOT), 7)
 	{
-		this->type_string = GraphExchanger::getSupportedNodeTypeName(GraphExchanger::supportedNodeType::SQUAREROOT);
 	}
 
 	NodeSquareRoot::NodeSquareRoot(const NodeSquareRoot& other) : Node(other)
@@ -28,7 +27,8 @@ namespace msonlab
 		return *this;
 	}
 
-	Node::nPtr NodeSquareRoot::clone() {
+	Node::nPtr NodeSquareRoot::clone() 
+	{
 		return std::make_shared<NodeSquareRoot>(*this);
 	}
 
@@ -41,19 +41,19 @@ namespace msonlab
 
 		if (isReadyForProcess())
 		{
-			if (predecessors.size() != 1)
+			if (getPredecessorsSize() != 1)
 				throw Exceptions::NodeSquareRootPredecessorsAreNotValidException("NodeSquareRoot::process function");
 
-			*newVal = sqrt(*(predecessors.at(0)->getResultValue()));
+			*newVal = sqrt(*(getPredecessor(0)->getResultValue()));
 
 
 			if (setProcessed(newVal))
 			{
-				for (IProcessable::eVect::iterator it = successors.begin(); it != successors.end(); ++it)
+				for (auto edge : getSuccessors())
 				{
-					if ((*(*it)).registerParameter())
+					if (edge->registerParameter())
 					{
-						ret.insert(ret.begin(), (*it));
+						ret.insert(ret.begin(), edge);
 					}
 				}
 				return ret;
@@ -84,9 +84,9 @@ namespace msonlab
 
 
 		// going deeper and calculate predecessors
-		if (predecessors.size() != 1) throw new Exceptions::GeneralErrorException("Square root node is needed to have one predecessor");
+		if (getPredecessorsSize() != 1) throw new Exceptions::GeneralErrorException("Square root node is needed to have one predecessor");
 
-		IProcessable::pPtr pred = predecessors.at(0);
+		auto pred = getPredecessor(0);
 
 		if (pred->compile_iteration < compile_iteration)
 		{

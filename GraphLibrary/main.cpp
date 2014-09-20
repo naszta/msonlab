@@ -71,26 +71,16 @@ void test_small_graph(Options::oPtr options)
 	vector<unsigned int> testOrder;
 	GeneticAlgorithm::transfromResult(result, testOrder);
 
-	//GraphExchanger ge(g);
-	//ge.ExportGraph("test.msg");
-	//
-	//Graph::gPtr imported = GraphExchanger::ImportGraph("test.msg");
-	//GraphExchanger ge2(imported);
-	//ge2.ExportGraph("test2.msg");
-
 	auto sp1 = StackCompiler::getStackProgram(g, 2, testOrder);
 	sp1->print_out_programs();
 	sp1->run(sp1, 2);
-
-	/*auto sp2 = StackCompiler::getStackProgram(imported, 2, testOrder);
-	sp2->print_out_programs();
-	*/
 }
 
 void runHusScheduling(Options::oPtr options)
 {
 	// choosing fitness strategy for the GA
-	FitnessStrategy::fsPtr fsstrategy(new LengthFitnessStartegy());
+	auto fsstrategy = FitnessStrategy::find_fitness_strategy("length");
+	//FitnessStrategy::fsPtr fsstrategy(new LengthFitnessStartegy());
 
 	CriticalPathSchedulingAlgorithm alg;
 
@@ -113,8 +103,8 @@ Solution::sPtr schedule(Graph::gPtr& graph, SchedulingAlgorithm::algPtr alg, Opt
 	//best->printTable(std::cout, options->getCommOverhead());
 	unsigned l = SchedulingHelper::computeLengthAndReuseIdleTime(best, options);
 	std::cout << "Rescheduled length: " << l << std::endl;
-	LengthFitnessStartegy fs;
-	l = fs.fitness(best, options);
+	auto fs = FitnessStrategy::find_fitness_strategy("length");
+	l = fs->fitness(best, options);
 	std::cout << "Length: " << l << std::endl;
 	best->printTable(std::cout, options);
 	cout << "Correct " << SchedulingHelper::is_correct(best) << endl;
@@ -155,8 +145,37 @@ void doTest(SchedulingAlgorithm::algPtr alg, Options::oPtr options)
 	resfile.close();
 }
 
+template <class T>
+class Algo {
+	T alg;
+public:
+	Algo(T a) : alg(a) {}
+	Solution::sPtr schedule(Graph::gPtr& graph, Options::oPtr options) const {
+		return alg.schedule(graph, options);
+	}
+};
+
 int main(int argc, char *argv[])
 {
+	NodeAdd na (0, L"", make_shared<double>(2.3));
+	auto nasp = make_shared<NodeAdd>(na);
+	NodeAdd &nar = na;
+	cout << "value " << sizeof(na) << endl;
+	cout << "smart pointer " << sizeof(nasp) << endl;
+
+	shared_ptr<GreedySchedulingAlgorithm> greedy = make_shared<GreedySchedulingAlgorithm>();
+	GreedySchedulingAlgorithm greedyal;
+	auto cp = make_shared<CriticalPathSchedulingAlgorithm>();
+	CriticalPathSchedulingAlgorithm cpal;
+	cout << "greedy value " << sizeof(greedyal) << endl;
+	cout << "greedy pointer " << sizeof(greedy) << endl;
+	cout << "cp value " << sizeof(cpal) << endl;
+	cout << "cp pointer " << sizeof(cp) << endl;
+	//auto genetic = std::make_shared<GeneticAlgorithm>();
+
+	/*std::cin.get();
+
+	return 0;*/
 	/* initialize random seed: */
 	srand(161803);
 
@@ -177,26 +196,17 @@ int main(int argc, char *argv[])
 	SchedulingAlgorithm::algPtr alg;
 	std::cout << "Using ";
 	if (options->getAlgorithm().compare("genetic") == 0) {
-		std::cout << "Genetic algorithm with ";
-		FitnessStrategy::fsPtr fs;
-		if (options->getFitnessStrategy().compare("puUsage") == 0) {
-			fs = std::make_shared<PUUsageFitnessStrategy>();
-			std::cout << "pu usage fitness.\n";
-		}
-		else if (options->getFitnessStrategy().compare("loadBalance") == 0) {
-			fs = std::make_shared<LoadBalanceFitnessStrategy>();
-			std::cout << "load balance fitness.\n";
-		}
-		else if (options->getFitnessStrategy().compare("reschedule") == 0) {
-			fs = std::make_shared<RescheduleIdleTimeFitnessStartegy>();
-			std::cout << "reschedule idle time fitness.\n";
-		}
-		else {
-			fs = std::make_shared<LengthFitnessStartegy>();
-			std::cout << "length fitness.\n";
+		std::cout << "Genetic algorithm with " << options->getFitnessStrategy() << std::endl;
+		auto fs = FitnessStrategy::find_fitness_strategy(options->getFitnessStrategy());
+		if (fs == nullptr)
+		{
+			std::cerr << "Cannot find fitness strategy named " << options->getFitnessStrategy() << std::endl;
+			// may throw an exception
+			return 1;
 		}
 
 		alg = std::make_shared<GeneticAlgorithm>(options, fs);
+		std::cout << "Genetic algorithm with " << options->getFitnessStrategy() << std::endl;
 	}
 	else if (options->getAlgorithm().compare("criticalPath") == 0) {
 		std::cout << "Critical Path algorithm.\n";
@@ -211,39 +221,29 @@ int main(int argc, char *argv[])
 		alg = std::make_shared<GreedySchedulingAlgorithm>();
 	}
 
-	std::cout << " algorithm.\n";
-
-	// init graph
-	//auto graph = graph::creator::createCoffmanExample(1);
-	//auto g2 = msonlab::graph::algorithms::transitive_reduction(graph);
-	//auto graph = initSampleGraph();
-	//auto graph = initGraph();
 #if MEASURE != 0	
 	std::chrono::time_point<std::chrono::high_resolution_clock> startCHRONO, finishCHRONO;
 	startCHRONO = std::chrono::high_resolution_clock::now();
 #endif
 	// the function that is measured
-
-	//test_small_graph(options);
 	auto best = alg->schedule(graph, options);
 #if MEASURE != 0
 	finishCHRONO = std::chrono::high_resolution_clock::now();
 	std::chrono::duration<double> elapsedCHRONO = finishCHRONO - startCHRONO;
 #endif
 	// check correctness
-	LengthFitnessStartegy fs;
+	auto fs = FitnessStrategy::find_fitness_strategy("length");
 	bool correct = SchedulingHelper::is_correct(best);
 	cout << "Correct " << correct << endl;
 	std::cout << "Best length: " << best->getFitness() << std::endl;
 	if (!correct) {
-		fs.fitness(best, options);
+		fs->fitness(best, options);
 	}
 
 	unsigned l = SchedulingHelper::computeLengthAndReuseIdleTime(best, options);
 	std::cout << "Rescheduled length: " << l << std::endl;
-	l = fs.fitness(best, options);
+	l = fs->fitness(best, options);
 	std::cout << "Recalculated Length: " << l << std::endl;
-	//best->printTable(std::cout, options);
 	cout << "Correct " << SchedulingHelper::is_correct(best) << endl;
 #if MEASURE != 0
 	std::cout << "Elapsed time " << std::setprecision(10) << elapsedCHRONO.count() << std::endl;

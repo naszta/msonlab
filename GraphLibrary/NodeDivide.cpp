@@ -6,9 +6,8 @@
 namespace msonlab
 {
 	NodeDivide::NodeDivide(unsigned int _id, types::LabelType _label, types::DataPtr _value)
-		: Node(_id, _label, _value, 5)
+		: Node(_id, _label, _value, GraphExchanger::getSupportedNodeTypeName(GraphExchanger::supportedNodeType::DIVIDE), 5)
 	{
-		this->type_string = GraphExchanger::getSupportedNodeTypeName(GraphExchanger::supportedNodeType::DIVIDE);
 	}
 
 	NodeDivide::NodeDivide(const NodeDivide& other) : Node(other)
@@ -40,25 +39,26 @@ namespace msonlab
 
 			int i = 1;
 
-			for (IProcessable::eVect::iterator it = predecessors.begin(); it != predecessors.end(); ++it)
+			for (auto edge : getPredecessors())
 			{
 				if (i == 1)
-					*newVal = *(*(*it)).getResultValue();
+					*newVal = *(edge->getResultValue());
 				else
-					*newVal /= *(*(*it)).getResultValue();
+					*newVal /= *(edge->getResultValue());
 
 				i++;
 			}
 
 			if (setProcessed(newVal))
 			{
-				for (IProcessable::eVect::iterator it = successors.begin(); it != successors.end(); ++it)
+				for (auto edge : getSuccessors())
 				{
-					if((*(*it)).registerParameter())
+					if(edge->registerParameter())
 					{
-						ret.insert(ret.begin(),(*it));
+						ret.insert(ret.begin(), edge);
 					}
 				}
+
 				return ret;
 			}
 			else
@@ -89,7 +89,7 @@ namespace msonlab
 
 		// going deeper and calculate predecessors
 		int i = 0;
-		for (IProcessable::pPtr pred : predecessors)
+		for (auto pred : getPredecessors())
 		{
 			if (i == 2) break;
 

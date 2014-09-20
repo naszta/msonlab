@@ -44,11 +44,12 @@ namespace msonlab {
 				idPuMapping[actId] = actPU;
 
 				// calculating data arrival time
-				size_t predecessorSize = actNode->getPredecessorsSize();
-				for (uint j = 0; j < predecessorSize; ++j)
+				//size_t predecessorSize = actNode->getPredecessorsSize();
+				//for (uint j = 0; j < predecessorSize; ++j)
+				for (auto& n : actNode->getPreNodes())
 				{
 					// skipping edge
-					uint id = actNode->getPredecessorNodeId(j);
+					uint id = n->getId();
 
 					// check whether a flaw is present in this solution
 					// if a predecessor is not scheduled yet, that is a flaw
@@ -159,10 +160,12 @@ namespace msonlab {
 				idPuMapping[actId] = actPU;
 
 				// calculating data arrival time
-				size_t predecessorSize = actNode->getPredecessorsSize();
-				for (uint j = 0; j < predecessorSize; ++j)
+				//size_t predecessorSize = actNode->getPredecessorsSize();
+				//for (uint j = 0; j < predecessorSize; ++j)
+				for (auto& n : actNode->getPreNodes())
 				{
-					uint id = actNode->getPredecessor(j)->getFromId();
+					//uint id = actNode->getPredecessor(j)->getFromId();
+					uint id = n->getId();
 					if (FT[id] == 0) {
 						// this solutuion is not good
 						std::cout << "Solution is checked before. This CANNOT happen.\n";
