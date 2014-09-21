@@ -18,7 +18,7 @@ namespace msonlab {
 	namespace scheduling {
 
 		GeneticAlgorithm::GeneticAlgorithm(Options::oPtr options, FitnessStrategy::fsPtr strategy)
-			: options(options), fsstrategy(strategy)
+			: options(options), fsstrategy(std::move(strategy))
 		{
 		}
 
@@ -346,14 +346,14 @@ namespace msonlab {
 		// parallel task to calculate the fitness of one solution
 		class fitness_calculator : public tbb::task {
 			const Solution::sPtr solution;
-			const FitnessStrategy::fsPtr strategy;
+			const FitnessStrategy &strategy;
 			const Options::oPtr options;
 		public:
-			fitness_calculator(const Solution::sPtr sol, const FitnessStrategy::fsPtr strat, const Options::oPtr opt)
+			fitness_calculator(const Solution::sPtr sol, const FitnessStrategy &strat, const Options::oPtr opt)
 				: solution(sol), strategy(strat), options(opt) {}
 
 			tbb::task* execute() {
-				unsigned f = strategy->fitness(solution, options);
+				unsigned f = strategy.fitness(solution, options);
 				solution->setFitness(f);
 				return nullptr;
 			}
@@ -395,7 +395,7 @@ namespace msonlab {
 					}
 
 					new_solutions.push_back(offspring);
-					fitness_calculator& fc = *new(allocate_child()) fitness_calculator(offspring, alg.fsstrategy, alg.options);
+					fitness_calculator& fc = *new(allocate_child()) fitness_calculator(offspring, *alg.fsstrategy.get(), alg.options);
 					spawn(fc);
 				}
 

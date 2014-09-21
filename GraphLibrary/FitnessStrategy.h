@@ -9,7 +9,7 @@ namespace msonlab {
 	namespace scheduling {
 
 		using std::string;
-		using std::shared_ptr;
+		using std::unique_ptr;
 
 		namespace {
 			class Examplar {};
@@ -22,15 +22,16 @@ namespace msonlab {
 		{
 			static vector<FitnessStrategy*> examplars;
 		public:
-			virtual unsigned int fitness(Solution::sPtr solution, const Options::oPtr options) = 0;
-			virtual shared_ptr<FitnessStrategy> build(string name) = 0;
+			typedef unique_ptr<FitnessStrategy> fsPtr;
+			
+			virtual unsigned int fitness(Solution::sPtr solution, const Options::oPtr options) const = 0;
+			virtual fsPtr build(string name) const = 0;
 
-			typedef shared_ptr<FitnessStrategy> fsPtr;
 			static void add_fitness_strategy(FitnessStrategy* fs) { examplars.push_back(fs); }
-			static shared_ptr<FitnessStrategy> find_fitness_strategy(std::string name) {
+			static fsPtr find_fitness_strategy(std::string name) {
 				for (auto fs : examplars) {
 					auto res = fs->build(name);
-					if (res != nullptr) return res;
+					if (res != nullptr) return std::move(res);
 				}
 				return nullptr;
 			}
@@ -42,8 +43,8 @@ namespace msonlab {
 		public:
 			LengthFitnessStartegy(Examplar e) { 
 				FitnessStrategy::add_fitness_strategy(this); }
-			virtual unsigned int fitness(Solution::sPtr solution, const Options::oPtr options);
-			virtual shared_ptr<FitnessStrategy> build(string name);
+			unsigned int fitness(Solution::sPtr solution, const Options::oPtr options) const;
+			fsPtr build(string name) const; 
 
 		};
 
@@ -52,8 +53,8 @@ namespace msonlab {
 			static RescheduleIdleTimeFitnessStartegy example;
 		public:
 			RescheduleIdleTimeFitnessStartegy(Examplar e) { FitnessStrategy::add_fitness_strategy(this); }
-			virtual unsigned int fitness(Solution::sPtr solution, const Options::oPtr options);
-			virtual shared_ptr<FitnessStrategy> build(string name);
+			virtual unsigned int fitness(Solution::sPtr solution, const Options::oPtr options) const;
+			virtual fsPtr build(string name) const;
 		};
 
 		class PUUsageFitnessStrategy : public FitnessStrategy
@@ -61,8 +62,8 @@ namespace msonlab {
 			static PUUsageFitnessStrategy example;
 		public:
 			PUUsageFitnessStrategy(Examplar e) { FitnessStrategy::add_fitness_strategy(this); }
-			virtual unsigned int fitness(Solution::sPtr solution, const Options::oPtr options);
-			virtual shared_ptr<FitnessStrategy> build(string name);
+			virtual unsigned int fitness(Solution::sPtr solution, const Options::oPtr options) const;
+			virtual fsPtr build(string name) const;
 		};
 
 		class LoadBalanceFitnessStrategy : public FitnessStrategy
@@ -70,15 +71,15 @@ namespace msonlab {
 			static LoadBalanceFitnessStrategy example;
 		public:
 			LoadBalanceFitnessStrategy(Examplar e) { FitnessStrategy::add_fitness_strategy(this); }
-			virtual unsigned int fitness(Solution::sPtr solution, const Options::oPtr options);
-			virtual shared_ptr<FitnessStrategy> build(string name);
+			virtual unsigned int fitness(Solution::sPtr solution, const Options::oPtr options) const;
+			virtual fsPtr build(string name) const;
 		};
 
 		class OpenEdgesFitnessStrategy : public FitnessStrategy
 		{
 		public:
-			virtual unsigned int fitness(Solution::sPtr solution, const Options::oPtr options);
-			virtual shared_ptr<FitnessStrategy> build(string name);
+			virtual unsigned int fitness(Solution::sPtr solution, const Options::oPtr options) const;
+			virtual fsPtr build(string name) const;
 		};
 	}
 }

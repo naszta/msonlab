@@ -7,7 +7,7 @@ namespace msonlab {
 	namespace scheduling {
 
 		using std::shared_ptr;
-		using std::make_shared;
+		using std::make_unique;
 
 		vector<FitnessStrategy*> FitnessStrategy::examplars;
 		LengthFitnessStartegy LengthFitnessStartegy::example{ Examplar() };
@@ -16,33 +16,35 @@ namespace msonlab {
 		LoadBalanceFitnessStrategy LoadBalanceFitnessStrategy::example { Examplar() };
 
 
-		unsigned int LengthFitnessStartegy::fitness(Solution::sPtr solution, const Options::oPtr options)
+		unsigned int LengthFitnessStartegy::fitness(Solution::sPtr solution, const Options::oPtr options) const
 		{
 			return SchedulingHelper::computeLength(solution, options);
 		}
 
-		shared_ptr<FitnessStrategy> LengthFitnessStartegy::build(string name) {
+		FitnessStrategy::fsPtr LengthFitnessStartegy::build(string name) const
+		{
 			if (name.compare("length") == 0) {
-				return make_shared<LengthFitnessStartegy>(Examplar());
+				return make_unique<LengthFitnessStartegy>(Examplar());
 			}
 
 			return nullptr;
 		}
 
-		unsigned int RescheduleIdleTimeFitnessStartegy::fitness(Solution::sPtr solution, const Options::oPtr options)
+		unsigned int RescheduleIdleTimeFitnessStartegy::fitness(Solution::sPtr solution, const Options::oPtr options) const
 		{
 			return SchedulingHelper::computeLengthAndReuseIdleTime(solution, options);
 		}
 
-		shared_ptr<FitnessStrategy> RescheduleIdleTimeFitnessStartegy::build(string name) {
+		FitnessStrategy::fsPtr RescheduleIdleTimeFitnessStartegy::build(string name) const
+		{
 			if (name.compare("reschedule") == 0) {
-				return make_shared<RescheduleIdleTimeFitnessStartegy>(Examplar());
+				return make_unique<RescheduleIdleTimeFitnessStartegy>(Examplar());
 			}
 
 			return nullptr;
 		}
 
-		unsigned int PUUsageFitnessStrategy::fitness(Solution::sPtr solution, const Options::oPtr options)
+		unsigned int PUUsageFitnessStrategy::fitness(Solution::sPtr solution, const Options::oPtr options) const
 		{
 			unsigned length = SchedulingHelper::computeLength(solution, options);
 
@@ -60,15 +62,16 @@ namespace msonlab {
 			return ((sumUsedTime - sumWorkTime) * 1000) / sumUsedTime;
 		}
 
-		shared_ptr<FitnessStrategy> PUUsageFitnessStrategy::build(string name) {
+		FitnessStrategy::fsPtr PUUsageFitnessStrategy::build(string name) const
+		{
 			if (name.compare("puusage") == 0) {
-				return make_shared<PUUsageFitnessStrategy>(Examplar());
+				return make_unique<PUUsageFitnessStrategy>(Examplar());
 			}
 
 			return nullptr;
 		}
 
-		unsigned int LoadBalanceFitnessStrategy::fitness(Solution::sPtr solution, const Options::oPtr options)
+		unsigned int LoadBalanceFitnessStrategy::fitness(Solution::sPtr solution, const Options::oPtr options) const
 		{
 			vector<unsigned> RT(options->getNumberOfPus());
 			int length = SchedulingHelper::computeLengthAndRT(solution, options, RT);
@@ -77,15 +80,16 @@ namespace msonlab {
 			return (unsigned)(load_balance * 1000);
 		}
 
-		shared_ptr<FitnessStrategy> LoadBalanceFitnessStrategy::build(string name) {
+		FitnessStrategy::fsPtr LoadBalanceFitnessStrategy::build(string name) const
+		{
 			if (name.compare("loadbalance") == 0) {
-				return make_shared<LoadBalanceFitnessStrategy>(Examplar());
+				return make_unique<LoadBalanceFitnessStrategy>(Examplar());
 			}
 
 			return nullptr;
 		}
 
-		unsigned int OpenEdgesFitnessStrategy::fitness(Solution::sPtr solution, const Options::oPtr options)
+		unsigned int OpenEdgesFitnessStrategy::fitness(Solution::sPtr solution, const Options::oPtr options) const
 		{
 			return 0;
 		}

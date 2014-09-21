@@ -205,7 +205,7 @@ int main(int argc, char *argv[])
 			return 1;
 		}
 
-		alg = std::make_shared<GeneticAlgorithm>(options, fs);
+		alg = std::make_shared<GeneticAlgorithm>(options, std::move(fs));
 		std::cout << "Genetic algorithm with " << options->getFitnessStrategy() << std::endl;
 	}
 	else if (options->getAlgorithm().compare("criticalPath") == 0) {
