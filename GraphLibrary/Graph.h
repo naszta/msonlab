@@ -28,6 +28,7 @@ namespace msonlab
 
 		Graph(); // empty constructor
 		Graph(const Graph& other) = delete; // copy constructor
+		Graph(Graph&& other);
 		Graph& operator=(const Graph& other) = delete; // assignment operator
 
 		bool addNode(IProcessable::nPtr toAdd); // adds a node to the graph

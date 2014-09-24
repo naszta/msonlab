@@ -19,7 +19,7 @@ namespace msonlab
 	* PUBLIC METHODS
 	*/
 
-	GraphIterator::GraphIterator(GraphIterator& it)
+	GraphIterator::GraphIterator(const GraphIterator& it)
 	{
 		if (this != &it)
 		{
@@ -27,7 +27,7 @@ namespace msonlab
 		}
 	}
 
-	GraphIterator& GraphIterator::operator=(GraphIterator& it)
+	GraphIterator& GraphIterator::operator=(const GraphIterator& it)
 	{
 		if (this != &it)
 		{

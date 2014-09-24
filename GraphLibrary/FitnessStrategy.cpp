@@ -6,9 +6,9 @@
 namespace msonlab {
 	namespace scheduling {
 
-		using std::shared_ptr;
 		using std::make_unique;
 
+		// storing pointers to the example instances
 		vector<FitnessStrategy*> FitnessStrategy::examplars;
 		LengthFitnessStartegy LengthFitnessStartegy::example{ Examplar() };
 		RescheduleIdleTimeFitnessStartegy RescheduleIdleTimeFitnessStartegy::example{ Examplar() };

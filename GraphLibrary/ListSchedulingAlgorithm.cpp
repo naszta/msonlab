@@ -10,36 +10,36 @@ namespace msonlab {
 			return graph::algorithms::findMaxCostWithoutDependency(dependencies, costs);
 		}
 
-		void ListSchedulingAlgorithm::determineCosts(const Graph::gPtr& graph, vector<unsigned>& costs) const {
-			if (costs.size() != graph->numberOfNodes()) {
-				costs.resize(graph->numberOfNodes());
+		void ListSchedulingAlgorithm::determineCosts(const Graph &graph, vector<unsigned>& costs) const {
+			if (costs.size() != graph.numberOfNodes()) {
+				costs.resize(graph.numberOfNodes());
 			}
 
 			// the cost is simply the computation time.
-			for (auto node : graph->getNodes()) {
+			for (auto node : graph.getNodes()) {
 				costs[node->getId()] = node->getComputationTime();
 			}
 		}
 
-		Solution::sPtr ListSchedulingAlgorithm::schedule(Graph::gPtr& graph, Options::oPtr options) const
+		Solution::sPtr ListSchedulingAlgorithm::schedule(const Graph &graph, Options::oPtr options) const
 		{
 			auto levels = graph::algorithms::partialTopologicalSort(graph);
-			vector<unsigned> costs(graph->numberOfNodes());
+			vector<unsigned> costs(graph.numberOfNodes());
 
 			// determine the costs of the nodes
 			// the higher cost means earlier execution
 			this->determineCosts(graph, costs);
 
 			// counts the number of dependencies of each graph
-			vector<int> dependencies(graph->numberOfNodes());
+			vector<int> dependencies(graph.numberOfNodes());
 			graph::algorithms::createDependencyVector(graph, dependencies);
 
-			vector<Node::nPtr> nodes(graph->numberOfNodes());
+			vector<Node::nPtr> nodes(graph.numberOfNodes());
 			graph::algorithms::list_nodes(graph, nodes);
 
-			int tasks = graph->numberOfNodes();
+			int tasks = graph.numberOfNodes();
 			int comm = options->getCommOverhead();
-			Solution::sPtr result = std::make_shared<Solution>(tasks, options->getNumberOfPus(), graph->numberOfEdges());
+			Solution::sPtr result = std::make_shared<Solution>(tasks, options->getNumberOfPus(), graph.numberOfEdges());
 			vector<unsigned> RT(options->getNumberOfPus());
 			vector<unsigned> ST(tasks); // start time of the tasks
 			vector<unsigned> FT(tasks); // finish time of the tasks

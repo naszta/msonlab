@@ -78,6 +78,6 @@ namespace msonlab
 		}
 
 		static Graph::gPtr ImportGraph(std::string inputPath);
-		bool ExportGraph(const Graph::gPtr& graph, std::string outputPath) const;
+		bool ExportGraph(const Graph& graph, std::string outputPath) const;
 	};
 }

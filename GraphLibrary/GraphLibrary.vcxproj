@@ -83,6 +83,7 @@
     <ClCompile Include="GraphCreator.cpp" />
     <ClCompile Include="ListSchedulingAlgorithm.cpp" />
     <ClCompile Include="NodeTest.cpp" />
+    <ClCompile Include="SchedulingAlgorithm.cpp" />
     <ClCompile Include="SchedulingHelper.cpp" />
     <ClCompile Include="Solution.cpp" />
     <ClCompile Include="DFSIterator.cpp" />

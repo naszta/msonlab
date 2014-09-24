@@ -10,8 +10,10 @@ namespace msonlab {
 
 		class CoffmanGrahamSchedulingAlgorithm : public ListSchedulingAlgorithm
 		{
-		protected:
-			virtual void determineCosts(const Graph::gPtr& graph, vector<unsigned>& costs) const;
+			virtual void determineCosts(const Graph& graph, vector<unsigned>& costs) const;
+		public:
+			virtual ptr build(Options::oPtr) const;
+			virtual ~CoffmanGrahamSchedulingAlgorithm() = default;
 		};
 	}
 }

@@ -29,15 +29,16 @@ namespace msonlab {
 			return a > b;
 		}
 
-		void CoffmanGrahamSchedulingAlgorithm::determineCosts(const Graph::gPtr& graph, vector<unsigned>& costs) const {
-			if (costs.size() != graph->numberOfNodes()) {
-				costs.resize(graph->numberOfNodes());
+		void CoffmanGrahamSchedulingAlgorithm::determineCosts(const Graph &graph, vector<unsigned>& costs) const 
+		{
+			if (costs.size() != graph.numberOfNodes()) {
+				costs.resize(graph.numberOfNodes());
 			}
 
 			auto levels = graph::algorithms::partialTopologicalSort(graph);
 
 			int counter = 0;
-			auto nodes = graph->numberOfNodes() - 1;
+			auto nodes = graph.numberOfNodes() - 1;
 			for (auto& node : levels[0]) {
 				costs[node->getId()] = counter;
 				++counter;
@@ -72,6 +73,17 @@ namespace msonlab {
 					++counter;
 				}
 			}
+		}
+
+		//virtual constructor
+		SchedulingAlgorithm::ptr CoffmanGrahamSchedulingAlgorithm::build(Options::oPtr opt) const
+		{
+			if (opt->getAlgorithm().compare("coffman") == 0)
+			{
+				return std::move(std::make_unique<CoffmanGrahamSchedulingAlgorithm>());
+			}
+
+			return nullptr;
 		}
 	}
 }

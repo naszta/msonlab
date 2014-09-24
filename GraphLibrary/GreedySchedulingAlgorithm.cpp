@@ -6,20 +6,20 @@ namespace msonlab {
 	namespace scheduling {
 
 		// schedules using greedy algorithm
-		Solution::sPtr GreedySchedulingAlgorithm::schedule(Graph::gPtr& graph, Options::oPtr options) const
+		Solution::sPtr GreedySchedulingAlgorithm::schedule(const Graph &graph, Options::oPtr options) const
 		{
 			unsigned timeCounter = 0;
 			unsigned taskCounter = 0;
 			std::map< IProcessable::nPtr, int> count;
-			IProcessable::nVect inputNodes = graph->getInputNodes();
+			IProcessable::nVect inputNodes = graph.getInputNodes();
 			std::queue < IProcessable::nPtr> free;
 			for (size_t i = 0; i < inputNodes.size(); ++i)
 			{
 				free.push(inputNodes[i]);
 			}
 
-			Solution::sPtr sol = std::make_shared<Solution>(graph->numberOfNodes(), options->getNumberOfPus(), graph->numberOfEdges());
-			while (taskCounter < graph->numberOfNodes())
+			Solution::sPtr sol = std::make_shared<Solution>(graph.numberOfNodes(), options->getNumberOfPus(), graph.numberOfEdges());
+			while (taskCounter < graph.numberOfNodes())
 			{
 				vector< IProcessable::nPtr > out;
 				int limit = options->getNumberOfPus();
@@ -36,7 +36,7 @@ namespace msonlab {
 				}
 				++timeCounter;
 
-				if (taskCounter == graph->numberOfNodes())
+				if (taskCounter == graph.numberOfNodes())
 				{
 					break;
 				}
@@ -56,6 +56,17 @@ namespace msonlab {
 			}
 
 			return sol;
+		}
+
+		//virtual constructor
+		SchedulingAlgorithm::ptr GreedySchedulingAlgorithm::build(Options::oPtr opt) const
+		{
+			if (opt->getAlgorithm().compare("greedy") == 0)
+			{
+				return std::move(std::make_unique<GreedySchedulingAlgorithm>());
+			}
+
+			return nullptr;
 		}
 	}
 }

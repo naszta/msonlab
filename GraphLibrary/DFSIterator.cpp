@@ -12,7 +12,7 @@ namespace msonlab
 	{
 	}
 
-	DFSIterator::DFSIterator(Graph& g)
+	DFSIterator::DFSIterator(const Graph& g)
 	{
 		// end of the iterator is unique for every graph
 		// but the same for every iterator on the same graph
@@ -40,7 +40,7 @@ namespace msonlab
 	}
 
 	// Copy constructor
-	DFSIterator::DFSIterator(DFSIterator& it) : GraphIterator(it)
+	DFSIterator::DFSIterator(const DFSIterator& it) : GraphIterator(it)
 	{
 		if (this != &it)
 		{
@@ -48,7 +48,7 @@ namespace msonlab
 		}
 	}
 
-	DFSIterator& DFSIterator::operator=(DFSIterator& it)
+	DFSIterator& DFSIterator::operator=(const DFSIterator& it)
 	{
 		if (this != &it)
 		{

@@ -41,29 +41,29 @@ using namespace msonlab;
 using namespace msonlab::scheduling;
 using namespace std;
 
-Graph::gPtr initGraph()
+Graph initGraph()
 {
-	return msonlab::graph::creator::createQuadrant();
+	return std::move(msonlab::graph::creator::createQuadrant());
 }
 
-Graph::gPtr initTestGraph()
+Graph initTestGraph()
 {
-	return msonlab::graph::creator::createTest();
+	return std::move(msonlab::graph::creator::createTest());
 }
 
-Graph::gPtr initSampleGraph()
+Graph initSampleGraph()
 {
-	return msonlab::graph::creator::createSample();
+	return std::move(msonlab::graph::creator::createSample());
 }
 
-Graph::gPtr initRandomGraph(Options::oPtr Options)
+Graph initRandomGraph(Options::oPtr Options)
 {
 	return msonlab::graph::creator::createRandom(Options->getGraphSize(), Options->getGraphEdgeProb(), Options->getGraphWidening(), Options->getNumberOfPus());
 }
 
 void test_small_graph(Options::oPtr options)
 {
-	Graph::gPtr g = initSampleGraph();
+	const Graph&& g = initSampleGraph();
 
 	CriticalPathSchedulingAlgorithm alg;
 	auto result = alg.schedule(g, options);
@@ -86,7 +86,7 @@ void runHusScheduling(Options::oPtr options)
 
 	// getting the graph
 	//auto graph = initRandomGraph(Options);
-	auto graph = initGraph();
+	const Graph&& graph = initGraph();
 
 	auto result = alg.schedule(graph, options);
 	result->printTable(std::cout, options);
@@ -95,9 +95,9 @@ void runHusScheduling(Options::oPtr options)
 }
 
 
-Solution::sPtr schedule(Graph::gPtr& graph, SchedulingAlgorithm::algPtr alg, Options::oPtr options)
+Solution::sPtr schedule(const Graph& graph, const SchedulingAlgorithm& alg, Options::oPtr options)
 {
-	auto best = alg->schedule(graph, options);
+	auto best = alg.schedule(graph, options);
 	cout << "Correct " << SchedulingHelper::is_correct(best) << endl;
 	std::cout << "Best length: " << best->getFitness() << std::endl;
 	//best->printTable(std::cout, options->getCommOverhead());
@@ -112,19 +112,18 @@ Solution::sPtr schedule(Graph::gPtr& graph, SchedulingAlgorithm::algPtr alg, Opt
 }
 
 // used for running the algorithm with changing one parameter
-void scheduleTest(SchedulingAlgorithm::algPtr alg, Options::oPtr options, ofstream& resfile)
+void scheduleTest(const SchedulingAlgorithm& alg, Options::oPtr options, ofstream& resfile)
 {
-	//auto graph = initSampleGraph();
-	auto graph = initRandomGraph(options);
-	//auto graph = initGraph();
-	auto best = alg->schedule(graph, options);
+	//const Graph&& graph = initSampleGraph();
+	const Graph&& graph = initRandomGraph(options);
+	//const Graph&& graph = initGraph();
+	auto best = alg.schedule(graph, options);
 	resfile << ", preResult=" << best->getFitness();
-	//best->printTable(std::cout, options->getCommOverhead());
 	unsigned l = SchedulingHelper::computeLengthAndReuseIdleTime(best, options);
 	resfile << ", result=" << l;
 }
 
-void doTest(SchedulingAlgorithm::algPtr alg, Options::oPtr options)
+void doTest(SchedulingAlgorithm::ptr alg, Options::oPtr options)
 {
 	ofstream resfile;
 	resfile.open("result.txt");
@@ -136,7 +135,7 @@ void doTest(SchedulingAlgorithm::algPtr alg, Options::oPtr options)
 		double elapsed = 0.0;
 		std::chrono::time_point<std::chrono::high_resolution_clock> startCHRONO, finishCHRONO;
 		startCHRONO = std::chrono::high_resolution_clock::now();
-		scheduleTest(alg, opt, resfile);
+		scheduleTest(*alg.get(), opt, resfile); // pass alg by reference
 		finishCHRONO = std::chrono::high_resolution_clock::now();
 		std::chrono::duration<types::DataType> elapsedCHRONO = finishCHRONO - startCHRONO;
 		elapsed = elapsedCHRONO.count();
@@ -155,35 +154,31 @@ public:
 	}
 };
 
+struct holder {
+	int i;
+};
+
+
+holder&& getter() {
+	holder h;
+	h.i = 6;
+	return std::move(h);
+}
+
 int main(int argc, char *argv[])
 {
-	NodeAdd na (0, L"", make_shared<double>(2.3));
-	auto nasp = make_shared<NodeAdd>(na);
-	NodeAdd &nar = na;
-	cout << "value " << sizeof(na) << endl;
-	cout << "smart pointer " << sizeof(nasp) << endl;
+	auto h = getter();
 
-	shared_ptr<GreedySchedulingAlgorithm> greedy = make_shared<GreedySchedulingAlgorithm>();
-	GreedySchedulingAlgorithm greedyal;
-	auto cp = make_shared<CriticalPathSchedulingAlgorithm>();
-	CriticalPathSchedulingAlgorithm cpal;
-	cout << "greedy value " << sizeof(greedyal) << endl;
-	cout << "greedy pointer " << sizeof(greedy) << endl;
-	cout << "cp value " << sizeof(cpal) << endl;
-	cout << "cp pointer " << sizeof(cp) << endl;
-	//auto genetic = std::make_shared<GeneticAlgorithm>();
+	cout << h.i << endl;
 
-	/*std::cin.get();
-
-	return 0;*/
 	/* initialize random seed: */
 	srand(161803);
 
 	// loading GA configuration
 	Options::oPtr options = std::make_shared<const Options>("Options.cfg");
 
-	//auto graph = graph::creator::createRandomLeveledDAG(options->getGraphSize(), options->getGraphWidening(), options->getGraphEdgeProb());
-	auto graph = initRandomGraph(options);
+	//const Graph&& graph = graph::creator::createRandomLeveledDAG(options->getGraphSize(), options->getGraphWidening(), options->getGraphEdgeProb());
+	Graph graph = initRandomGraph(options);
 	GraphExchanger ge;
 	try {
 		ge.ExportGraph(graph, "leveled.graphml");
@@ -193,10 +188,9 @@ int main(int argc, char *argv[])
 	}
 
 	// choosing algorithm
-	SchedulingAlgorithm::algPtr alg;
+	SchedulingAlgorithm::ptr alg;
 	std::cout << "Using ";
 	if (options->getAlgorithm().compare("genetic") == 0) {
-		std::cout << "Genetic algorithm with " << options->getFitnessStrategy() << std::endl;
 		auto fs = FitnessStrategy::find_fitness_strategy(options->getFitnessStrategy());
 		if (fs == nullptr)
 		{
@@ -205,20 +199,20 @@ int main(int argc, char *argv[])
 			return 1;
 		}
 
-		alg = std::make_shared<GeneticAlgorithm>(options, std::move(fs));
+		alg = std::make_unique<GeneticAlgorithm>(options, std::move(fs));
 		std::cout << "Genetic algorithm with " << options->getFitnessStrategy() << std::endl;
 	}
 	else if (options->getAlgorithm().compare("criticalPath") == 0) {
 		std::cout << "Critical Path algorithm.\n";
-		alg = std::make_shared<CriticalPathSchedulingAlgorithm>();
+		alg = std::make_unique<CriticalPathSchedulingAlgorithm>();
 	}
 	else if (options->getAlgorithm().compare("coffman") == 0) {
 		std::cout << "CoffmanGraham algorithm.\n";
-		alg = std::make_shared<CoffmanGrahamSchedulingAlgorithm>();
+		alg = std::make_unique<CoffmanGrahamSchedulingAlgorithm>();
 	}
 	else {
 		std::cout << "Greedy algorithm.\n";
-		alg = std::make_shared<GreedySchedulingAlgorithm>();
+		alg = std::make_unique<GreedySchedulingAlgorithm>();
 	}
 
 #if MEASURE != 0	

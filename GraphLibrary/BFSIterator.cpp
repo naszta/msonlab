@@ -7,7 +7,7 @@ namespace msonlab
 	{
 	}
 
-	BFSIterator::BFSIterator(Graph& g)
+	BFSIterator::BFSIterator(const Graph& g)
 	{
 		// end of the iterator is unique for every graph
 		// but the same for every iterator on the same graph
@@ -33,7 +33,7 @@ namespace msonlab
 	}
 
 	// Copy constructor
-	BFSIterator::BFSIterator(BFSIterator& it) : GraphIterator(it)
+	BFSIterator::BFSIterator(const BFSIterator& it) : GraphIterator(it)
 	{
 		if (this != &it)
 		{
@@ -41,7 +41,7 @@ namespace msonlab
 		}
 	}
 
-	BFSIterator& BFSIterator::operator=(BFSIterator& it)
+	BFSIterator& BFSIterator::operator=(const BFSIterator& it)
 	{
 		if (this != &it)
 		{

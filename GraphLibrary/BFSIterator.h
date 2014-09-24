@@ -22,9 +22,9 @@ namespace msonlab
 		unsigned current_depth;
 	public:
 		BFSIterator(IProcessable::nPtr endPtr);
-		BFSIterator(Graph& g);
-		BFSIterator(BFSIterator& it);
-		BFSIterator& operator=(BFSIterator& it);
+		BFSIterator(const Graph& g);
+		BFSIterator(const BFSIterator& it);
+		BFSIterator& operator=(const BFSIterator& it);
 		BFSIterator& operator++(); // prefix
 		BFSIterator operator++(int); // postfix
 		bool skipActNode();

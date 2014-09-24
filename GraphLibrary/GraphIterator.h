@@ -24,8 +24,8 @@ namespace msonlab
 	public:
 		GraphIterator(IProcessable::nPtr node, IProcessable::nPtr end);
 		GraphIterator();
-		GraphIterator(GraphIterator& it);
-		GraphIterator& operator=(GraphIterator& it);
+		GraphIterator(const GraphIterator& it);
+		GraphIterator& operator=(const GraphIterator& it);
 		bool operator==(const GraphIterator& it) const;
 		IProcessable::nPtr operator*();
 		bool setStartNode(IProcessable::nPtr startNode);

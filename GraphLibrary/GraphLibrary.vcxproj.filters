@@ -275,5 +275,8 @@
     <ClCompile Include="NodeTest.cpp">
       <Filter>Source Files\Node</Filter>
     </ClCompile>
+    <ClCompile Include="SchedulingAlgorithm.cpp">
+      <Filter>Source Files\Scheduling</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

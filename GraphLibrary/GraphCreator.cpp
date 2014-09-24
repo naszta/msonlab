@@ -18,8 +18,7 @@ namespace msonlab {
 			using std::make_shared;
 			using std::make_unique;
 
-			Graph::gPtr createRandomLeveledDAG(size_t node_size, size_t level_size, unsigned edge_limit) {
-				Graph::gPtr graph = make_unique<Graph>();
+			Graph&& createRandomLeveledDAG(size_t node_size, size_t level_size, unsigned edge_limit) {
 				IProcessable::nVect nodes(node_size);
 				vector<unsigned> in_count(node_size);
 				vector<unsigned> out_count(node_size); // sure?
@@ -34,12 +33,13 @@ namespace msonlab {
 				// the first node in the next level
 				unsigned first = cls;
 
+				Graph graph;
 				// generating nodes for the graph
 				size_t i;
 				for (i = 0; i < cls; ++i)
 				{
 					nodes[i] = make_shared<NodeConstant>(i, L"input", make_shared<types::DataType>(i));
-					graph->addNode(nodes[i]);
+					graph.addNode(nodes[i]);
 				}
 
 				for (i = cls; i < node_size; ++i)
@@ -48,7 +48,7 @@ namespace msonlab {
 					std::wstringstream wss;
 					wss << "#" << i;
 					nodes[i] = make_shared<NodeAdd>(i, wss.str(), make_shared<types::DataType>(i));
-					graph->addNode(nodes[i]);
+					graph.addNode(nodes[i]);
 				}
 
 				// the actual node's id that's out edges are generated
@@ -71,7 +71,7 @@ namespace msonlab {
 							// if the limit lets it, add the edge
 							if (in_count[to_id] < edge_limit) {
 								auto edge = std::make_shared<Edge>(edge_counter, L"a", make_shared<types::DataType>(edge_counter), nodes[from_id], nodes[to_id]);
-								graph->addEdge(edge);
+								graph.addEdge(edge);
 								++in_count[to_id];
 								++edge_counter;
 							}
@@ -92,13 +92,13 @@ namespace msonlab {
 					}
 				}
 
-				return graph;
+				return std::move(graph);
 			}
 
-			Graph::gPtr createRandom(size_t size, unsigned edgeProb, unsigned widening, unsigned pus)
+			Graph createRandom(size_t size, unsigned edgeProb, unsigned widening, unsigned pus)
 			{
 				IProcessable::nVect nodes(size);
-				Graph::gPtr graph = make_unique<Graph>();
+				Graph graph;
 
 				size_t input_size = 2 * pus < size ? 2 * pus : size / 3;
 				size_t output_size = std::min(input_size - 1, widening);
@@ -108,7 +108,7 @@ namespace msonlab {
 				for (i = 0; i < input_size; ++i)
 				{
 					nodes[i] = make_shared<NodeConstant>(i, L"input", make_shared<types::DataType>(i));
-					graph->addNode(nodes[i]);
+					graph.addNode(nodes[i]);
 				}
 
 				for (i = input_size; i < size; ++i)
@@ -117,7 +117,7 @@ namespace msonlab {
 					std::wstringstream wss;
 					wss << "#" << i;
 					nodes[i] = make_shared<NodeTest>(i, wss.str(), make_shared<types::DataType>(i), ct);
-					graph->addNode(nodes[i]);
+					graph.addNode(nodes[i]);
 				}
 
 				// adding inputs
@@ -146,7 +146,7 @@ namespace msonlab {
 						node_id += input_size;
 						IProcessable::ePtr e = make_shared<Edge>(edge_counter, L"a", make_shared<types::DataType>(i + node_id), nodes[i], nodes[node_id]);
 						++edge_counter;
-						graph->addEdge(e);
+						graph.addEdge(e);
 					}
 				}
 
@@ -172,7 +172,7 @@ namespace msonlab {
 						node_id += i;
 						IProcessable::ePtr e = make_shared<Edge>(edge_counter, L"a", make_shared<types::DataType>(i + node_id), nodes[i], nodes[node_id]);
 						++edge_counter;
-						graph->addEdge(e);
+						graph.addEdge(e);
 					}
 				}
 
@@ -180,8 +180,7 @@ namespace msonlab {
 				return graph;
 			}
 
-			Graph::gPtr createQuadrant(){
-				auto graph = make_unique<Graph>();
+			Graph&& createQuadrant(){
 				msonlab::Node::nPtr a = (make_shared<msonlab::NodeConstant>(0, L"a", make_shared<types::DataType>(4)));
 				msonlab::Node::nPtr b = (make_shared<msonlab::NodeConstant>(1, L"b", make_shared<types::DataType>(2)));
 				msonlab::Node::nPtr c = (make_shared<msonlab::NodeConstant>(2, L"c", make_shared<types::DataType>(-5)));
@@ -245,37 +244,35 @@ namespace msonlab {
 				msonlab::Edge::ePtr e22(new msonlab::Edge(40, L"e22", 0, add_toDivide2, y2));
 				msonlab::Edge::ePtr e23(new msonlab::Edge(41, L"e23", 0, divide_1_2a, y2));
 
+				Graph graph;
+				graph.addEdge(e1);
+				graph.addEdge(e2);
+				graph.addEdge(e3);
+				graph.addEdge(e4);
+				graph.addEdge(e5);
+				graph.addEdge(e6);
+				graph.addEdge(e7);
+				graph.addEdge(e8);
+				graph.addEdge(e9);
+				graph.addEdge(e10);
+				graph.addEdge(e11);
+				graph.addEdge(e12);
+				graph.addEdge(e13);
+				graph.addEdge(e14);
+				graph.addEdge(e15);
+				graph.addEdge(e16);
+				graph.addEdge(e17);
+				graph.addEdge(e18);
+				graph.addEdge(e19);
+				graph.addEdge(e20);
+				graph.addEdge(e21);
+				graph.addEdge(e22);
+				graph.addEdge(e23);
 
-				graph->addEdge(e1);
-				graph->addEdge(e2);
-				graph->addEdge(e3);
-				graph->addEdge(e4);
-				graph->addEdge(e5);
-				graph->addEdge(e6);
-				graph->addEdge(e7);
-				graph->addEdge(e8);
-				graph->addEdge(e9);
-				graph->addEdge(e10);
-				graph->addEdge(e11);
-				graph->addEdge(e12);
-				graph->addEdge(e13);
-				graph->addEdge(e14);
-				graph->addEdge(e15);
-				graph->addEdge(e16);
-				graph->addEdge(e17);
-				graph->addEdge(e18);
-				graph->addEdge(e19);
-				graph->addEdge(e20);
-				graph->addEdge(e21);
-				graph->addEdge(e22);
-				graph->addEdge(e23);
-
-				return graph;
+				return std::move(graph);
 			}
 
-			Graph::gPtr createSample() {
-				Graph::gPtr g = make_unique<Graph>();
-
+			Graph&& createSample() {
 				msonlab::Node::nPtr a(new msonlab::NodeConstant(0, L"a", make_shared<types::DataType>(2)));
 				msonlab::Node::nPtr b(new msonlab::NodeConstant(1, L"b", make_shared<types::DataType>(3)));
 				msonlab::Node::nPtr c(new msonlab::NodeConstant(2, L"c", make_shared<types::DataType>(2)));
@@ -302,20 +299,21 @@ namespace msonlab {
 
 				msonlab::Edge::ePtr e8(new msonlab::Edge(16, L"e8", 0, cd, res));
 
-				g->addEdge(e1);
-				g->addEdge(e2);
-				g->addEdge(e3);
-				g->addEdge(e4);
-				g->addEdge(e5);
-				g->addEdge(e6);
-				g->addEdge(e7);
-				g->addEdge(e8);
+				Graph graph;
+				graph.addEdge(e1);
+				graph.addEdge(e2);
+				graph.addEdge(e3);
+				graph.addEdge(e4);
+				graph.addEdge(e5);
+				graph.addEdge(e6);
+				graph.addEdge(e7);
+				graph.addEdge(e8);
 
-				return g;
+				return std::move(graph);
 			}
 
-			Graph::gPtr createTest() {
-				auto testG = make_unique<Graph>();
+			Graph&& createTest() {
+				Graph graph;
 
 				Node::nPtr node0 = make_shared<NodeConstant>(0, L"0", make_shared<types::DataType>(5));
 				Node::nPtr node1 = make_shared<NodeConstant>(1, L"1", make_shared<types::DataType>(2));
@@ -344,28 +342,26 @@ namespace msonlab {
 				Edge::ePtr edge15 = make_shared<Edge>(24, L"e89", nullptr, node2, node8);
 				Edge::ePtr edge16 = make_shared<Edge>(25, L"e07", nullptr, node0, node7);
 
-				testG->addEdge(edge1);
-				testG->addEdge(edge2);
-				testG->addEdge(edge3);
-				testG->addEdge(edge4);
-				testG->addEdge(edge5);
-				testG->addEdge(edge6);
-				testG->addEdge(edge7);
-				testG->addEdge(edge8);
-				testG->addEdge(edge9);
-				testG->addEdge(edge10);
-				testG->addEdge(edge11);
-				testG->addEdge(edge12);
-				testG->addEdge(edge13);
-				testG->addEdge(edge14);
-				testG->addEdge(edge15);
-				testG->addEdge(edge16);
-				return testG;
+				graph.addEdge(edge1);
+				graph.addEdge(edge2);
+				graph.addEdge(edge3);
+				graph.addEdge(edge4);
+				graph.addEdge(edge5);
+				graph.addEdge(edge6);
+				graph.addEdge(edge7);
+				graph.addEdge(edge8);
+				graph.addEdge(edge9);
+				graph.addEdge(edge10);
+				graph.addEdge(edge11);
+				graph.addEdge(edge12);
+				graph.addEdge(edge13);
+				graph.addEdge(edge14);
+				graph.addEdge(edge15);
+				graph.addEdge(edge16);
+				return std::move(graph);
 			}
 
-			Graph::gPtr createCoffmanExample(unsigned comp_time) {
-				auto graph = make_unique<Graph>();
-
+			Graph&& createCoffmanExample(unsigned comp_time) {
 				Node::nPtr nodeA = make_shared<NodeTest>(0, L"A", make_shared<types::DataType>(5), comp_time);
 				Node::nPtr nodeB = make_shared<NodeTest>(1, L"B", make_shared<types::DataType>(2), comp_time);
 				Node::nPtr nodeC = make_shared<NodeTest>(2, L"C", make_shared<types::DataType>(3), comp_time);
@@ -396,23 +392,24 @@ namespace msonlab {
 				Edge::ePtr ci = make_shared<Edge>(21, L"CI", edge_value, nodeC, nodeI);
 				Edge::ePtr cj = make_shared<Edge>(22, L"CJ", edge_value, nodeC, nodeJ);
 
-				graph->addEdge(gh);
-				graph->addEdge(dg);
-				graph->addEdge(eg);
-				graph->addEdge(fg);
-				graph->addEdge(ad);
-				graph->addEdge(ae);
-				graph->addEdge(af);
-				graph->addEdge(be);
-				graph->addEdge(bf);
-				graph->addEdge(bi);
-				graph->addEdge(bj);
-				graph->addEdge(ce);
-				graph->addEdge(cf);
-				graph->addEdge(ci);
-				graph->addEdge(cj);
+				Graph graph;
+				graph.addEdge(gh);
+				graph.addEdge(dg);
+				graph.addEdge(eg);
+				graph.addEdge(fg);
+				graph.addEdge(ad);
+				graph.addEdge(ae);
+				graph.addEdge(af);
+				graph.addEdge(be);
+				graph.addEdge(bf);
+				graph.addEdge(bi);
+				graph.addEdge(bj);
+				graph.addEdge(ce);
+				graph.addEdge(cf);
+				graph.addEdge(ci);
+				graph.addEdge(cj);
 
-				return graph;
+				return std::move(graph);
 			}
 		}
 	}

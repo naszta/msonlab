@@ -13,7 +13,6 @@ namespace msonlab {
 	namespace scheduling {
 
 		using msonlab::Graph;
-		//using msonlab::GraphAlgorithms;
 
 		using std::vector;
 		using std::shared_ptr;
@@ -26,9 +25,9 @@ namespace msonlab {
 			Options::oPtr options;
 			FitnessStrategy::fsPtr fsstrategy;
 
-			SolutionSet::setPtr generateInitialSolution(Graph::gPtr& graph, Options::oPtr options) const;
-			SolutionSet::setPtr generateCPSolution(Graph::gPtr& graph, Options::oPtr options) const;
-			SolutionSet::setPtr generateRndSolution(Graph::gPtr& graph, Options::oPtr options) const;
+			SolutionSet::setPtr generateInitialSolution(const Graph &graph, Options::oPtr options) const;
+			SolutionSet::setPtr generateCPSolution(const Graph &graph, Options::oPtr options) const;
+			SolutionSet::setPtr generateRndSolution(const Graph &graph, Options::oPtr options) const;
 
 			// crossover operations
 			Solution::sPtr crossoverMap(Solution::sPtr father, Solution::sPtr mother) const;
@@ -43,16 +42,20 @@ namespace msonlab {
 
 			void parallelSimulateMating(SolutionSet::setPtr& set, int offsprings, bool doOrderCrossover) const;
 			friend class round_simulator;
+
+			// building instance for virtual constructor
+			
 		public:
 			//typedef shared_ptr<Solution> cPtr;
 			typedef vector< Solution::sPtr > cVect;
 			//typedef unique_ptr<Population> pPtr;
 
-			GeneticAlgorithm(Options::oPtr options, FitnessStrategy::fsPtr strategy);
+			GeneticAlgorithm(Options::oPtr, FitnessStrategy::fsPtr);
+			virtual ptr build(Options::oPtr) const;
 
-			virtual Solution::sPtr schedule(Graph::gPtr& graph, Options::oPtr options) const;
+			virtual Solution::sPtr schedule(const Graph& graph, Options::oPtr options) const;
 
-			Solution::sPtr greedySolution(Graph::gPtr& graph) const;
+			Solution::sPtr greedySolution(const Graph &graph) const;
 
 			static void transfromResult(Solution::sPtr c, vector<unsigned>& result);
 

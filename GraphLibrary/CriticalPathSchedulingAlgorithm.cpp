@@ -12,9 +12,23 @@ namespace msonlab {
 
 		using namespace msonlab;
 
-		void CriticalPathSchedulingAlgorithm::determineCosts(const Graph::gPtr& graph, vector<unsigned>& costs) const {
-			if (costs.size() != graph->numberOfNodes()) {
-				costs.resize(graph->numberOfNodes());
+		CriticalPathSchedulingAlgorithm::CriticalPathSchedulingAlgorithm() {}
+
+		//virtual constructor
+		SchedulingAlgorithm::ptr CriticalPathSchedulingAlgorithm::build(Options::oPtr opt) const
+		{
+			if (opt->getAlgorithm().compare("criticalpath") == 0)
+			{
+				return std::move(std::make_unique<CriticalPathSchedulingAlgorithm>());
+			}
+
+			return nullptr;
+		}
+
+		void CriticalPathSchedulingAlgorithm::determineCosts(const Graph &graph, vector<unsigned>& costs) const 
+		{
+			if (costs.size() != graph.numberOfNodes()) {
+				costs.resize(graph.numberOfNodes());
 			}
 			
 			auto levels = graph::algorithms::partialTopologicalSort(graph);

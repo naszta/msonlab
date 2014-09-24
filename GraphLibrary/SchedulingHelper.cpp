@@ -11,9 +11,9 @@ namespace msonlab {
 			vector<unsigned>& ST, vector<unsigned>& RT)
 		{
 			// ensure correctness before start to compute length
-			if (!is_correct(solution)) {
+			/*if (!is_correct(solution)) {
 				return UINT32_MAX;
-			}
+			}*/
 
 			typedef unsigned int uint;
 			// const vector references
@@ -46,7 +46,7 @@ namespace msonlab {
 				// calculating data arrival time
 				//size_t predecessorSize = actNode->getPredecessorsSize();
 				//for (uint j = 0; j < predecessorSize; ++j)
-				for (auto& n : actNode->getPreNodes())
+				for (auto n : actNode->getPreNodes())
 				{
 					// skipping edge
 					uint id = n->getId();
@@ -54,7 +54,7 @@ namespace msonlab {
 					// check whether a flaw is present in this solution
 					// if a predecessor is not scheduled yet, that is a flaw
 					if (FT[id] == 0) {
-						std::cout << "Solution is checked before. This CANNOT happen.\n";
+						//std::cout << "Solution is checked before. This CANNOT happen.\n";
 						return UINT32_MAX;
 					}
 
@@ -115,9 +115,9 @@ namespace msonlab {
 		unsigned int SchedulingHelper::computeLengthAndReuseIdleTime(Solution::sPtr& solution, const Options::oPtr& options)
 		{
 			// ensure correctness before start to compute length
-			if (!is_correct(solution)) {
+			/*if (!is_correct(solution)) {
 				return UINT32_MAX;
-			}
+			}*/
 
 			typedef unsigned int uint;
 
@@ -168,7 +168,6 @@ namespace msonlab {
 					uint id = n->getId();
 					if (FT[id] == 0) {
 						// this solutuion is not good
-						std::cout << "Solution is checked before. This CANNOT happen.\n";
 						return UINT32_MAX;
 					}
 

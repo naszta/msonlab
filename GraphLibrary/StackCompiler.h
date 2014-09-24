@@ -14,7 +14,7 @@ namespace msonlab
 
 	public:
 
-		static StackRunner::srPtr getStackProgram(msonlab::Graph::gPtr& graph, unsigned int number_of_threads, StackRunner::scheduleOrder schedule);
+		static StackRunner::srPtr getStackProgram(const Graph& graph, unsigned int number_of_threads, StackRunner::scheduleOrder schedule);
 
 	};
 

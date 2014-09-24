@@ -239,7 +239,7 @@ namespace msonlab
 
 	}
 
-	bool GraphExchanger::ExportGraph(const Graph::gPtr& graph, std::string outputPath) const
+	bool GraphExchanger::ExportGraph(const Graph& graph, std::string outputPath) const
 	{
 		XMLPlatformUtils::Initialize();
 
@@ -270,14 +270,14 @@ namespace msonlab
 		rootElement->appendChild(graphElement);
 
 		// add nodes to the graph
-		auto nodes = graph->getNodes();
+		auto nodes = graph.getNodes();
 		for (unsigned int i = 0; i < nodes.size(); ++i)
 		{
 			graphElement->appendChild(nodes.at(i)->serialize(pDOMDocument, "d2", "d0", "d4"));
 		}
 
 		// add edges to the graph
-		auto edges = graph->getEdges();
+		auto edges = graph.getEdges();
 		for (unsigned int i = 0; i < edges.size(); ++i)
 		{
 			graphElement->appendChild(edges.at(i)->serialize(pDOMDocument, "d3", "d1", "d5"));

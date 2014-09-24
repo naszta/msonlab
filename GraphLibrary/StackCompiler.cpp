@@ -60,19 +60,19 @@ namespace msonlab
 
 
 
-	StackRunner::srPtr StackCompiler::getStackProgram(msonlab::Graph::gPtr& graph, unsigned int number_of_threads, StackRunner::scheduleOrder schedule)
+	StackRunner::srPtr StackCompiler::getStackProgram(const Graph& graph, unsigned int number_of_threads, StackRunner::scheduleOrder schedule)
 	{
 		msonlab::StackRunner::srPtr runner(new msonlab::StackRunner());
 
 
 		// clear sync markers on edges and node
-		for (auto curr_node : graph->getNodes())
+		for (auto curr_node : graph.getNodes())
 		{
 			curr_node->clear_synced();
 			curr_node->clear_sync_marker();
 			curr_node->compile_iteration = -1;
 		}
-		for (auto curr_edge : graph->getEdges())
+		for (auto curr_edge : graph.getEdges())
 		{
 			curr_edge->clear_synced();
 			curr_edge->clear_sync_marker();
@@ -95,7 +95,7 @@ namespace msonlab
 		std::set<unsigned int> futures;
 
 		// sync cross-threaded inputs and constants
-		auto inputs = graph->getInputNodes();
+		auto inputs = graph.getInputNodes();
 
 		for (auto curr_input : inputs)
 		{
@@ -129,7 +129,7 @@ namespace msonlab
 
 
 		// create output order - TODO: create order optimalization
-	auto outputs = graph->getOutputNodes();
+	auto outputs = graph.getOutputNodes();
 		vector<unsigned int> output_order;
 		for (unsigned int i = 0; i < outputs.size(); ++i)
 		{
@@ -162,7 +162,7 @@ namespace msonlab
 
 
 		// mark nodes and edges that are needed to be synced
-		for (auto curr_node : graph->getNodes())
+		for (auto curr_node : graph.getNodes())
 		{
 			// mark cross-threaded nodes
 			bool cross_threaded = false;
@@ -208,7 +208,7 @@ namespace msonlab
 			}
 
 		}
-		for (auto curr_edge : graph->getEdges())
+		for (auto curr_edge : graph.getEdges())
 		{
 			unsigned int curr_thread = schedule.at(curr_edge->getId());
 

@@ -22,25 +22,37 @@ namespace msonlab {
 		{
 		}
 
+		//virtual constructor
+		SchedulingAlgorithm::ptr GeneticAlgorithm::build(Options::oPtr opt) const
+		{
+			if (opt->getAlgorithm().compare("genetic") == 0)
+			{
+				auto fs = FitnessStrategy::find_fitness_strategy(opt->getFitnessStrategy());
+				return std::move(std::make_unique<GeneticAlgorithm>(opt, std::move(fs)));
+			}
+
+			return nullptr;
+		}
+
 		///
 		/// Constructs a solution using greedy scheduling.
 		///
 		/// @param The input graph.
 		/// @return The constructed solution.
-		Solution::sPtr GeneticAlgorithm::greedySolution(Graph::gPtr& graph) const
+		Solution::sPtr GeneticAlgorithm::greedySolution(const Graph &graph) const
 		{
 			unsigned timeCounter = 0;
 			unsigned taskCounter = 0;
 			std::map< IProcessable::nPtr, unsigned> count;
-			IProcessable::nVect inputNodes = graph->getInputNodes();
+			IProcessable::nVect inputNodes = graph.getInputNodes();
 			std::queue < IProcessable::nPtr> free;
 			for (size_t i = 0; i < inputNodes.size(); ++i)
 			{
 				free.push(inputNodes[i]);
 			}
 
-			auto c = std::make_shared<Solution>(graph->numberOfNodes(), options->getNumberOfPus(), graph->numberOfEdges());
-			while (taskCounter < graph->numberOfNodes())
+			auto c = std::make_shared<Solution>(graph.numberOfNodes(), options->getNumberOfPus(), graph.numberOfEdges());
+			while (taskCounter < graph.numberOfNodes())
 			{
 				vector< IProcessable::nPtr > out;
 				int limit = c->pus;
@@ -57,7 +69,7 @@ namespace msonlab {
 				}
 				++timeCounter;
 
-				if (taskCounter == graph->numberOfNodes()) {
+				if (taskCounter == graph.numberOfNodes()) {
 					break;
 				}
 
@@ -85,7 +97,7 @@ namespace msonlab {
 		/// For the schedule the Options of this GeneticAlgorithm is used.
 		/// @param graph The graph to schedule.
 		/// @return the best solution the GA finds.
-		Solution::sPtr GeneticAlgorithm::schedule(Graph::gPtr& graph, Options::oPtr options) const {
+		Solution::sPtr GeneticAlgorithm::schedule(const Graph &graph, Options::oPtr options) const {
 			auto set = this->generateInitialSolution(graph, options);
 			set->limit();
 
@@ -105,7 +117,7 @@ namespace msonlab {
 			return set->best();
 		}
 
-		SolutionSet::setPtr GeneticAlgorithm::generateInitialSolution(Graph::gPtr& graph, Options::oPtr options) const
+		SolutionSet::setPtr GeneticAlgorithm::generateInitialSolution(const Graph &graph, Options::oPtr options) const
 		{
 			SolutionSet::setPtr p;
 			if (options->getInitialSolution().compare("cp") == 0) {
@@ -136,7 +148,7 @@ namespace msonlab {
 		/// 
 		/// @param graph The input graph.
 		/// @return The generated population.
-		SolutionSet::setPtr GeneticAlgorithm::generateRndSolution(Graph::gPtr& graph, Options::oPtr options) const
+		SolutionSet::setPtr GeneticAlgorithm::generateRndSolution(const Graph &graph, Options::oPtr options) const
 		{
 			cVect solution;
 			vector<IProcessable::nVect> levels = graph::algorithms::partialTopologicalSort(graph);
@@ -147,7 +159,7 @@ namespace msonlab {
 
 			Solution::sPtr chr = this->greedySolution(graph);
 
-			Solution::sPtr cc = std::make_shared<Solution>(graph->numberOfNodes(), options->getNumberOfPus(), graph->numberOfEdges());
+			Solution::sPtr cc = std::make_shared<Solution>(graph.numberOfNodes(), options->getNumberOfPus(), graph.numberOfEdges());
 			size_t currentPos = 0;
 			unsigned counter = 0;
 			for (size_t i = numLevels; i > 0; --i)
@@ -173,10 +185,10 @@ namespace msonlab {
 
 			// the number of solutions to generate
 			counter = options->getPopMaxSize() - 1;
-			size_t nodes = graph->numberOfNodes();
+			size_t nodes = graph.numberOfNodes();
 			for (; counter > 0; --counter)
 			{
-				auto sol = std::make_shared<Solution>(graph->numberOfNodes(), options->getNumberOfPus(), graph->numberOfEdges());
+				auto sol = std::make_shared<Solution>(graph.numberOfNodes(), options->getNumberOfPus(), graph.numberOfEdges());
 				for (unsigned int i = 0; i < nodes; ++i)
 				{
 					sol->mapping[i] = rand() % sol->pus;
@@ -198,7 +210,7 @@ namespace msonlab {
 		}
 
 		// Generate the solution using the scheduling created by the CP scheduler
-		SolutionSet::setPtr GeneticAlgorithm::generateCPSolution(Graph::gPtr& graph, Options::oPtr options) const {
+		SolutionSet::setPtr GeneticAlgorithm::generateCPSolution(const Graph &graph, Options::oPtr options) const {
 			cVect solution;
 			auto set = std::make_unique<SolutionSet>(solution, options->getKeepSize(), options->getPopMaxSize(), options->getKeepBest());
 			CriticalPathSchedulingAlgorithm cpAlg;
@@ -210,7 +222,7 @@ namespace msonlab {
 			unsigned counter = options->getPopMaxSize() - 2; // CP and greedy
 			for (; counter > 0; --counter)
 			{
-				auto c = std::make_shared<Solution>(graph->numberOfNodes(), options->getNumberOfPus(), graph->numberOfEdges());
+				auto c = std::make_shared<Solution>(graph.numberOfNodes(), options->getNumberOfPus(), graph.numberOfEdges());
 				for (size_t i = 0; i < c->mapping.size(); ++i) {
 					c->mapping[i] = rand() % c->pus;
 				}

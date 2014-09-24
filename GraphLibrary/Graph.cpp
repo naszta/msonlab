@@ -6,11 +6,21 @@
 
 namespace msonlab
 {
+
+	using std::swap;
+
 	Graph::Graph()
 	{
 		nodes.clear();
 		edges.clear();
 		this->iteratorEnd = std::make_shared<NodeTest>(0, L"0", nullptr, 0);
+	}
+
+	Graph::Graph(Graph&& other)
+	{
+		swap(nodes, other.nodes);
+		swap(edges, other.edges);
+		swap(iteratorEnd, other.iteratorEnd);
 	}
 
 	bool Graph::addNode(IProcessable::nPtr toAdd)

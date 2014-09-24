@@ -15,7 +15,9 @@ namespace msonlab {
 		class GreedySchedulingAlgorithm : public SchedulingAlgorithm
 		{
 		public:
-			Solution::sPtr schedule(Graph::gPtr& graph, Options::oPtr options) const;
+			Solution::sPtr schedule(const Graph &graph, Options::oPtr options) const;
+			virtual ptr build(Options::oPtr) const;
+			virtual ~GreedySchedulingAlgorithm() = default;
 		};
 	}
 }

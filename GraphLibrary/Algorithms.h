@@ -16,7 +16,7 @@ namespace msonlab {
 			///
 			/// @param graph The input graph.
 			/// @return vector of vectors containing the nodes.
-			vector<IProcessable::nVect> partialTopologicalSort(const Graph::gPtr& graph);
+			vector<IProcessable::nVect> partialTopologicalSort(const Graph &graph);
 
 			///
 			/// Splits the nodes of the graph into levels.
@@ -26,7 +26,7 @@ namespace msonlab {
 			///
 			/// @param graph The input graph.
 			/// @return vector of vectors containing the nodes.
-			vector<IProcessable::nVect> partialTopologicalSortFromBottom(const Graph::gPtr& graph);
+			vector<IProcessable::nVect> partialTopologicalSortFromBottom(const Graph &graph);
 
 			///
 			/// Creates a topological order of the input graph.
@@ -35,7 +35,7 @@ namespace msonlab {
 			///
 			/// @param graph The input graph.
 			/// @return Vector of the graph's node in topological order.
-			IProcessable::nVect topologicalSort(const Graph::gPtr& graph);
+			IProcessable::nVect topologicalSort(const Graph &graph);
 
 			///
 			/// With a given change in some nodes, this method computes the graph, that needs to be rerun
@@ -45,7 +45,7 @@ namespace msonlab {
 			/// @param changed Set of changed nodes.
 			/// @param needed Set of nodes those values are needed.
 			/// @return The graph to rerun.
-			Graph::gPtr computeChangedGraph(const Graph::gPtr& graph, IProcessable::nSet changed, IProcessable::nSet needed);
+			Graph&& computeChangedGraph(const Graph &graph, IProcessable::nSet changed, IProcessable::nSet needed);
 
 			///
 			/// Creates a dependency vector from the graph.
@@ -56,7 +56,7 @@ namespace msonlab {
 			///
 			/// @param graph The input graph.
 			/// @param dependencies The output vector.
-			void createDependencyVector(const Graph::gPtr& graph, vector<int>& dependencies);
+			void createDependencyVector(const Graph &graph, vector<int>& dependencies);
 
 			///
 			/// Updates the dependency vector after processing a node.
@@ -80,7 +80,7 @@ namespace msonlab {
 			/// i-th element in the vector.
 			/// @param graph The grpah its nodes to list.
 			/// @param nodes The vector of nodes.
-			void list_nodes(const Graph::gPtr& graph, vector<Node::nPtr>& nodes);
+			void list_nodes(const Graph &graph, vector<Node::nPtr>& nodes);
 
 			///
 			/// This method calculates the length of execution using greedy scheduling.
@@ -88,7 +88,7 @@ namespace msonlab {
 			/// @param graph The input graph.
 			/// @param pus Number of PUs.
 			/// @return The execution time.
-			int scheduleGreedy(const Graph::gPtr& graph, int pus);
+			int scheduleGreedy(const Graph &graph, int pus);
 
 			///
 			/// Creates a new graph, with the transitive dependecies removed.
