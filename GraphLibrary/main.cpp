@@ -43,17 +43,17 @@ using namespace std;
 
 Graph initGraph()
 {
-	return std::move(msonlab::graph::creator::createQuadrant());
+	return msonlab::graph::creator::createQuadrant();
 }
 
 Graph initTestGraph()
 {
-	return std::move(msonlab::graph::creator::createTest());
+	return msonlab::graph::creator::createTest();
 }
 
 Graph initSampleGraph()
 {
-	return std::move(msonlab::graph::creator::createSample());
+	return msonlab::graph::creator::createSample();
 }
 
 Graph initRandomGraph(Options::oPtr Options)

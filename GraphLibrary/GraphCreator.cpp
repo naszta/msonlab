@@ -18,7 +18,7 @@ namespace msonlab {
 			using std::make_shared;
 			using std::make_unique;
 
-			Graph&& createRandomLeveledDAG(size_t node_size, size_t level_size, unsigned edge_limit) {
+			Graph createRandomLeveledDAG(size_t node_size, size_t level_size, unsigned edge_limit) {
 				IProcessable::nVect nodes(node_size);
 				vector<unsigned> in_count(node_size);
 				vector<unsigned> out_count(node_size); // sure?
@@ -180,7 +180,7 @@ namespace msonlab {
 				return graph;
 			}
 
-			Graph&& createQuadrant(){
+			Graph createQuadrant(){
 				msonlab::Node::nPtr a = (make_shared<msonlab::NodeConstant>(0, L"a", make_shared<types::DataType>(4)));
 				msonlab::Node::nPtr b = (make_shared<msonlab::NodeConstant>(1, L"b", make_shared<types::DataType>(2)));
 				msonlab::Node::nPtr c = (make_shared<msonlab::NodeConstant>(2, L"c", make_shared<types::DataType>(-5)));
@@ -272,7 +272,7 @@ namespace msonlab {
 				return std::move(graph);
 			}
 
-			Graph&& createSample() {
+			Graph createSample() {
 				msonlab::Node::nPtr a(new msonlab::NodeConstant(0, L"a", make_shared<types::DataType>(2)));
 				msonlab::Node::nPtr b(new msonlab::NodeConstant(1, L"b", make_shared<types::DataType>(3)));
 				msonlab::Node::nPtr c(new msonlab::NodeConstant(2, L"c", make_shared<types::DataType>(2)));
@@ -312,7 +312,7 @@ namespace msonlab {
 				return std::move(graph);
 			}
 
-			Graph&& createTest() {
+			Graph createTest() {
 				Graph graph;
 
 				Node::nPtr node0 = make_shared<NodeConstant>(0, L"0", make_shared<types::DataType>(5));
@@ -361,7 +361,7 @@ namespace msonlab {
 				return std::move(graph);
 			}
 
-			Graph&& createCoffmanExample(unsigned comp_time) {
+			Graph createCoffmanExample(unsigned comp_time) {
 				Node::nPtr nodeA = make_shared<NodeTest>(0, L"A", make_shared<types::DataType>(5), comp_time);
 				Node::nPtr nodeB = make_shared<NodeTest>(1, L"B", make_shared<types::DataType>(2), comp_time);
 				Node::nPtr nodeC = make_shared<NodeTest>(2, L"C", make_shared<types::DataType>(3), comp_time);
