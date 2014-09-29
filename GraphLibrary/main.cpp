@@ -158,19 +158,8 @@ struct holder {
 	int i;
 };
 
-
-holder&& getter() {
-	holder h;
-	h.i = 6;
-	return std::move(h);
-}
-
 int main(int argc, char *argv[])
 {
-	auto h = getter();
-
-	cout << h.i << endl;
-
 	/* initialize random seed: */
 	srand(161803);
 
