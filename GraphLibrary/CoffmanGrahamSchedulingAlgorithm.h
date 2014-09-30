@@ -10,8 +10,11 @@ namespace msonlab {
 
 		class CoffmanGrahamSchedulingAlgorithm : public ListSchedulingAlgorithm
 		{
+			static CoffmanGrahamSchedulingAlgorithm example;
 			virtual void determineCosts(const Graph& graph, vector<unsigned>& costs) const;
 		public:
+			CoffmanGrahamSchedulingAlgorithm() = default;
+			CoffmanGrahamSchedulingAlgorithm(examplar e) { SchedulingAlgorithm::add_scheduling_algorithm(this); }
 			virtual ptr build(Options::oPtr) const;
 			virtual ~CoffmanGrahamSchedulingAlgorithm() = default;
 		};

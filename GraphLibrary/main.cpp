@@ -1,20 +1,8 @@
 #include "Graph.h"
 #include "GraphExchanger.h"
 #include "StackCompiler.h"
-#include "Algorithms.h"
-#include "NodeAdd.h"
-#include "NodeConstant.h"
-#include "NodeDivide.h"
-#include "NodeMultiply.h"
-#include "NodeSquareRoot.h"
-#include "BlueEdge.h"
-#include "BFSIterator.h"
-#include "DFSIterator.h"
 #include "GraphCreator.h"
-#include "GreedySchedulingAlgorithm.h"
-#include "GeneticAlgorithm.h"
-#include "CriticalPathSchedulingAlgorithm.h"
-#include "CoffmanGrahamSchedulingAlgorithm.h"
+#include "SchedulingAlgorithm.h"
 #include "Options.h"
 #include "FitnessStrategy.h"
 #include "SchedulingHelper.h"
@@ -61,39 +49,20 @@ Graph initRandomGraph(Options::oPtr Options)
 	return msonlab::graph::creator::createRandom(Options->getGraphSize(), Options->getGraphEdgeProb(), Options->getGraphWidening(), Options->getNumberOfPus());
 }
 
-void test_small_graph(Options::oPtr options)
-{
-	const Graph&& g = initSampleGraph();
-
-	CriticalPathSchedulingAlgorithm alg;
-	auto result = alg.schedule(g, options);
-
-	vector<unsigned int> testOrder;
-	GeneticAlgorithm::transfromResult(result, testOrder);
-
-	auto sp1 = StackCompiler::getStackProgram(g, 2, testOrder);
-	sp1->print_out_programs();
-	sp1->run(sp1, 2);
-}
-
-void runHusScheduling(Options::oPtr options)
-{
-	// choosing fitness strategy for the GA
-	auto fsstrategy = FitnessStrategy::find_fitness_strategy("length");
-	//FitnessStrategy::fsPtr fsstrategy(new LengthFitnessStartegy());
-
-	CriticalPathSchedulingAlgorithm alg;
-
-	// getting the graph
-	//auto graph = initRandomGraph(Options);
-	const Graph&& graph = initGraph();
-
-	auto result = alg.schedule(graph, options);
-	result->printTable(std::cout, options);
-	unsigned fitness = fsstrategy->fitness(result, options);
-	std::cout << fitness << std::endl;
-}
-
+//void test_small_graph(Options::oPtr options)
+//{
+//	const Graph&& g = initSampleGraph();
+//
+//	CriticalPathSchedulingAlgorithm alg;
+//	auto result = alg.schedule(g, options);
+//
+//	vector<unsigned int> testOrder;
+//	GeneticAlgorithm::transfromResult(result, testOrder);
+//
+//	auto sp1 = StackCompiler::getStackProgram(g, 2, testOrder);
+//	sp1->print_out_programs();
+//	sp1->run(sp1, 2);
+//}
 
 Solution::sPtr schedule(const Graph& graph, const SchedulingAlgorithm& alg, Options::oPtr options)
 {
@@ -177,32 +146,7 @@ int main(int argc, char *argv[])
 	}
 
 	// choosing algorithm
-	SchedulingAlgorithm::ptr alg;
-	std::cout << "Using ";
-	if (options->getAlgorithm().compare("genetic") == 0) {
-		auto fs = FitnessStrategy::find_fitness_strategy(options->getFitnessStrategy());
-		if (fs == nullptr)
-		{
-			std::cerr << "Cannot find fitness strategy named " << options->getFitnessStrategy() << std::endl;
-			// may throw an exception
-			return 1;
-		}
-
-		alg = std::make_unique<GeneticAlgorithm>(options, std::move(fs));
-		std::cout << "Genetic algorithm with " << options->getFitnessStrategy() << std::endl;
-	}
-	else if (options->getAlgorithm().compare("criticalPath") == 0) {
-		std::cout << "Critical Path algorithm.\n";
-		alg = std::make_unique<CriticalPathSchedulingAlgorithm>();
-	}
-	else if (options->getAlgorithm().compare("coffman") == 0) {
-		std::cout << "CoffmanGraham algorithm.\n";
-		alg = std::make_unique<CoffmanGrahamSchedulingAlgorithm>();
-	}
-	else {
-		std::cout << "Greedy algorithm.\n";
-		alg = std::make_unique<GreedySchedulingAlgorithm>();
-	}
+	SchedulingAlgorithm::ptr alg = SchedulingAlgorithm::find_sceduling_algorithm(options);
 
 #if MEASURE != 0	
 	std::chrono::time_point<std::chrono::high_resolution_clock> startCHRONO, finishCHRONO;

@@ -9,8 +9,9 @@ namespace msonlab {
 		using std::vector;
 		using std::make_pair;
 
+		CoffmanGrahamSchedulingAlgorithm CoffmanGrahamSchedulingAlgorithm::example{ examplar() };
+		
 		// lexigraphically compare
-
 		bool vector_lexicographic(const pair<vector<unsigned>, Node::nPtr>& a, const pair<vector<unsigned>, Node::nPtr>& b)
 		{
 			size_t limit = std::min(a.first.size(), b.first.size());

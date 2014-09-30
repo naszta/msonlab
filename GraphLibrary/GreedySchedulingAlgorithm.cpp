@@ -5,6 +5,8 @@
 namespace msonlab {
 	namespace scheduling {
 
+		GreedySchedulingAlgorithm GreedySchedulingAlgorithm::example{ examplar() };
+
 		// schedules using greedy algorithm
 		Solution::sPtr GreedySchedulingAlgorithm::schedule(const Graph &graph, Options::oPtr options) const
 		{

@@ -50,6 +50,8 @@ namespace msonlab {
 			typedef vector< Solution::sPtr > cVect;
 			//typedef unique_ptr<Population> pPtr;
 
+			static GeneticAlgorithm example;
+			GeneticAlgorithm(examplar e) { SchedulingAlgorithm::add_scheduling_algorithm(this); }
 			GeneticAlgorithm(Options::oPtr, FitnessStrategy::fsPtr);
 			virtual ptr build(Options::oPtr) const;
 
