@@ -82,6 +82,8 @@
     <ClCompile Include="CoffmanGrahamSchedulingAlgorithm.cpp" />
     <ClCompile Include="GraphCreator.cpp" />
     <ClCompile Include="ListSchedulingAlgorithm.cpp" />
+    <ClCompile Include="lwnode.cpp" />
+    <ClCompile Include="lwgraph.cpp" />
     <ClCompile Include="NodeTest.cpp" />
     <ClCompile Include="SchedulingAlgorithm.cpp" />
     <ClCompile Include="SchedulingHelper.cpp" />
@@ -120,6 +122,8 @@
     <ClInclude Include="BlueEdge.h" />
     <ClInclude Include="CoffmanGrahamSchedulingAlgorithm.h" />
     <ClInclude Include="ListSchedulingAlgorithm.h" />
+    <ClInclude Include="lwgraph.h" />
+    <ClInclude Include="lwnode.h" />
     <ClInclude Include="NodeTest.h" />
     <ClInclude Include="SchedulingHelper.h" />
     <ClInclude Include="Solution.h" />

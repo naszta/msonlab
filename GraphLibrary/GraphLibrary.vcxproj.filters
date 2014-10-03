@@ -49,6 +49,12 @@
     <Filter Include="Source Files\Stack">
       <UniqueIdentifier>{12755bff-b42f-4456-8a35-f836cca53806}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\lightweight">
+      <UniqueIdentifier>{c93b8df0-9dd5-40cf-9312-efc668d395a4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\lightweight">
+      <UniqueIdentifier>{4c27055f-ae70-4bd4-886c-4b9265d50605}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Global.h">
@@ -165,6 +171,12 @@
     <ClInclude Include="NodeTest.h">
       <Filter>Header Files\Node</Filter>
     </ClInclude>
+    <ClInclude Include="lwnode.h">
+      <Filter>Header Files\lightweight</Filter>
+    </ClInclude>
+    <ClInclude Include="lwgraph.h">
+      <Filter>Header Files\lightweight</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="IProcessable.cpp">
@@ -277,6 +289,12 @@
     </ClCompile>
     <ClCompile Include="SchedulingAlgorithm.cpp">
       <Filter>Source Files\Scheduling</Filter>
+    </ClCompile>
+    <ClCompile Include="lwnode.cpp">
+      <Filter>Source Files\lightweight</Filter>
+    </ClCompile>
+    <ClCompile Include="lwgraph.cpp">
+      <Filter>Source Files\lightweight</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
