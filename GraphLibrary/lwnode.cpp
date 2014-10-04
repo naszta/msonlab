@@ -1,7 +1,7 @@
 #include "lwnode.h"
 
 namespace msonlab {
-	namespace lwgraph {
+	namespace lw {
 		using std::size_t;
 
 		lwnode::lwnode(unsigned id, unsigned cptime, std::size_t p_size, std::size_t s_size)

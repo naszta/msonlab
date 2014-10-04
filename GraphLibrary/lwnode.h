@@ -6,7 +6,7 @@
 #include "Graph.h"
 
 namespace msonlab {
-	namespace lwgraph {
+	namespace lw {
 
 		using std::vector;
 

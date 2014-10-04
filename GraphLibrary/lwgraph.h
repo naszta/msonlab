@@ -6,7 +6,7 @@
 #include "lwnode.h"
 
 namespace msonlab {
-	namespace lwgraph {
+	namespace lw {
 
 		using std::vector;
 
@@ -17,10 +17,12 @@ namespace msonlab {
 			size_t size() const { return _nodes.size(); }
 			size_t input_size() const;
 
+			const vector<unsigned>& inodes() const { return _inodes; }
 			const vector<lwnode>& nodes() const { return _nodes;  }
 
 		private:
 			vector<lwnode> _nodes;
+			vector<unsigned> _inodes;
 		};
 	}
 }

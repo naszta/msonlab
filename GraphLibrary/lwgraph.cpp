@@ -1,7 +1,7 @@
 #include "lwgraph.h"
 
 namespace msonlab {
-	namespace lwgraph {
+	namespace lw {
 		using std::size_t;
 
 		lwgraph::lwgraph(const Graph& graph)
@@ -13,14 +13,21 @@ namespace msonlab {
 				auto id = hwnode->getId();
 				_nodes[id] = lwnode(id, hwnode->getComputationTime(),
 					hwnode->getPredecessorsSize(), hwnode->getSuccessorsSize());
-				for (auto pred : hwnode->getPredecessors())
+				for (auto suc : hwnode->getSuccessors())
 				{
-					_nodes[id].add_predecessor(pred->getFromId());
+					_nodes[id].add_successor(suc->getToId());
 				}
 
-				for (auto pred : hwnode->getPredecessors())
+				if (hwnode->getPredecessorsSize() == 0)
 				{
-					_nodes[id].add_predecessor(pred->getFromId());
+					_inodes.push_back(id);
+				}
+				else
+				{
+					for (auto pred : hwnode->getPredecessors())
+					{
+						_nodes[id].add_predecessor(pred->getFromId());
+					}
 				}
 			}
 		}

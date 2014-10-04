@@ -1,61 +1,95 @@
 #include "GreedySchedulingAlgorithm.h"
+#include "lwgraph.h"
 #include <map>
 #include <queue>
+#include <deque>
 
 namespace msonlab {
 	namespace scheduling {
+
+		using namespace msonlab::lw;
 
 		GreedySchedulingAlgorithm GreedySchedulingAlgorithm::example{ examplar() };
 
 		// schedules using greedy algorithm
 		Solution::sPtr GreedySchedulingAlgorithm::schedule(const Graph &graph, Options::oPtr options) const
 		{
+			lwgraph lwg(graph);
+			const vector<lwnode> &nodes = lwg.nodes();
+
+			auto hwnodes = graph.getNodes();
+
 			unsigned timeCounter = 0;
 			unsigned taskCounter = 0;
-			std::map< IProcessable::nPtr, int> count;
-			IProcessable::nVect inputNodes = graph.getInputNodes();
-			std::queue < IProcessable::nPtr> free;
-			for (size_t i = 0; i < inputNodes.size(); ++i)
-			{
-				free.push(inputNodes[i]);
-			}
+			vector<unsigned> schedule(lwg.size());
+			
+			// counts the available inputs of the nodess
+			//std::map< IProcessable::nPtr, int> count;
+			std::map< unsigned, int> count;
 
-			Solution::sPtr sol = std::make_shared<Solution>(graph.numberOfNodes(), options->getNumberOfPus(), graph.numberOfEdges());
-			while (taskCounter < graph.numberOfNodes())
+			// list of input nodes
+			//IProcessable::nVect inputNodes = graph.getInputNodes();
+			auto inputNodes = lwg.inodes();
+
+			// the ready to process nodes, initialized with the input nodes
+			//std::queue < IProcessable::nPtr> free;
+			std::queue < unsigned > free( std::deque< unsigned >(inputNodes.begin(), inputNodes.end()) );
+
+			//Solution::sPtr sol = std::make_shared<Solution>(graph.numberOfNodes(), options->getNumberOfPus(), graph.numberOfEdges());
+			Solution::sPtr sol = std::make_shared<Solution>(lwg.size(), options->getNumberOfPus(), graph.numberOfEdges());
+			//while (taskCounter < graph.numberOfNodes())
+			while (taskCounter < lwg.size())
 			{
-				vector< IProcessable::nPtr > out;
+				//vector< IProcessable::nPtr > scheduled_nodes;
+				vector<unsigned> scheduled_node_ids;
 				int limit = options->getNumberOfPus();
 				while (!free.empty() && limit > 0)
 				{
-					IProcessable::nPtr node = free.front();
+					auto node_id = free.front();
 					sol->mapping[taskCounter] = limit - 1;
-					sol->scheduling[taskCounter] = node;
+					//schedule[taskCounter] = node_id;
+					sol->scheduling[taskCounter] = hwnodes[node_id];
 
-					out.push_back(node);
+					scheduled_node_ids.push_back(node_id);
 					free.pop();
 					--limit;
 					taskCounter++;
 				}
 				++timeCounter;
 
+				// if all the nodes are scheduled, stop the algo
 				if (taskCounter == graph.numberOfNodes())
 				{
 					break;
 				}
 
-				for (size_t i = 0; i < out.size(); ++i)
+				// udpate the free queue
+				//for (size_t i = 0; i < scheduled_nodes.size(); ++i)
+				for (auto scheduled_node_id : scheduled_node_ids)
 				{
-					IProcessable::eVect successors = out[i]->getSuccessors();
-					for (size_t i = 0; i < successors.size(); ++i)
+					auto& node = nodes[scheduled_node_id];
+					//IProcessable::eVect successors = out[i]->getSuccessors();
+
+					// iterate over the successors
+					//for (size_t i = 0; i < successors.size(); ++i)
+					for (size_t i = 0; i < node.s_size(); ++i)
 					{
-						count[successors[i]->getTo()]++;
-						if (successors[i]->getTo()->getPredecessorsSize() == count[successors[i]->getTo()])
+						auto suc_node_id = node.get_successor(i);
+						auto processed_successors = ++count[suc_node_id];
+						if (nodes[suc_node_id].p_size() == processed_successors)
 						{
-							free.push(successors[i]->getTo());
+							free.push(suc_node_id);
 						}
+
 					}
 				}
 			}
+
+			//auto hwnodes = graph.getNodes();
+			//for (unsigned i = 0; i < schedule.size(); ++i)
+			//{
+			//	sol->scheduling[i] = hwnodes[schedule[i]];
+			//}
 
 			return sol;
 		}

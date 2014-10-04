@@ -1,4 +1,5 @@
 #include "Graph.h"
+#include "GraphExchanger.h"
 #include "GraphCreator.h"
 #include "SchedulingAlgorithm.h"
 #include "Options.h"
@@ -46,50 +47,52 @@ Graph initRandomGraph(Options::oPtr options)
 	return createRandom(options->getGraphSize(), options->getGraphEdgeProb(), options->getGraphWidening(), options->getNumberOfPus());
 }
 
-#include "lwnode.h"
+#include "lwgraph.h"
 #include "NodeTest.h"
 
 int main(int argc, char *argv[])
 {
 	/* initialize random seed: */
-//	srand(161803);
-//
-//	// loading GA configuration
-//	Options::oPtr options = std::make_shared<const Options>("Options.cfg");
-//
-//	// get graph
-//	Graph graph = initRandomGraph(options);
-//
-//	// choosing algorithm
-//	SchedulingAlgorithm::ptr alg = SchedulingAlgorithm::find_sceduling_algorithm(options);
-//
-//#if MEASURE != 0	
-//	std::chrono::time_point<std::chrono::high_resolution_clock> startCHRONO, finishCHRONO;
-//	startCHRONO = std::chrono::high_resolution_clock::now();
-//#endif
-//	// the function that is measured
-//	auto best = alg->schedule(graph, options);
-//#if MEASURE != 0
-//	finishCHRONO = std::chrono::high_resolution_clock::now();
-//	std::chrono::duration<double> elapsedCHRONO = finishCHRONO - startCHRONO;
-//#endif
-//	// check correctness
-//	auto fs = FitnessStrategy::find_fitness_strategy("length");
-//	bool correct = SchedulingHelper::is_correct(best);
-//	cout << "Correct " << correct << endl;
-//	std::cout << "Best length: " << best->getFitness() << std::endl;
-//	if (!correct) {
-//		fs->fitness(best, options);
-//	}
-//
-//	unsigned l = SchedulingHelper::computeLengthAndReuseIdleTime(best, options);
-//	std::cout << "Rescheduled length: " << l << std::endl;
-//	l = fs->fitness(best, options);
-//	std::cout << "Recalculated Length: " << l << std::endl;
-//	cout << "Correct " << SchedulingHelper::is_correct(best) << endl;
-//#if MEASURE != 0
-//	std::cout << "Elapsed time " << std::setprecision(10) << elapsedCHRONO.count() << std::endl;
-//#endif
+	srand(161803);
+
+	// loading GA configuration
+	Options::oPtr options = std::make_shared<const Options>("Options.cfg");
+
+	// get graph
+	Graph graph = initRandomGraph(options);
+
+	// choosing algorithm
+	SchedulingAlgorithm::ptr alg = SchedulingAlgorithm::find_sceduling_algorithm(options);
+
+#if MEASURE != 0	
+	std::chrono::time_point<std::chrono::high_resolution_clock> startCHRONO, finishCHRONO;
+	startCHRONO = std::chrono::high_resolution_clock::now();
+#endif
+	// the function that is measured
+	Solution::sPtr best;
+	for (int i = 0; i < 100; ++i)
+	best = alg->schedule(graph, options);
+#if MEASURE != 0
+	finishCHRONO = std::chrono::high_resolution_clock::now();
+	std::chrono::duration<double> elapsedCHRONO = finishCHRONO - startCHRONO;
+#endif
+	// check correctness
+	auto fs = FitnessStrategy::find_fitness_strategy("length");
+	bool correct = SchedulingHelper::is_correct(best);
+	cout << "Correct " << correct << endl;
+	std::cout << "Best length: " << best->getFitness() << std::endl;
+	if (!correct) {
+		fs->fitness(best, options);
+	}
+
+	unsigned l = SchedulingHelper::computeLengthAndReuseIdleTime(best, options);
+	std::cout << "Rescheduled length: " << l << std::endl;
+	l = fs->fitness(best, options);
+	std::cout << "Recalculated Length: " << l << std::endl;
+	cout << "Correct " << SchedulingHelper::is_correct(best) << endl;
+#if MEASURE != 0
+	std::cout << "Elapsed time " << std::setprecision(10) << elapsedCHRONO.count() << std::endl;
+#endif
 #if WAIT == 1
 	std::cout << "Press a key to continue...";
 	std::cin.get();
