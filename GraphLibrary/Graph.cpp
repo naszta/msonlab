@@ -23,9 +23,9 @@ namespace msonlab
 		swap(iteratorEnd, other.iteratorEnd);
 	}
 
-	bool Graph::addNode(IProcessable::nPtr toAdd)
+	bool Graph::addNode(NodePtr toAdd)
 	{
-		msonlab::IProcessable::nVect::iterator it;
+		msonlab::NodeVect::iterator it;
 		it = std::find(nodes.begin(), nodes.end(), toAdd);
 
 		if (it != nodes.end())
@@ -42,17 +42,17 @@ namespace msonlab
 		}
 	}
 
-	bool Graph::addEdge(IProcessable::ePtr toAdd)
+	bool Graph::addEdge(EdgePtr toAdd)
 	{
-		msonlab::IProcessable::eVect::iterator it;
+		msonlab::EdgeVect::iterator it;
 		it = std::find(edges.begin(), edges.end(), toAdd);
 
 		if (it != edges.end())
 			return false;
 
-		msonlab::IProcessable::nPtr fromNode = (*toAdd).getFrom();
+		msonlab::NodePtr fromNode = (*toAdd).getFrom();
 		addNode(fromNode);
-		msonlab::IProcessable::nPtr toNode = (*toAdd).getTo();
+		msonlab::NodePtr toNode = (*toAdd).getTo();
 		addNode(toNode);
 
 		it = edges.insert(edges.end(), toAdd);
@@ -80,21 +80,21 @@ namespace msonlab
 		return edges.size();
 	}
 
-	const IProcessable::nVect& Graph::getNodes() const
+	const NodeVect& Graph::getNodes() const
 	{
 		return nodes;
 	}
 
-	const IProcessable::eVect& Graph::getEdges() const
+	const EdgeVect& Graph::getEdges() const
 	{
 		return edges;
 	}
 
-	IProcessable::nVect Graph::getInputNodes() const
+	NodeVect Graph::getInputNodes() const
 	{
-		IProcessable::nVect retVal;
+		NodeVect retVal;
 
-		IProcessable::nVect::const_iterator it = nodes.begin();
+		NodeVect::const_iterator it = nodes.begin();
 		while (it != nodes.end())
 		{
 			if ((*(*it)).getPlace() == IProcessable::Input)
@@ -105,11 +105,11 @@ namespace msonlab
 		return retVal;
 	}
 
-	IProcessable::nVect Graph::getOutputNodes() const
+	NodeVect Graph::getOutputNodes() const
 	{
-		IProcessable::nVect retVal;
+		NodeVect retVal;
 
-		IProcessable::nVect::const_iterator it = nodes.begin();
+		NodeVect::const_iterator it = nodes.begin();
 		while (it != nodes.end())
 		{
 			if ((*(*it)).getPlace() == IProcessable::Output)
@@ -120,11 +120,11 @@ namespace msonlab
 		return retVal;
 	}
 
-	Graph::gPtr Graph::getPartialGraphByEdgeType(Edge::EdgeTypeEnum edgeType) const
+	GraphPtr Graph::getPartialGraphByEdgeType(Edge::EdgeTypeEnum edgeType) const
 	{
-		Graph::gPtr ptrGraph = std::make_unique<Graph>();
+		GraphPtr ptrGraph = std::make_unique<Graph>();
 
-		IProcessable::eVect::const_iterator it = edges.begin();
+		EdgeVect::const_iterator it = edges.begin();
 		while (it != edges.end())
 		{
 			if ((*(*it)).getEdgeType() == edgeType)

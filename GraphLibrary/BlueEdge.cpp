@@ -5,7 +5,7 @@
 
 namespace msonlab
 {
-	BlueEdge::BlueEdge(unsigned int _id, types::LabelType _label, types::DataPtr _value, IProcessable::nPtr _from, IProcessable::nPtr _to)
+	BlueEdge::BlueEdge(unsigned int _id, types::LabelType _label, types::DataPtr _value, NodePtr _from, NodePtr _to)
 		: Edge(_id, _label, _value, _from, _to)
 	{
 	}

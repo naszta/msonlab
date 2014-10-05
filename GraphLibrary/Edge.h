@@ -11,29 +11,29 @@ namespace msonlab
 		enum EdgeTypeEnum { default_edge, blue_edge, red_edge, orange_edge };
 
 	protected:
-		IProcessable::nPtr from;
-		IProcessable::nPtr to;
+		NodePtr from;
+		NodePtr to;
 
 		bool paramReady;
 
 		EdgeTypeEnum edgeType;
 	public:
-		Edge(unsigned int _id, types::LabelType _label, types::DataPtr _value, IProcessable::nPtr _from, IProcessable::nPtr _to);
+		Edge(unsigned int _id, types::LabelType _label, types::DataPtr _value, NodePtr _from, NodePtr _to);
 		Edge(const Edge& other);
 		Edge& operator=(const Edge& other);
 		virtual ~Edge() = default;
 
 		bool registerParameter();
 
-		virtual IProcessable::pVect process();
+		virtual IProcessableVect process();
 		virtual bool isReadyForProcess() const;
 		virtual bool resetProcessingState();
 
-		IProcessable::nPtr opposite(IProcessable::nPtr x);
+		NodePtr opposite(NodePtr x);
 
-		IProcessable::nPtr getFrom() const;
+		NodePtr getFrom() const;
 		unsigned getFromId() const;
-		IProcessable::nPtr getTo() const;
+		NodePtr getTo() const;
 		unsigned getToId() const;
 
 		std::string getIdString() const;

@@ -14,7 +14,7 @@ namespace msonlab {
 		CriticalPathSchedulingAlgorithm CriticalPathSchedulingAlgorithm::example{ examplar() };
 
 		//virtual constructor
-		SchedulingAlgorithm::ptr CriticalPathSchedulingAlgorithm::build(Options::oPtr opt) const
+		SchedulingAlgorithm::ptr CriticalPathSchedulingAlgorithm::build(OptionsPtr opt) const
 		{
 			if (opt->getAlgorithm().compare("criticalpath") == 0)
 			{

@@ -25,13 +25,13 @@ namespace msonlab
 		return *this;
 	}
 
-	Node::nPtr NodeDivide::clone() {
+	NodePtr NodeDivide::clone() {
 		return std::make_shared<NodeDivide>(*this);
 	}
 
-	IProcessable::pVect NodeDivide::process()
+	IProcessableVect NodeDivide::process()
 	{
-		IProcessable::pVect ret;
+		IProcessableVect ret;
 
 		if (isReadyForProcess())
 		{

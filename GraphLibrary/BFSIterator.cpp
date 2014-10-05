@@ -2,7 +2,7 @@
 
 namespace msonlab
 {
-	BFSIterator::BFSIterator(IProcessable::nPtr endPtr)
+	BFSIterator::BFSIterator(NodePtr endPtr)
 		:GraphIterator(endPtr, endPtr)
 	{
 	}
@@ -15,7 +15,7 @@ namespace msonlab
 		this->current_depth = 0;
 
 		// adding input nodes to the queue.
-		IProcessable::nVect inputNodesVect = g.getInputNodes();
+		NodeVect inputNodesVect = g.getInputNodes();
 		if (inputNodesVect.size() > 0)
 		{
 			this->node = inputNodesVect[0];
@@ -94,7 +94,7 @@ namespace msonlab
 		visited.insert(node);
 
 		// adding neighbours to the toVisit queue
-		const IProcessable::eVect &neighbours = node->getSuccessors();
+		const EdgeVect &neighbours = node->getSuccessors();
 		for (auto& edge : neighbours)
 		{
 			if (visited.count(edge->getTo()) == 0)
@@ -111,11 +111,11 @@ namespace msonlab
 	{
 		this->node = this->end;
 		this->current_depth = 0;
-		std::queue<pair<IProcessable::nPtr, unsigned>> emptyQueue;
+		std::queue<pair<NodePtr, unsigned>> emptyQueue;
 		std::swap(this->to_visit, emptyQueue);
-		std::set<IProcessable::nPtr> emptySet;
+		std::set<NodePtr> emptySet;
 		std::swap(this->visited, emptySet);
-		std::queue<IProcessable::nPtr> emptyInputQueue;
+		std::queue<NodePtr> emptyInputQueue;
 		std::swap(this->inputNodes, emptyInputQueue);
 
 		return true;
@@ -148,8 +148,8 @@ namespace msonlab
 	bool BFSIterator::skipActNode()
 	{
 		// adding neighbours to visited set
-		IProcessable::eVect::const_iterator it;
-		IProcessable::eVect neighbours = node->getSuccessors();
+		EdgeVect::const_iterator it;
+		EdgeVect neighbours = node->getSuccessors();
 		for (it = neighbours.cbegin(); it != neighbours.cend(); ++it)
 		{
 			if (visited.count((*it)->getTo()) == 0)

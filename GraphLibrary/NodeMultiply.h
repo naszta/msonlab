@@ -10,8 +10,8 @@ namespace msonlab
 		NodeMultiply(const NodeMultiply& other);
 
 		NodeMultiply& operator=(const NodeMultiply& other);
-		Node::nPtr clone();
-		virtual IProcessable::pVect process();
+		NodePtr clone();
+		virtual IProcessableVect process();
 
 		//unsigned getComputationTime() { return 5; }
 

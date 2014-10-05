@@ -8,11 +8,11 @@ namespace msonlab
 	{
 	private:
 
-		IProcessable::pVect readyToProcess;
-		IProcessable::pVect processed;
+		IProcessableVect readyToProcess;
+		IProcessableVect processed;
 
 	public:
-		virtual IProcessable::nVect process(Graph::gPtr toProcess);
+		virtual NodeVect process(GraphPtr toProcess);
 		
 	};
 

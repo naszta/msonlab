@@ -26,13 +26,13 @@ namespace msonlab
 		return *this;
 	}
 
-	Node::nPtr NodeAdd::clone() {
+	NodePtr NodeAdd::clone() {
 		return std::make_shared<NodeAdd>(*this);
 	}
 
-	IProcessable::pVect NodeAdd::process()
+	IProcessableVect NodeAdd::process()
 	{
-		IProcessable::pVect ret;
+		IProcessableVect ret;
 
 		if (isReadyForProcess()) {
 			types::DataPtr newVal = std::make_shared<types::DataType>(0.0);
@@ -78,7 +78,7 @@ namespace msonlab
 		}
 
 		// going deeper and calculate predecessors
-		for (IProcessable::pPtr pred : getPredecessors())
+		for (IProcessablePtr pred : getPredecessors())
 		{
 			if (pred->compile_iteration < compile_iteration)
 			{

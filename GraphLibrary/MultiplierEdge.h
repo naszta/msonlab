@@ -8,9 +8,9 @@ namespace msonlab
 	private:
 		types::DataType multiplier;
 	public:
-		MultiplierEdge(unsigned int _id, types::LabelType _label, types::DataPtr _value, IProcessable::nPtr _from, IProcessable::nPtr _to, types::DataType _multiplier);
+		MultiplierEdge(unsigned int _id, types::LabelType _label, types::DataPtr _value, NodePtr _from, NodePtr _to, types::DataType _multiplier);
 
-		virtual IProcessable::pVect process();
+		virtual IProcessableVect process();
 
 		// compile
 		virtual void compile(int caller_thread, vector<msonlab::StackRunner::program>* programs, StackRunner::scheduleOrder schedule);

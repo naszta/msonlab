@@ -21,7 +21,7 @@ namespace msonlab {
 			}
 		}
 
-		Solution::sPtr ListSchedulingAlgorithm::schedule(const Graph &graph, Options::oPtr options) const
+		SolutionPtr ListSchedulingAlgorithm::schedule(const Graph &graph, OptionsPtr options) const
 		{
 			auto levels = graph::algorithms::partialTopologicalSort(graph);
 			vector<unsigned> costs(graph.numberOfNodes());
@@ -34,12 +34,12 @@ namespace msonlab {
 			vector<int> dependencies(graph.numberOfNodes());
 			graph::algorithms::createDependencyVector(graph, dependencies);
 
-			vector<Node::nPtr> nodes(graph.numberOfNodes());
+			vector<NodePtr> nodes(graph.numberOfNodes());
 			graph::algorithms::list_nodes(graph, nodes);
 
 			int tasks = graph.numberOfNodes();
 			int comm = options->getCommOverhead();
-			Solution::sPtr result = std::make_shared<Solution>(tasks, options->getNumberOfPus(), graph.numberOfEdges());
+			SolutionPtr result = std::make_shared<Solution>(tasks, options->getNumberOfPus(), graph.numberOfEdges());
 			vector<unsigned> RT(options->getNumberOfPus());
 			vector<unsigned> ST(tasks); // start time of the tasks
 			vector<unsigned> FT(tasks); // finish time of the tasks

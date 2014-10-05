@@ -15,14 +15,18 @@ namespace msonlab {
 
 		using namespace msonlab;
 
+		class Solution;
+		typedef std::shared_ptr<Solution> SolutionPtr;
+		typedef vector< SolutionPtr > SolutionVect;
+
 		class Solution : public std::enable_shared_from_this<Solution>
 		{
 		private:
 			// the scheduling part, escribes the order of the tasks
-			IProcessable::nVect scheduling;
+			vector<NodePtr> scheduling;
 
 			// the mapping part, maps the task to PUs.
-			vector<unsigned int> mapping;
+			vector<unsigned> mapping;
 
 			// the number of edges
 			unsigned int edges;
@@ -45,14 +49,10 @@ namespace msonlab {
 			friend class CriticalPathSchedulingAlgorithm;
 			friend class CoffmanGrahamSchedulingAlgorithm;
 
-			void calcStartTime(Options::oPtr options);
+			void calcStartTime(OptionsPtr options);
 		public:
 			friend std::ostream& operator<<(std::ostream& os, const Solution& solution);
-			typedef std::shared_ptr<Solution> sPtr;
-			typedef std::shared_ptr<const Solution> csPtr;
-			typedef vector< sPtr > cVect;
 
-			//Solution(unsigned pus, unsigned edges);
 			Solution(size_t size, unsigned pus, unsigned edges);
 			Solution(const Solution& solution);
 
@@ -63,15 +63,12 @@ namespace msonlab {
 				if (fitness == 0) {
 					fitness = f;
 				}
-				else {
-					// throw exception, this cannot happen
-				}
 			}
 			const vector<unsigned int>& getMapping() const { return mapping; }
-			const IProcessable::nVect& getScheduling() const { return scheduling; }
+			const NodeVect& getScheduling() const { return scheduling; }
 
 			void printSolution(std::ostream& o) const;
-			void printTable(std::ostream& o, Options::oPtr options) const;
+			void printTable(std::ostream& o, OptionsPtr options) const;
 		};
 	}
 }

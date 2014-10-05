@@ -8,7 +8,7 @@ namespace msonlab {
 			virtual unsigned findNextToSchedule(const vector<int>& dependencies, const vector<unsigned>& costs) const;
 			virtual void determineCosts(const Graph &graph, vector<unsigned>& costs) const;
 		public:
-			Solution::sPtr schedule(const Graph &graph, Options::oPtr options) const;
+			SolutionPtr schedule(const Graph &graph, OptionsPtr options) const;
 		};
 	}
 }

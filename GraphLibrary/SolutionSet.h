@@ -31,27 +31,27 @@ namespace msonlab {
 			vector<size_t> levelSize;
 			vector<shared_ptr<Solution>> solution;
 			//typedef shared_ptr<Solution> cPtr;
-			std::priority_queue<Solution::sPtr, vector<Solution::sPtr>, chrComparator> newGeneration;
+			std::priority_queue<SolutionPtr, vector<SolutionPtr>, chrComparator> newGeneration;
 			const size_t POPMAXSIZE;
 			const size_t KEEP;
 			const size_t KEEPBEST;
 
 		public:
 			typedef std::unique_ptr<SolutionSet> setPtr;
-			SolutionSet(const vector<Solution::sPtr>& sol, size_t keepSize, size_t popMaxSize, size_t keepBest);
+			SolutionSet(const vector<SolutionPtr>& sol, size_t keepSize, size_t popMaxSize, size_t keepBest);
 
-			const vector<Solution::sPtr>& getSolutionSet() const;
+			const vector<SolutionPtr>& getSolutionSet() const;
 
 			/// Gets a random solution from the solution.
-			Solution::sPtr getParent() const;
+			SolutionPtr getParent() const;
 			/// Adds a new offspring to the population.
-			void addOffspring(Solution::sPtr offspring);
+			void addOffspring(SolutionPtr offspring);
 			/// Adds one year to the age of all the solution
 			void ageSolutions();
 			/// Limits the number of solutions to the initial.
 			void limit();
 			/// Gets one solution with the best fitness in the population.
-			Solution::sPtr best() const;
+			SolutionPtr best() const;
 
 			/// Sets the levels' size's.
 			void setLevelSize(const vector<size_t>& sizes);

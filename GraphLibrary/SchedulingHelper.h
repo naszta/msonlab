@@ -17,7 +17,7 @@ namespace msonlab {
 		using std::vector;
 
 		class SchedulingHelper {
-			static unsigned int doComputeLengthSTAndRT(Solution::csPtr solution, Options::oPtr options,
+			static unsigned int doComputeLengthSTAndRT(const Solution &solution, OptionsPtr options,
 			vector<unsigned>& ST, vector<unsigned>& RT);
 		public:
 			///
@@ -26,20 +26,20 @@ namespace msonlab {
 			/// @param solution the result to use
 			/// @param options the options to use
 			/// @return the length
-			static unsigned int computeLength(Solution::csPtr solution, const Options::oPtr options);
+			static unsigned int computeLength(const Solution &solution, const OptionsPtr options);
 
-			static unsigned int computeLengthAndST(Solution::csPtr solution, const Options::oPtr options,
+			static unsigned int computeLengthAndST(const Solution &solution, const OptionsPtr options,
 				vector<unsigned>& ST);
 
-			static unsigned int computeLengthAndRT(Solution::csPtr solution, const Options::oPtr options,
+			static unsigned int computeLengthAndRT(const Solution &solution, const OptionsPtr options,
 				vector<unsigned>& RT);
 
-			static unsigned int computeLengthSTAndRT(Solution::csPtr solution, const Options::oPtr options,
+			static unsigned int computeLengthSTAndRT(const Solution &solution, const OptionsPtr options,
 				vector<unsigned>& ST, vector<unsigned>& RT);
 
-			static unsigned int computeLengthAndReuseIdleTime(Solution::sPtr& solution, const Options::oPtr& options);
+			static unsigned int computeLengthAndReuseIdleTime(Solution& solution, const OptionsPtr& options);
 
-			static bool is_correct(const Solution::csPtr& sol);
+			static bool is_correct(const Solution &sol);
 		};
 	}
 }

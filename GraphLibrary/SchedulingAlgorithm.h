@@ -23,13 +23,13 @@ namespace msonlab {
 		class SchedulingAlgorithm
 		{
 			static vector<SchedulingAlgorithm*> examplars;
-			virtual unique_ptr<SchedulingAlgorithm> build(Options::oPtr) const = 0;
+			virtual unique_ptr<SchedulingAlgorithm> build(OptionsPtr) const = 0;
 		public:
 			typedef unique_ptr<SchedulingAlgorithm> ptr;
-			virtual Solution::sPtr schedule(const Graph &graph, Options::oPtr options) const = 0;
+			virtual SolutionPtr schedule(const Graph &graph, OptionsPtr options) const = 0;
 
 			static void add_scheduling_algorithm(SchedulingAlgorithm* sa) { examplars.push_back(sa); }
-			static ptr find_sceduling_algorithm(Options::oPtr options) {
+			static ptr find_sceduling_algorithm(OptionsPtr options) {
 				for (auto sa : examplars) {
 					auto res = sa->build(options);
 					if (res != nullptr) return std::move(res);

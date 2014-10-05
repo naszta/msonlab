@@ -7,7 +7,7 @@ namespace msonlab
 {
 	using std::stack;
 
-	DFSIterator::DFSIterator(IProcessable::nPtr endPtr)
+	DFSIterator::DFSIterator(NodePtr endPtr)
 		:GraphIterator(endPtr, endPtr)
 	{
 	}
@@ -19,10 +19,10 @@ namespace msonlab
 		this->end = g.iteratorEnd;
 
 		// adding input nodes to the queue.
-		IProcessable::nVect inputNodesVect = g.getInputNodes();
+		NodeVect inputNodesVect = g.getInputNodes();
 		if (inputNodesVect.size() > 0)
 		{
-			IProcessable::nVect::iterator it = inputNodesVect.begin();
+			NodeVect::iterator it = inputNodesVect.begin();
 			this->toDiscover.push(*it);
 			this->node = *it;
 			++it; // can skip first from the queue
@@ -74,7 +74,7 @@ namespace msonlab
 			return false;
 		}
 
-		IProcessable::nPtr tempNode = this->node;
+		NodePtr tempNode = this->node;
 		bool explored = false;
 		while (!explored)
 		{
@@ -94,8 +94,8 @@ namespace msonlab
 			tempNode = this->toDiscover.top();
 
 			this->discovered.insert(tempNode);
-			IProcessable::eVect neighbours = tempNode->getSuccessors();
-			IProcessable::eVect::const_iterator cit;
+			EdgeVect neighbours = tempNode->getSuccessors();
+			EdgeVect::const_iterator cit;
 			explored = true;
 			for(cit = neighbours.cbegin(); cit != neighbours.cend(); ++cit)
 			{
@@ -120,11 +120,11 @@ namespace msonlab
 	bool DFSIterator::clear()
 	{
 		this->node = this->end;
-		stack<IProcessable::nPtr> emptyStack;
+		stack<NodePtr> emptyStack;
 		std::swap(this->toDiscover, emptyStack);
-		IProcessable::nSet emptySet;
+		NodeSet emptySet;
 		std::swap(this->discovered, emptySet);
-		IProcessable::nSet emptySet2;
+		NodeSet emptySet2;
 		std::swap(this->explored, emptySet2);
 
 		return true;

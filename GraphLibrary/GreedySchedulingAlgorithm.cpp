@@ -12,7 +12,7 @@ namespace msonlab {
 		GreedySchedulingAlgorithm GreedySchedulingAlgorithm::example{ examplar() };
 
 		// schedules using greedy algorithm
-		Solution::sPtr GreedySchedulingAlgorithm::schedule(const Graph &graph, Options::oPtr options) const
+		SolutionPtr GreedySchedulingAlgorithm::schedule(const Graph &graph, OptionsPtr options) const
 		{
 			lwgraph lwg(graph);
 			const vector<lwnode> &nodes = lwg.nodes();
@@ -24,23 +24,23 @@ namespace msonlab {
 			vector<unsigned> schedule(lwg.size());
 			
 			// counts the available inputs of the nodess
-			//std::map< IProcessable::nPtr, int> count;
+			//std::map< NodePtr, int> count;
 			std::map< unsigned, int> count;
 
 			// list of input nodes
-			//IProcessable::nVect inputNodes = graph.getInputNodes();
+			//NodeVect inputNodes = graph.getInputNodes();
 			auto inputNodes = lwg.inodes();
 
 			// the ready to process nodes, initialized with the input nodes
-			//std::queue < IProcessable::nPtr> free;
+			//std::queue < NodePtr> free;
 			std::queue < unsigned > free( std::deque< unsigned >(inputNodes.begin(), inputNodes.end()) );
 
-			//Solution::sPtr sol = std::make_shared<Solution>(graph.numberOfNodes(), options->getNumberOfPus(), graph.numberOfEdges());
-			Solution::sPtr sol = std::make_shared<Solution>(lwg.size(), options->getNumberOfPus(), graph.numberOfEdges());
+			//SolutionPtr sol = std::make_shared<Solution>(graph.numberOfNodes(), options->getNumberOfPus(), graph.numberOfEdges());
+			SolutionPtr sol = std::make_shared<Solution>(lwg.size(), options->getNumberOfPus(), graph.numberOfEdges());
 			//while (taskCounter < graph.numberOfNodes())
 			while (taskCounter < lwg.size())
 			{
-				//vector< IProcessable::nPtr > scheduled_nodes;
+				//vector< NodePtr > scheduled_nodes;
 				vector<unsigned> scheduled_node_ids;
 				int limit = options->getNumberOfPus();
 				while (!free.empty() && limit > 0)
@@ -68,7 +68,7 @@ namespace msonlab {
 				for (auto scheduled_node_id : scheduled_node_ids)
 				{
 					auto& node = nodes[scheduled_node_id];
-					//IProcessable::eVect successors = out[i]->getSuccessors();
+					//EdgeVect successors = out[i]->getSuccessors();
 
 					// iterate over the successors
 					//for (size_t i = 0; i < successors.size(); ++i)
@@ -95,7 +95,7 @@ namespace msonlab {
 		}
 
 		//virtual constructor
-		SchedulingAlgorithm::ptr GreedySchedulingAlgorithm::build(Options::oPtr opt) const
+		SchedulingAlgorithm::ptr GreedySchedulingAlgorithm::build(OptionsPtr opt) const
 		{
 			if (opt->getAlgorithm().compare("greedy") == 0)
 			{

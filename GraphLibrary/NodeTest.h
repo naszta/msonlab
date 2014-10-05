@@ -14,9 +14,9 @@ namespace msonlab
 		NodeTest(const NodeTest& other);
 
 		NodeTest& operator=(const NodeTest& other);
-		Node::nPtr clone();
+		NodePtr clone();
 
-		virtual IProcessable::pVect process();
+		virtual IProcessableVect process();
 
 		// compile
 		void compile(int caller_thread, vector<msonlab::StackRunner::program>* programs, StackRunner::scheduleOrder schedule) {}

@@ -10,9 +10,9 @@ namespace msonlab
 		NodeAdd(const NodeAdd& other);
 
 		NodeAdd& operator=(const NodeAdd& other);
-		Node::nPtr clone();
+		NodePtr clone();
 
-		virtual IProcessable::pVect process();
+		virtual IProcessableVect process();
 
 		// compile
 		virtual void compile(int caller_thread, vector<msonlab::StackRunner::program>* programs, StackRunner::scheduleOrder schedule);

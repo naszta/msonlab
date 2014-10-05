@@ -7,7 +7,7 @@ namespace msonlab {
 
 		typedef pair<unsigned, unsigned> puu;
 
-		unsigned int SchedulingHelper::doComputeLengthSTAndRT(std::shared_ptr<const Solution> solution, const Options::oPtr options,
+		unsigned int SchedulingHelper::doComputeLengthSTAndRT(const Solution &solution, const OptionsPtr options,
 			vector<unsigned>& ST, vector<unsigned>& RT)
 		{
 			// ensure correctness before start to compute length
@@ -21,8 +21,8 @@ namespace msonlab {
 			unsigned commOverhead = options->getCommOverhead();
 			//unsigned puGroupSize = options->getPuGroupSize();
 			// const vector references
-			auto mapping = solution->getMapping();
-			auto scheduling = solution->getScheduling();
+			auto mapping = solution.getMapping();
+			auto scheduling = solution.getScheduling();
 			auto tasks = scheduling.size();
 			vector<uint> FT(tasks); // finish time of the tasks
 			vector<uint> DAT(tasks); // Data Arrival Time
@@ -38,7 +38,7 @@ namespace msonlab {
 			// skipping first task
 			for (uint i = 1; i < tasks; ++i)
 			{
-				IProcessable::nPtr actNode = scheduling[i];
+				NodePtr actNode = scheduling[i];
 				uint actId = actNode->getId();
 				uint actPU = mapping[i];
 				idPuMapping[actId] = actPU;
@@ -75,44 +75,44 @@ namespace msonlab {
 			return length;
 		}
 
-		unsigned int SchedulingHelper::computeLength(Solution::csPtr solution, const Options::oPtr options)
+		unsigned int SchedulingHelper::computeLength(const Solution &solution, const OptionsPtr options)
 		{
-			vector<unsigned> ST(solution->getScheduling().size());
+			vector<unsigned> ST(solution.getScheduling().size());
 			vector<unsigned> RT(options->getNumberOfPus());
 
 			return doComputeLengthSTAndRT(solution, options, ST, RT);
 		}
 
 		// compute length with returning start time
-		unsigned int SchedulingHelper::computeLengthAndST(Solution::csPtr solution, const Options::oPtr options,
+		unsigned int SchedulingHelper::computeLengthAndST(const Solution &solution, const OptionsPtr options,
 			vector<unsigned>& ST)
 		{
-			ST.resize(solution->getScheduling().size());
+			ST.resize(solution.getScheduling().size());
 			vector<unsigned> RT(options->getNumberOfPus());
 
 			return doComputeLengthSTAndRT(solution, options, ST, RT);
 		}
 
-		unsigned int SchedulingHelper::computeLengthAndRT(Solution::csPtr solution, const Options::oPtr options,
+		unsigned int SchedulingHelper::computeLengthAndRT(const Solution &solution, const OptionsPtr options,
 			vector<unsigned>& RT)
 		{
-			vector<unsigned> ST(solution->getScheduling().size());
+			vector<unsigned> ST(solution.getScheduling().size());
 			RT.resize(options->getNumberOfPus());
 
 			return doComputeLengthSTAndRT(solution, options, ST, RT);
 		}
 
 		// compute length with returning start time and ready time
-		unsigned int SchedulingHelper::computeLengthSTAndRT(Solution::csPtr solution, Options::oPtr options,
+		unsigned int SchedulingHelper::computeLengthSTAndRT(const Solution &solution, OptionsPtr options,
 			vector<unsigned>& ST, vector<unsigned>& RT)
 		{
-			ST.resize(solution->getScheduling().size());
+			ST.resize(solution.getScheduling().size());
 			RT.resize(options->getNumberOfPus());
 
 			return doComputeLengthSTAndRT(solution, options, ST, RT);
 		}
 
-		unsigned int SchedulingHelper::computeLengthAndReuseIdleTime(Solution::sPtr& solution, const Options::oPtr& options)
+		unsigned int SchedulingHelper::computeLengthAndReuseIdleTime(Solution &solution, const OptionsPtr& options)
 		{
 			// ensure correctness before start to compute length
 			/*if (!is_correct(solution)) {
@@ -123,8 +123,8 @@ namespace msonlab {
 
 			unsigned commOverhead = options->getCommOverhead();
 			// const vector references
-			auto mapping = solution->getMapping();
-			auto scheduling = solution->getScheduling();
+			auto mapping = solution.getMapping();
+			auto scheduling = solution.getScheduling();
 			auto tasks = scheduling.size();
 			vector<uint> ST(tasks); // start time of the tasks
 			vector<uint> FT(tasks); // finish time of the tasks
@@ -244,7 +244,7 @@ namespace msonlab {
 			uint length = *std::max_element(FT.begin(), FT.end());
 
 			// collecting the nodes
-			Node::nVect nodes(tasks);
+			NodeVect nodes(tasks);
 			vector<pair<unsigned, unsigned>> STS;
 			for (size_t i = 0; i < tasks; ++i)
 			{
@@ -260,8 +260,8 @@ namespace msonlab {
 			// updating the scheduling and mapping
 			for (size_t i = 0; i < tasks; ++i)
 			{
-				solution->scheduling[i] = nodes[STS[i].second];
-				solution->mapping[i] = idPuMapping[STS[i].second];
+				solution.scheduling[i] = nodes[STS[i].second];
+				solution.mapping[i] = idPuMapping[STS[i].second];
 			}
 
 			return length;
@@ -269,9 +269,9 @@ namespace msonlab {
 
 		// a helper method for development
 		// fast checks, whether is solution is correct or not
-		bool SchedulingHelper::is_correct(const Solution::csPtr& sol)
+		bool SchedulingHelper::is_correct(const Solution &solution)
 		{
-			const IProcessable::nVect& scheduling = sol->scheduling;
+			const NodeVect& scheduling = solution.scheduling;
 
 			// ensure there is no duplication in the scheduling
 

@@ -7,6 +7,18 @@ namespace msonlab
 {
 	class Node;
 	class Edge;
+	class IProcessable;
+
+	typedef std::shared_ptr<IProcessable> IProcessablePtr;
+	typedef vector<std::shared_ptr<IProcessable>> IProcessableVect;
+
+	typedef std::shared_ptr<Node> NodePtr;
+	typedef vector<std::shared_ptr<Node>> NodeVect;
+	typedef std::set<std::shared_ptr<Node>> NodeSet;
+
+	typedef std::shared_ptr<Edge> EdgePtr;
+	typedef vector<std::shared_ptr<Edge>> EdgeVect;
+
 	class IProcessable
 	{
 	protected:
@@ -27,16 +39,6 @@ namespace msonlab
 
 	public:
 		bool synced = false;
-		typedef std::shared_ptr<IProcessable> pPtr;
-		typedef vector<std::shared_ptr<IProcessable>> pVect;
-
-		typedef std::shared_ptr<Node> nPtr;
-		typedef vector<std::shared_ptr<Node>> nVect;
-		typedef std::set<std::shared_ptr<Node>> nSet;
-
-		typedef std::shared_ptr<Edge> ePtr;
-		typedef vector<std::shared_ptr<Edge>> eVect;
-
 		enum PlaceEnum {Input, Inside, Output};
 
 		IProcessable(unsigned int _id, types::LabelType _label, types::DataPtr _value);
@@ -45,7 +47,7 @@ namespace msonlab
 
 		virtual bool registerParameter() = 0;
 
-		virtual IProcessable::pVect process() = 0;
+		virtual IProcessableVect process() = 0;
 		virtual bool isReadyForProcess() const = 0;
 		bool isProcessed() const;
 		virtual bool resetProcessingState();

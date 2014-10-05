@@ -12,7 +12,7 @@ namespace msonlab {
 			return a->getFitness() > b->getFitness();
 		}
 
-		SolutionSet::SolutionSet(const vector<Solution::sPtr>& sol, size_t keepSize, size_t popMaxSize, size_t keepBest) : solution(sol), POPMAXSIZE(popMaxSize), KEEP(keepSize), KEEPBEST(keepBest)
+		SolutionSet::SolutionSet(const vector<SolutionPtr>& sol, size_t keepSize, size_t popMaxSize, size_t keepBest) : solution(sol), POPMAXSIZE(popMaxSize), KEEP(keepSize), KEEPBEST(keepBest)
 		{
 			this->solution.resize(KEEP);
 		}
@@ -26,7 +26,7 @@ namespace msonlab {
 		/// adds a new offspring to the population
 		///
 		/// @param offspring the solution to add.
-		void SolutionSet::addOffspring(Solution::sPtr offspring)
+		void SolutionSet::addOffspring(SolutionPtr offspring)
 		{
 			this->newGeneration.push(offspring);
 		}

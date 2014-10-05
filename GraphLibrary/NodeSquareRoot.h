@@ -10,8 +10,8 @@ namespace msonlab
 		NodeSquareRoot(const NodeSquareRoot& other);
 
 		NodeSquareRoot& operator=(const NodeSquareRoot& other);
-		Node::nPtr clone();
-		virtual IProcessable::pVect process();
+		NodePtr clone();
+		virtual IProcessableVect process();
 
 		// compile
 		virtual void compile(int caller_thread, vector<msonlab::StackRunner::program>* programs, StackRunner::scheduleOrder schedule);

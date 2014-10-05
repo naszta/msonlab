@@ -14,21 +14,21 @@ namespace msonlab {
 			using std::unique_ptr;
 
 			// creates partial topological order starting with the outputs
-			vector<IProcessable::nVect> partialTopologicalSort(const Graph &graph)
+			vector<NodeVect> partialTopologicalSort(const Graph &graph)
 			{
-				IProcessable::nVect outputNodes = graph.getOutputNodes();
-				vector<IProcessable::nVect> result;
+				NodeVect outputNodes = graph.getOutputNodes();
+				vector<NodeVect> result;
 				result.push_back(outputNodes);
-				std::map< IProcessable::nPtr, unsigned> count;
+				std::map< NodePtr, unsigned> count;
 
 				size_t added = outputNodes.size();
-				IProcessable::nVect::iterator it;
+				NodeVect::iterator it;
 				unsigned graphSize = graph.getNodes().size();
 				for (int level = 0; added < graphSize; ++level) {
-					result.push_back(IProcessable::nVect());
+					result.push_back(NodeVect());
 					for (auto& act : result[level])
 					{
-						IProcessable::eVect predecessors = act->getPredecessors();
+						EdgeVect predecessors = act->getPredecessors();
 						for (size_t i = 0; i < predecessors.size(); ++i)
 						{
 							count[predecessors[i]->getFrom()]++;
@@ -45,24 +45,24 @@ namespace msonlab {
 			}
 
 			// creates partial topological order starting with the inputs
-			vector<IProcessable::nVect> partialTopologicalSortFromBottom(const Graph &graph)
+			vector<NodeVect> partialTopologicalSortFromBottom(const Graph &graph)
 			{
-				IProcessable::nVect inputNodes = graph.getInputNodes();
-				vector<IProcessable::nVect> result;
+				NodeVect inputNodes = graph.getInputNodes();
+				vector<NodeVect> result;
 				// first level, the input nodes
 				result.push_back(inputNodes);
-				std::map< IProcessable::nPtr, unsigned> count;
+				std::map< NodePtr, unsigned> count;
 
 				// this number of nodes added to the leveling
 				size_t added = inputNodes.size();
-				IProcessable::nVect::iterator it;
+				NodeVect::iterator it;
 				unsigned graphSize = graph.getNodes().size();
 				for (int level = 0; added < graphSize; ++level) {
 					// adding a new level to the result
-					result.push_back(IProcessable::nVect());
+					result.push_back(NodeVect());
 					for (auto& act : result[level])
 					{
-						IProcessable::eVect successors = act->getSuccessors();
+						EdgeVect successors = act->getSuccessors();
 						for (size_t i = 0; i < successors.size(); ++i)
 						{
 							count[successors[i]->getTo()]++;
@@ -79,21 +79,21 @@ namespace msonlab {
 			}
 
 			// creates a topological sort from the graph
-			IProcessable::nVect topologicalSort(const Graph &graph) {
-				IProcessable::nVect order;
-				IProcessable::nVect inputNodes = graph.getInputNodes();
-				IProcessable::nVect::iterator it;
-				std::map< IProcessable::nPtr, unsigned> count;
+			NodeVect topologicalSort(const Graph &graph) {
+				NodeVect order;
+				NodeVect inputNodes = graph.getInputNodes();
+				NodeVect::iterator it;
+				std::map< NodePtr, unsigned> count;
 				// initializing queue with the input nodes
 				// nodes without dependencies
-				std::queue< IProcessable::nPtr, std::deque<IProcessable::nPtr>> q(std::deque<IProcessable::nPtr>(inputNodes.begin(), inputNodes.end()));
+				std::queue< NodePtr, std::deque<NodePtr>> q(std::deque<NodePtr>(inputNodes.begin(), inputNodes.end()));
 
 				while (!q.empty())
 				{
-					IProcessable::nPtr act = q.front();
+					NodePtr act = q.front();
 					q.pop();
 					order.push_back(act);
-					IProcessable::eVect successors = act->getSuccessors();
+					EdgeVect successors = act->getSuccessors();
 					for (unsigned i = 0; i < successors.size(); ++i)
 					{
 						count[successors[i]->getTo()]++;
@@ -107,11 +107,11 @@ namespace msonlab {
 				return order;
 			}
 
-			Graph&& computeChangedGraph(const Graph &graph, IProcessable::nSet changed, IProcessable::nSet needed)
+			Graph&& computeChangedGraph(const Graph &graph, NodeSet changed, NodeSet needed)
 			{
-				IProcessable::nVect topsort = topologicalSort(graph);
-				IProcessable::nSet::iterator it;
-				std::map<IProcessable::nPtr, int> topologicalOrderMap;
+				NodeVect topsort = topologicalSort(graph);
+				NodeSet::iterator it;
+				std::map<NodePtr, int> topologicalOrderMap;
 
 				// finding the the last needed element in the topological order
 				int maxNodeTopValue = -1;
@@ -127,7 +127,7 @@ namespace msonlab {
 				// starting bfs from every changed node
 				// stops if topological number is bigger than
 				// the maximum of needed
-				IProcessable::nSet modified;
+				NodeSet modified;
 				BFSIterator bfsItr(graph);
 				for (it = changed.cbegin(); it != changed.cend(); ++it)
 				{
@@ -145,10 +145,10 @@ namespace msonlab {
 					}
 				}
 
-				std::queue<IProcessable::nPtr> toVisit;
-				IProcessable::nSet visited;
-				IProcessable::nPtr node;
-				IProcessable::eVect::iterator eIt;
+				std::queue<NodePtr> toVisit;
+				NodeSet visited;
+				NodePtr node;
+				EdgeVect::iterator eIt;
 				for (it = needed.begin(); it != needed.end(); ++it)
 				{
 					toVisit.push(*it);
@@ -172,7 +172,7 @@ namespace msonlab {
 						}
 					} while (visited.count(node) > 0);
 
-					IProcessable::eVect neighbours = node->getPredecessors();
+					EdgeVect neighbours = node->getPredecessors();
 					for (eIt = neighbours.begin(); eIt != neighbours.end(); ++eIt)
 					{
 						if (changed.count((*eIt)->getTo()) == 0)
@@ -191,7 +191,7 @@ namespace msonlab {
 				return std::move(changedgraph);
 			}
 
-			void computeNextFreeNodes(vector<int>& dependencies, Node::nPtr node)
+			void computeNextFreeNodes(vector<int>& dependencies, NodePtr node)
 			{
 				for (auto& edge : node->getSuccessors())
 				{
@@ -227,7 +227,7 @@ namespace msonlab {
 				}
 			}
 
-			void list_nodes(const Graph &graph, vector<Node::nPtr>& nodes) {
+			void list_nodes(const Graph &graph, vector<NodePtr>& nodes) {
 				if (nodes.size() != graph.numberOfNodes()) {
 					nodes.resize(graph.numberOfNodes());
 				}
@@ -237,9 +237,9 @@ namespace msonlab {
 				}
 			}
 
-			Graph::gPtr transitive_reduction(const Graph::gPtr& g) {
+			GraphPtr transitive_reduction(const GraphPtr& g) {
 				unsigned reductions = 0;
-				Graph::gPtr g2 = std::make_unique<Graph>();
+				GraphPtr g2 = std::make_unique<Graph>();
 				for (auto& node : g->getNodes()) {
 					g2->addNode(node->clone());
 				}
@@ -249,7 +249,7 @@ namespace msonlab {
 				BFSIterator itr(*g);
 
 				for (auto& node : g->getNodes()) {
-					map < Node::nPtr, Edge::ePtr> suc_map;
+					map < NodePtr, EdgePtr> suc_map;
 					// add all successors to the set
 					for (auto& suc : node->getSuccessors()) {
 						suc_map.insert(std::make_pair(suc->getTo(), suc));
@@ -280,8 +280,8 @@ namespace msonlab {
 				return g2;
 			}
 
-			unique_ptr<set<Node::nPtr>> get_all_dependencies(const Node::nPtr& node) {
-				auto result = std::make_unique<set<Node::nPtr>>();
+			unique_ptr<set<NodePtr>> get_all_dependencies(const NodePtr& node) {
+				auto result = std::make_unique<set<NodePtr>>();
 
 				return result;
 			}

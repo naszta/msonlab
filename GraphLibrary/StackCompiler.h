@@ -8,8 +8,8 @@ namespace msonlab
 	{
 	private:
 
-		static void mark_node_with_iteration_number(Node::nPtr to_mark, int iteration_number);
-		static void mark_edge_with_iteration_number(Edge::ePtr to_mark, int iteration_number);
+		static void mark_node_with_iteration_number(NodePtr to_mark, int iteration_number);
+		static void mark_edge_with_iteration_number(EdgePtr to_mark, int iteration_number);
 
 
 	public:

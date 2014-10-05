@@ -22,14 +22,14 @@ namespace msonlab
 		return *this;
 	}
 
-	Node::nPtr NodeTest::clone()
+	NodePtr NodeTest::clone()
 	{
 		return std::make_shared<NodeTest>(*this);
 	}
 
-	IProcessable::pVect NodeTest::process()
+	IProcessableVect NodeTest::process()
 	{
-		IProcessable::pVect ret;
+		IProcessableVect ret;
 		return ret;
 	}
 

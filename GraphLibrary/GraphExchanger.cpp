@@ -13,12 +13,12 @@ namespace msonlab
 		}
 	};
 
-	//GraphExchanger::GraphExchanger(msonlab::Graph::gPtr toExchange)
+	//GraphExchanger::GraphExchanger(msonlab::GraphPtr toExchange)
 	//{
 	//	graph = toExchange;
 	//}
 
-	Graph::gPtr GraphExchanger::ImportGraph(std::string inputPath)
+	GraphPtr GraphExchanger::ImportGraph(std::string inputPath)
 	{
 		// reset GraphBuilder
 		GraphBuilder::reset();

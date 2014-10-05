@@ -25,13 +25,15 @@ namespace msonlab
 		return *this;
 	}
 
-	Node::nPtr NodeMultiply::clone() {
+	NodePtr NodeMultiply::clone() 
+	{
+		// change to make shared from this
 		return std::make_shared<NodeMultiply>(*this);
 	}
 
-	IProcessable::pVect NodeMultiply::process()
+	IProcessableVect NodeMultiply::process()
 	{
-		IProcessable::pVect ret;
+		IProcessableVect ret;
 
 		if (isReadyForProcess())
 		{
@@ -81,7 +83,7 @@ namespace msonlab
 
 
 		// going deeper and calculate predecessors
-		for (IProcessable::pPtr pred : getPredecessors())
+		for (IProcessablePtr pred : getPredecessors())
 		{
 			if (pred->compile_iteration < compile_iteration)
 			{

@@ -67,12 +67,12 @@ namespace msonlab {
 			return os;
 		}
 
-		void Solution::printTable(std::ostream& os, Options::oPtr options) const
+		void Solution::printTable(std::ostream& os, OptionsPtr options) const
 		{
 			auto tasks = scheduling.size();
 
 			vector<unsigned> ST(tasks);
-			unsigned length = SchedulingHelper::computeLengthAndST(shared_from_this(), options, ST);
+			unsigned length = SchedulingHelper::computeLengthAndST(*this, options, ST);
 
 			// initialize table
 			//unsigned length = *std::max_element(FT.begin(), FT.end());

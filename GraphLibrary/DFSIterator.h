@@ -15,14 +15,14 @@ namespace msonlab
 	*/
 	class DFSIterator : public GraphIterator
 	{
-		IProcessable::nSet explored;
-		IProcessable::nSet discovered;
-		stack<IProcessable::nPtr> toDiscover;
+		NodeSet explored;
+		NodeSet discovered;
+		stack<NodePtr> toDiscover;
 		// This method chooses the next node and steps there
 		virtual bool moveNext();
 		virtual bool clear();
 	public:
-		DFSIterator(IProcessable::nPtr endPtr);
+		DFSIterator(NodePtr endPtr);
 		DFSIterator(const Graph& g);
 		DFSIterator(const DFSIterator& it);
 		DFSIterator& operator=(const DFSIterator& it);

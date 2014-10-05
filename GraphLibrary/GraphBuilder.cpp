@@ -3,8 +3,8 @@
 
 namespace msonlab
 {
-	std::map<unsigned int, Node::nPtr> GraphBuilder::nodes;
-	std::map<unsigned int, Edge::ePtr> GraphBuilder::edges;
+	std::map<unsigned int, NodePtr> GraphBuilder::nodes;
+	std::map<unsigned int, EdgePtr> GraphBuilder::edges;
 
 	using namespace types;
 
@@ -12,36 +12,36 @@ namespace msonlab
 	{
 		if (node_type == std::string("ADD"))
 		{
-			GraphBuilder::nodes.insert(std::pair<unsigned int, Node::nPtr>
+			GraphBuilder::nodes.insert(std::pair<unsigned int, NodePtr>
 				(id,
-				Node::nPtr(new NodeAdd(id, label, nullptr))
+				NodePtr(new NodeAdd(id, label, nullptr))
 				));
 		}
 		if (node_type == std::string("CONSTANT"))
 		{
 			DataPtr data = std::make_shared<DataType>(atof(custom_data.c_str()));
-			GraphBuilder::nodes.insert(std::pair<unsigned int, Node::nPtr>
-				(id, Node::nPtr(new NodeConstant(id, label, data))));
+			GraphBuilder::nodes.insert(std::pair<unsigned int, NodePtr>
+				(id, NodePtr(new NodeConstant(id, label, data))));
 		}
 		if (node_type == std::string("DIVIDE"))
 		{
-			GraphBuilder::nodes.insert(std::pair<unsigned int, Node::nPtr>
+			GraphBuilder::nodes.insert(std::pair<unsigned int, NodePtr>
 				(id,
-				Node::nPtr(new NodeDivide(id, label, nullptr))
+				NodePtr(new NodeDivide(id, label, nullptr))
 				));
 		}
 		if (node_type == std::string("MULTIPLY"))
 		{
-			GraphBuilder::nodes.insert(std::pair<unsigned int, Node::nPtr>
+			GraphBuilder::nodes.insert(std::pair<unsigned int, NodePtr>
 				(id,
-				Node::nPtr(new NodeMultiply(id, label, nullptr))
+				NodePtr(new NodeMultiply(id, label, nullptr))
 				));
 		}
 		if (node_type == std::string("SQUAREROOT"))
 		{
-			GraphBuilder::nodes.insert(std::pair<unsigned int, Node::nPtr>
+			GraphBuilder::nodes.insert(std::pair<unsigned int, NodePtr>
 				(id,
-				Node::nPtr(new NodeMultiply(id, label, nullptr))
+				NodePtr(new NodeMultiply(id, label, nullptr))
 				));
 		}
 	}
@@ -50,23 +50,23 @@ namespace msonlab
 	{
 		if (edge_type == std::string("SIMPLE"))
 		{
-			GraphBuilder::edges.insert(std::pair<unsigned int, Edge::ePtr>
+			GraphBuilder::edges.insert(std::pair<unsigned int, EdgePtr>
 				(id,
-				Edge::ePtr(new Edge(id, L"", 0, nodes.at(source_id), nodes.at(target_id)))
+				EdgePtr(new Edge(id, L"", 0, nodes.at(source_id), nodes.at(target_id)))
 				));
 		}
 		if (edge_type == std::string("BLUE"))
 		{
-			GraphBuilder::edges.insert(std::pair<unsigned int, Edge::ePtr>
+			GraphBuilder::edges.insert(std::pair<unsigned int, EdgePtr>
 				(id,
-				Edge::ePtr(new BlueEdge(id, L"", 0, nodes.at(source_id), nodes.at(target_id)))
+				EdgePtr(new BlueEdge(id, L"", 0, nodes.at(source_id), nodes.at(target_id)))
 				));
 		}
 		if (edge_type == std::string("MULTIPLIER"))
 		{
-			GraphBuilder::edges.insert(std::pair<unsigned int, Edge::ePtr>
+			GraphBuilder::edges.insert(std::pair<unsigned int, EdgePtr>
 				(id,
-				Edge::ePtr(new MultiplierEdge(id, L"", 0, nodes.at(source_id), nodes.at(target_id), atof(custom_data.c_str())))
+				EdgePtr(new MultiplierEdge(id, L"", 0, nodes.at(source_id), nodes.at(target_id), atof(custom_data.c_str())))
 				));
 		}
 	}
@@ -78,9 +78,9 @@ namespace msonlab
 		GraphBuilder::edges.clear();
 	}
 
-	Graph::gPtr GraphBuilder::build()
+	GraphPtr GraphBuilder::build()
 	{
-		Graph::gPtr ret = std::make_unique<Graph>();
+		GraphPtr ret = std::make_unique<Graph>();
 		for (auto e : GraphBuilder::edges)
 		{
 			ret->addEdge(e.second);

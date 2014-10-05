@@ -4,14 +4,17 @@
 namespace msonlab
 {
 	using std::string;
+
+	typedef std::shared_ptr<Node> NodePtr;
+
 	class Node : public IProcessable
 	{
 	private:
-		IProcessable::eVect predecessors;
-		IProcessable::eVect successors;
+		EdgeVect predecessors;
+		EdgeVect successors;
 
-		IProcessable::nVect preNodes;
-		IProcessable::nVect sucNodes;
+		NodeVect preNodes;
+		NodeVect sucNodes;
 		
 		string type_string;
 		int paramCount;
@@ -25,39 +28,39 @@ namespace msonlab
 
 		bool registerParameter();
 
-		virtual IProcessable::pVect process() = 0;
+		virtual IProcessableVect process() = 0;
 		virtual bool isReadyForProcess() const;
 		virtual bool resetProcessingState();
 
 		// getting the neighbours skipping the edges
-		const IProcessable::nVect& getPreNodes() const { return preNodes; }
-		const IProcessable::nVect& getSucNodes() const { return sucNodes; }
+		const NodeVect& getPreNodes() const { return preNodes; }
+		const NodeVect& getSucNodes() const { return sucNodes; }
 
-		const IProcessable::eVect& getPredecessors() const;
+		const EdgeVect& getPredecessors() const;
 		size_t getPredecessorsSize() const;
 		unsigned getPredecessorNodeId(size_t index) const;
-		const IProcessable::ePtr& getPredecessor(size_t index) const;
-		IProcessable::eVect::iterator getPredecessorBegin();
-		IProcessable::eVect::iterator getPredecessorEnd();
-		const IProcessable::eVect& getSuccessors() const;
+		const EdgePtr& getPredecessor(size_t index) const;
+		EdgeVect::iterator getPredecessorBegin();
+		EdgeVect::iterator getPredecessorEnd();
+		const EdgeVect& getSuccessors() const;
 		size_t getSuccessorsSize() const;
 
 		std::string getIdString() const;
 
-		void addPreNode(IProcessable::nPtr node);
-		void addSucNode(IProcessable::nPtr node);
+		void addPreNode(NodePtr node);
+		void addSucNode(NodePtr node);
 
-		bool registerPredecessor(IProcessable::ePtr _newPredecessor);
-		bool unregisterPredecessor(IProcessable::ePtr _newPredecessor);
+		bool registerPredecessor(EdgePtr _newPredecessor);
+		bool unregisterPredecessor(EdgePtr _newPredecessor);
 
-		bool registerSuccessor(IProcessable::ePtr _newSuccessor);
-		bool unregisterSuccessor(IProcessable::ePtr _newSuccessor);
+		bool registerSuccessor(EdgePtr _newSuccessor);
+		bool unregisterSuccessor(EdgePtr _newSuccessor);
 
 		PlaceEnum getPlace() const;
 
 		virtual unsigned getComputationTime() const { return compTime; }
 
-		virtual nPtr clone() = 0; // change to const
+		virtual NodePtr clone() = 0; // change to const
 
 		// compile
 		virtual void compile(int caller_thread, vector<msonlab::StackRunner::program>* programs, StackRunner::scheduleOrder schedule);

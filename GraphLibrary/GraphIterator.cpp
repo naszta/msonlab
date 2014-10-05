@@ -2,7 +2,7 @@
 
 namespace msonlab
 {
-	GraphIterator::GraphIterator(IProcessable::nPtr node, IProcessable::nPtr end)
+	GraphIterator::GraphIterator(NodePtr node, NodePtr end)
 		: node(node), end(end)
 	{
 	}
@@ -48,14 +48,14 @@ namespace msonlab
 	}
 
 	// Returns the actual node
-	IProcessable::nPtr GraphIterator::operator*()
+	NodePtr GraphIterator::operator*()
 	{
 		return this->node;
 	}
 
 	// Sets the start node of the BFS
 	// It is the responsibility of the caller that startnode is part of base graph of this iterator
-	bool GraphIterator::setStartNode(IProcessable::nPtr startNode)
+	bool GraphIterator::setStartNode(NodePtr startNode)
 	{
 		this->clear();
 		this->node = startNode;

@@ -5,7 +5,7 @@
 
 namespace msonlab
 {
-	Edge::Edge(unsigned int _id, types::LabelType _label, types::DataPtr _value, IProcessable::nPtr _from, IProcessable::nPtr _to)
+	Edge::Edge(unsigned int _id, types::LabelType _label, types::DataPtr _value, NodePtr _from, NodePtr _to)
 		: IProcessable(_id, _label, _value), from(_from), to(_to), paramReady(false)
 	{
 	}
@@ -36,13 +36,13 @@ namespace msonlab
 		return true;
 	}
 
-	IProcessable::pVect Edge::process()
+	IProcessableVect Edge::process()
 	{
 		if (isReadyForProcess())
 		{
 			if (setProcessed((*from).getResultValue()))
 			{
-				IProcessable::pVect retVal;
+				IProcessableVect retVal;
 				
 				if((*to).registerParameter())
 					retVal.insert(retVal.begin(), to);
@@ -70,7 +70,7 @@ namespace msonlab
 		return true;
 	}
 
-	IProcessable::nPtr Edge::opposite(IProcessable::nPtr x)
+	NodePtr Edge::opposite(NodePtr x)
 	{
 		if (to == x)
 			return from;
@@ -80,12 +80,12 @@ namespace msonlab
 			throw Exceptions::NotPartOfEdgeException("The node is not part of the current edge!");
 	}
 
-	IProcessable::nPtr Edge::getFrom() const
+	NodePtr Edge::getFrom() const
 	{
 		return from;
 	}
 
-	IProcessable::nPtr Edge::getTo() const
+	NodePtr Edge::getTo() const
 	{
 		return to;
 	}

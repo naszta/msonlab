@@ -16,7 +16,7 @@ namespace msonlab {
 			static CriticalPathSchedulingAlgorithm example;
 			CriticalPathSchedulingAlgorithm() = default;
 			CriticalPathSchedulingAlgorithm(examplar e) { SchedulingAlgorithm::add_scheduling_algorithm(this); }
-			virtual SchedulingAlgorithm::ptr build(Options::oPtr) const;
+			virtual SchedulingAlgorithm::ptr build(OptionsPtr) const;
 			virtual ~CriticalPathSchedulingAlgorithm() = default;
 		};
 	}

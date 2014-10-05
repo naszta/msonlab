@@ -12,7 +12,7 @@ namespace msonlab {
 		CoffmanGrahamSchedulingAlgorithm CoffmanGrahamSchedulingAlgorithm::example{ examplar() };
 		
 		// lexigraphically compare
-		bool vector_lexicographic(const pair<vector<unsigned>, Node::nPtr>& a, const pair<vector<unsigned>, Node::nPtr>& b)
+		bool vector_lexicographic(const pair<vector<unsigned>, NodePtr>& a, const pair<vector<unsigned>, NodePtr>& b)
 		{
 			size_t limit = std::min(a.first.size(), b.first.size());
 			for (size_t i = 0; i < limit; ++i) {
@@ -47,7 +47,7 @@ namespace msonlab {
 
 			// over all levels
 			for (size_t i = 1; i < levels.size(); ++i) {
-				vector<pair<vector<unsigned>, Node::nPtr>> order;
+				vector<pair<vector<unsigned>, NodePtr>> order;
 				unsigned top = 1;
 				if (levels[i].size() > 1) {
 					for (auto& node : levels[i]) {
@@ -77,7 +77,7 @@ namespace msonlab {
 		}
 
 		//virtual constructor
-		SchedulingAlgorithm::ptr CoffmanGrahamSchedulingAlgorithm::build(Options::oPtr opt) const
+		SchedulingAlgorithm::ptr CoffmanGrahamSchedulingAlgorithm::build(OptionsPtr opt) const
 		{
 			if (opt->getAlgorithm().compare("coffman") == 0)
 			{

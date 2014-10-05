@@ -1,6 +1,7 @@
 #include "GeneticAlgorithm.h"
 #include "Algorithms.h"
 #include "CriticalPathSchedulingAlgorithm.h"
+#include "lwgraph.h"
 #include <cstdlib>
 #include <ctime>
 #include <set>
@@ -17,7 +18,7 @@
 namespace msonlab {
 	namespace scheduling {
 
-		GeneticAlgorithm::GeneticAlgorithm(Options::oPtr options, FitnessStrategy::fsPtr strategy)
+		GeneticAlgorithm::GeneticAlgorithm(OptionsPtr options, FSPtr strategy)
 			: options(options), fsstrategy(std::move(strategy))
 		{
 		}
@@ -25,7 +26,7 @@ namespace msonlab {
 		GeneticAlgorithm GeneticAlgorithm::example{ examplar() };
 		
 		//virtual constructor
-		SchedulingAlgorithm::ptr GeneticAlgorithm::build(Options::oPtr opt) const
+		SchedulingAlgorithm::ptr GeneticAlgorithm::build(OptionsPtr opt) const
 		{
 			if (opt->getAlgorithm().compare("genetic") == 0)
 			{
@@ -41,13 +42,13 @@ namespace msonlab {
 		///
 		/// @param The input graph.
 		/// @return The constructed solution.
-		Solution::sPtr GeneticAlgorithm::greedySolution(const Graph &graph) const
+		SolutionPtr GeneticAlgorithm::greedySolution(const Graph &graph) const
 		{
 			unsigned timeCounter = 0;
 			unsigned taskCounter = 0;
-			std::map< IProcessable::nPtr, unsigned> count;
-			IProcessable::nVect inputNodes = graph.getInputNodes();
-			std::queue < IProcessable::nPtr> free;
+			std::map< NodePtr, unsigned> count;
+			NodeVect inputNodes = graph.getInputNodes();
+			std::queue < NodePtr> free;
 			for (size_t i = 0; i < inputNodes.size(); ++i)
 			{
 				free.push(inputNodes[i]);
@@ -56,11 +57,11 @@ namespace msonlab {
 			auto c = std::make_shared<Solution>(graph.numberOfNodes(), options->getNumberOfPus(), graph.numberOfEdges());
 			while (taskCounter < graph.numberOfNodes())
 			{
-				vector< IProcessable::nPtr > out;
+				vector< NodePtr > out;
 				int limit = c->pus;
 				while (!free.empty() && limit > 0)
 				{
-					IProcessable::nPtr node = free.front();
+					NodePtr node = free.front();
 					c->mapping[taskCounter] = limit - 1;
 					c->scheduling[taskCounter] = node;
 
@@ -77,7 +78,7 @@ namespace msonlab {
 
 				for (size_t i = 0; i < out.size(); ++i)
 				{
-					IProcessable::eVect successors = out[i]->getSuccessors();
+					EdgeVect successors = out[i]->getSuccessors();
 					for (size_t i = 0; i < successors.size(); ++i)
 					{
 						count[successors[i]->getTo()]++;
@@ -99,7 +100,9 @@ namespace msonlab {
 		/// For the schedule the Options of this GeneticAlgorithm is used.
 		/// @param graph The graph to schedule.
 		/// @return the best solution the GA finds.
-		Solution::sPtr GeneticAlgorithm::schedule(const Graph &graph, Options::oPtr options) const {
+		SolutionPtr GeneticAlgorithm::schedule(const Graph &graph, OptionsPtr options) const 
+		{
+			lw::lwgraph lwg(graph);
 			auto set = this->generateInitialSolution(graph, options);
 			set->limit();
 
@@ -119,11 +122,11 @@ namespace msonlab {
 			return set->best();
 		}
 
-		SolutionSet::setPtr GeneticAlgorithm::generateInitialSolution(const Graph &graph, Options::oPtr options) const
+		SolutionSet::setPtr GeneticAlgorithm::generateInitialSolution(const Graph &graph, OptionsPtr options) const
 		{
 			SolutionSet::setPtr p;
 			if (options->getInitialSolution().compare("cp") == 0) {
-				vector<IProcessable::nVect> levels = graph::algorithms::partialTopologicalSort(graph);
+				vector<NodeVect> levels = graph::algorithms::partialTopologicalSort(graph);
 				size_t numLevels = levels.size();
 				vector<unsigned> levelingLimits;
 				unsigned limits = 0;
@@ -150,18 +153,18 @@ namespace msonlab {
 		/// 
 		/// @param graph The input graph.
 		/// @return The generated population.
-		SolutionSet::setPtr GeneticAlgorithm::generateRndSolution(const Graph &graph, Options::oPtr options) const
+		SolutionSet::setPtr GeneticAlgorithm::generateRndSolution(const Graph &graph, OptionsPtr options) const
 		{
 			cVect solution;
-			vector<IProcessable::nVect> levels = graph::algorithms::partialTopologicalSort(graph);
+			vector<NodeVect> levels = graph::algorithms::partialTopologicalSort(graph);
 			size_t numLevels = levels.size();
 			vector<unsigned> levelingLimits;
 
 			auto set = std::make_unique<SolutionSet>(solution, options->getKeepSize(), options->getPopMaxSize(), options->getKeepBest());
 
-			Solution::sPtr chr = this->greedySolution(graph);
+			SolutionPtr chr = this->greedySolution(graph);
 
-			Solution::sPtr cc = std::make_shared<Solution>(graph.numberOfNodes(), options->getNumberOfPus(), graph.numberOfEdges());
+			SolutionPtr cc = std::make_shared<Solution>(graph.numberOfNodes(), options->getNumberOfPus(), graph.numberOfEdges());
 			size_t currentPos = 0;
 			unsigned counter = 0;
 			for (size_t i = numLevels; i > 0; --i)
@@ -212,7 +215,7 @@ namespace msonlab {
 		}
 
 		// Generate the solution using the scheduling created by the CP scheduler
-		SolutionSet::setPtr GeneticAlgorithm::generateCPSolution(const Graph &graph, Options::oPtr options) const {
+		SolutionSet::setPtr GeneticAlgorithm::generateCPSolution(const Graph &graph, OptionsPtr options) const {
 			cVect solution;
 			auto set = std::make_unique<SolutionSet>(solution, options->getKeepSize(), options->getPopMaxSize(), options->getKeepBest());
 			CriticalPathSchedulingAlgorithm cpAlg;
@@ -242,14 +245,14 @@ namespace msonlab {
 		///
 		/// @param solution Which's fitness is calculated.
 		/// @return The fitness of the solution.
-		unsigned int GeneticAlgorithm::fitness(Solution::sPtr solution) const
+		unsigned int GeneticAlgorithm::fitness(SolutionPtr solution) const
 		{
 			// fitness is zero if it has never been calculated before
 			if (solution->fitness > 0) {
 				return solution->fitness;
 			}
 
-			solution->fitness = this->fsstrategy->fitness(solution, options);
+			solution->fitness = this->fsstrategy->fitness(*solution, options);
 			return solution->fitness;
 		}
 
@@ -259,9 +262,9 @@ namespace msonlab {
 		/// @param father One parent of the offspring.
 		/// @param mother Another parent of the offspring.
 		/// @return the offspring.
-		Solution::sPtr GeneticAlgorithm::crossoverMap(Solution::sPtr father, Solution::sPtr mother) const
+		SolutionPtr GeneticAlgorithm::crossoverMap(SolutionPtr father, SolutionPtr mother) const
 		{
-			Solution::sPtr offspring = std::make_shared<Solution>(*father);
+			SolutionPtr offspring = std::make_shared<Solution>(*father);
 			uint crossoverPoint = rand() % father->mapping.size();
 			std::copy(mother->mapping.begin() + crossoverPoint, mother->mapping.end(), offspring->mapping.begin() + crossoverPoint);
 
@@ -274,9 +277,9 @@ namespace msonlab {
 		/// @param father One parent of the offspring.
 		/// @param mother Another parent of the offspring.
 		/// @return the offspring.
-		Solution::sPtr GeneticAlgorithm::crossoverOrder(Solution::sPtr father, Solution::sPtr mother, const vector<unsigned>& levelingLimits) const
+		SolutionPtr GeneticAlgorithm::crossoverOrder(SolutionPtr father, SolutionPtr mother, const vector<unsigned>& levelingLimits) const
 		{
-			Solution::sPtr offspring = std::make_shared<Solution>(*father);
+			SolutionPtr offspring = std::make_shared<Solution>(*father);
 			uint crossoverPoint = rand() % levelingLimits.size();
 
 			std::copy(mother->scheduling.begin() + levelingLimits[crossoverPoint], mother->scheduling.end(), offspring->scheduling.begin() + levelingLimits[crossoverPoint]);
@@ -292,7 +295,7 @@ namespace msonlab {
 		/// and the number of mutation points are [MutationRate].
 		///
 		/// @param offspring solution to mutate
-		void GeneticAlgorithm::mutateMapping(Solution::sPtr& offspring) const
+		void GeneticAlgorithm::mutateMapping(SolutionPtr& offspring) const
 		{
 			int position = rand() % offspring->scheduling.size();
 			int mutation = rand() % (offspring->pus - 1) + 1; // to ensure the mapping changes
@@ -309,11 +312,11 @@ namespace msonlab {
 		/// In case of a mutation a level is choosen and shuffled.
 		///
 		/// @param offspring The solution to mutate.
-		void GeneticAlgorithm::mutateSheduling(Solution::sPtr offspring, const vector<unsigned>& levelingLimits) const
+		void GeneticAlgorithm::mutateSheduling(SolutionPtr offspring, const vector<unsigned>& levelingLimits) const
 		{
 			size_t position = rand() % levelingLimits.size();
-			IProcessable::nVect::iterator begin = offspring->scheduling.begin() + levelingLimits[position];
-			IProcessable::nVect::iterator end = position == levelingLimits.size() - 1 ? offspring->scheduling.end() : offspring->scheduling.begin() + levelingLimits[position + 1];
+			NodeVect::iterator begin = offspring->scheduling.begin() + levelingLimits[position];
+			NodeVect::iterator end = position == levelingLimits.size() - 1 ? offspring->scheduling.end() : offspring->scheduling.begin() + levelingLimits[position + 1];
 			std::random_shuffle(begin, end);
 		}
 
@@ -330,10 +333,10 @@ namespace msonlab {
 		{
 			for (; offsprings > 0; --offsprings)
 			{
-				Solution::sPtr father = set->getParent();
-				Solution::sPtr mother = set->getParent();
+				SolutionPtr father = set->getParent();
+				SolutionPtr mother = set->getParent();
 				int crossoverType = rand() % 2;
-				Solution::sPtr offspring;
+				SolutionPtr offspring;
 				if (crossoverType == 0 || !doOrderCrossover) {
 					offspring = crossoverMap(father, mother);
 				}
@@ -359,15 +362,15 @@ namespace msonlab {
 
 		// parallel task to calculate the fitness of one solution
 		class fitness_calculator : public tbb::task {
-			const Solution::sPtr solution;
+			const SolutionPtr solution;
 			const FitnessStrategy &strategy;
-			const Options::oPtr options;
+			const OptionsPtr options;
 		public:
-			fitness_calculator(const Solution::sPtr sol, const FitnessStrategy &strat, const Options::oPtr opt)
+			fitness_calculator(const SolutionPtr sol, const FitnessStrategy &strat, const OptionsPtr opt)
 				: solution(sol), strategy(strat), options(opt) {}
 
 			tbb::task* execute() {
-				unsigned f = strategy.fitness(solution, options);
+				unsigned f = strategy.fitness(*solution, options);
 				solution->setFitness(f);
 				return nullptr;
 			}
@@ -385,13 +388,13 @@ namespace msonlab {
 
 			tbb::task* execute() {
 				set_ref_count(offsprings + 1);
-				vector<Solution::sPtr> new_solutions;
+				vector<SolutionPtr> new_solutions;
 				for (; offsprings > 0; --offsprings)
 				{
-					Solution::sPtr father = set->getParent();
-					Solution::sPtr mother = set->getParent();
+					SolutionPtr father = set->getParent();
+					SolutionPtr mother = set->getParent();
 					int crossoverType = rand() % 2;
-					Solution::sPtr offspring;
+					SolutionPtr offspring;
 					// always mapping crossover, if order is not allowed
 					if (crossoverType == 0 || !doOrderCrossover) {
 						offspring = alg.crossoverMap(father, mother);
@@ -441,7 +444,7 @@ namespace msonlab {
 		///
 		/// @param c the solution to transform
 		/// @param result the result vector.
-		void GeneticAlgorithm::transfromResult(Solution::sPtr c, vector<unsigned>& result) {
+		void GeneticAlgorithm::transfromResult(SolutionPtr c, vector<unsigned>& result) {
 			auto mapping = c->getMapping();
 			auto scheduling = c->getScheduling();
 			size_t tasks = scheduling.size();
@@ -452,7 +455,7 @@ namespace msonlab {
 
 			for (unsigned i = 0; i < tasks; ++i) {
 				result[scheduling[i]->getId()] = mapping[i];
-				Node::nPtr node = scheduling[i];
+				NodePtr node = scheduling[i];
 				for (auto it = node->getPredecessorBegin(); it != node->getPredecessorEnd(); ++it)
 				{
 					result[(*it)->getId()] = mapping[i];
@@ -462,7 +465,7 @@ namespace msonlab {
 
 		// EXPERIMENTAL
 
-		void GeneticAlgorithm::swapMutateScheduling(Solution::sPtr offspring) const
+		void GeneticAlgorithm::swapMutateScheduling(SolutionPtr offspring) const
 		{
 			unsigned rate = rand() % 100;
 			if (rate < options->getScheduleMutationRate())

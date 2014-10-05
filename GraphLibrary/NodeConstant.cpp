@@ -26,14 +26,14 @@ namespace msonlab
 		return *this;
 	}
 
-	Node::nPtr NodeConstant::clone() 
+	NodePtr NodeConstant::clone() 
 	{
 		return std::make_shared<NodeConstant>(*this);
 	}
 
-	IProcessable::pVect NodeConstant::process()
+	IProcessableVect NodeConstant::process()
 	{
-		IProcessable::pVect ret;
+		IProcessableVect ret;
 
 		if (isReadyForProcess())
 		{

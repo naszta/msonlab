@@ -27,14 +27,14 @@ namespace msonlab
 		return *this;
 	}
 
-	Node::nPtr NodeSquareRoot::clone() 
+	NodePtr NodeSquareRoot::clone() 
 	{
 		return std::make_shared<NodeSquareRoot>(*this);
 	}
 
-	IProcessable::pVect NodeSquareRoot::process()
+	IProcessableVect NodeSquareRoot::process()
 	{
-		IProcessable::pVect ret;
+		IProcessableVect ret;
 
 		types::DataPtr newVal = std::make_shared<msonlab::types::DataType>(0.0);
 

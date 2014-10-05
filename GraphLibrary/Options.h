@@ -11,6 +11,9 @@ namespace msonlab
 	{
 		using std::string;
 
+		class Options;
+		typedef std::shared_ptr<const Options> OptionsPtr;
+
 		class Options
 		{
 			typedef unsigned int uint;
@@ -37,8 +40,6 @@ namespace msonlab
 			string algorithm;
 			string fitnessStrategy;
 		public:
-			typedef std::shared_ptr<const Options> oPtr;
-
 			Options(const char * configFilePath);
 
 			// for testing purposes.

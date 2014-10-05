@@ -9,7 +9,7 @@
 namespace msonlab
 {
 	using std::vector;
-	void StackCompiler::mark_node_with_iteration_number(Node::nPtr to_mark, int iteration_number)
+	void StackCompiler::mark_node_with_iteration_number(NodePtr to_mark, int iteration_number)
 	{
 		if (to_mark->compile_iteration == -1)
 		{
@@ -35,7 +35,7 @@ namespace msonlab
 
 	}
 
-	void StackCompiler::mark_edge_with_iteration_number(Edge::ePtr to_mark, int iteration_number)
+	void StackCompiler::mark_edge_with_iteration_number(EdgePtr to_mark, int iteration_number)
 	{
 		if (to_mark->compile_iteration == -1)
 		{

@@ -6,15 +6,15 @@
 
 namespace msonlab
 {
-	MultiplierEdge::MultiplierEdge(unsigned int _id, types::LabelType _label, types::DataPtr _value, IProcessable::nPtr _from, IProcessable::nPtr _to, types::DataType _multiplier)
+	MultiplierEdge::MultiplierEdge(unsigned int _id, types::LabelType _label, types::DataPtr _value, NodePtr _from, NodePtr _to, types::DataType _multiplier)
 		: Edge(_id, _label, _value, _from, _to)
 	{
 		multiplier = _multiplier;
 	}
 
-	IProcessable::pVect MultiplierEdge::process()
+	IProcessableVect MultiplierEdge::process()
 	{
-		IProcessable::pVect ret;
+		IProcessableVect ret;
 
 		if (isReadyForProcess())
 		{

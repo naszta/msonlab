@@ -10,8 +10,8 @@ namespace msonlab
 		NodeDivide(const NodeDivide& other);
 
 		NodeDivide& operator=(const NodeDivide& other);
-		Node::nPtr clone();
-		virtual IProcessable::pVect process();
+		NodePtr clone();
+		virtual IProcessableVect process();
 
 		//unsigned getComputationTime() { return 5; }
 

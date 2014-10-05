@@ -7,6 +7,9 @@
 namespace msonlab
 {
 
+	class Graph;
+	typedef std::unique_ptr<Graph> GraphPtr;
+
 	/// Models a Graph. The graph is consits of nodes connected by edges.
 	/// std::enable_shared_from_this allows an object that is currently managed by a
 	/// std::shared_ptr named p to safely generate std::shared_ptr instances pt1, pt2 ...
@@ -14,41 +17,39 @@ namespace msonlab
 	class Graph
 	{
 	private:
-		IProcessable::nVect nodes; // vector of nodes
-		IProcessable::eVect edges; // vector of edges
+		NodeVect nodes; // vector of nodes
+		EdgeVect edges; // vector of edges
 
-		IProcessable::nPtr iteratorEnd; // this is a sign for every iterator
+		NodePtr iteratorEnd; // this is a sign for every iterator
 
 		friend class GraphIterator;
 		friend class BFSIterator;
 		friend class DFSIterator;
 
 	public:
-		typedef std::unique_ptr<Graph> gPtr;
-
 		Graph(); // empty constructor
 		Graph(const Graph& other) = delete; // copy constructor
 		Graph(Graph&& other);
 		Graph& operator=(const Graph& other) = delete; // assignment operator
 
-		bool addNode(IProcessable::nPtr toAdd); // adds a node to the graph
-		bool addEdge(IProcessable::ePtr toAdd); // adds an edge to the graph
+		bool addNode(NodePtr toAdd); // adds a node to the graph
+		bool addEdge(EdgePtr toAdd); // adds an edge to the graph
 
 		size_t numberOfNodes() const; // gets the # of nodes
 		size_t numberOfEdges() const; // gets the # of edges
 
-		const IProcessable::nVect& getNodes() const;
-		const IProcessable::eVect& getEdges() const;
+		const NodeVect& getNodes() const;
+		const EdgeVect& getEdges() const;
 
-		IProcessable::nVect getInputNodes() const; // gets the input nodes
-		IProcessable::nVect getOutputNodes() const; // gets the output nodes
+		NodeVect getInputNodes() const; // gets the input nodes
+		NodeVect getOutputNodes() const; // gets the output nodes
 
 		BFSIterator bfsIteratorBegin(); // gets the begin of the bfs iterator
 		BFSIterator bfsIteratorEnd(); // gets the end of the bfs iterator
 		DFSIterator dfsIteratorBegin(); // gets the begin of the dfs iterator
 		DFSIterator dfsIteratorEnd(); // gets the end of the dfs iterator
 
-		gPtr getPartialGraphByEdgeType(Edge::EdgeTypeEnum _edgeType) const;
+		GraphPtr getPartialGraphByEdgeType(Edge::EdgeTypeEnum _edgeType) const;
 	};
 
 }

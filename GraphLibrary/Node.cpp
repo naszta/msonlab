@@ -53,7 +53,7 @@ namespace msonlab
 		return true;
 	}
 
-	const IProcessable::eVect& Node::getPredecessors() const
+	const EdgeVect& Node::getPredecessors() const
 	{
 		return predecessors;
 	}
@@ -68,22 +68,22 @@ namespace msonlab
 		return predecessors[index]->getFromId();
 	}
 
-	const IProcessable::ePtr& Node::getPredecessor(size_t index) const
+	const EdgePtr& Node::getPredecessor(size_t index) const
 	{
 		return predecessors[index];
 	}
 
-	IProcessable::eVect::iterator Node:: getPredecessorBegin()
+	EdgeVect::iterator Node::getPredecessorBegin()
 	{
 		return predecessors.begin();
 	}
 
-	IProcessable::eVect::iterator Node:: getPredecessorEnd()
+	EdgeVect::iterator Node::getPredecessorEnd()
 	{
 		return predecessors.end();
 	}
 
-	const IProcessable::eVect& Node::getSuccessors() const
+	const EdgeVect& Node::getSuccessors() const
 	{
 		return successors;
 	}
@@ -100,23 +100,23 @@ namespace msonlab
 		return successors.size();
 	}
 
-	void Node::addPreNode(IProcessable::nPtr toAdd) {
+	void Node::addPreNode(NodePtr toAdd) {
 		preNodes.push_back(toAdd);
 	}
 
-	void Node::addSucNode(IProcessable::nPtr toAdd) {
+	void Node::addSucNode(NodePtr toAdd) {
 		sucNodes.push_back(toAdd);
 	}
 
-	bool Node::registerPredecessor(IProcessable::ePtr _newPredecessor)
+	bool Node::registerPredecessor(EdgePtr _newPredecessor)
 	{
-		msonlab::IProcessable::eVect::iterator it;
-		it = std::find(predecessors.begin(),predecessors.end(),_newPredecessor);
+		msonlab::EdgeVect::iterator it;
+		it = std::find(predecessors.begin(), predecessors.end(), _newPredecessor);
 
 		if (it != predecessors.end())
 			return false;
 
-		it = predecessors.insert(predecessors.end(),_newPredecessor);
+		it = predecessors.insert(predecessors.end(), _newPredecessor);
 		addPreNode(_newPredecessor->getFrom());
 
 		if (*it == _newPredecessor)
@@ -129,20 +129,20 @@ namespace msonlab
 
 	}
 
-	bool Node::unregisterPredecessor(IProcessable::ePtr _newPredecessor)
+	bool Node::unregisterPredecessor(EdgePtr _newPredecessor)
 	{
 		throw Exceptions::NotImplementedException("Node::unregisterPredecessor function");
 	}
 
-	bool Node::registerSuccessor(IProcessable::ePtr _newSuccessor)
+	bool Node::registerSuccessor(EdgePtr _newSuccessor)
 	{
-		msonlab::IProcessable::eVect::iterator it;
-		it = std::find(successors.begin(),successors.end(),_newSuccessor);
+		msonlab::EdgeVect::iterator it;
+		it = std::find(successors.begin(), successors.end(), _newSuccessor);
 
 		if (it != successors.end())
 			return false;
 
-		it = successors.insert(successors.end(),_newSuccessor);
+		it = successors.insert(successors.end(), _newSuccessor);
 		addSucNode(_newSuccessor->getTo());
 
 		if (*it == _newSuccessor)
@@ -154,7 +154,7 @@ namespace msonlab
 		}
 	}
 
-	bool Node::unregisterSuccessor(IProcessable::ePtr _newSuccessor)
+	bool Node::unregisterSuccessor(EdgePtr _newSuccessor)
 	{
 		throw Exceptions::NotImplementedException("Node::unregisterSuccessor function");
 	}
@@ -182,7 +182,7 @@ namespace msonlab
 	{
 		DOMElement* newNode = xmlDocument->createElement(L"node");
 		newNode->setAttribute(L"id", XMLString::transcode(getIdString().c_str()));
-		
+
 
 		// create custom data for deserialization
 		DOMElement* customData = xmlDocument->createElement(L"data");
@@ -248,7 +248,7 @@ namespace msonlab
 		DOMElement* shp = xmlDocument->createElement(L"y:Shape");
 		shp->setAttribute(L"type", XMLString::transcode(get_shape().c_str()));
 		sn->appendChild(shp);
-		
+
 
 		return newNode;
 	}

@@ -15,8 +15,8 @@ namespace msonlab
 {
 	class GraphBuilder
 	{
-		static std::map<unsigned int, Node::nPtr> nodes;
-		static std::map<unsigned int, Edge::ePtr> edges;
+		static std::map<unsigned int, NodePtr> nodes;
+		static std::map<unsigned int, EdgePtr> edges;
 
 	public:
 
@@ -24,7 +24,7 @@ namespace msonlab
 		static void add_edge(unsigned int id, unsigned int source_id, unsigned int target_id, std::string edge_type, std::string custom_data);
 
 		static void reset();
-		static Graph::gPtr build();
+		static GraphPtr build();
 
 	};
 
