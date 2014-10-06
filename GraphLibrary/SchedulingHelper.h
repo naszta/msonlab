@@ -13,34 +13,31 @@
 
 namespace msonlab {
 	namespace scheduling {
+			//namespace helper {
+			using std::vector;
 
-		using std::vector;
-
-		class SchedulingHelper {
-			static unsigned int doComputeLengthSTAndRT(const Solution &solution, OptionsPtr options,
-			vector<unsigned>& ST, vector<unsigned>& RT);
-		public:
+			//vector<unsigned>& ST, vector<unsigned>& RT);
 			///
 			/// Computes the length of the solution with the given option.
 			///
 			/// @param solution the result to use
 			/// @param options the options to use
 			/// @return the length
-			static unsigned int computeLength(const Solution &solution, const OptionsPtr options);
+			unsigned computeLength(const Solution &solution, const OptionsPtr options);
 
-			static unsigned int computeLengthAndST(const Solution &solution, const OptionsPtr options,
+			unsigned computeLengthAndST(const Solution &solution, const OptionsPtr options,
 				vector<unsigned>& ST);
 
-			static unsigned int computeLengthAndRT(const Solution &solution, const OptionsPtr options,
+			unsigned computeLengthAndRT(const Solution &solution, const OptionsPtr options,
 				vector<unsigned>& RT);
 
-			static unsigned int computeLengthSTAndRT(const Solution &solution, const OptionsPtr options,
+			unsigned computeLengthSTAndRT(const Solution &solution, const OptionsPtr options,
 				vector<unsigned>& ST, vector<unsigned>& RT);
 
-			static unsigned int computeLengthAndReuseIdleTime(Solution& solution, const OptionsPtr& options);
+			unsigned computeLengthAndReuseIdleTime(Solution& solution, const Options& options);
 
-			static bool is_correct(const Solution &sol);
-		};
+			bool is_correct(const Solution &sol);
+		//}
 	}
 }
 

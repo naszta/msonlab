@@ -18,7 +18,7 @@ namespace msonlab {
 
 		unsigned int LengthFitnessStartegy::fitness(const Solution &solution, const OptionsPtr options) const
 		{
-			return SchedulingHelper::computeLength(solution, options);
+			return computeLength(solution, options);
 		}
 
 		FSPtr LengthFitnessStartegy::build(string name) const
@@ -33,7 +33,7 @@ namespace msonlab {
 		unsigned int RescheduleIdleTimeFitnessStartegy::fitness(const Solution &solution, const OptionsPtr options) const
 		{
 			Solution &s = const_cast<Solution &>(solution);
-			return SchedulingHelper::computeLengthAndReuseIdleTime(s, options);
+			return computeLengthAndReuseIdleTime(s, *options);
 		}
 
 		FSPtr RescheduleIdleTimeFitnessStartegy::build(string name) const
@@ -47,7 +47,7 @@ namespace msonlab {
 
 		unsigned int PUUsageFitnessStrategy::fitness(const Solution &solution, const OptionsPtr options) const
 		{
-			unsigned length = SchedulingHelper::computeLength(solution, options);
+			unsigned length = computeLength(solution, options);
 
 			unsigned sumUsedTime = length * options->getNumberOfPus();
 			unsigned sumWorkTime = 0;
@@ -75,7 +75,7 @@ namespace msonlab {
 		unsigned int LoadBalanceFitnessStrategy::fitness(const Solution &solution, const OptionsPtr options) const
 		{
 			vector<unsigned> RT(options->getNumberOfPus());
-			int length = SchedulingHelper::computeLengthAndRT(solution, options, RT);
+			int length = computeLengthAndRT(solution, options, RT);
 			double avg = std::accumulate(RT.begin(), RT.end(), 0) / options->getNumberOfPus();
 			double load_balance = length / avg;
 			return (unsigned)(load_balance * 1000);

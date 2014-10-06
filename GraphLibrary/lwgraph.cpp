@@ -13,9 +13,14 @@ namespace msonlab {
 				auto id = hwnode->getId();
 				_nodes[id] = lwnode(id, hwnode->getComputationTime(),
 					hwnode->getPredecessorsSize(), hwnode->getSuccessorsSize());
+			}
+
+			for (auto hwnode : hwnodes)
+			{
+				auto id = hwnode->getId();
 				for (auto suc : hwnode->getSuccessors())
 				{
-					_nodes[id].add_successor(suc->getToId());
+					_nodes[id].add_successor(&_nodes[suc->getToId()]);
 				}
 
 				if (hwnode->getPredecessorsSize() == 0)
@@ -26,7 +31,7 @@ namespace msonlab {
 				{
 					for (auto pred : hwnode->getPredecessors())
 					{
-						_nodes[id].add_predecessor(pred->getFromId());
+						_nodes[id].add_predecessor(&_nodes[pred->getFromId()]);
 					}
 				}
 			}

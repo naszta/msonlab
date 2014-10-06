@@ -63,8 +63,6 @@ int main(int argc, char *argv[])
 
 	// choosing algorithm
 	SchedulingAlgorithm::ptr alg = SchedulingAlgorithm::find_sceduling_algorithm(options);
-	
-
 #if MEASURE != 0	
 	std::chrono::time_point<std::chrono::high_resolution_clock> startCHRONO, finishCHRONO;
 	startCHRONO = std::chrono::high_resolution_clock::now();
@@ -79,18 +77,18 @@ int main(int argc, char *argv[])
 #endif
 	// check correctness
 	auto fs = FitnessStrategy::find_fitness_strategy("length");
-	bool correct = SchedulingHelper::is_correct(*best);
+	bool correct = is_correct(*best);
 	cout << "Correct " << correct << endl;
 	std::cout << "Best length: " << best->getFitness() << std::endl;
 	if (!correct) {
 		fs->fitness(*best, options);
 	}
 
-	unsigned l = SchedulingHelper::computeLengthAndReuseIdleTime(*best, options);
+	unsigned l = computeLengthAndReuseIdleTime(*best, *options);
 	std::cout << "Rescheduled length: " << l << std::endl;
 	l = fs->fitness(*best, options);
 	std::cout << "Recalculated Length: " << l << std::endl;
-	cout << "Correct " << SchedulingHelper::is_correct(*best) << endl;
+	cout << "Correct " << is_correct(*best) << endl;
 #if MEASURE != 0
 	std::cout << "Elapsed time " << std::setprecision(10) << elapsedCHRONO.count() << std::endl;
 #endif

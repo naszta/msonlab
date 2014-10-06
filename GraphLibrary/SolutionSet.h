@@ -19,7 +19,7 @@ namespace msonlab {
 		class chrComparator
 		{
 		public:
-			bool operator() (const shared_ptr<Solution>& a, const shared_ptr<Solution>& b) const
+			bool operator() (const SolutionPtr& a, const SolutionPtr& b) const
 			{
 				return a->getFitness() > b->getFitness();
 			}
@@ -29,13 +29,12 @@ namespace msonlab {
 		{
 			/// this contains the size of the graph's levels
 			vector<size_t> levelSize;
-			vector<shared_ptr<Solution>> solution;
+			vector<SolutionPtr> solution;
 			//typedef shared_ptr<Solution> cPtr;
 			std::priority_queue<SolutionPtr, vector<SolutionPtr>, chrComparator> newGeneration;
 			const size_t POPMAXSIZE;
 			const size_t KEEP;
 			const size_t KEEPBEST;
-
 		public:
 			typedef std::unique_ptr<SolutionSet> setPtr;
 			SolutionSet(const vector<SolutionPtr>& sol, size_t keepSize, size_t popMaxSize, size_t keepBest);

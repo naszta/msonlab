@@ -15,11 +15,7 @@ namespace msonlab {
 
 		using namespace msonlab;
 
-		class Solution;
-		typedef std::shared_ptr<Solution> SolutionPtr;
-		typedef vector< SolutionPtr > SolutionVect;
-
-		class Solution : public std::enable_shared_from_this<Solution>
+		class Solution //: public std::enable_shared_from_this<Solution>
 		{
 		private:
 			// the scheduling part, escribes the order of the tasks
@@ -40,7 +36,10 @@ namespace msonlab {
 			// the length of the result
 			unsigned int length;
 
-			friend class SchedulingHelper;
+			friend unsigned doComputeLengthSTAndRT(const Solution &solution, const OptionsPtr options,
+				vector<unsigned>& ST, vector<unsigned>& RT);
+			friend unsigned computeLengthAndReuseIdleTime(Solution& solution, const Options& options);
+			friend bool is_correct(const Solution &sol);
 
 			// scheduling algorithms
 			friend class GeneticAlgorithm;
@@ -65,10 +64,14 @@ namespace msonlab {
 				}
 			}
 			const vector<unsigned int>& getMapping() const { return mapping; }
-			const NodeVect& getScheduling() const { return scheduling; }
+			vector<NodePtr> getScheduling() const { return scheduling; }
 
 			void printSolution(std::ostream& o) const;
 			void printTable(std::ostream& o, OptionsPtr options) const;
 		};
+
+
+		typedef std::shared_ptr<Solution> SolutionPtr;
+		typedef vector< SolutionPtr > SolutionVect;
 	}
 }

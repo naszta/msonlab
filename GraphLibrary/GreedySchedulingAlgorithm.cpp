@@ -74,13 +74,12 @@ namespace msonlab {
 					//for (size_t i = 0; i < successors.size(); ++i)
 					for (size_t i = 0; i < node.s_size(); ++i)
 					{
-						auto suc_node_id = node.get_successor(i);
-						auto processed_successors = ++count[suc_node_id];
-						if (nodes[suc_node_id].p_size() == processed_successors)
+						auto suc_node = node.get_successor(i);
+						auto processed_successors = ++count[suc_node->id()];
+						if (suc_node->p_size() == processed_successors)
 						{
-							free.push(suc_node_id);
+							free.push(suc_node->id());
 						}
-
 					}
 				}
 			}

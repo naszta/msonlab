@@ -7,7 +7,7 @@
 
 namespace msonlab {
 	namespace scheduling {
-		bool solutionCompare(shared_ptr<Solution> a, shared_ptr<Solution> b)
+		bool solutionCompare(SolutionPtr a, SolutionPtr b)
 		{
 			return a->getFitness() > b->getFitness();
 		}
@@ -17,7 +17,7 @@ namespace msonlab {
 			this->solution.resize(KEEP);
 		}
 
-		const vector<shared_ptr<Solution>>& SolutionSet::getSolutionSet() const
+		const vector<SolutionPtr>& SolutionSet::getSolutionSet() const
 		{
 			return this->solution;
 		}
@@ -68,7 +68,7 @@ namespace msonlab {
 		/// gets a potential parent from the population randomly
 		///
 		/// @return A solution from the offspring will be created.
-		shared_ptr<Solution> SolutionSet::getParent() const
+		SolutionPtr SolutionSet::getParent() const
 		{
 			return this->solution[rand() % solution.size()];
 		}
@@ -77,7 +77,7 @@ namespace msonlab {
 		/// Gets the best solution from the population
 		///
 		/// @return A solution with the best fitness value.
-		shared_ptr<Solution> SolutionSet::best() const
+		SolutionPtr SolutionSet::best() const
 		{
 			return solution[0];
 		}
