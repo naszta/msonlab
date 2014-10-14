@@ -1,5 +1,6 @@
 #include "ListSchedulingAlgorithm.h"
 #include "Algorithms.h"
+#include <algorithm>
 
 namespace msonlab {
 	namespace scheduling {
@@ -10,36 +11,38 @@ namespace msonlab {
 			return graph::algorithms::findMaxCostWithoutDependency(dependencies, costs);
 		}
 
-		void ListSchedulingAlgorithm::determineCosts(const Graph &graph, vector<unsigned>& costs) const {
-			if (costs.size() != graph.numberOfNodes()) {
-				costs.resize(graph.numberOfNodes());
+		void ListSchedulingAlgorithm::determineCosts(const lw::lwgraph &graph, vector<unsigned>& costs) const 
+		{
+			if (costs.size() != graph.size()) {
+				costs.resize(graph.size());
 			}
 
 			// the cost is simply the computation time.
-			for (auto node : graph.getNodes()) {
-				costs[node->getId()] = node->getComputationTime();
-			}
+			std::transform(graph.nodes().begin(), graph.nodes().end(), costs.begin(), [](lw::lwnode node) { return node.cptime(); });
+			/*for (auto node : graph.nodes()) {
+				costs[node.id()] = node.cptime();
+			}*/
 		}
 
-		SolutionPtr ListSchedulingAlgorithm::schedule(const Graph &graph, OptionsPtr options) const
+		SolutionPtr ListSchedulingAlgorithm::schedule(const Graph &hwgraph, OptionsPtr options) const
 		{
-			auto levels = graph::algorithms::partialTopologicalSort(graph);
-			vector<unsigned> costs(graph.numberOfNodes());
+			lw::lwgraph graph(hwgraph);
+			vector<vector<const lw::lwnode*>> levels;
+			graph::algorithms::partialTopologicalSort<lw::lwgraph, const lw::lwnode*>(graph, levels);
+
+			int tasks = graph.size();
+			vector<unsigned> costs(tasks);
 
 			// determine the costs of the nodes
 			// the higher cost means earlier execution
 			this->determineCosts(graph, costs);
 
 			// counts the number of dependencies of each graph
-			vector<int> dependencies(graph.numberOfNodes());
-			graph::algorithms::createDependencyVector(graph, dependencies);
+			vector<int> dependencies(tasks);
+			graph::algorithms::createDependencyVector<lw::lwgraph>(graph, dependencies);
 
-			vector<NodePtr> nodes(graph.numberOfNodes());
-			graph::algorithms::list_nodes(graph, nodes);
-
-			int tasks = graph.numberOfNodes();
 			int comm = options->getCommOverhead();
-			SolutionPtr result = std::make_shared<Solution>(tasks, options->getNumberOfPus(), graph.numberOfEdges());
+			SolutionPtr result = std::make_shared<Solution>(tasks, options->getNumberOfPus(), graph.edge_size());
 			vector<unsigned> RT(options->getNumberOfPus());
 			vector<unsigned> ST(tasks); // start time of the tasks
 			vector<unsigned> FT(tasks); // finish time of the tasks
@@ -48,12 +51,12 @@ namespace msonlab {
 			int next = 0;
 			for (int i = 0; i < tasks; ++i) {
 				next = this->findNextToSchedule(dependencies, costs);
-				auto actNode = nodes[next];
+				const lw::lwnode* actNode = &graph.nodes()[next];
 				// calculating data arrival time
-				size_t predecessorSize = actNode->getPredecessorsSize();
+				size_t predecessorSize = actNode->p_size();
 				for (unsigned j = 0; j < predecessorSize; ++j)
 				{
-					unsigned id = actNode->getPredecessor(j)->getFromId();
+					unsigned id = actNode->get_predecessor(j)->id();
 					for (unsigned actPU = 0; actPU < options->getNumberOfPus(); ++actPU) {
 						unsigned dat = FT[id] + (actPU != idPuMapping[id] ? comm : 0);
 						DAT[actPU] = std::max(DAT[actPU], dat);
@@ -66,13 +69,13 @@ namespace msonlab {
 
 				int pu = std::distance(DAT.begin(), std::min_element(DAT.begin(), DAT.end()));
 				ST[next] = DAT[pu];
-				FT[next] = ST[next] + nodes[next]->getComputationTime();
+				FT[next] = ST[next] + actNode->cptime();
 				RT[pu] = FT[next];
 				idPuMapping[next] = pu;
-				result->mapping[i] = pu;
-				result->scheduling[i] = actNode;
+				result->_mapping[i] = pu;
+				result->_scheduling[i] = actNode;
 
-				graph::algorithms::computeNextFreeNodes(dependencies, actNode);
+				graph::algorithms::computeNextFreeNodes<const lw::lwnode*>(dependencies, actNode);
 			}
 
 			return result;

@@ -1,7 +1,7 @@
 #pragma once	
 
 #include "Options.h"
-#include "Graph.h"
+#include "lwnode.h"
 #include <ostream>
 #include <vector>
 #include <memory>
@@ -19,10 +19,10 @@ namespace msonlab {
 		{
 		private:
 			// the scheduling part, escribes the order of the tasks
-			vector<NodePtr> scheduling;
+			vector<const lw::lwnode*> _scheduling;
 
 			// the mapping part, maps the task to PUs.
-			vector<unsigned> mapping;
+			vector<unsigned> _mapping;
 
 			// the number of edges
 			unsigned int edges;
@@ -36,10 +36,10 @@ namespace msonlab {
 			// the length of the result
 			unsigned int length;
 
-			friend unsigned doComputeLengthSTAndRT(const Solution &solution, const OptionsPtr options,
-				vector<unsigned>& ST, vector<unsigned>& RT);
-			friend unsigned computeLengthAndReuseIdleTime(Solution& solution, const Options& options);
-			friend bool is_correct(const Solution &sol);
+			//friend unsigned doComputeLengthSTAndRT(const Solution &solution, const OptionsPtr options,
+			//	vector<unsigned>& ST, vector<unsigned>& RT);
+			//friend unsigned computeLengthAndReuseIdleTime(Solution& solution, const Options& options);
+			//friend bool is_correct(const Solution &sol);
 
 			// scheduling algorithms
 			friend class GeneticAlgorithm;
@@ -47,6 +47,7 @@ namespace msonlab {
 			friend class ListSchedulingAlgorithm;
 			friend class CriticalPathSchedulingAlgorithm;
 			friend class CoffmanGrahamSchedulingAlgorithm;
+			friend unsigned computeLengthAndReuseIdleTime(Solution& solution, const Options& options);
 
 			void calcStartTime(OptionsPtr options);
 		public:
@@ -54,6 +55,7 @@ namespace msonlab {
 
 			Solution(size_t size, unsigned pus, unsigned edges);
 			Solution(const Solution& solution);
+			Solution(const Solution&& solution);
 
 			Solution& operator=(const Solution &solution);
 
@@ -63,13 +65,15 @@ namespace msonlab {
 					fitness = f;
 				}
 			}
-			const vector<unsigned int>& getMapping() const { return mapping; }
-			vector<NodePtr> getScheduling() const { return scheduling; }
+			
+			const vector<unsigned>& mapping() const { return _mapping; }
+			const vector<const lw::lwnode*>& scheduling() const { return _scheduling; }
+			// number of scheduled nodes
+			size_t size() const { return _scheduling.size(); }
 
 			void printSolution(std::ostream& o) const;
 			void printTable(std::ostream& o, OptionsPtr options) const;
 		};
-
 
 		typedef std::shared_ptr<Solution> SolutionPtr;
 		typedef vector< SolutionPtr > SolutionVect;

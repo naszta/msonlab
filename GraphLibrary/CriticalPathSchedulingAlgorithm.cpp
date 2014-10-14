@@ -24,35 +24,35 @@ namespace msonlab {
 			return nullptr;
 		}
 
-		void CriticalPathSchedulingAlgorithm::determineCosts(const Graph &graph, vector<unsigned>& costs) const 
+		void CriticalPathSchedulingAlgorithm::determineCosts(const lw::lwgraph &graph, vector<unsigned>& costs) const 
 		{
-			if (costs.size() != graph.numberOfNodes()) {
-				costs.resize(graph.numberOfNodes());
+			if (costs.size() != graph.size()) {
+				costs.resize(graph.size());
 			}
 			
-			auto levels = graph::algorithms::partialTopologicalSort(graph);
+			vector<vector<const lw::lwnode*>> levels;
+			graph::algorithms::partialTopologicalSort<lw::lwgraph, const lw::lwnode*>(graph, levels);
 
 			// finding the max time needed to compute (distance)
 			// O(|V| + |E|)
 
-			for (auto i = levels[0].begin(); i != levels[0].end(); ++i)
+			for (auto node : levels[0])
 			{
-				costs[(*i)->getId()] = (*i)->getComputationTime();
+				costs[node->id()] = node->cptime();
 			}
 
 			for (size_t i = 1; i < levels.size(); ++i)
 			{
-				for (auto& node : levels[i])
+				for (auto node : levels[i])
 				{
 					unsigned max = 0;
-					unsigned count = node->getSuccessorsSize();
-					for (auto& edge : node->getSuccessors()) {
-						if (costs[edge->getToId()] > max) {
-							max = costs[edge->getToId()];
+					for (auto successor : node->successors()) {
+						if (costs[successor->id()] > max) {
+							max = costs[successor->id()];
 						}
 					}
 
-					costs[node->getId()] = i + max + node->getComputationTime();
+					costs[node->id()] = i + max + node->cptime();
 				}
 			}
 		}

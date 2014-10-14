@@ -5,6 +5,7 @@
 #include "SolutionSet.h"
 #include "SchedulingAlgorithm.h"
 #include "FitnessStrategy.h"
+#include "lwgraph.h"
 
 // GeneticAlgoritm implementation for project laboratory
 // created by Zoltan Szekeres
@@ -25,16 +26,16 @@ namespace msonlab {
 			OptionsPtr options;
 			FSPtr fsstrategy;
 
-			SolutionSet::setPtr generateInitialSolution(const Graph &graph, OptionsPtr options) const;
-			SolutionSet::setPtr generateCPSolution(const Graph &graph, OptionsPtr options) const;
-			SolutionSet::setPtr generateRndSolution(const Graph &graph, OptionsPtr options) const;
+			SolutionSet::setPtr generateInitialSolution(const lw::lwgraph &graph, OptionsPtr options) const;
+			SolutionSet::setPtr generateCPSolution(const lw::lwgraph &graph, OptionsPtr options) const;
+			SolutionSet::setPtr generateRndSolution(const lw::lwgraph &graph, OptionsPtr options) const;
 
 			// crossover operations
 			SolutionPtr crossoverMap(SolutionPtr father, SolutionPtr mother) const;
 			SolutionPtr crossoverOrder(SolutionPtr father, SolutionPtr mother, const vector<unsigned>& levelingLimits) const;
 			
 			// mutation operations
-			void mutateMapping(SolutionPtr& offspring) const;
+			void mutateMapping(SolutionPtr offspring) const;
 			void mutateSheduling(SolutionPtr offspring, const vector<unsigned>& levelingLimits) const;
 
 			void simulateMating(SolutionSet::setPtr& set, int offsprings, bool doOrderCrossover) const;
@@ -44,7 +45,8 @@ namespace msonlab {
 			friend class round_simulator;
 
 			// building instance for virtual constructor
-			
+			SolutionPtr greedySolution(const lw::lwgraph &graph) const;
+
 		public:
 			//typedef shared_ptr<Solution> cPtr;
 			typedef vector< SolutionPtr > cVect;
@@ -56,8 +58,6 @@ namespace msonlab {
 			virtual ptr build(OptionsPtr) const;
 
 			virtual SolutionPtr schedule(const Graph& graph, OptionsPtr options) const;
-
-			SolutionPtr greedySolution(const Graph &graph) const;
 
 			static void transfromResult(SolutionPtr c, vector<unsigned>& result);
 

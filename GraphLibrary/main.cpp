@@ -60,6 +60,7 @@ int main(int argc, char *argv[])
 
 	// get graph
 	Graph graph = initRandomGraph(options);
+	//Graph graph = initGraph();
 
 	// choosing algorithm
 	SchedulingAlgorithm::ptr alg = SchedulingAlgorithm::find_sceduling_algorithm(options);
@@ -69,7 +70,7 @@ int main(int argc, char *argv[])
 #endif
 	// the function that is measured
 	SolutionPtr best;
-	for (int i = 0; i < 100; ++i)
+	//for (int i = 0; i < 100; ++i)
 		best = alg->schedule(graph, options);
 #if MEASURE != 0
 	finishCHRONO = std::chrono::high_resolution_clock::now();
@@ -81,6 +82,7 @@ int main(int argc, char *argv[])
 	cout << "Correct " << correct << endl;
 	std::cout << "Best length: " << best->getFitness() << std::endl;
 	if (!correct) {
+		best->printSolution(std::cout);
 		fs->fitness(*best, options);
 	}
 

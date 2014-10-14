@@ -16,16 +16,16 @@ namespace msonlab {
 				unsigned commOverhead = options->getCommOverhead();
 				//unsigned puGroupSize = options->getPuGroupSize();
 				// const vector references
-				auto mapping = solution.getMapping();
-				auto scheduling = solution.getScheduling();
+				const vector<unsigned>& mapping = solution.mapping();
+				const vector<const lw::lwnode*>& scheduling = solution.scheduling();
 				auto tasks = scheduling.size();
 				vector<uint> FT(tasks); // finish time of the tasks
 				vector<uint> DAT(tasks); // Data Arrival Time
 				vector<uint> idPuMapping(tasks); // idPuMapping[i] = j means that node[i] is processed by pu[j]
 
-				uint actId = scheduling[0]->getId();
+				uint actId = scheduling[0]->id();
 				ST[actId] = 0;
-				FT[actId] = ST[actId] + scheduling[0]->getComputationTime(); // task length, TODO: create a distribution
+				FT[actId] = ST[actId] + scheduling[0]->cptime(); // task length, TODO: create a distribution
 				DAT[actId] = 0;
 				idPuMapping[actId] = mapping[0];
 				RT[mapping[0]] = FT[actId];
@@ -33,16 +33,17 @@ namespace msonlab {
 				// skipping first task
 				for (uint i = 1; i < tasks; ++i)
 				{
-					NodePtr actNode = scheduling[i];
-					uint actId = actNode->getId();
+					auto actNode = scheduling[i];
+					uint actId = actNode->id();
 					uint actPU = mapping[i];
 					idPuMapping[actId] = actPU;
 
 					// calculating data arrival time
-					for (auto n : actNode->getPreNodes())
+					const vector<const lw::lwnode*>& preds = actNode->predecessors();
+					for (auto n : preds)
 					{
 						// skipping edge
-						uint id = n->getId();
+						uint id = n->id();
 
 						// check whether a flaw is present in this solution
 						// if a predecessor is not scheduled yet, that is a flaw
@@ -60,7 +61,7 @@ namespace msonlab {
 					}
 
 					ST[actId] = std::max(RT[actPU], DAT[actId]);
-					FT[actId] = ST[actId] + actNode->getComputationTime();
+					FT[actId] = ST[actId] + actNode->cptime();
 					RT[actPU] = FT[actId];
 				}
 
@@ -70,7 +71,7 @@ namespace msonlab {
 
 			unsigned int computeLength(const Solution &solution, const OptionsPtr options)
 			{
-				vector<unsigned> ST(solution.getScheduling().size());
+				vector<unsigned> ST(solution.size());
 				vector<unsigned> RT(options->getNumberOfPus());
 
 				return doComputeLengthSTAndRT(solution, options, ST, RT);
@@ -80,7 +81,7 @@ namespace msonlab {
 			unsigned int computeLengthAndST(const Solution &solution, const OptionsPtr options,
 				vector<unsigned>& ST)
 			{
-				ST.resize(solution.getScheduling().size());
+				ST.resize(solution.size());
 				vector<unsigned> RT(options->getNumberOfPus());
 
 				return doComputeLengthSTAndRT(solution, options, ST, RT);
@@ -89,7 +90,7 @@ namespace msonlab {
 			unsigned int computeLengthAndRT(const Solution &solution, const OptionsPtr options,
 				vector<unsigned>& RT)
 			{
-				vector<unsigned> ST(solution.getScheduling().size());
+				vector<unsigned> ST(solution.size());
 				RT.resize(options->getNumberOfPus());
 
 				return doComputeLengthSTAndRT(solution, options, ST, RT);
@@ -99,7 +100,7 @@ namespace msonlab {
 			unsigned int computeLengthSTAndRT(const Solution &solution, OptionsPtr options,
 				vector<unsigned>& ST, vector<unsigned>& RT)
 			{
-				ST.resize(solution.getScheduling().size());
+				ST.resize(solution.size());
 				RT.resize(options->getNumberOfPus());
 
 				return doComputeLengthSTAndRT(solution, options, ST, RT);
@@ -107,17 +108,12 @@ namespace msonlab {
 
 			unsigned int computeLengthAndReuseIdleTime(Solution &solution, const Options& options)
 			{
-				// ensure correctness before start to compute length
-				/*if (!is_correct(solution)) {
-					return UINT32_MAX;
-					}*/
-
 				typedef unsigned int uint;
 
 				unsigned commOverhead = options.getCommOverhead();
 				// const vector references
-				auto mapping = solution.getMapping();
-				auto scheduling = solution.getScheduling();
+				const vector<unsigned>& mapping = solution.mapping();
+				const vector<const lw::lwnode*>& scheduling = solution.scheduling();
 				auto tasks = scheduling.size();
 				vector<uint> ST(tasks); // start time of the tasks
 				vector<uint> FT(tasks); // finish time of the tasks
@@ -126,9 +122,9 @@ namespace msonlab {
 				vector<uint> idPuMapping(tasks); // idPuMapping[i] = j means that node[i] is processed by pu[j]
 
 				// start the with the first node in the list
-				uint actId = scheduling[0]->getId();
+				uint actId = scheduling[0]->id();
 				ST[actId] = 0; // start time is 0
-				FT[actId] = ST[actId] + scheduling[0]->getComputationTime(); // task length, TODO: create a distribution
+				FT[actId] = ST[actId] + scheduling[0]->cptime(); // task length, TODO: create a distribution
 				idPuMapping[actId] = mapping[0];
 				RT[mapping[0]] = FT[actId];
 
@@ -147,15 +143,16 @@ namespace msonlab {
 				// skipping first task, already computed
 				for (uint i = 1; i < tasks; ++i)
 				{
-					auto& actNode = scheduling[i];
-					uint actId = actNode->getId();
+					auto actNode = scheduling[i];
+					uint actId = actNode->id();
 					uint actPU = mapping[i];
 					idPuMapping[actId] = actPU;
 
 					// calculating data arrival time
-					for (auto& n : actNode->getPreNodes())
+					const vector<const lw::lwnode*>& preds = actNode->predecessors();
+					for (auto n : preds)
 					{
-						uint id = n->getId();
+						uint id = n->id();
 						if (FT[id] == 0) {
 							// this solutuion is not good
 							return UINT32_MAX;
@@ -187,7 +184,7 @@ namespace msonlab {
 							// it's better if
 							// 1) the start is earlier than the calculated
 							// 2) the finish is earlier than the end of the idle time
-							if (start < min_st && start + actNode->getComputationTime() <= pit->second)
+							if (start < min_st && start + actNode->cptime() <= pit->second)
 							{
 								min_st = start;
 								pu = p;
@@ -209,15 +206,15 @@ namespace msonlab {
 							slots[pu].push_back(make_pair(it.first, st - 1));
 						}
 
-						if (it.second - (st + actNode->getComputationTime()) > 1) {
-							slots[pu].push_back(make_pair(st + actNode->getComputationTime() + 1, it.second));
+						if (it.second - (st + actNode->cptime()) > 1) {
+							slots[pu].push_back(make_pair(st + actNode->cptime() + 1, it.second));
 						}
 
 						idPuMapping[actId] = actPU;
 					}
 
 					ST[actId] = st;
-					FT[actId] = ST[actId] + actNode->getComputationTime();
+					FT[actId] = ST[actId] + actNode->cptime();
 
 					// add idle time slot if there is one
 					if (ST[actId] > 0 && RT[actPU] < ST[actId])
@@ -234,14 +231,14 @@ namespace msonlab {
 				uint length = *std::max_element(FT.begin(), FT.end());
 
 				// collecting the nodes
-				NodeVect nodes(tasks);
+				vector<const lw::lwnode*> nodes(tasks);
 				vector<pair<unsigned, unsigned>> STS;
 				for (size_t i = 0; i < tasks; ++i)
 				{
 					// first is the start time of the task
 					// second is the id of the task
 					STS.push_back(make_pair(ST[i], i));
-					nodes[scheduling[i]->getId()] = scheduling[i];
+					nodes[scheduling[i]->id()] = scheduling[i];
 				}
 
 				// sort taks by start time
@@ -250,8 +247,8 @@ namespace msonlab {
 				// updating the scheduling and mapping
 				for (size_t i = 0; i < tasks; ++i)
 				{
-					solution.scheduling[i] = nodes[STS[i].second];
-					solution.mapping[i] = idPuMapping[STS[i].second];
+					solution._scheduling[i] = nodes[STS[i].second];
+					solution._mapping[i] = idPuMapping[STS[i].second];
 				}
 
 				return length;
@@ -261,30 +258,28 @@ namespace msonlab {
 			// fast checks, whether is solution is correct or not
 			bool is_correct(const Solution &solution)
 			{
-				const NodeVect& scheduling = solution.scheduling;
-
 				// ensure there is no duplication in the scheduling
-
+				auto scheduling = solution.scheduling();
 				vector<bool> scheduled(scheduling.size(), false);
-				for (auto& node : scheduling)
+				for (auto node : scheduling)
 				{
 					// ensure there is no duplication
-					if (scheduled[node->getId()]) {
-						//std::cout << node->getId() << " is duplicated in the solution.\n";
+					if (scheduled[node->id()]) {
+						std::cout << node->id() << "scheduled twice\n";
 						return false;
 					}
 
-					auto end = (node->getPredecessorEnd());
-					for (auto inner_it = node->getPredecessorBegin(); inner_it != end; ++inner_it)
+					const vector<const lw::lwnode*>& preds = node->predecessors();
+					for (auto pred_node : preds)
 					{
-						if (!scheduled[(*inner_it)->getFromId()])
+						if (!scheduled[pred_node->id()])
 						{
-							//std::cout << (*inner_it)->getFromId() << " is not scheduled before " << node->getId() << std::endl;
+							std::cout << pred_node->id() << " is not scheduled before " << node->id() << std::endl;
 							return false;
 						}
 					}
 
-					scheduled[node->getId()] = true;
+					scheduled[node->id()] = true;
 				}
 
 				return true;

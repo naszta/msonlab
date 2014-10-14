@@ -49,15 +49,13 @@ namespace msonlab {
 		{
 			unsigned length = computeLength(solution, options);
 
+			lw::LWNodeVect scheduling = solution.scheduling();
 			unsigned sumUsedTime = length * options->getNumberOfPus();
 			unsigned sumWorkTime = 0;
-
-			auto scheduling = solution.getScheduling();
-
-			for (auto it = scheduling.begin(); it != scheduling.end(); ++it)
-			{
-				sumWorkTime += (*it)->getComputationTime();
+			for (auto node : scheduling) {
+				sumWorkTime += node->cptime();
 			}
+
 
 			// returning the percentage of time spent idle
 			return ((sumUsedTime - sumWorkTime) * 1000) / sumUsedTime;

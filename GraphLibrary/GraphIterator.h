@@ -1,4 +1,6 @@
-#pragma once
+#ifndef GRAPH_ITERATOR_H
+#define GRAPH_ITERATOR_H
+
 #include "Graph.h"
 #include <queue>
 #include <set>
@@ -31,3 +33,5 @@ namespace msonlab
 		bool setStartNode(NodePtr startNode);
 	};
 }
+
+#endif

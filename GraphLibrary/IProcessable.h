@@ -8,13 +8,14 @@ namespace msonlab
 	class Node;
 	class Edge;
 	class IProcessable;
+	class lwnnode;
 
 	typedef std::shared_ptr<IProcessable> IProcessablePtr;
 	typedef vector<std::shared_ptr<IProcessable>> IProcessableVect;
 
 	typedef std::shared_ptr<Node> NodePtr;
-	typedef vector<std::shared_ptr<Node>> NodeVect;
-	typedef std::set<std::shared_ptr<Node>> NodeSet;
+	typedef vector<NodePtr> NodeVect;
+	typedef std::set<NodePtr> NodeSet;
 
 	typedef std::shared_ptr<Edge> EdgePtr;
 	typedef vector<std::shared_ptr<Edge>> EdgeVect;

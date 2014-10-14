@@ -36,8 +36,9 @@ namespace msonlab {
 			const size_t KEEP;
 			const size_t KEEPBEST;
 		public:
-			typedef std::unique_ptr<SolutionSet> setPtr;
+			typedef std::shared_ptr<SolutionSet> setPtr;
 			SolutionSet(const vector<SolutionPtr>& sol, size_t keepSize, size_t popMaxSize, size_t keepBest);
+			SolutionSet(const SolutionSet&& set);
 
 			const vector<SolutionPtr>& getSolutionSet() const;
 

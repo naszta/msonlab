@@ -5,7 +5,7 @@ namespace msonlab {
 		using std::size_t;
 
 		lwgraph::lwgraph(const Graph& graph)
-			: _nodes(vector<lwnode>(graph.numberOfNodes()))
+			: _nodes(vector<lwnode>(graph.numberOfNodes())), _edges(graph.numberOfEdges())
 		{
 			auto hwnodes = graph.getNodes();
 			for (auto hwnode : hwnodes)
@@ -18,9 +18,15 @@ namespace msonlab {
 			for (auto hwnode : hwnodes)
 			{
 				auto id = hwnode->getId();
-				for (auto suc : hwnode->getSuccessors())
+				if (hwnode->getSuccessorsSize() == 0)
 				{
-					_nodes[id].add_successor(&_nodes[suc->getToId()]);
+					_onodes.push_back(&_nodes[id]);
+				}
+				else {
+					for (auto suc : hwnode->getSuccessors())
+					{
+						_nodes[id].add_successor(&_nodes[suc->getToId()]);
+					}
 				}
 
 				if (hwnode->getPredecessorsSize() == 0)

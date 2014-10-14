@@ -5,8 +5,6 @@ namespace msonlab
 {
 	using std::string;
 
-	typedef std::shared_ptr<Node> NodePtr;
-
 	class Node : public IProcessable
 	{
 	private:

@@ -1,4 +1,6 @@
-#pragma once
+#ifndef BFS_ITERATOR_H
+#define BFS_ITERATOR_H
+
 #include "GraphIterator.h"
 #include <queue>
 #include <set>
@@ -32,3 +34,5 @@ namespace msonlab
 		unsigned depth() { return current_depth; }
 	};
 }
+
+#endif

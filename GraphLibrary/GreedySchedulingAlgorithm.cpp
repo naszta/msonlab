@@ -17,7 +17,7 @@ namespace msonlab {
 			lwgraph lwg(graph);
 			const vector<lwnode> &nodes = lwg.nodes();
 
-			auto hwnodes = graph.getNodes();
+			//auto hwnodes = graph.getNodes();
 
 			unsigned timeCounter = 0;
 			unsigned taskCounter = 0;
@@ -46,9 +46,8 @@ namespace msonlab {
 				while (!free.empty() && limit > 0)
 				{
 					auto node_id = free.front();
-					sol->mapping[taskCounter] = limit - 1;
-					//schedule[taskCounter] = node_id;
-					sol->scheduling[taskCounter] = hwnodes[node_id];
+					sol->_mapping[taskCounter] = limit - 1;
+					sol->_scheduling[taskCounter] = &nodes[node_id];
 
 					scheduled_node_ids.push_back(node_id);
 					free.pop();

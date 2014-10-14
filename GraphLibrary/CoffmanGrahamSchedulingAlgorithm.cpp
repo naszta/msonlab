@@ -1,6 +1,7 @@
 #include "CoffmanGrahamSchedulingAlgorithm.h"
 #include "Algorithms.h"
 #include <algorithm>
+#include "lwgraph.h"
 
 namespace msonlab {
 	namespace scheduling {
@@ -9,10 +10,13 @@ namespace msonlab {
 		using std::vector;
 		using std::make_pair;
 
+		using msonlab::lw::lwgraph;
+		using msonlab::lw::lwnode;
+
 		CoffmanGrahamSchedulingAlgorithm CoffmanGrahamSchedulingAlgorithm::example{ examplar() };
 		
 		// lexigraphically compare
-		bool vector_lexicographic(const pair<vector<unsigned>, NodePtr>& a, const pair<vector<unsigned>, NodePtr>& b)
+		bool vector_lexicographic(const pair<vector<unsigned>, const lwnode*>& a, const pair<vector<unsigned>, const lwnode*>& b)
 		{
 			size_t limit = std::min(a.first.size(), b.first.size());
 			for (size_t i = 0; i < limit; ++i) {
@@ -22,7 +26,7 @@ namespace msonlab {
 				return a.first[i] < b.first[i];
 			}
 
-			return a.first.size() ==  b.first.size() ? a.second->getId() > b.second->getId() 
+			return a.first.size() ==  b.first.size() ? a.second->id() > b.second->id() 
 													 : a.first.size() < b.first.size();
 		}
 
@@ -30,32 +34,33 @@ namespace msonlab {
 			return a > b;
 		}
 
-		void CoffmanGrahamSchedulingAlgorithm::determineCosts(const Graph &graph, vector<unsigned>& costs) const 
+		void CoffmanGrahamSchedulingAlgorithm::determineCosts(const lwgraph &graph, vector<unsigned>& costs) const 
 		{
-			if (costs.size() != graph.numberOfNodes()) {
-				costs.resize(graph.numberOfNodes());
+			if (costs.size() != graph.size()) {
+				costs.resize(graph.size());
 			}
 
-			auto levels = graph::algorithms::partialTopologicalSort(graph);
+			vector<vector<const lwnode*>> levels;
+			graph::algorithms::partialTopologicalSort<lwgraph, const lwnode*>(graph, levels);
 
 			int counter = 0;
-			auto nodes = graph.numberOfNodes() - 1;
+			auto nodes = graph.size() - 1;
 			for (auto& node : levels[0]) {
-				costs[node->getId()] = counter;
+				costs[node->id()] = counter;
 				++counter;
 			}
 
 			// over all levels
 			for (size_t i = 1; i < levels.size(); ++i) {
-				vector<pair<vector<unsigned>, NodePtr>> order;
+				vector<pair<vector<unsigned>, const lw::lwnode*>> order;
 				unsigned top = 1;
 				if (levels[i].size() > 1) {
 					for (auto& node : levels[i]) {
 						vector<unsigned> norder;
 						// iterate over the successors
-						for (auto& edge : node->getSuccessors()) {
+						for (auto successor : node->successors()) {
 							// add successor points to list
-							norder.push_back(costs[edge->getToId()]);
+							norder.push_back(costs[successor->id()]);
 						}
 
 						// sort in decreasing order
@@ -65,12 +70,12 @@ namespace msonlab {
 
 					std::sort(order.begin(), order.end(), vector_lexicographic);
 					for (auto& pair : order) {
-						costs[pair.second->getId()] = counter;
+						costs[pair.second->id()] = counter;
 						++counter;
 					}
 				}
 				else {
-					costs[levels[i][0]->getId()] = counter;
+					costs[levels[i][0]->id()] = counter;
 					++counter;
 				}
 			}

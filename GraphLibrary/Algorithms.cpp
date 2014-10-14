@@ -2,7 +2,7 @@
 #include "BFSIterator.h"
 #include <queue>
 #include <set>
-#include <map>
+//#include <map>
 #include <memory>
 
 namespace msonlab {
@@ -10,39 +10,40 @@ namespace msonlab {
 		namespace algorithms {
 			using std::queue;
 			using std::set;
-			using std::map;
+			//using std::map;
 			using std::unique_ptr;
 
 			// creates partial topological order starting with the outputs
-			vector<NodeVect> partialTopologicalSort(const Graph &graph)
-			{
-				NodeVect outputNodes = graph.getOutputNodes();
-				vector<NodeVect> result;
-				result.push_back(outputNodes);
-				std::map< NodePtr, unsigned> count;
+			//template <class GraphType, class NodeType>
+			//void partialTopologicalSort(const GraphType &graph, vector<vector<NodeType>>& result)
+			//{
+			//	const vector<NodeType>& outputNodes = graph.onodes();
+			//	result.push_back(outputNodes);
+			//	std::map< NodeType, unsigned> count;
 
-				size_t added = outputNodes.size();
-				NodeVect::iterator it;
-				unsigned graphSize = graph.getNodes().size();
-				for (int level = 0; added < graphSize; ++level) {
-					result.push_back(NodeVect());
-					for (auto& act : result[level])
-					{
-						EdgeVect predecessors = act->getPredecessors();
-						for (size_t i = 0; i < predecessors.size(); ++i)
-						{
-							count[predecessors[i]->getFrom()]++;
-							if (predecessors[i]->getFrom()->getSuccessors().size() == count[predecessors[i]->getFrom()])
-							{
-								result[level + 1].push_back(predecessors[i]->getFrom());
-								++added;
-							}
-						}
-					}
-				}
+			//	size_t added = outputNodes.size();
+			//	//NodeVect::iterator it;
+			//	unsigned graphSize = graph.size();
+			//	for (int level = 0; added < graphSize; ++level) {
+			//		result.push_back(vector<NodeType>());
+			//		for (auto act : result[level])
+			//		{
+			//			vector<NodeType> predecessors = act->nodes();
+			//			//for (size_t i = 0; i < predecessors.size(); ++i)
+			//			for (auto pre_node : predecessors)
+			//			{
+			//				count[pre_node]++;
+			//				if (pre_node.s_size() == count[pre_node])
+			//				{
+			//					result[level + 1].push_back(pre_node);
+			//					++added;
+			//				}
+			//			}
+			//		}
+			//	}
 
-				return result;
-			}
+			//	return result;
+			//}
 
 			// creates partial topological order starting with the inputs
 			vector<NodeVect> partialTopologicalSortFromBottom(const Graph &graph)
@@ -191,16 +192,16 @@ namespace msonlab {
 				return std::move(changedgraph);
 			}
 
-			void computeNextFreeNodes(vector<int>& dependencies, NodePtr node)
-			{
-				for (auto& edge : node->getSuccessors())
-				{
-					unsigned id = edge->getToId();
-					--dependencies[id];
-				}
+			//template <class NodeType>
+			//void computeNextFreeNodes(vector<int>& dependencies, NodeType node)
+			//{
+			//	for (auto successor : node->successors())
+			//	{
+			//		--dependencies[successor->id()];
+			//	}
 
-				dependencies[node->getId()] = -1;
-			}
+			//	dependencies[node->getId()] = -1;
+			//}
 
 			unsigned findMaxCostWithoutDependency(const vector<int>& dependencies, const vector<unsigned>& costs)
 			{
@@ -216,16 +217,18 @@ namespace msonlab {
 				return id;
 			}
 
-			void createDependencyVector(const Graph &graph, vector<int>& dependencies)
-			{
-				if (dependencies.size() != graph.numberOfNodes()) {
-					dependencies.resize(graph.numberOfNodes());
-				}
+			// sets the number of dependencies of each node in to the passed vector
+			//template <class GraphType>
+			//void createDependencyVector(const GraphType &graph, vector<int>& dependencies)
+			//{
+			//	if (dependencies.size() != graph.size()) {
+			//		dependencies.resize(graph.size());
+			//	}
 
-				for (auto& node : graph.getNodes()) {
-					dependencies[node->getId()] = node->getPredecessorsSize();
-				}
-			}
+			//	for (auto node : graph.nodes()) {
+			//		dependencies[node.id()] = static_cast<int>(node.p_size());
+			//	}
+			//}
 
 			void list_nodes(const Graph &graph, vector<NodePtr>& nodes) {
 				if (nodes.size() != graph.numberOfNodes()) {

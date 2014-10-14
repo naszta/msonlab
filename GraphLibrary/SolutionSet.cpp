@@ -4,6 +4,7 @@
 #include "GeneticAlgorithm.h"
 #include <cstdlib>
 #include <ctime>
+#include <utility>
 
 namespace msonlab {
 	namespace scheduling {
@@ -15,6 +16,13 @@ namespace msonlab {
 		SolutionSet::SolutionSet(const vector<SolutionPtr>& sol, size_t keepSize, size_t popMaxSize, size_t keepBest) : solution(sol), POPMAXSIZE(popMaxSize), KEEP(keepSize), KEEPBEST(keepBest)
 		{
 			this->solution.resize(KEEP);
+		}
+
+		SolutionSet::SolutionSet(const SolutionSet&& set)
+			: levelSize(std::move(set.levelSize)), solution(std::move(set.solution)),
+			newGeneration(std::move(set.newGeneration)),
+			POPMAXSIZE(set.POPMAXSIZE), KEEP(set.KEEP), KEEPBEST(set.KEEPBEST)
+		{
 		}
 
 		const vector<SolutionPtr>& SolutionSet::getSolutionSet() const

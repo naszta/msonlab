@@ -11,7 +11,7 @@ namespace msonlab {
 		class CriticalPathSchedulingAlgorithm : public ListSchedulingAlgorithm
 		{
 		protected:
-			virtual void determineCosts(const Graph &graph, vector<unsigned>& costs) const;
+			virtual void determineCosts(const lw::lwgraph &graph, vector<unsigned>& costs) const;
 		public:
 			static CriticalPathSchedulingAlgorithm example;
 			CriticalPathSchedulingAlgorithm() = default;
