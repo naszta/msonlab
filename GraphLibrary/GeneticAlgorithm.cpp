@@ -26,7 +26,7 @@ namespace msonlab {
 		GeneticAlgorithm GeneticAlgorithm::example{ examplar() };
 		
 		//virtual constructor
-		SchedulingAlgorithm::ptr GeneticAlgorithm::build(OptionsPtr opt) const
+		SchedulingAlgorithmPtr GeneticAlgorithm::build(OptionsPtr opt) const
 		{
 			if (opt->getAlgorithm().compare("genetic") == 0)
 			{

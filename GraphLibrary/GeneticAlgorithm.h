@@ -48,14 +48,12 @@ namespace msonlab {
 			SolutionPtr greedySolution(const lw::lwgraph &graph) const;
 
 		public:
-			//typedef shared_ptr<Solution> cPtr;
 			typedef vector< SolutionPtr > cVect;
-			//typedef unique_ptr<Population> pPtr;
 
 			static GeneticAlgorithm example;
 			GeneticAlgorithm(examplar e) { SchedulingAlgorithm::add_scheduling_algorithm(this); }
 			GeneticAlgorithm(OptionsPtr, FSPtr);
-			virtual ptr build(OptionsPtr) const;
+			virtual SchedulingAlgorithmPtr build(OptionsPtr) const;
 
 			virtual SolutionPtr schedule(const Graph& graph, OptionsPtr options) const;
 

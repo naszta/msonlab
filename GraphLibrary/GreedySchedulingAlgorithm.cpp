@@ -93,7 +93,7 @@ namespace msonlab {
 		}
 
 		//virtual constructor
-		SchedulingAlgorithm::ptr GreedySchedulingAlgorithm::build(OptionsPtr opt) const
+		SchedulingAlgorithmPtr GreedySchedulingAlgorithm::build(OptionsPtr opt) const
 		{
 			if (opt->getAlgorithm().compare("greedy") == 0)
 			{

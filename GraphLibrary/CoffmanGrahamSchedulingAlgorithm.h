@@ -15,7 +15,7 @@ namespace msonlab {
 		public:
 			CoffmanGrahamSchedulingAlgorithm() = default;
 			CoffmanGrahamSchedulingAlgorithm(examplar e) { SchedulingAlgorithm::add_scheduling_algorithm(this); }
-			virtual ptr build(OptionsPtr) const;
+			virtual SchedulingAlgorithmPtr build(OptionsPtr) const;
 			virtual ~CoffmanGrahamSchedulingAlgorithm() = default;
 		};
 	}

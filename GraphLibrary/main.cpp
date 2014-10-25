@@ -63,7 +63,7 @@ int main(int argc, char *argv[])
 	//Graph graph = initGraph();
 
 	// choosing algorithm
-	SchedulingAlgorithm::ptr alg = SchedulingAlgorithm::find_sceduling_algorithm(options);
+	SchedulingAlgorithmPtr alg = SchedulingAlgorithm::find_sceduling_algorithm(options);
 #if MEASURE != 0	
 	std::chrono::time_point<std::chrono::high_resolution_clock> startCHRONO, finishCHRONO;
 	startCHRONO = std::chrono::high_resolution_clock::now();

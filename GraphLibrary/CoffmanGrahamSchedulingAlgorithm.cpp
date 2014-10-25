@@ -82,7 +82,7 @@ namespace msonlab {
 		}
 
 		//virtual constructor
-		SchedulingAlgorithm::ptr CoffmanGrahamSchedulingAlgorithm::build(OptionsPtr opt) const
+		SchedulingAlgorithmPtr CoffmanGrahamSchedulingAlgorithm::build(OptionsPtr opt) const
 		{
 			if (opt->getAlgorithm().compare("coffman") == 0)
 			{

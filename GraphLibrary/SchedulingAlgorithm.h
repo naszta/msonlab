@@ -17,6 +17,9 @@ namespace msonlab {
 		using std::unique_ptr;
 		using std::vector;
 
+		class SchedulingAlgorithm;
+		typedef unique_ptr<SchedulingAlgorithm> SchedulingAlgorithmPtr;
+
 		///
 		/// Abstract class for schedule algorithms.
 		///
@@ -25,11 +28,11 @@ namespace msonlab {
 			static vector<SchedulingAlgorithm*> examplars;
 			virtual unique_ptr<SchedulingAlgorithm> build(OptionsPtr) const = 0;
 		public:
-			typedef unique_ptr<SchedulingAlgorithm> ptr;
+			
 			virtual SolutionPtr schedule(const Graph &graph, OptionsPtr options) const = 0;
 
 			static void add_scheduling_algorithm(SchedulingAlgorithm* sa) { examplars.push_back(sa); }
-			static ptr find_sceduling_algorithm(OptionsPtr options) {
+			static SchedulingAlgorithmPtr find_sceduling_algorithm(OptionsPtr options) {
 				for (auto sa : examplars) {
 					auto res = sa->build(options);
 					if (res != nullptr) return std::move(res);
@@ -37,6 +40,7 @@ namespace msonlab {
 				return nullptr;
 			}
 		};
+
 	}
 }
 
