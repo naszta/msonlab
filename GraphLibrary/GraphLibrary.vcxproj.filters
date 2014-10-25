@@ -177,6 +177,9 @@
     <ClInclude Include="lwgraph.h">
       <Filter>Header Files\lightweight</Filter>
     </ClInclude>
+    <ClInclude Include="SchedulingResult.h">
+      <Filter>Header Files\Scheduling</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="IProcessable.cpp">
@@ -294,6 +297,9 @@
       <Filter>Source Files\lightweight</Filter>
     </ClCompile>
     <ClCompile Include="ListSchedulingAlgorithm.cpp">
+      <Filter>Source Files\Scheduling</Filter>
+    </ClCompile>
+    <ClCompile Include="SchedulingResult.cpp">
       <Filter>Source Files\Scheduling</Filter>
     </ClCompile>
   </ItemGroup>

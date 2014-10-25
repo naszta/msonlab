@@ -66,6 +66,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <AdditionalIncludeDirectories>..\externals\tbb42_20140601oss\include;..\externals\xerces-c-3.1.1-x86-windows-vc-10.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <BrowseInformation>true</BrowseInformation>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -74,6 +75,9 @@
       <AdditionalLibraryDirectories>..\externals\tbb42_20140601oss\lib\ia32\vc12;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;..\externals\xerces-c-3.1.1-x86-windows-vc-10.0\lib\xerces-c_3.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <Bscmake>
+      <PreserveSbr>true</PreserveSbr>
+    </Bscmake>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Algorithms.cpp" />
@@ -87,6 +91,7 @@
     <ClCompile Include="NodeTest.cpp" />
     <ClCompile Include="SchedulingAlgorithm.cpp" />
     <ClCompile Include="SchedulingHelper.cpp" />
+    <ClCompile Include="SchedulingResult.cpp" />
     <ClCompile Include="Solution.cpp" />
     <ClCompile Include="DFSIterator.cpp" />
     <ClCompile Include="Edge.cpp" />
@@ -126,6 +131,7 @@
     <ClInclude Include="lwnode.h" />
     <ClInclude Include="NodeTest.h" />
     <ClInclude Include="SchedulingHelper.h" />
+    <ClInclude Include="SchedulingResult.h" />
     <ClInclude Include="Solution.h" />
     <ClInclude Include="ConfigFile.h" />
     <ClInclude Include="DFSIterator.h" />

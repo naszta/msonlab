@@ -70,18 +70,25 @@ int main(int argc, char *argv[])
 #endif
 	// the function that is measured
 	SolutionPtr best;
-	//for (int i = 0; i < 100; ++i)
+	try {
 		best = alg->schedule(graph, options);
+	}
+	catch (const std::exception& ex) {
+		std::cout << "Std exception occured: " << ex.what() << std::endl;
+	}
+	catch (...) {
+		std::cout << "Unkown exception occured." << std::endl;
+	}
 #if MEASURE != 0
 	finishCHRONO = std::chrono::high_resolution_clock::now();
 	std::chrono::duration<double> elapsedCHRONO = finishCHRONO - startCHRONO;
 #endif
 	// check correctness
-	auto fs = FitnessStrategy::find_fitness_strategy("length");
-	bool correct = is_correct(*best);
-	cout << "Correct " << correct << endl;
+	//auto fs = FitnessStrategy::find_fitness_strategy("length");
+	//bool correct = is_correct(*best);
+	//cout << "Correct " << correct << endl;
 	std::cout << "Best length: " << best->getFitness() << std::endl;
-	if (!correct) {
+	/*if (!correct) {
 		best->printSolution(std::cout);
 		fs->fitness(*best, options);
 	}
@@ -90,7 +97,7 @@ int main(int argc, char *argv[])
 	std::cout << "Rescheduled length: " << l << std::endl;
 	l = fs->fitness(*best, options);
 	std::cout << "Recalculated Length: " << l << std::endl;
-	cout << "Correct " << is_correct(*best) << endl;
+	cout << "Correct " << is_correct(*best) << endl;*/
 #if MEASURE != 0
 	std::cout << "Elapsed time " << std::setprecision(10) << elapsedCHRONO.count() << std::endl;
 #endif
