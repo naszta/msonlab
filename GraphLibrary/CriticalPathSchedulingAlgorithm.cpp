@@ -16,7 +16,7 @@ namespace msonlab {
 		//virtual constructor
 		SchedulingAlgorithm::ptr CriticalPathSchedulingAlgorithm::build(Options::oPtr opt) const
 		{
-			if (opt->getAlgorithm().compare("criticalpath") == 0)
+			if (opt->getAlgorithm().compare("criticalPath") == 0)
 			{
 				return std::move(std::make_unique<CriticalPathSchedulingAlgorithm>());
 			}

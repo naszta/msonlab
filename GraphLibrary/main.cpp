@@ -55,7 +55,8 @@ int main(int argc, char *argv[])
 	Options::oPtr options = std::make_shared<const Options>("Options.cfg");
 
 	// get graph
-	Graph graph = initRandomGraph(options);
+	//Graph graph = initRandomGraph(options);
+	auto graph = initGraph();
 
 	// choosing algorithm
 	SchedulingAlgorithm::ptr alg = SchedulingAlgorithm::find_sceduling_algorithm(options);
