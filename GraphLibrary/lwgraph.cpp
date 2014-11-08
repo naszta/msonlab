@@ -10,14 +10,14 @@ namespace msonlab {
 			auto hwnodes = graph.getNodes();
 			for (auto hwnode : hwnodes)
 			{
-				auto id = hwnode->getId();
-				_nodes[id] = lwnode(id, hwnode->getComputationTime(),
+				auto id = hwnode->id();
+				_nodes[id] = lwnode(id, hwnode->cptime(),
 					hwnode->getPredecessorsSize(), hwnode->getSuccessorsSize());
 			}
 
 			for (auto hwnode : hwnodes)
 			{
-				auto id = hwnode->getId();
+				auto id = hwnode->id();
 				if (hwnode->getSuccessorsSize() == 0)
 				{
 					_onodes.push_back(&_nodes[id]);

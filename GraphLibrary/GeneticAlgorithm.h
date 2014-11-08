@@ -21,32 +21,6 @@ namespace msonlab {
 
 		class GeneticAlgorithm : public SchedulingAlgorithm
 		{
-			typedef unsigned int uint;
-			// algorithm parameters
-			OptionsPtr options;
-			FSPtr fsstrategy;
-
-			SolutionSet::setPtr generateInitialSolution(const lw::lwgraph &graph, OptionsPtr options) const;
-			SolutionSet::setPtr generateCPSolution(const lw::lwgraph &graph, OptionsPtr options) const;
-			SolutionSet::setPtr generateRndSolution(const lw::lwgraph &graph, OptionsPtr options) const;
-
-			// crossover operations
-			SolutionPtr crossoverMap(SolutionPtr father, SolutionPtr mother) const;
-			SolutionPtr crossoverOrder(SolutionPtr father, SolutionPtr mother, const vector<unsigned>& levelingLimits) const;
-			
-			// mutation operations
-			void mutateMapping(SolutionPtr offspring) const;
-			void mutateSheduling(SolutionPtr offspring, const vector<unsigned>& levelingLimits) const;
-
-			void simulateMating(SolutionSet::setPtr& set, int offsprings, bool doOrderCrossover) const;
-			unsigned int fitness(SolutionPtr solution) const;
-
-			void parallelSimulateMating(SolutionSet::setPtr& set, int offsprings, bool doOrderCrossover) const;
-			friend class round_simulator;
-
-			// building instance for virtual constructor
-			SolutionPtr greedySolution(const lw::lwgraph &graph) const;
-
 		public:
 			typedef vector< SolutionPtr > cVect;
 
@@ -61,6 +35,34 @@ namespace msonlab {
 
 			// experimental
 			void swapMutateScheduling(SolutionPtr offspring) const;
+		private:
+			typedef unsigned int uint;
+			typedef SchedulingResult<const lwnnode*> SchedulingResultLW;
+			typedef shared_ptr<SchedulingResultLW> SchedulingResultLWPtr;
+			// algorithm parameters
+			OptionsPtr options;
+			FSPtr fsstrategy;
+
+			SolutionSet::setPtr generateInitialSolution(const lw::lwgraph &graph, OptionsPtr options) const;// TODO
+			SolutionSet::setPtr generateCPSolution(const lw::lwgraph &graph, OptionsPtr options) const;// TODO
+			SolutionSet::setPtr generateRndSolution(const lw::lwgraph &graph, OptionsPtr options) const;// TODO
+
+			// crossover operations
+			SolutionPtr crossoverMap(SolutionPtr father, SolutionPtr mother) const;// TODO
+			SolutionPtr crossoverOrder(SolutionPtr father, SolutionPtr mother, const vector<unsigned>& levelingLimits) const;// TODO
+			
+			// mutation operations
+			void mutateMapping(SolutionPtr offspring) const;// TODO
+			void mutateSheduling(SolutionPtr offspring, const vector<unsigned>& levelingLimits) const;// TODO
+
+			void simulateMating(SolutionSet::setPtr& set, int offsprings, bool doOrderCrossover) const;// TODO
+			unsigned int fitness(SchedulingResultLWPtr solution) const; // TODO
+
+			void parallelSimulateMating(SolutionSet::setPtr& set, int offsprings, bool doOrderCrossover) const;// TODO
+			friend class round_simulator;
+
+			// building instance for virtual constructor
+			SchedulingResultLWPtr greedySolution(const lw::lwgraph &graph) const;
 		};
 	}
 }

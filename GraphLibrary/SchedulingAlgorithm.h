@@ -4,6 +4,7 @@
 #include <string>
 #include <memory>
 #include "Solution.h"
+#include "SchedulingResult.h"
 #include "Graph.h"
 
 namespace msonlab {
@@ -29,7 +30,7 @@ namespace msonlab {
 			virtual unique_ptr<SchedulingAlgorithm> build(OptionsPtr) const = 0;
 		public:
 			
-			virtual SolutionPtr schedule(const Graph &graph, OptionsPtr options) const = 0;
+			virtual SchedulingResultPtr schedule(const Graph &graph, const Options &options) const = 0;
 
 			static void add_scheduling_algorithm(SchedulingAlgorithm* sa) { examplars.push_back(sa); }
 			static SchedulingAlgorithmPtr find_sceduling_algorithm(OptionsPtr options) {

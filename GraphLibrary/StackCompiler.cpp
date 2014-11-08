@@ -99,12 +99,12 @@ namespace msonlab
 
 		for (auto curr_input : inputs)
 		{
-			unsigned int thread_id = schedule.at(curr_input->getId());
+			unsigned int thread_id = schedule.at(curr_input->id());
 
 			bool need_to_sync = false;
 			for (auto pred : curr_input->getSuccessors())
 			{
-				if (schedule.at(pred->getId()) != thread_id)
+				if (schedule.at(pred->id()) != thread_id)
 				{
 					// input is cross-threaded, needed to be synced
 					need_to_sync = true;
@@ -117,13 +117,13 @@ namespace msonlab
 				StackRunner::program* prog = &(programs.at(thread_id));
 
 				StackRunner::addToken(prog, StackRunner::PUSH, StackRunner::dataToken(new std::pair<StackValue::stackvaluePtr, int>(StackValue::stackvaluePtr(new SimpleStackValue(curr_input->getValue())), -1)));
-				StackRunner::addToken(prog, StackRunner::SYNC, StackRunner::dataToken(new std::pair<StackValue::stackvaluePtr, int>(nullptr, curr_input->getId())));
+				StackRunner::addToken(prog, StackRunner::SYNC, StackRunner::dataToken(new std::pair<StackValue::stackvaluePtr, int>(nullptr, curr_input->id())));
 
 				curr_input->set_synced();
 				curr_input->set_sync_marker();
 
-				promises.insert(curr_input->getId());
-				futures.insert(curr_input->getId());
+				promises.insert(curr_input->id());
+				futures.insert(curr_input->id());
 			}
 		}
 
@@ -150,7 +150,7 @@ namespace msonlab
 		vector<unsigned int> output_ids;
 		for (auto curr_output : outputs)
 		{
-			unsigned int curr_id = curr_output->getId();
+			unsigned int curr_id = curr_output->id();
 
 			promises.insert(curr_id);
 			futures.insert(curr_id);
@@ -167,11 +167,11 @@ namespace msonlab
 			// mark cross-threaded nodes
 			bool cross_threaded = false;
 			bool used_for_multiple_outputs = false;
-			unsigned int curr_thread = schedule.at(curr_node->getId());
+			unsigned int curr_thread = schedule.at(curr_node->id());
 
 			for (auto succ : curr_node->getSuccessors())
 			{
-				if (schedule.at(succ->getId()) != curr_thread)
+				if (schedule.at(succ->id()) != curr_thread)
 				{
 					cross_threaded = true;
 					break;
@@ -181,7 +181,7 @@ namespace msonlab
 			{
 				curr_node->set_sync_marker();
 
-				unsigned int curr_id = curr_node->getId();
+				unsigned int curr_id = curr_node->id();
 
 
 				promises.insert(curr_id);
@@ -201,7 +201,7 @@ namespace msonlab
 			{
 				curr_node->set_sync_marker();
 
-				unsigned int curr_id = curr_node->getId();
+				unsigned int curr_id = curr_node->id();
 
 				promises.insert(curr_id);
 				futures.insert(curr_id);
@@ -210,13 +210,13 @@ namespace msonlab
 		}
 		for (auto curr_edge : graph.getEdges())
 		{
-			unsigned int curr_thread = schedule.at(curr_edge->getId());
+			unsigned int curr_thread = schedule.at(curr_edge->id());
 
 			if (schedule.at(curr_edge->getToId()) != curr_thread)
 	{
 				curr_edge->set_sync_marker();
 
-				unsigned int curr_id = curr_edge->getId();
+				unsigned int curr_id = curr_edge->id();
 
 				promises.insert(curr_id);
 				futures.insert(curr_id);
@@ -225,7 +225,7 @@ namespace msonlab
 			{
 				curr_edge->set_sync_marker();
 
-				unsigned int curr_id = curr_edge->getId();
+				unsigned int curr_id = curr_edge->id();
 
 
 				promises.insert(curr_id);

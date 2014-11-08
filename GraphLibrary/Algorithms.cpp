@@ -236,7 +236,7 @@ namespace msonlab {
 				}
 
 				for (auto& node : graph.getNodes()) {
-					nodes[node->getId()] = node;
+					nodes[node->id()] = node;
 				}
 			}
 

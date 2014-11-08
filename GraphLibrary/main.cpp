@@ -42,9 +42,9 @@ Graph initSampleGraph()
 	return createSample();
 }
 
-Graph initRandomGraph(OptionsPtr options)
+Graph initRandomGraph(const Options &options)
 {
-	return createRandom(options->getGraphSize(), options->getGraphEdgeProb(), options->getGraphWidening(), options->getNumberOfPus());
+	return createRandom(options.getGraphSize(), options.getGraphEdgeProb(), options.getGraphWidening(), options.getNumberOfPus());
 }
 
 #include "lwgraph.h"
@@ -57,9 +57,10 @@ int main(int argc, char *argv[])
 
 	// loading GA configuration
 	OptionsPtr options = std::make_shared<const Options>("Options.cfg");
+	//Options options{ "Options.cfg" };
 
 	// get graph
-	Graph graph = initRandomGraph(options);
+	Graph graph = initRandomGraph(*options);
 	//Graph graph = initGraph();
 
 	// choosing algorithm
@@ -69,9 +70,12 @@ int main(int argc, char *argv[])
 	startCHRONO = std::chrono::high_resolution_clock::now();
 #endif
 	// the function that is measured
-	SolutionPtr best;
+	SchedulingResultPtr best;
 	try {
-		best = alg->schedule(graph, options);
+		if (alg != nullptr)
+			best = alg->schedule(graph, *options);
+		else
+			std::cout << "Algorithm not found." << std::endl;
 	}
 	catch (const std::exception& ex) {
 		std::cout << "Std exception occured: " << ex.what() << std::endl;
@@ -87,7 +91,10 @@ int main(int argc, char *argv[])
 	//auto fs = FitnessStrategy::find_fitness_strategy("length");
 	//bool correct = is_correct(*best);
 	//cout << "Correct " << correct << endl;
-	std::cout << "Best length: " << best->getFitness() << std::endl;
+	if (best != nullptr)
+		std::cout << "Best length: " << best->fitness() << std::endl;
+	else
+		std:cout << "No result." << std::endl;
 	/*if (!correct) {
 		best->printSolution(std::cout);
 		fs->fitness(*best, options);

@@ -21,21 +21,29 @@ namespace msonlab {
 		/// @param solution the result to use
 		/// @param options the options to use
 		/// @return the length
-		unsigned computeLength(const Solution &solution, const OptionsPtr options);
-
-		unsigned computeLengthAndST(const Solution &solution, const OptionsPtr options,
+		template<typename SolutionType>
+		unsigned computeLength(const SolutionType &solution, const Options &options);
+		
+		template<typename SolutionType>
+		unsigned computeLengthAndST(const SolutionType &solution, const Options &options,
 			vector<unsigned>& ST);
 
-		unsigned computeLengthAndRT(const Solution &solution, const OptionsPtr options,
+		template<typename SolutionType>
+		unsigned computeLengthAndRT(const SolutionType &solution, const Options &options,
 			vector<unsigned>& RT);
 
-		unsigned computeLengthSTAndRT(const Solution &solution, const OptionsPtr options,
+		template<typename SolutionType>
+		unsigned computeLengthSTAndRT(const SolutionType &solution, const Options &options,
 			vector<unsigned>& ST, vector<unsigned>& RT);
 
-		unsigned computeLengthAndReuseIdleTime(Solution& solution, const Options& options);
+		template<typename SolutionType>
+		unsigned computeLengthAndReuseIdleTime(SolutionType& solution, const Options& options);
 
-		bool is_correct(const Solution &sol);
+		template<typename SolutionType>
+		bool is_correct(const SolutionType &sol);
 	}
 }
+
+#include "SchedulingHelper.cpp"
 
 #endif

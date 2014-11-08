@@ -6,8 +6,8 @@
 
 namespace msonlab
 {
-	Node::Node(unsigned int _id, types::LabelType _label, types::DataPtr _value, string _type_string, unsigned _compTime)
-		: IProcessable(_id, _label, _value), type_string(_type_string), paramCount(0), compTime(_compTime)
+	Node::Node(unsigned int id_, types::LabelType label_, types::DataPtr value_, string type_string_, unsigned compTime_)
+		: IProcessable(id_, label_, value_), type_string(type_string_), paramCount(0), compTime(compTime_)
 	{
 	}
 
@@ -40,7 +40,7 @@ namespace msonlab
 
 	bool Node::isReadyForProcess() const
 	{
-		if (predecessors.size() == paramCount)
+		if (_predecessors.size() == paramCount)
 			return true;
 		else
 			return false;
@@ -55,49 +55,49 @@ namespace msonlab
 
 	const EdgeVect& Node::getPredecessors() const
 	{
-		return predecessors;
+		return _predecessors;
 	}
 
 	size_t Node::getPredecessorsSize() const
 	{
-		return predecessors.size();
+		return _predecessors.size();
 	}
 
 	unsigned Node::getPredecessorNodeId(size_t index) const
 	{
-		return predecessors[index]->getFromId();
+		return _predecessors[index]->getFromId();
 	}
 
 	const EdgePtr& Node::getPredecessor(size_t index) const
 	{
-		return predecessors[index];
+		return _predecessors[index];
 	}
 
 	EdgeVect::iterator Node::getPredecessorBegin()
 	{
-		return predecessors.begin();
+		return _predecessors.begin();
 	}
 
 	EdgeVect::iterator Node::getPredecessorEnd()
 	{
-		return predecessors.end();
+		return _predecessors.end();
 	}
 
 	const EdgeVect& Node::getSuccessors() const
 	{
-		return successors;
+		return _successors;
 	}
 
 	std::string Node::getIdString() const
 	{
 		std::string ret("n");
-		ret = ret + std::to_string(id);
+		ret = ret + std::to_string(id());
 		return ret;
 	}
 
 	size_t Node::getSuccessorsSize() const
 	{
-		return successors.size();
+		return _successors.size();
 	}
 
 	void Node::addPreNode(NodePtr toAdd) {
@@ -111,12 +111,12 @@ namespace msonlab
 	bool Node::registerPredecessor(EdgePtr _newPredecessor)
 	{
 		msonlab::EdgeVect::iterator it;
-		it = std::find(predecessors.begin(), predecessors.end(), _newPredecessor);
+		it = std::find(_predecessors.begin(), _predecessors.end(), _newPredecessor);
 
-		if (it != predecessors.end())
+		if (it != _predecessors.end())
 			return false;
 
-		it = predecessors.insert(predecessors.end(), _newPredecessor);
+		it = _predecessors.insert(_predecessors.end(), _newPredecessor);
 		addPreNode(_newPredecessor->getFrom());
 
 		if (*it == _newPredecessor)
@@ -137,12 +137,12 @@ namespace msonlab
 	bool Node::registerSuccessor(EdgePtr _newSuccessor)
 	{
 		msonlab::EdgeVect::iterator it;
-		it = std::find(successors.begin(), successors.end(), _newSuccessor);
+		it = std::find(_successors.begin(), _successors.end(), _newSuccessor);
 
-		if (it != successors.end())
+		if (it != _successors.end())
 			return false;
 
-		it = successors.insert(successors.end(), _newSuccessor);
+		it = _successors.insert(_successors.end(), _newSuccessor);
 		addSucNode(_newSuccessor->getTo());
 
 		if (*it == _newSuccessor)
@@ -162,9 +162,9 @@ namespace msonlab
 
 	IProcessable::PlaceEnum Node::getPlace() const
 	{
-		if (predecessors.size() > 0 && successors.size() > 0)
+		if (_predecessors.size() > 0 && _successors.size() > 0)
 			return IProcessable::Inside;
-		else if (predecessors.size() > 0)
+		else if (_predecessors.size() > 0)
 			return IProcessable::Output;
 		else
 			return IProcessable::Input;

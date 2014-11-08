@@ -1,4 +1,8 @@
-#include "SchedulingHelper.h"
+//#include "SchedulingHelper.h"
+#include <vector>
+
+#include "Options.h"
+#include "Solution.h"
 
 namespace msonlab {
 	namespace scheduling {
@@ -7,17 +11,18 @@ namespace msonlab {
 
 			typedef pair<unsigned, unsigned> puu;
 
-			unsigned doComputeLengthSTAndRT(const Solution &solution, const OptionsPtr options,
+			template<typename SolutionType>
+			unsigned doComputeLengthSTAndRT(const SolutionType &solution, const Options &options,
 				vector<unsigned>& ST, vector<unsigned>& RT)
 			{
 				typedef unsigned uint;
 				// const vector references
 
-				unsigned commOverhead = options->getCommOverhead();
-				//unsigned puGroupSize = options->getPuGroupSize();
+				unsigned commOverhead = options.getCommOverhead();
+				//unsigned puGroupSize = options.getPuGroupSize();
 				// const vector references
-				const vector<unsigned>& mapping = solution.mapping();
-				const vector<const lw::lwnode*>& scheduling = solution.scheduling();
+				const auto& mapping = solution.mapping();
+				const auto& scheduling = solution.scheduling();
 				auto tasks = scheduling.size();
 				vector<uint> FT(tasks); // finish time of the tasks
 				vector<uint> DAT(tasks); // Data Arrival Time
@@ -39,7 +44,7 @@ namespace msonlab {
 					idPuMapping[actId] = actPU;
 
 					// calculating data arrival time
-					const vector<const lw::lwnode*>& preds = actNode->predecessors();
+					const auto& preds = actNode->predecessors();
 					for (auto n : preds)
 					{
 						// skipping edge
@@ -69,44 +74,52 @@ namespace msonlab {
 				return length;
 			}
 
-			unsigned int computeLength(const Solution &solution, const OptionsPtr options)
+			template<typename SolutionType>
+			unsigned int computeLength(const SolutionType &solution, const Options &options)
 			{
+				typename SolutionType;
 				vector<unsigned> ST(solution.size());
-				vector<unsigned> RT(options->getNumberOfPus());
+				vector<unsigned> RT(options.getNumberOfPus());
 
-				return doComputeLengthSTAndRT(solution, options, ST, RT);
+				return doComputeLengthSTAndRT<SolutionType>(solution, options, ST, RT);
 			}
 
 			// compute length with returning start time
-			unsigned int computeLengthAndST(const Solution &solution, const OptionsPtr options,
+			template<typename SolutionType>
+			unsigned int computeLengthAndST(const SolutionType &solution, const Options &options,
 				vector<unsigned>& ST)
 			{
+				typename SolutionType;
 				ST.resize(solution.size());
-				vector<unsigned> RT(options->getNumberOfPus());
+				vector<unsigned> RT(options.getNumberOfPus());
 
-				return doComputeLengthSTAndRT(solution, options, ST, RT);
+				return doComputeLengthSTAndRT<SolutionType>(solution, options, ST, RT);
 			}
 
-			unsigned int computeLengthAndRT(const Solution &solution, const OptionsPtr options,
+			template<typename SolutionType>
+			unsigned int computeLengthAndRT(const SolutionType &solution, const Options &options,
 				vector<unsigned>& RT)
 			{
+				typename SolutionType;
 				vector<unsigned> ST(solution.size());
-				RT.resize(options->getNumberOfPus());
+				RT.resize(options.getNumberOfPus());
 
-				return doComputeLengthSTAndRT(solution, options, ST, RT);
+				return doComputeLengthSTAndRT<SolutionType>(solution, options, ST, RT);
 			}
 
 			// compute length with returning start time and ready time
-			unsigned int computeLengthSTAndRT(const Solution &solution, OptionsPtr options,
+			template<typename SolutionType>
+			unsigned int computeLengthSTAndRT(const SolutionType &solution, const Options &options,
 				vector<unsigned>& ST, vector<unsigned>& RT)
 			{
 				ST.resize(solution.size());
-				RT.resize(options->getNumberOfPus());
+				RT.resize(options.getNumberOfPus());
 
 				return doComputeLengthSTAndRT(solution, options, ST, RT);
 			}
 
-			unsigned int computeLengthAndReuseIdleTime(Solution &solution, const Options& options)
+			template<typename SolutionType>
+			unsigned int computeLengthAndReuseIdleTime(SolutionType &solution, const Options& options)
 			{
 				typedef unsigned int uint;
 
@@ -256,7 +269,8 @@ namespace msonlab {
 
 			// a helper method for development
 			// fast checks, whether is solution is correct or not
-			bool is_correct(const Solution &solution)
+			template<typename SolutionType>
+			bool is_correct(const SolutionType &solution)
 			{
 				// ensure there is no duplication in the scheduling
 				auto scheduling = solution.scheduling();

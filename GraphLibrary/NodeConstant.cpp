@@ -61,7 +61,7 @@ namespace msonlab
 
 	void NodeConstant::compile(int caller_thread, vector<msonlab::StackRunner::program>* programs, StackRunner::scheduleOrder schedule)
 	{
-		unsigned int thread_id = schedule.at(getId());
+		unsigned int thread_id = schedule.at(id());
 		StackRunner::program* prog = &(programs->at(thread_id));
 
 		// if already synced, just push the associated future object to the stack
@@ -69,7 +69,7 @@ namespace msonlab
 		{
 			if (caller_thread == thread_id)
 			{
-				StackRunner::addToken(prog, StackRunner::WAIT, StackRunner::dataToken(new std::pair<StackValue::stackvaluePtr, int>(nullptr, getId())));
+				StackRunner::addToken(prog, StackRunner::WAIT, StackRunner::dataToken(new std::pair<StackValue::stackvaluePtr, int>(nullptr, id())));
 			}
 		}
 		else
@@ -89,7 +89,7 @@ namespace msonlab
 					}
 				}
 
-				StackRunner::addToken(prog, StackRunner::SYNC, StackRunner::dataToken(new std::pair<StackValue::stackvaluePtr, int>(nullptr, getId())));
+				StackRunner::addToken(prog, StackRunner::SYNC, StackRunner::dataToken(new std::pair<StackValue::stackvaluePtr, int>(nullptr, id())));
 				set_synced();
 			}
 		}

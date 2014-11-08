@@ -1,7 +1,7 @@
 #include "SolutionSet.h"
 #include <algorithm>
 #include <queue>
-#include "GeneticAlgorithm.h"
+//#include "GeneticAlgorithm.h"
 #include <cstdlib>
 #include <ctime>
 #include <utility>

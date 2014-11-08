@@ -35,6 +35,7 @@ namespace msonlab
 		bool addNode(NodePtr toAdd); // adds a node to the graph
 		bool addEdge(EdgePtr toAdd); // adds an edge to the graph
 
+		size_t size() const; // gets the # of nodes
 		size_t numberOfNodes() const; // gets the # of nodes
 		size_t numberOfEdges() const; // gets the # of edges
 

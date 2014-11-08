@@ -83,9 +83,13 @@
     <ClCompile Include="Algorithms.cpp" />
     <ClCompile Include="BFSIterator.cpp" />
     <ClCompile Include="BlueEdge.cpp" />
-    <ClCompile Include="CoffmanGrahamSchedulingAlgorithm.cpp" />
+    <ClCompile Include="CoffmanGrahamSchedulingAlgorithm.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="GraphCreator.cpp" />
-    <ClCompile Include="ListSchedulingAlgorithm.cpp" />
+    <ClCompile Include="ListSchedulingAlgorithm.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="lwnode.cpp" />
     <ClCompile Include="lwgraph.cpp" />
     <ClCompile Include="NodeTest.cpp" />
@@ -95,15 +99,23 @@
     <ClCompile Include="Solution.cpp" />
     <ClCompile Include="DFSIterator.cpp" />
     <ClCompile Include="Edge.cpp" />
-    <ClCompile Include="FitnessStrategy.cpp" />
+    <ClCompile Include="FitnessStrategy.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="FutureStackValue.cpp" />
     <ClCompile Include="GraphBuilder.cpp" />
     <ClCompile Include="GraphExchanger.cpp" />
     <ClCompile Include="Options.cpp" />
-    <ClCompile Include="GeneticAlgorithm.cpp" />
+    <ClCompile Include="GeneticAlgorithm.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="Graph.cpp" />
     <ClCompile Include="GreedySchedulingAlgorithm.cpp" />
-    <ClCompile Include="CriticalPathSchedulingAlgorithm.cpp" />
+    <ClCompile Include="CriticalPathSchedulingAlgorithm.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="IProcessable.cpp" />
     <ClCompile Include="GraphIterator.cpp" />
     <ClCompile Include="main.cpp" />
@@ -114,7 +126,10 @@
     <ClCompile Include="NodeDivide.cpp" />
     <ClCompile Include="NodeMultiply.cpp" />
     <ClCompile Include="NodeSquareRoot.cpp" />
-    <ClCompile Include="SolutionSet.cpp" />
+    <ClCompile Include="SolutionSet.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="Processor.cpp" />
     <ClCompile Include="SimpleStackValue.cpp" />
     <ClCompile Include="StackCompiler.cpp" />
@@ -125,8 +140,12 @@
     <ClInclude Include="Algorithms.h" />
     <ClInclude Include="BFSIterator.h" />
     <ClInclude Include="BlueEdge.h" />
-    <ClInclude Include="CoffmanGrahamSchedulingAlgorithm.h" />
-    <ClInclude Include="ListSchedulingAlgorithm.h" />
+    <ClInclude Include="CoffmanGrahamSchedulingAlgorithm.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="ListSchedulingAlgorithm.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="lwgraph.h" />
     <ClInclude Include="lwnode.h" />
     <ClInclude Include="NodeTest.h" />
@@ -136,9 +155,15 @@
     <ClInclude Include="ConfigFile.h" />
     <ClInclude Include="DFSIterator.h" />
     <ClInclude Include="Edge.h" />
-    <ClInclude Include="FitnessStrategy.h" />
+    <ClInclude Include="FitnessStrategy.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="FutureStackValue.h" />
-    <ClInclude Include="GeneticAlgorithm.h" />
+    <ClInclude Include="GeneticAlgorithm.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="Global.h" />
     <ClInclude Include="Graph.h" />
     <ClInclude Include="GraphBuilder.h" />
@@ -146,7 +171,9 @@
     <ClInclude Include="GraphCreator.h" />
     <ClInclude Include="GraphIterator.h" />
     <ClInclude Include="GreedySchedulingAlgorithm.h" />
-    <ClInclude Include="CriticalPathSchedulingAlgorithm.h" />
+    <ClInclude Include="CriticalPathSchedulingAlgorithm.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="SchedulingAlgorithm.h" />
     <ClInclude Include="IProcessable.h" />
     <ClInclude Include="MultiplierEdge.h" />
@@ -157,7 +184,10 @@
     <ClInclude Include="NodeMultiply.h" />
     <ClInclude Include="NodeSquareRoot.h" />
     <ClInclude Include="Options.h" />
-    <ClInclude Include="SolutionSet.h" />
+    <ClInclude Include="SolutionSet.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="Processor.h" />
     <ClInclude Include="SimpleStackValue.h" />
     <ClInclude Include="StackCompiler.h" />

@@ -8,8 +8,8 @@ namespace msonlab
 	class Node : public IProcessable
 	{
 	private:
-		EdgeVect predecessors;
-		EdgeVect successors;
+		EdgeVect _predecessors;
+		EdgeVect _successors;
 
 		NodeVect preNodes;
 		NodeVect sucNodes;
@@ -19,7 +19,7 @@ namespace msonlab
 		unsigned compTime;
 
 	public:
-		Node(unsigned int _id, types::LabelType _label, types::DataPtr _value, string _type_string = "", unsigned _compTime = 1);
+		Node(unsigned int id_, types::LabelType label_, types::DataPtr value_, string type_string_ = "", unsigned compTime_ = 1);
 		Node(const Node& other);
 		virtual ~Node() = default;
 		virtual Node& operator=(const Node& other);
@@ -31,8 +31,8 @@ namespace msonlab
 		virtual bool resetProcessingState();
 
 		// getting the neighbours skipping the edges
-		const NodeVect& getPreNodes() const { return preNodes; }
-		const NodeVect& getSucNodes() const { return sucNodes; }
+		const NodeVect& predecessors() const { return preNodes; }
+		const NodeVect& successors() const { return sucNodes; }
 
 		const EdgeVect& getPredecessors() const;
 		size_t getPredecessorsSize() const;
@@ -56,7 +56,7 @@ namespace msonlab
 
 		PlaceEnum getPlace() const;
 
-		virtual unsigned getComputationTime() const { return compTime; }
+		virtual unsigned cptime() const { return compTime; }
 
 		virtual NodePtr clone() = 0; // change to const
 

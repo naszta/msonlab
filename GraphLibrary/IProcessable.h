@@ -23,7 +23,7 @@ namespace msonlab
 	class IProcessable
 	{
 	protected:
-		unsigned int id;
+		unsigned int _id;
 		//wchar_t label;
 		types::LabelType label;
 
@@ -50,10 +50,10 @@ namespace msonlab
 
 		virtual IProcessableVect process() = 0;
 		virtual bool isReadyForProcess() const = 0;
-		bool isProcessed() const;
+		bool isProcessed() const;	
 		virtual bool resetProcessingState();
 
-		unsigned int getId() const;
+		unsigned int id() const;
 		virtual std::string getIdString() const;
 		virtual types::LabelType getLabel() const;
 		types::DataPtr getValue() const;

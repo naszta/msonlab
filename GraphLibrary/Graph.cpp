@@ -70,6 +70,11 @@ namespace msonlab
 		}
 	}
 
+	size_t Graph::size() const
+	{
+		return nodes.size();
+	}
+
 	size_t Graph::numberOfNodes() const
 	{
 		return nodes.size();

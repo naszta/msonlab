@@ -22,8 +22,8 @@ namespace msonlab
 
 	// public constructors and methods
 
-	IProcessable::IProcessable(unsigned int _id, types::LabelType _label, types::DataPtr _value)
-		: id(_id), label(_label), value(_value)
+	IProcessable::IProcessable(unsigned int id_, types::LabelType label_, types::DataPtr value_)
+		: _id(id_), label(label_), value(value_)
 	{ 
 	}
 
@@ -36,7 +36,7 @@ namespace msonlab
 
 	IProcessable& IProcessable::operator=(const IProcessable& other)
 	{
-		this->id = other.id;
+		this->_id = other._id;
 		this->label = other.label;
 		this->value = other.value;
 
@@ -54,14 +54,14 @@ namespace msonlab
 		return true;
 	}
 
-	unsigned int IProcessable::getId() const
+	unsigned int IProcessable::id() const
 	{
-		return id;
+		return _id;
 	}
 
 	std::string IProcessable::getIdString() const
 	{
-		return "i" + id;
+		return "i" + _id;
 	}
 
 	types::LabelType IProcessable::getLabel() const
@@ -89,7 +89,7 @@ namespace msonlab
 
 	bool IProcessable::operator==(const IProcessable& other) const
 	{
-		if (id == other.id && label == other.label && value == other.value)
+		if (_id == other._id && label == other.label && value == other.value)
 			return true;
 		else
 			return false;

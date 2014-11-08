@@ -76,13 +76,13 @@ namespace msonlab
 
 	void NodeDivide::compile(int caller_thread, vector<msonlab::StackRunner::program>* programs, StackRunner::scheduleOrder schedule)
 	{
-		unsigned int thread_id = schedule.at(getId());
+		unsigned int thread_id = schedule.at(id());
 		StackRunner::program* prog = &(programs->at(thread_id));
 
 		// if already synced, just push the associated future object to the stack
 		if (synced)
 		{
-			StackRunner::addToken(prog, StackRunner::WAIT, StackRunner::dataToken(new std::pair<StackValue::stackvaluePtr, int>(nullptr, getId())));
+			StackRunner::addToken(prog, StackRunner::WAIT, StackRunner::dataToken(new std::pair<StackValue::stackvaluePtr, int>(nullptr, id())));
 			return;
 		}
 
@@ -96,17 +96,17 @@ namespace msonlab
 			if (pred->compile_iteration < compile_iteration)
 			{
 				// already has value
-				StackRunner::addToken(prog, StackRunner::WAIT, StackRunner::dataToken(new std::pair<StackValue::stackvaluePtr, int>(nullptr, pred->getId())));
+				StackRunner::addToken(prog, StackRunner::WAIT, StackRunner::dataToken(new std::pair<StackValue::stackvaluePtr, int>(nullptr, pred->id())));
 			}
 			else
 			{
 				pred->compile(thread_id, programs, schedule);
 
 				// if predecessor is placed on another thread, add a wait operation
-				if (schedule.at(pred->getId()) != thread_id)
+				if (schedule.at(pred->id()) != thread_id)
 				{
 					// predecessor is on another thread, need to create a FutureStackValue
-					StackRunner::addToken(prog, StackRunner::WAIT, StackRunner::dataToken(new std::pair<StackValue::stackvaluePtr, int>(nullptr, pred->getId())));
+					StackRunner::addToken(prog, StackRunner::WAIT, StackRunner::dataToken(new std::pair<StackValue::stackvaluePtr, int>(nullptr, pred->id())));
 				}
 			}
 			++i;
@@ -128,7 +128,7 @@ namespace msonlab
 				}
 			}
 
-			StackRunner::addToken(prog, StackRunner::SYNC, StackRunner::dataToken(new std::pair<StackValue::stackvaluePtr, int>(nullptr, getId())));
+			StackRunner::addToken(prog, StackRunner::SYNC, StackRunner::dataToken(new std::pair<StackValue::stackvaluePtr, int>(nullptr, id())));
 			set_synced();
 		}
 	}

@@ -42,7 +42,7 @@ namespace msonlab {
 		///
 		/// @param The input graph.
 		/// @return The constructed solution.
-		SolutionPtr GeneticAlgorithm::greedySolution(const lw::lwgraph &graph) const
+		SchedulingResultLWPtr GeneticAlgorithm::greedySolution(const lw::lwgraph &graph) const
 		{
 			const vector<lw::lwnode> &nodes = graph.nodes();
 			unsigned timeCounter = 0;
@@ -52,16 +52,19 @@ namespace msonlab {
 			auto inputNodes = graph.inodes();
 			std::queue < unsigned > free(std::deque< unsigned >(inputNodes.begin(), inputNodes.end()));
 
-			auto c = std::make_shared<Solution>(graphSize, options->getNumberOfPus(), graph.edge_size());
+			//auto c = std::make_shared<Solution>(graphSize, options->getNumberOfPus(), graph.edge_size());
+			vector<uint> mapping(graphSize);
+			vector<const lw::lwnode*> scheduling(graphSize);
+
 			while (taskCounter < graphSize)
 			{
 				vector< unsigned > scheduled_node_ids;
-				int limit = c->pus;
+				int limit = options->getNumberOfPus();
 				while (!free.empty() && limit > 0)
 				{
 					auto node_id = free.front();
-					c->_mapping[taskCounter] = limit - 1;
-					c->_scheduling[taskCounter] = &nodes[node_id];
+					mapping[taskCounter] = limit - 1;
+					scheduling[taskCounter] = &nodes[node_id];
 
 					scheduled_node_ids.push_back(node_id);
 					free.pop();
@@ -91,8 +94,9 @@ namespace msonlab {
 				}
 			}
 
-			fitness(c);
-			return c;
+			auto res = std::make_shared<SchedulingResultLW>(std::move(mapping), std::move(scheduling), 0);
+			fitness(res);
+			return res;
 		}
 
 		///
@@ -249,7 +253,7 @@ namespace msonlab {
 		///
 		/// @param solution Which's fitness is calculated.
 		/// @return The fitness of the solution.
-		unsigned int GeneticAlgorithm::fitness(SolutionPtr solution) const
+		unsigned int GeneticAlgorithm::fitness(SchedulingResultLWPtr solution) const
 		{
 			// fitness is zero if it has never been calculated before
 			if (solution->fitness > 0) {

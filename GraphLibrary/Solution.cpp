@@ -81,7 +81,7 @@ namespace msonlab {
 			auto tasks = _scheduling.size();
 
 			vector<unsigned> ST(tasks);
-			unsigned length = computeLengthAndST(*this, options, ST);
+			unsigned length = computeLengthAndST<Solution>(*this, *options, ST);
 
 			// initialize table
 			vector<vector<int>> table(length);
