@@ -283,7 +283,7 @@ namespace msonlab {
 						return false;
 					}
 
-					const vector<const lw::lwnode*>& preds = node->predecessors();
+					const auto& preds = node->predecessors();
 					for (auto pred_node : preds)
 					{
 						if (!scheduled[pred_node->id()])

@@ -1,6 +1,7 @@
 #include "ListSchedulingAlgorithm.h"
 #include "Algorithms.h"
 #include "SchedulingResult.h"
+#include "SchedulingHelper.h"
 #include <algorithm>
 
 namespace msonlab {
@@ -43,8 +44,6 @@ namespace msonlab {
 			graph::algorithms::createDependencyVector<lw::lwgraph>(graph, dependencies);
 
 			int comm = options.getCommOverhead();
-			std::shared_ptr<SchedulingResult<NodePtr>> schedResult = std::make_shared<SchedulingResult<NodePtr>>(options.getNumberOfPus(), tasks);
-			SolutionPtr result = std::make_shared<Solution>(tasks, options.getNumberOfPus(), graph.edge_size());
 			vector<unsigned> mapping(tasks);
 			NodeVect scheduling(tasks);
 
@@ -84,7 +83,10 @@ namespace msonlab {
 				graph::algorithms::computeNextFreeNodes<const lw::lwnode*>(dependencies, actNode);
 			}
 
-			return std::make_shared<SchedulingResult<NodePtr>>(std::move(mapping), std::move(scheduling), 0);
+			auto result = std::make_shared<SchedulingResult<NodePtr>>(std::move(mapping), std::move(scheduling), 0);
+			auto length = computeLength<SchedulingResult<NodePtr>>(*result, options);
+			result->fitness(length);
+			return result;
 		}
 	}
 }

@@ -103,8 +103,8 @@ int main(int argc, char *argv[])
 	unsigned l = computeLengthAndReuseIdleTime(*best, *options);
 	std::cout << "Rescheduled length: " << l << std::endl;
 	l = fs->fitness(*best, options);
-	std::cout << "Recalculated Length: " << l << std::endl;
-	cout << "Correct " << is_correct(*best) << endl;*/
+	std::cout << "Recalculated Length: " << l << std::endl;*/
+	cout << "Correct " << is_correct(*best) << endl;
 #if MEASURE != 0
 	std::cout << "Elapsed time " << std::setprecision(10) << elapsedCHRONO.count() << std::endl;
 #endif

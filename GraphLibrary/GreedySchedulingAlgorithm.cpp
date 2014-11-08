@@ -166,6 +166,7 @@ namespace msonlab {
 		{
 			if (opt->getAlgorithm().compare("greedy") == 0)
 			{
+				std::cout << "Initializing GreedySchedulingAlgorithm." << std::endl;
 				return std::move(std::make_unique<GreedySchedulingAlgorithm>());
 			}
 
