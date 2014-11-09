@@ -32,6 +32,11 @@ namespace msonlab {
 			vector<vector<const lwnode*>> levels;
 			graph::algorithms::partialTopologicalSort<lwgraph, const lwnode*>(graph, levels);
 
+			NodeVect hwnodes(hwgraph.size());
+			for (const auto& hwnode : hwgraph.nodes()) {
+				hwnodes[hwnode->id()] = hwnode;
+			}
+
 			auto tasks = graph.size();
 			vector<unsigned> costs(tasks);
 
@@ -78,7 +83,7 @@ namespace msonlab {
 				RT[pu] = FT[next];
 				idPuMapping[next] = pu;
 				mapping[i] = pu;
-				scheduling[i] = hwgraph.getNodes()[actNode->id()];
+				scheduling[i] = hwnodes[actNode->id()];
 
 				graph::algorithms::computeNextFreeNodes<const lw::lwnode*>(dependencies, actNode);
 			}

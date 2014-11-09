@@ -6,6 +6,9 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GraphLibrary", "GraphLibrary.vcxproj", "{C52B8F60-9D85-4A46-9A2E-786880759177}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GraphLibraryTest", "..\GraphLibraryTest\GraphLibraryTest.vcxproj", "{9C808074-88B9-449F-B23B-013CCB517BE3}"
+	ProjectSection(ProjectDependencies) = postProject
+		{C52B8F60-9D85-4A46-9A2E-786880759177} = {C52B8F60-9D85-4A46-9A2E-786880759177}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

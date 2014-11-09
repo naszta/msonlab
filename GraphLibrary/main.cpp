@@ -96,11 +96,6 @@ int main(int argc, char *argv[])
 	Graph graph = initGraph();
 	lw::lwgraph lwgr(graph);
 
-	printGraph(graph);
-	std::cout << std::endl;
-	printGraph(lwgr);
-
-
 	// choosing algorithm
 	SchedulingAlgorithmPtr alg = SchedulingAlgorithm::find_sceduling_algorithm(options);
 #if MEASURE != 0	
