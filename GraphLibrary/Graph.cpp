@@ -11,14 +11,14 @@ namespace msonlab
 
 	Graph::Graph()
 	{
-		nodes.clear();
+		_nodes.clear();
 		edges.clear();
 		this->iteratorEnd = std::make_shared<NodeTest>(0, L"0", nullptr, 0);
 	}
 
 	Graph::Graph(Graph&& other)
 	{
-		swap(nodes, other.nodes);
+		swap(_nodes, other._nodes);
 		swap(edges, other.edges);
 		swap(iteratorEnd, other.iteratorEnd);
 	}
@@ -26,12 +26,12 @@ namespace msonlab
 	bool Graph::addNode(NodePtr toAdd)
 	{
 		msonlab::NodeVect::iterator it;
-		it = std::find(nodes.begin(), nodes.end(), toAdd);
+		it = std::find(_nodes.begin(), _nodes.end(), toAdd);
 
-		if (it != nodes.end())
+		if (it != _nodes.end())
 			return false;
 
-		it = nodes.insert(nodes.end(), toAdd);
+		it = _nodes.insert(_nodes.end(), toAdd);
 
 		if (*it == toAdd)
 			return true;
@@ -72,12 +72,12 @@ namespace msonlab
 
 	size_t Graph::size() const
 	{
-		return nodes.size();
+		return _nodes.size();
 	}
 
 	size_t Graph::numberOfNodes() const
 	{
-		return nodes.size();
+		return _nodes.size();
 	}
 
 	size_t Graph::numberOfEdges() const
@@ -87,7 +87,7 @@ namespace msonlab
 
 	const NodeVect& Graph::getNodes() const
 	{
-		return nodes;
+		return _nodes;
 	}
 
 	const EdgeVect& Graph::getEdges() const
@@ -99,8 +99,8 @@ namespace msonlab
 	{
 		NodeVect retVal;
 
-		NodeVect::const_iterator it = nodes.begin();
-		while (it != nodes.end())
+		NodeVect::const_iterator it = _nodes.begin();
+		while (it != _nodes.end())
 		{
 			if ((*(*it)).getPlace() == IProcessable::Input)
 				retVal.insert(retVal.end(), (*it));
@@ -114,8 +114,8 @@ namespace msonlab
 	{
 		NodeVect retVal;
 
-		NodeVect::const_iterator it = nodes.begin();
-		while (it != nodes.end())
+		NodeVect::const_iterator it = _nodes.begin();
+		while (it != _nodes.end())
 		{
 			if ((*(*it)).getPlace() == IProcessable::Output)
 				retVal.insert(retVal.end(), (*it));

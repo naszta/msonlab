@@ -17,7 +17,7 @@ namespace msonlab
 	class Graph
 	{
 	private:
-		NodeVect nodes; // vector of nodes
+		NodeVect _nodes; // vector of nodes
 		EdgeVect edges; // vector of edges
 
 		NodePtr iteratorEnd; // this is a sign for every iterator
@@ -41,6 +41,7 @@ namespace msonlab
 
 		const NodeVect& getNodes() const;
 		const EdgeVect& getEdges() const;
+		const NodeVect& nodes() const { return getNodes(); }
 
 		NodeVect getInputNodes() const; // gets the input nodes
 		NodeVect getOutputNodes() const; // gets the output nodes

@@ -50,6 +50,38 @@ Graph initRandomGraph(const Options &options)
 #include "lwgraph.h"
 #include "NodeTest.h"
 
+void printGraph(const lw::lwgraph &graph) {
+	std::cout << "lwgraph" << std::endl;
+	const auto& nodes = graph.nodes();
+	for (const auto& node : nodes) {
+		std::cout << "Node: " << node.id() << " | " << node.successors().size() << " : " << node.predecessors().size() << std::endl;
+	}
+	std::cout << std::endl;
+	std::cout << "lwgraph inodes" << std::endl;
+	std::cout << std::endl;
+
+	const auto& inodes = graph.inodes();
+	for (const auto& node : inodes) {
+		std::cout << "Node: " << node << std::endl;
+	}
+}
+
+void printGraph(const Graph &graph) {
+	std::cout << "graph" << std::endl;
+	const auto& nodes = graph.nodes();
+	for (const auto& node : nodes) {
+		std::cout << "Node: " << node->id() << " | " << node->successors().size() << " : " << node->predecessors().size() << std::endl;
+	}
+	std::cout << std::endl;
+	std::cout << "graph inodes" << std::endl;
+	std::cout << std::endl;
+
+	const auto& inodes = graph.getInputNodes();
+	for (const auto& node : inodes) {
+		std::cout << "Node: " << node->id() << " | " << node->successors().size() << " : " << node->predecessors().size() << std::endl;
+	}
+}
+
 int main(int argc, char *argv[])
 {
 	/* initialize random seed: */
@@ -60,8 +92,14 @@ int main(int argc, char *argv[])
 	//Options options{ "Options.cfg" };
 
 	// get graph
-	Graph graph = initRandomGraph(*options);
-	//Graph graph = initGraph();
+	//Graph graph = initRandomGraph(*options);
+	Graph graph = initGraph();
+	lw::lwgraph lwgr(graph);
+
+	printGraph(graph);
+	std::cout << std::endl;
+	printGraph(lwgr);
+
 
 	// choosing algorithm
 	SchedulingAlgorithmPtr alg = SchedulingAlgorithm::find_sceduling_algorithm(options);
@@ -72,8 +110,10 @@ int main(int argc, char *argv[])
 	// the function that is measured
 	SchedulingResultPtr best;
 	try {
-		if (alg != nullptr)
+		if (alg != nullptr) {
 			best = alg->schedule(graph, *options);
+			best->printSolution(std::cout);
+		}
 		else
 			std::cout << "Algorithm not found." << std::endl;
 	}
