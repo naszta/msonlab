@@ -18,6 +18,7 @@ namespace msonlab {
 		{
 			if (opt->getAlgorithm().compare("criticalPath") == 0)
 			{
+				std::cout << "Initializing CriticalPathSchedulingAlgorithm." << std::endl;
 				return std::move(std::make_unique<CriticalPathSchedulingAlgorithm>());
 			}
 

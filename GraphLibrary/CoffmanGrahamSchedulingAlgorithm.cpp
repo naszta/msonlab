@@ -81,6 +81,7 @@ namespace msonlab {
 		{
 			if (opt->getAlgorithm().compare("coffman") == 0)
 			{
+				std::cout << "Initializing CoffmanGrahamSchedulingAlgorithm." << std::endl;
 				return std::move(std::make_unique<CoffmanGrahamSchedulingAlgorithm>());
 			}
 

@@ -72,10 +72,11 @@ int main(int argc, char *argv[])
 	std::chrono::duration<double> elapsedCHRONO = finishCHRONO - startCHRONO;
 #endif
 	// check correctness
+	best->printSolution(std::cout);
 	auto fs = FitnessStrategy::find_fitness_strategy("length");
 	bool correct = SchedulingHelper::is_correct(best);
 	cout << "Correct " << correct << endl;
-	std::cout << "Best length: " << best->getFitness() << std::endl;
+	std::cout << "Best length: " << fs->fitness(best, options) << std::endl;
 	if (!correct) {
 		fs->fitness(best, options);
 	}
