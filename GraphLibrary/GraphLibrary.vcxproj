@@ -100,7 +100,7 @@
     <ClCompile Include="DFSIterator.cpp" />
     <ClCompile Include="Edge.cpp" />
     <ClCompile Include="FitnessStrategy.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="FutureStackValue.cpp" />
@@ -156,7 +156,7 @@
     <ClInclude Include="DFSIterator.h" />
     <ClInclude Include="Edge.h" />
     <ClInclude Include="FitnessStrategy.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="FutureStackValue.h" />

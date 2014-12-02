@@ -14,7 +14,7 @@ namespace msonlab
 	typedef vector<std::shared_ptr<IProcessable>> IProcessableVect;
 
 	typedef std::shared_ptr<Node> NodePtr;
-	typedef vector<NodePtr> NodeVect;
+	typedef vector<const NodePtr> NodeVect;
 	typedef std::set<NodePtr> NodeSet;
 
 	typedef std::shared_ptr<Edge> EdgePtr;

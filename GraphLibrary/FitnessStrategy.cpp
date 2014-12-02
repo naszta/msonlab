@@ -10,15 +10,16 @@ namespace msonlab {
 
 		// storing pointers to the example instances
 		vector<FitnessStrategy*> FitnessStrategy::examplars;
+		
 		LengthFitnessStartegy LengthFitnessStartegy::example{ Examplar() };
-		RescheduleIdleTimeFitnessStartegy RescheduleIdleTimeFitnessStartegy::example{ Examplar() };
+		//RescheduleIdleTimeFitnessStartegy RescheduleIdleTimeFitnessStartegy::example{ Examplar() };
 		PUUsageFitnessStrategy PUUsageFitnessStrategy::example { Examplar() };
 		LoadBalanceFitnessStrategy LoadBalanceFitnessStrategy::example { Examplar() };
 
 
-		unsigned int LengthFitnessStartegy::fitness(const Solution &solution, const OptionsPtr options) const
+		unsigned int LengthFitnessStartegy::fitness(const SchedulingResult<lw::lwnode*> &solution, const OptionsPtr options) const
 		{
-			return computeLength(solution, options);
+			return computeLength<SchedulingResult<lw::lwnode*>>(solution, *options);
 		}
 
 		FSPtr LengthFitnessStartegy::build(string name) const
@@ -30,10 +31,13 @@ namespace msonlab {
 			return nullptr;
 		}
 
-		unsigned int RescheduleIdleTimeFitnessStartegy::fitness(const Solution &solution, const OptionsPtr options) const
+		unsigned int RescheduleIdleTimeFitnessStartegy::fitness(const SchedulingResult<lw::lwnode*> &solution, const OptionsPtr options) const
 		{
-			Solution &s = const_cast<Solution &>(solution);
-			return computeLengthAndReuseIdleTime(s, *options);
+			// this must change the solution, that could be problematic, think about it ...
+			//Solution &s = const_cast<Solution &>(solution);
+			//return msonlab::scheduling::computeLengthAndReuseIdleTime<Solution>(s, *options);
+			
+			return 0;
 		}
 
 		FSPtr RescheduleIdleTimeFitnessStartegy::build(string name) const
@@ -45,17 +49,16 @@ namespace msonlab {
 			return nullptr;
 		}
 
-		unsigned int PUUsageFitnessStrategy::fitness(const Solution &solution, const OptionsPtr options) const
+		unsigned int PUUsageFitnessStrategy::fitness(const SchedulingResult<lw::lwnode*> &solution, const OptionsPtr options) const
 		{
-			unsigned length = computeLength(solution, options);
+			unsigned length = computeLength(solution, *options);
 
-			lw::LWNodeVect scheduling = solution.scheduling();
+			const auto &scheduling = solution.scheduling();
 			unsigned sumUsedTime = length * options->getNumberOfPus();
 			unsigned sumWorkTime = 0;
 			for (auto node : scheduling) {
 				sumWorkTime += node->cptime();
 			}
-
 
 			// returning the percentage of time spent idle
 			return ((sumUsedTime - sumWorkTime) * 1000) / sumUsedTime;
@@ -70,10 +73,10 @@ namespace msonlab {
 			return nullptr;
 		}
 
-		unsigned int LoadBalanceFitnessStrategy::fitness(const Solution &solution, const OptionsPtr options) const
+		unsigned int LoadBalanceFitnessStrategy::fitness(const SchedulingResult<lw::lwnode*> &solution, const OptionsPtr options) const
 		{
 			vector<unsigned> RT(options->getNumberOfPus());
-			int length = computeLengthAndRT(solution, options, RT);
+			int length = computeLengthAndRT(solution, *options, RT);
 			double avg = std::accumulate(RT.begin(), RT.end(), 0) / options->getNumberOfPus();
 			double load_balance = length / avg;
 			return (unsigned)(load_balance * 1000);
@@ -86,11 +89,6 @@ namespace msonlab {
 			}
 
 			return nullptr;
-		}
-
-		unsigned int OpenEdgesFitnessStrategy::fitness(const Solution &solution, const OptionsPtr options) const
-		{
-			return 0;
 		}
 	}
 }
