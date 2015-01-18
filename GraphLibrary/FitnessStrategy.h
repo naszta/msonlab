@@ -27,7 +27,7 @@ namespace msonlab {
 		{
 			static vector<FitnessStrategy*> examplars;
 		public:
-			virtual unsigned int fitness(const SchedulingResult<lw::lwnode*> &SolutionType, const OptionsPtr options) const = 0;
+			virtual unsigned int fitness(const SchedulingResult<const lw::lwnode*> &SolutionType, const OptionsPtr options) const = 0;
 			virtual FSPtr build(string name) const = 0;
 
 			static void add_fitness_strategy(FitnessStrategy* fs) { examplars.push_back(fs); }
@@ -46,7 +46,7 @@ namespace msonlab {
 		public:
 			LengthFitnessStartegy() = default;
 			LengthFitnessStartegy(Examplar) { FitnessStrategy::add_fitness_strategy(this); }
-			unsigned int fitness(const SchedulingResult<lw::lwnode*> &solution, const OptionsPtr options) const;
+			unsigned int fitness(const SchedulingResult<const lw::lwnode*> &solution, const OptionsPtr options) const;
 			FSPtr build(string name) const; 
 		};
 
@@ -56,7 +56,7 @@ namespace msonlab {
 			static RescheduleIdleTimeFitnessStartegy example;
 		public:
 			RescheduleIdleTimeFitnessStartegy(Examplar) { FitnessStrategy::add_fitness_strategy(this); }
-			virtual unsigned int fitness(const SchedulingResult<lw::lwnode*> &solution, const OptionsPtr options) const;
+			virtual unsigned int fitness(const SchedulingResult<const lw::lwnode*> &solution, const OptionsPtr options) const;
 			virtual FSPtr build(string name) const;
 		};
 
@@ -65,7 +65,7 @@ namespace msonlab {
 			static PUUsageFitnessStrategy example;
 		public:
 			PUUsageFitnessStrategy(Examplar) { FitnessStrategy::add_fitness_strategy(this); }
-			virtual unsigned int fitness(const SchedulingResult<lw::lwnode*> &solution, const OptionsPtr options) const;
+			virtual unsigned int fitness(const SchedulingResult<const lw::lwnode*> &solution, const OptionsPtr options) const;
 			virtual FSPtr build(string name) const;
 		};
 
@@ -74,14 +74,14 @@ namespace msonlab {
 			static LoadBalanceFitnessStrategy example;
 		public:
 			LoadBalanceFitnessStrategy(Examplar) { FitnessStrategy::add_fitness_strategy(this); }
-			virtual unsigned int fitness(const SchedulingResult<lw::lwnode*> &solution, const OptionsPtr options) const;
+			virtual unsigned int fitness(const SchedulingResult<const lw::lwnode*> &solution, const OptionsPtr options) const;
 			virtual FSPtr build(string name) const;
 		};
 
 		/*class OpenEdgesFitnessStrategy : public FitnessStrategy
 		{
 		public:
-			virtual unsigned int fitness(const SchedulingResult<lw::lwnode*> &solution, const OptionsPtr options) const;
+			virtual unsigned int fitness(const SchedulingResult<const lw::lwnode*> &solution, const OptionsPtr options) const;
 			virtual FSPtr build(string name) const;
 		};*/
 	}

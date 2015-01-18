@@ -112,9 +112,9 @@ namespace msonlab {
 			template <class GraphType, class NodeType>
 			void partialTopologicalSort(const GraphType &graph, vector<vector<NodeType>>& result)
 			{
-				const vector<NodeType>& outputNodes = graph.onodes();
+				const auto& outputNodes = graph.onodes();
 				result.push_back(outputNodes);
-				map< NodeType, unsigned> count;
+				map< unsigned, unsigned> count;
 
 				size_t added = outputNodes.size();
 				//NodeVect::iterator it;
@@ -123,12 +123,12 @@ namespace msonlab {
 					result.push_back(vector<NodeType>());
 					for (auto act : result[level])
 					{
-						const vector<NodeType> &predecessors = act->predecessors();
+						const auto &predecessors = act->predecessors();
 						//for (size_t i = 0; i < predecessors.size(); ++i)
 						for (auto pre_node : predecessors)
 						{
-							count[pre_node]++;
-							if (pre_node->s_size() == count[pre_node])
+							count[pre_node->id()]++;
+							if (pre_node->s_size() == count[pre_node->id()])
 							{
 								result[level + 1].push_back(pre_node);
 								++added;

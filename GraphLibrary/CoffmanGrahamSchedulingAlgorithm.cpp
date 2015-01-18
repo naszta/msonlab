@@ -45,7 +45,7 @@ namespace msonlab {
 
 			int counter = 0;
 			auto nodes = graph.size() - 1;
-			for (auto& node : levels[0]) {
+			for (const auto& node : levels[0]) {
 				costs[node->id()] = counter;
 				++counter;
 			}

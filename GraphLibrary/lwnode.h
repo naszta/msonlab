@@ -22,8 +22,8 @@ namespace msonlab {
 			void add_successor(const lwnode *);
 			std::size_t p_size() const;
 			std::size_t s_size() const;
-			const lwnode * get_predecessor(std::size_t) const;
-			const lwnode * get_successor(std::size_t) const;
+			const lwnode* get_predecessor(std::size_t) const;
+			const lwnode* get_successor(std::size_t) const;
 			const vector<const lwnode*>& predecessors() const  { return _predecessors; }
 			const vector<const lwnode*>& successors() const { return _successors; }
 			unsigned id() const { return _id; }

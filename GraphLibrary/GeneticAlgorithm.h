@@ -6,6 +6,7 @@
 #include "SchedulingAlgorithm.h"
 #include "FitnessStrategy.h"
 #include "lwgraph.h"
+#include "SchedulingResult.h"
 
 // GeneticAlgoritm implementation for project laboratory
 // created by Zoltan Szekeres
@@ -22,47 +23,50 @@ namespace msonlab {
 		class GeneticAlgorithm : public SchedulingAlgorithm
 		{
 		public:
-			typedef vector< SolutionPtr > cVect;
+			//typedef vector< SolutionPtr > cVect;
 
+			// example instance for construction purposes
 			static GeneticAlgorithm example;
+			// build function for creating instance
+			virtual SchedulingAlgorithmPtr build(OptionsPtr) const override;
+			// constructor for the example instance
 			GeneticAlgorithm(examplar e) { SchedulingAlgorithm::add_scheduling_algorithm(this); }
+			// contructor for normal use
 			GeneticAlgorithm(OptionsPtr, FSPtr);
-			virtual SchedulingAlgorithmPtr build(OptionsPtr) const;
-
-			virtual SolutionPtr schedule(const Graph& graph, OptionsPtr options) const;
-
-			static void transfromResult(SolutionPtr c, vector<unsigned>& result);
-
-			// experimental
-			void swapMutateScheduling(SolutionPtr offspring) const;
+			// schedule the given graph with the given options
+			virtual SchedulingResultPtr<const NodePtr> schedule(const Graph& graph, const Options &options) const override;
 		private:
 			typedef unsigned int uint;
-			typedef SchedulingResult<const lwnnode*> SchedulingResultLW;
-			typedef shared_ptr<SchedulingResultLW> SchedulingResultLWPtr;
+
 			// algorithm parameters
 			OptionsPtr options;
 			FSPtr fsstrategy;
 
-			SolutionSet::setPtr generateInitialSolution(const lw::lwgraph &graph, OptionsPtr options) const;// TODO
-			SolutionSet::setPtr generateCPSolution(const lw::lwgraph &graph, OptionsPtr options) const;// TODO
-			SolutionSet::setPtr generateRndSolution(const lw::lwgraph &graph, OptionsPtr options) const;// TODO
+			// entry method for generating initial solution
+			SolutionSetPtr generateInitialSolution(const lw::lwgraph &graph, const Options &options) const;
+			// generate a soulution set based on CP methods
+			SolutionSetPtr generateCPSolution(const lw::lwgraph &graph, const Options &options) const;
+			// generate a solution set randomly
+			SolutionSetPtr generateRndSolution(const lw::lwgraph &graph, const Options &options) const;
 
 			// crossover operations
-			SolutionPtr crossoverMap(SolutionPtr father, SolutionPtr mother) const;// TODO
-			SolutionPtr crossoverOrder(SolutionPtr father, SolutionPtr mother, const vector<unsigned>& levelingLimits) const;// TODO
+			SchedulingResultPtr<const lw::lwnode*> crossoverMap(SchedulingResultPtr<const lw::lwnode*> father, SchedulingResultPtr<const lw::lwnode*> mother) const;// TODO
+			SchedulingResultPtr<const lw::lwnode*> crossoverOrder(SchedulingResultPtr<const lw::lwnode*> father, SchedulingResultPtr<const lw::lwnode*> mother, const vector<unsigned>& levelingLimits) const;// TODO
 			
 			// mutation operations
-			void mutateMapping(SolutionPtr offspring) const;// TODO
-			void mutateSheduling(SolutionPtr offspring, const vector<unsigned>& levelingLimits) const;// TODO
+			void mutateMapping(SchedulingResultPtr<const lw::lwnode*> offspring) const;// TODO
+			void mutateSheduling(SchedulingResultPtr<const lw::lwnode*> offspring, const vector<unsigned>& levelingLimits) const;// TODO
 
-			void simulateMating(SolutionSet::setPtr& set, int offsprings, bool doOrderCrossover) const;// TODO
-			unsigned int fitness(SchedulingResultLWPtr solution) const; // TODO
+			void simulateMating(const SolutionSetPtr& set, int offsprings, bool doOrderCrossover) const;// TODO
+			unsigned int fitness(SchedulingResultPtr<const lw::lwnode*> solution) const; // TODO
 
-			void parallelSimulateMating(SolutionSet::setPtr& set, int offsprings, bool doOrderCrossover) const;// TODO
+			void parallelSimulateMating(SolutionSetPtr& set, int offsprings, bool doOrderCrossover) const;// TODO
 			friend class round_simulator;
 
-			// building instance for virtual constructor
-			SchedulingResultLWPtr greedySolution(const lw::lwgraph &graph) const;
+			// Gets a greedy solution for the given graph
+			SchedulingResultPtr<const lw::lwnode*> greedySolution(const lw::lwgraph &graph) const;
+			// experimental
+			void swapMutateScheduling(SchedulingResultPtr<const lw::lwnode*> offspring) const;
 		};
 	}
 }

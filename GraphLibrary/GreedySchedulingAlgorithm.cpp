@@ -12,10 +12,10 @@ namespace msonlab {
 
 		GreedySchedulingAlgorithm GreedySchedulingAlgorithm::example{ examplar() };
 
-		SchedulingResultPtr GreedySchedulingAlgorithm::schedule(const Graph &graph, const Options &options) const
+		SchedulingResultPtr<const NodePtr> GreedySchedulingAlgorithm::schedule(const Graph &graph, const Options &options) const
 		{
 			lwgraph lwg(graph);
-			const vector<lwnode> &nodes = lwg.nodes();
+			const auto &nodes = lwg.nodes();
 
 			NodeVect hwnodes(graph.size());
 			for (const auto& hwnode : graph.nodes()) {
@@ -83,8 +83,8 @@ namespace msonlab {
 			}
 
 			// calculate fitness here
-			auto result = std::make_shared<SchedulingResult<NodePtr>>(std::move(mapping), std::move(scheduling), 0);
-			auto length = computeLength<SchedulingResult<NodePtr>>(*result, options);
+			auto result = std::make_shared<SchedulingResult<const NodePtr>>(std::move(mapping), std::move(scheduling), 0);
+			auto length = computeLength<SchedulingResult<const NodePtr>>(*result, options);
 			result->fitness(length);
 			return result;
 		}

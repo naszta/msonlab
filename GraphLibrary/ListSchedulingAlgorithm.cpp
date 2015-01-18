@@ -3,6 +3,8 @@
 #include "SchedulingResult.h"
 #include "SchedulingHelper.h"
 #include <algorithm>
+#include "lwgraph.h"
+#include "lwnode.h"
 
 namespace msonlab {
 	namespace scheduling {
@@ -26,7 +28,7 @@ namespace msonlab {
 			std::transform(begin(graph.nodes()), end(graph.nodes()), costs.begin(), [](const lwnode &node) { return node.cptime(); });
 		}
 
-		SchedulingResultPtr ListSchedulingAlgorithm::schedule(const Graph &hwgraph, const Options &options) const
+		SchedulingResultPtr<const NodePtr> ListSchedulingAlgorithm::schedule(const Graph &hwgraph, const Options &options) const
 		{
 			lwgraph graph(hwgraph);
 			vector<vector<const lwnode*>> levels;
@@ -58,7 +60,7 @@ namespace msonlab {
 			vector<unsigned> DAT(options.getNumberOfPus()); // Data Arrival Time
 			vector<unsigned> idPuMapping(tasks); // idPuMapping[i] = j means that node[i] is processed by pu[j]
 			int next = 0; // next scheduled node
-			for (int i = 0; i < tasks; ++i) {
+			for (unsigned i = 0; i < tasks; ++i) {
 				next = this->findNextToSchedule(dependencies, costs);
 				const lw::lwnode* actNode = &graph.nodes()[next];
 
@@ -88,8 +90,9 @@ namespace msonlab {
 				graph::algorithms::computeNextFreeNodes<const lw::lwnode*>(dependencies, actNode);
 			}
 
-			auto result = std::make_shared<SchedulingResult<NodePtr>>(std::move(mapping), std::move(scheduling), 0);
-			auto length = computeLength<SchedulingResult<NodePtr>>(*result, options);
+			auto a = SchedulingResult < const NodePtr >(std::move(mapping), std::move(scheduling), 0);
+			auto result = std::make_shared<SchedulingResult<const NodePtr>>(std::move(mapping), std::move(scheduling), 0);
+			auto length = computeLength<SchedulingResult<const NodePtr>>(*result, options);
 			result->fitness(length);
 			return result;
 		}

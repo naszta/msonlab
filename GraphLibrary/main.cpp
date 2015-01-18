@@ -103,7 +103,7 @@ int main(int argc, char *argv[])
 	startCHRONO = std::chrono::high_resolution_clock::now();
 #endif
 	// the function that is measured
-	SchedulingResultPtr best;
+	SchedulingResultPtr<const NodePtr> best;
 	try {
 		if (alg != nullptr) {
 			best = alg->schedule(graph, *options);
@@ -129,7 +129,7 @@ int main(int argc, char *argv[])
 	if (best != nullptr)
 		std::cout << "Best length: " << best->fitness() << std::endl;
 	else
-		std:cout << "No result." << std::endl;
+		std::cout << "No result." << std::endl;
 	/*if (!correct) {
 		best->printSolution(std::cout);
 		fs->fitness(*best, options);
