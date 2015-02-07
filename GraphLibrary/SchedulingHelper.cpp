@@ -273,9 +273,9 @@ namespace msonlab {
 			bool is_correct(const SolutionType &solution)
 			{
 				// ensure there is no duplication in the scheduling
-				auto scheduling = solution.scheduling();
+				const auto& scheduling = solution.scheduling();
 				vector<bool> scheduled(scheduling.size(), false);
-				for (auto node : scheduling)
+				for (const auto& node : scheduling)
 				{
 					// ensure there is no duplication
 					if (scheduled[node->id()]) {

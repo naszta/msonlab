@@ -13,7 +13,8 @@ namespace msonlab {
 			return a->fitness() > b->fitness();
 		}
 
-		SolutionSet::SolutionSet(size_t keepSize, size_t popMaxSize, size_t keepBest) : solution(vector<SchedulingResultPtr<const lw::lwnode*>>(KEEP)), POPMAXSIZE(popMaxSize), KEEP(keepSize), KEEPBEST(keepBest)
+		SolutionSet::SolutionSet(size_t keepSize, size_t popMaxSize, size_t keepBest) : 
+			solution(vector<SchedulingResultPtr<const lw::lwnode*>>(keepSize)), POPMAXSIZE(popMaxSize), KEEP(keepSize), KEEPBEST(keepBest)
 		{
 		}
 

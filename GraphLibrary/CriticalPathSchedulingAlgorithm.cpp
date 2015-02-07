@@ -11,8 +11,6 @@ namespace msonlab {
 		using std::shared_ptr;
 		using namespace msonlab;
 
-		CriticalPathSchedulingAlgorithm CriticalPathSchedulingAlgorithm::example{ examplar() };
-
 		//virtual constructor
 		SchedulingAlgorithmPtr CriticalPathSchedulingAlgorithm::build(OptionsPtr opt) const
 		{

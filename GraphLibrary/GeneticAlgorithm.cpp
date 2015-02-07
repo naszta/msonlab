@@ -24,7 +24,7 @@ namespace msonlab {
 		{
 		}
 
-		GeneticAlgorithm GeneticAlgorithm::example{ examplar() };
+		//GeneticAlgorithm GeneticAlgorithm::example{ exemplar() };
 		
 		//virtual constructor
 		SchedulingAlgorithmPtr GeneticAlgorithm::build(OptionsPtr opt) const
@@ -126,8 +126,15 @@ namespace msonlab {
 			}
 
 			auto best = set->best();
-			// TODO: convert lwnode to Node
-			return nullptr;
+			vector<const NodePtr> scheduling{ best->size() };
+			auto hwnodes = graph.getNodes();
+			unsigned position = 0;
+			for (const auto& lwnode : best->scheduling()){
+				scheduling[position] = hwnodes[lwnode->id()];
+				++position;
+			}
+
+			return std::make_shared<SchedulingResult<const NodePtr>>(best->mapping(), scheduling, best->fitness());
 		}
 
 		SolutionSetPtr GeneticAlgorithm::generateInitialSolution(const lw::lwgraph &graph, const Options &options) const
@@ -196,7 +203,7 @@ namespace msonlab {
 				levelingLimits.push_back(currentLevelSize);
 				currentLevelSize += levels[i - 1].size();
 			}
-
+			
 			auto initialFitness = fitness(result);
 			DEBUGLN("SolutionSet created. Initial fitness : " << initialFitness);
 			set->addOffspring(result);
@@ -207,7 +214,7 @@ namespace msonlab {
 			const size_t num_nodes = graph.size();
 			for (; counter > 0; --counter)
 			{
-				auto sol = std::make_shared<SchedulingResult<const lw::lwnode*>>(graph.size(), options.getNumberOfPus());
+				auto sol = std::make_shared<SchedulingResult<const lw::lwnode*>>(options.getNumberOfPus(), graph.size());
 				for (unsigned int i = 0; i < num_nodes; ++i)
 				{
 					// accessing private member
@@ -369,6 +376,10 @@ namespace msonlab {
 					mutateSheduling(offspring, set->getLevels());
 				}
 
+				if (!is_correct(*offspring)){
+					cout << "Error" << endl;
+				}
+				
 				unsigned cost = fitness(offspring);
 				// cost is UINT32_MAX it has a defect
 				if (cost < UINT32_MAX) {

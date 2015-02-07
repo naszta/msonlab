@@ -13,8 +13,6 @@ namespace msonlab {
 		using msonlab::lw::lwgraph;
 		using msonlab::lw::lwnode;
 
-		CoffmanGrahamSchedulingAlgorithm CoffmanGrahamSchedulingAlgorithm::example{ examplar() };
-		
 		// lexigraphically compare
 		bool vector_lexicographic(const pair<vector<unsigned>, const lwnode*>& a, const pair<vector<unsigned>, const lwnode*>& b)
 		{

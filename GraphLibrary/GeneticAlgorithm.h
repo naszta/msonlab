@@ -4,6 +4,7 @@
 #include <vector>
 #include "SolutionSet.h"
 #include "SchedulingAlgorithm.h"
+#include "SchedulingAlgorithmBuilder.h"
 #include "FitnessStrategy.h"
 #include "lwgraph.h"
 #include "SchedulingResult.h"
@@ -23,14 +24,10 @@ namespace msonlab {
 		class GeneticAlgorithm : public SchedulingAlgorithm
 		{
 		public:
-			//typedef vector< SolutionPtr > cVect;
-
-			// example instance for construction purposes
-			static GeneticAlgorithm example;
 			// build function for creating instance
 			virtual SchedulingAlgorithmPtr build(OptionsPtr) const override;
 			// constructor for the example instance
-			GeneticAlgorithm(examplar e) { SchedulingAlgorithm::add_scheduling_algorithm(this); }
+			GeneticAlgorithm(exemplar e) { SchedulingAlgorithmBuilder::add_scheduling_algorithm(this); }
 			// contructor for normal use
 			GeneticAlgorithm(OptionsPtr, FSPtr);
 			// schedule the given graph with the given options

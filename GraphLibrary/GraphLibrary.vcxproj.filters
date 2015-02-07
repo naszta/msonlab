@@ -180,6 +180,9 @@
     <ClInclude Include="GeneticAlgorithm.h">
       <Filter>Header Files\Scheduling\Genetic</Filter>
     </ClInclude>
+    <ClInclude Include="SchedulingAlgorithmBuilder.h">
+      <Filter>Header Files\Scheduling</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="IProcessable.cpp">
@@ -193,9 +196,6 @@
     </ClCompile>
     <ClCompile Include="GreedySchedulingAlgorithm.cpp">
       <Filter>Source Files\Scheduling</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneticAlgorithm.cpp">
-      <Filter>Source Files\Scheduling\Genetic</Filter>
     </ClCompile>
     <ClCompile Include="BlueEdge.cpp">
       <Filter>Source Files\Edge</Filter>
@@ -300,6 +300,12 @@
       <Filter>Source Files\Scheduling</Filter>
     </ClCompile>
     <ClCompile Include="SchedulingResult.cpp">
+      <Filter>Source Files\Scheduling</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneticAlgorithm.cpp">
+      <Filter>Source Files\Scheduling\Genetic</Filter>
+    </ClCompile>
+    <ClCompile Include="SchedulingAlgorithmBuilder.cpp">
       <Filter>Source Files\Scheduling</Filter>
     </ClCompile>
   </ItemGroup>

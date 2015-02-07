@@ -2,10 +2,15 @@
 #include "GraphExchanger.h"
 #include "GraphCreator.h"
 #include "SchedulingAlgorithm.h"
+#include "GeneticAlgorithm.h"
+#include "GreedySchedulingAlgorithm.h"
+#include "CoffmanGrahamSchedulingAlgorithm.h"
+#include "CriticalPathSchedulingAlgorithm.h"
 #include "Options.h"
 #include "FitnessStrategy.h"
 #include "SchedulingHelper.h"
 #include <chrono>
+#include <memory>
 #include <iostream>
 #include <iomanip>
 #include <fstream>
@@ -84,6 +89,13 @@ void printGraph(const Graph &graph) {
 
 int main(int argc, char *argv[])
 {
+	// create example instances.
+	exemplar e{};
+	GeneticAlgorithm a1(e);
+	GreedySchedulingAlgorithm a2(e);
+	CoffmanGrahamSchedulingAlgorithm a3(e);
+	CriticalPathSchedulingAlgorithm a4(e);
+
 	/* initialize random seed: */
 	srand(161803);
 
@@ -96,8 +108,8 @@ int main(int argc, char *argv[])
 	Graph graph = initGraph();
 	lw::lwgraph lwgr(graph);
 
-	// choosing algorithm
-	SchedulingAlgorithmPtr alg = SchedulingAlgorithm::find_sceduling_algorithm(options);
+	// choosing algorithm	
+	SchedulingAlgorithmPtr alg = SchedulingAlgorithmBuilder::find_sceduling_algorithm(options);
 #if MEASURE != 0	
 	std::chrono::time_point<std::chrono::high_resolution_clock> startCHRONO, finishCHRONO;
 	startCHRONO = std::chrono::high_resolution_clock::now();
@@ -126,8 +138,10 @@ int main(int argc, char *argv[])
 	//auto fs = FitnessStrategy::find_fitness_strategy("length");
 	//bool correct = is_correct(*best);
 	//cout << "Correct " << correct << endl;
-	if (best != nullptr)
+	if (best != nullptr) {
 		std::cout << "Best length: " << best->fitness() << std::endl;
+		std::cout << "Correct " << is_correct(*best) << std::endl;
+	}
 	else
 		std::cout << "No result." << std::endl;
 	/*if (!correct) {
@@ -139,7 +153,6 @@ int main(int argc, char *argv[])
 	std::cout << "Rescheduled length: " << l << std::endl;
 	l = fs->fitness(*best, options);
 	std::cout << "Recalculated Length: " << l << std::endl;*/
-	cout << "Correct " << is_correct(*best) << endl;
 #if MEASURE != 0
 	std::cout << "Elapsed time " << std::setprecision(10) << elapsedCHRONO.count() << std::endl;
 #endif

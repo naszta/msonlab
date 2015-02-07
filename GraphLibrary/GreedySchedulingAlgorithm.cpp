@@ -10,7 +10,7 @@ namespace msonlab {
 
 		using namespace msonlab::lw;
 
-		GreedySchedulingAlgorithm GreedySchedulingAlgorithm::example{ examplar() };
+		//GreedySchedulingAlgorithm GreedySchedulingAlgorithm::example{ exemplar() };
 
 		SchedulingResultPtr<const NodePtr> GreedySchedulingAlgorithm::schedule(const Graph &graph, const Options &options) const
 		{

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "SchedulingAlgorithm.h"
+#include "SchedulingAlgorithmBuilder.h"
 
 namespace msonlab {
 	namespace scheduling {
@@ -15,9 +16,9 @@ namespace msonlab {
 		class GreedySchedulingAlgorithm : public SchedulingAlgorithm
 		{
 		public:
-			static GreedySchedulingAlgorithm example;
+			//static GreedySchedulingAlgorithm example;
 			GreedySchedulingAlgorithm() = default;
-			GreedySchedulingAlgorithm(examplar e) { SchedulingAlgorithm::add_scheduling_algorithm(this); }
+			GreedySchedulingAlgorithm(exemplar e) { SchedulingAlgorithmBuilder::add_scheduling_algorithm(this); }
 			//SolutionPtr schedule(const Graph &graph, OptionsPtr options) const;
 			SchedulingResultPtr<const NodePtr> schedule(const Graph &graph, const	Options &options) const;
 			virtual SchedulingAlgorithmPtr build(OptionsPtr) const;

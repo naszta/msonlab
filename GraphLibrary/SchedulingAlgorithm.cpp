@@ -1,7 +1,7 @@
-#include"SchedulingAlgorithm.h"
+//#include"SchedulingAlgorithm.h"
 
-namespace msonlab {
-	namespace scheduling {
-		vector<SchedulingAlgorithm*> SchedulingAlgorithm::examplars;	
-	}
-}
+//namespace msonlab {
+//	namespace scheduling {
+//		vector<SchedulingAlgorithm*> SchedulingAlgorithm::exemplars{};
+//	}
+//}

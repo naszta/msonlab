@@ -1,5 +1,6 @@
 #pragma once
 #include "SchedulingAlgorithm.h"
+#include "SchedulingAlgorithmBuilder.h"
 #include "lwgraph.h"
 
 namespace msonlab {
