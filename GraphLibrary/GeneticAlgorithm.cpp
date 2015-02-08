@@ -127,14 +127,29 @@ namespace msonlab {
 
 			auto best = set->best();
 			vector<const NodePtr> scheduling{ best->size() };
-			auto hwnodes = graph.getNodes();
+			const auto& hwnodes = graph.getNodes();
 			unsigned position = 0;
 			for (const auto& lwnode : best->scheduling()){
-				scheduling[position] = hwnodes[lwnode->id()];
-				++position;
+				// linear search
+				for (const auto& hwnode : hwnodes) {
+					if (hwnode->id() == lwnode->id()) {
+						scheduling[position] = hwnode;
+						++position;
+						break;
+					}
+				}
+				//scheduling[position] = hwnodes[lwnode->id()];
+				//++position;
 			}
 
-			return std::make_shared<SchedulingResult<const NodePtr>>(best->mapping(), scheduling, best->fitness());
+			best->printSolution(cout);
+			cout << "best is correct: " << is_correct(*best) << endl;
+
+			auto hwbest = std::make_shared<SchedulingResult<const NodePtr>>(best->mapping(), scheduling, best->fitness());
+			hwbest->printSolution(cout);
+			cout << "best is correct: " << is_correct(*hwbest) << endl;
+
+			return hwbest;
 		}
 
 		SolutionSetPtr GeneticAlgorithm::generateInitialSolution(const lw::lwgraph &graph, const Options &options) const
@@ -381,6 +396,9 @@ namespace msonlab {
 				}
 				
 				unsigned cost = fitness(offspring);
+				if (cost == UINT32_MAX) {
+					cout << "Error" << endl;
+				}
 				// cost is UINT32_MAX it has a defect
 				if (cost < UINT32_MAX) {
 					set->addOffspring(offspring);
