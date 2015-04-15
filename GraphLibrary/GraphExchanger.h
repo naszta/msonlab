@@ -4,7 +4,12 @@
 #include "Global.h"
 #include "GraphBuilder.h"
 
-
+#include <xercesc\util\PlatformUtils.hpp>
+#include <xercesc\dom\DOM.hpp>
+#include <xercesc\framework\LocalFileFormatTarget.hpp>
+#include <xercesc\parsers\XercesDOMParser.hpp>
+#include <xercesc\sax\HandlerBase.hpp>
+XERCES_CPP_NAMESPACE_USE
 
 namespace msonlab
 {

@@ -138,18 +138,9 @@ namespace msonlab {
 						break;
 					}
 				}
-				//scheduling[position] = hwnodes[lwnode->id()];
-				//++position;
 			}
 
-			best->printSolution(cout);
-			cout << "best is correct: " << is_correct(*best) << endl;
-
-			auto hwbest = std::make_shared<SchedulingResult<const NodePtr>>(best->mapping(), scheduling, best->fitness());
-			hwbest->printSolution(cout);
-			cout << "best is correct: " << is_correct(*hwbest) << endl;
-
-			return hwbest;
+			return std::make_shared<SchedulingResult<const NodePtr>>(best->mapping(), scheduling, best->fitness());
 		}
 
 		SolutionSetPtr GeneticAlgorithm::generateInitialSolution(const lw::lwgraph &graph, const Options &options) const

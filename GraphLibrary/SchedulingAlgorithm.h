@@ -9,10 +9,6 @@
 
 namespace msonlab {
 	namespace scheduling {
-		
-		/*namespace {
-			class examplar {};
-		}*/
 
 		using msonlab::Graph;
 		using std::unique_ptr;

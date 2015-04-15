@@ -183,6 +183,15 @@
     <ClInclude Include="SchedulingAlgorithmBuilder.h">
       <Filter>Header Files\Scheduling</Filter>
     </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="HelloWorldExample.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="IProcessable.cpp">
@@ -307,6 +316,15 @@
     </ClCompile>
     <ClCompile Include="SchedulingAlgorithmBuilder.cpp">
       <Filter>Source Files\Scheduling</Filter>
+    </ClCompile>
+    <ClCompile Include="dllmain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="HelloWorldExample.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
