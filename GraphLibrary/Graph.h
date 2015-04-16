@@ -18,7 +18,7 @@ namespace msonlab
 	{
 	private:
 		NodeVect _nodes; // vector of nodes
-		EdgeVect edges; // vector of edges
+		EdgeVect _edges; // vector of edges
 
 		NodePtr iteratorEnd; // this is a sign for every iterator
 

@@ -12,14 +12,14 @@ namespace msonlab
 	Graph::Graph()
 	{
 		_nodes.clear();
-		edges.clear();
+		_edges.clear();
 		this->iteratorEnd = std::make_shared<NodeTest>(0, L"0", nullptr, 0);
 	}
 
 	Graph::Graph(Graph&& other)
 	{
 		swap(_nodes, other._nodes);
-		swap(edges, other.edges);
+		swap(_edges, other._edges);
 		swap(iteratorEnd, other.iteratorEnd);
 	}
 
@@ -45,9 +45,9 @@ namespace msonlab
 	bool Graph::addEdge(EdgePtr toAdd)
 	{
 		msonlab::EdgeVect::iterator it;
-		it = std::find(edges.begin(), edges.end(), toAdd);
+		it = std::find(_edges.begin(), _edges.end(), toAdd);
 
-		if (it != edges.end())
+		if (it != _edges.end())
 			return false;
 
 		msonlab::NodePtr fromNode = (*toAdd).getFrom();
@@ -55,7 +55,7 @@ namespace msonlab
 		msonlab::NodePtr toNode = (*toAdd).getTo();
 		addNode(toNode);
 
-		it = edges.insert(edges.end(), toAdd);
+		it = _edges.insert(_edges.end(), toAdd);
 
 		if (*it == toAdd)
 		{
@@ -82,7 +82,7 @@ namespace msonlab
 
 	size_t Graph::numberOfEdges() const
 	{
-		return edges.size();
+		return _edges.size();
 	}
 
 	const NodeVect& Graph::getNodes() const
@@ -92,7 +92,7 @@ namespace msonlab
 
 	const EdgeVect& Graph::getEdges() const
 	{
-		return edges;
+		return _edges;
 	}
 
 	NodeVect Graph::getInputNodes() const
@@ -129,8 +129,8 @@ namespace msonlab
 	{
 		GraphPtr ptrGraph = std::make_unique<Graph>();
 
-		EdgeVect::const_iterator it = edges.begin();
-		while (it != edges.end())
+		EdgeVect::const_iterator it = _edges.begin();
+		while (it != _edges.end())
 		{
 			if ((*(*it)).getEdgeType() == edgeType)
 			{

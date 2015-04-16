@@ -103,7 +103,6 @@
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="GeneticAlgorithm.cpp" />
     <ClCompile Include="GraphCreator.cpp" />
-    <ClCompile Include="HelloWorldExample.cpp" />
     <ClCompile Include="ListSchedulingAlgorithm.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
     </ClCompile>
@@ -159,7 +158,6 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="GeneticAlgorithm.h" />
-    <ClInclude Include="HelloWorldExample.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="ListSchedulingAlgorithm.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
