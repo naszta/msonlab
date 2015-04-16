@@ -47,8 +47,13 @@ namespace msonlab
 		return this->node == it.node;
 	}
 
+	bool GraphIterator::operator!=(const GraphIterator& it) const
+	{
+		return this->node != it.node;
+	}
+
 	// Returns the actual node
-	NodePtr GraphIterator::operator*()
+	NodePtr GraphIterator::operator*() const
 	{
 		return this->node;
 	}

@@ -46,12 +46,24 @@ namespace msonlab
 		NodeVect getInputNodes() const; // gets the input nodes
 		NodeVect getOutputNodes() const; // gets the output nodes
 
-		BFSIterator bfsIteratorBegin(); // gets the begin of the bfs iterator
-		BFSIterator bfsIteratorEnd(); // gets the end of the bfs iterator
+		BFSIterator bfsIteratorBegin() const; // gets the begin of the bfs iterator
+		BFSIterator bfsIteratorEnd() const; // gets the end of the bfs iterator
 		DFSIterator dfsIteratorBegin(); // gets the begin of the dfs iterator
 		DFSIterator dfsIteratorEnd(); // gets the end of the dfs iterator
 
 		GraphPtr getPartialGraphByEdgeType(Edge::EdgeTypeEnum _edgeType) const;
+
+		struct bfs_iterator {
+			bfs_iterator(const Graph& g_);
+			BFSIterator begin();
+			BFSIterator end();
+		private:
+			const Graph& graph;
+		};
+
+		bfs_iterator bfs() {
+			return bfs_iterator(*this);
+		}
 	};
 
 }

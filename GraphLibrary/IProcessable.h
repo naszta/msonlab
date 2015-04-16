@@ -36,7 +36,6 @@ namespace msonlab
 	{
 	protected:
 		unsigned int _id;
-		//wchar_t label;
 		types::LabelType label;
 
 		types::DataPtr value;

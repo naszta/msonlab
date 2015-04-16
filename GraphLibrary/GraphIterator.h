@@ -4,6 +4,7 @@
 #include "Graph.h"
 #include <queue>
 #include <set>
+#include <iterator>
 
 namespace msonlab
 {
@@ -13,7 +14,7 @@ namespace msonlab
 	/*
 	* Class iterates over the Graph as BFS.
 	*/
-	class GraphIterator
+	class GraphIterator : public std::iterator<std::input_iterator_tag, NodePtr>
 	{
 	protected:
 		NodePtr node;
@@ -29,7 +30,8 @@ namespace msonlab
 		GraphIterator(const GraphIterator& it);
 		GraphIterator& operator=(const GraphIterator& it);
 		bool operator==(const GraphIterator& it) const;
-		NodePtr operator*();
+		bool operator!=(const GraphIterator& it) const;
+		NodePtr operator*() const;
 		bool setStartNode(NodePtr startNode);
 	};
 }
