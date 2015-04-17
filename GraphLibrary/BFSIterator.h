@@ -14,13 +14,13 @@ namespace msonlab
 	/*
 	* Class iterates over the Graph as BFS.
 	*/
-	class BFSIterator : public GraphIterator
+	class BFSIterator final : public GraphIterator
 	{
 		queue<pair<NodePtr, unsigned>> to_visit; // nodes to visit
 		set<NodePtr> visited; // visited nodes
 		// This method chooses the next node and steps there
-		virtual bool moveNext();
-		virtual bool clear();
+		bool moveNext() override;
+		bool clear() override;
 		unsigned current_depth;
 	public:
 		BFSIterator(NodePtr endPtr);
