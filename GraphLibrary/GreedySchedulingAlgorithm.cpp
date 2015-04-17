@@ -17,14 +17,14 @@ namespace msonlab {
 			lwgraph lwg(graph);
 			const auto &nodes = lwg.nodes();
 
-			NodeVect hwnodes(graph.size());
+			NodeVect hwnodes(graph.order());
 			for (const auto& hwnode : graph.nodes()) {
 				hwnodes[hwnode->id()] = hwnode;
 			}
 
 			unsigned timeCounter = 0;
 			unsigned taskCounter = 0;
-			auto tasks = graph.size();
+			auto tasks = graph.order();
 
 			// counts the available inputs of the nodess
 			std::map< unsigned, int> count;
@@ -38,8 +38,7 @@ namespace msonlab {
 			vector<unsigned> mapping(tasks);
 			NodeVect scheduling(tasks);
 
-			//while (taskCounter < graph.numberOfNodes())
-			while (taskCounter < lwg.size())
+			while (taskCounter < lwg.order())
 			{
 				//vector< NodePtr > scheduled_nodes;
 				vector<unsigned> scheduled_node_ids;
@@ -58,7 +57,7 @@ namespace msonlab {
 				++timeCounter;
 
 				// if all the nodes are scheduled, stop the algo
-				if (taskCounter == graph.numberOfNodes())
+				if (taskCounter == graph.order())
 				{
 					break;
 				}

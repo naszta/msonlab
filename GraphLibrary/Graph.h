@@ -35,9 +35,8 @@ namespace msonlab
 		bool addNode(NodePtr toAdd); // adds a node to the graph
 		bool addEdge(EdgePtr toAdd); // adds an edge to the graph
 
-		size_t size() const; // gets the # of nodes
-		size_t numberOfNodes() const; // gets the # of nodes
-		size_t numberOfEdges() const; // gets the # of edges
+		size_t order() const; // gets the # of nodes
+		size_t size() const; // gets the # of edges
 
 		const NodeVect& getNodes() const;
 		const EdgeVect& getEdges() const;
@@ -50,6 +49,7 @@ namespace msonlab
 
 		struct bfs_iterator {
 			bfs_iterator(const Graph& g_);
+			bfs_iterator& operator=(const bfs_iterator&) = delete;
 			BFSIterator begin() const;
 			BFSIterator end() const;
 		private:
@@ -58,6 +58,7 @@ namespace msonlab
 
 		struct dfs_iterator {
 			dfs_iterator(const Graph& g_);
+			dfs_iterator& operator=(const dfs_iterator&) = delete;
 			DFSIterator begin() const;
 			DFSIterator end() const;
 		private:

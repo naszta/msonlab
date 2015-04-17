@@ -24,7 +24,7 @@ namespace GraphLibraryTest
 				++counter;
 			}
 
-			Assert::AreEqual(g.size(), counter, L"Iterated nodes and order of graph doesn't match", LINE_INFO());
+			Assert::AreEqual(g.order(), counter, L"Iterated nodes and order of graph doesn't match", LINE_INFO());
 			
 			// assert that depth may increase just by one at a time
 			unsigned last_depth = 0;
@@ -53,7 +53,7 @@ namespace GraphLibraryTest
 				++counter;
 			}
 
-			Assert::AreEqual(g.size(), counter, L"Iterated nodes and order of graph doesn't match", LINE_INFO());
+			Assert::AreEqual(g.order(), counter, L"Iterated nodes and order of graph doesn't match", LINE_INFO());
 
 			unsigned node_order[] { 7, 6, 8, 3, 5, 2, 1, 4, 0 };
 			unsigned index = 0;

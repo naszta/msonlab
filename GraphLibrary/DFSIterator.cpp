@@ -14,7 +14,7 @@ namespace msonlab
 
 	DFSIterator::DFSIterator(const Graph& g)
 		: to_visit(stack<const NodePtr, vector<const NodePtr>>(g.getInputNodes())),
-		visited(vector<bool>(g.size(), false))
+		visited(vector<bool>(g.order(), false))
 	{
 		// end of the iterator is unique for every graph
 		// but the same for every iterator on the same graph
@@ -107,10 +107,6 @@ namespace msonlab
 		this->node = this->end;
 		stack<const NodePtr, NodeVect> emptyStack;
 		std::swap(this->to_visit, emptyStack);
-		NodeSet emptySet;
-		std::swap(this->discovered, emptySet);
-		NodeSet emptySet2;
-		std::swap(this->explored, emptySet2);
 		vector<bool> emptyVector;
 		std::swap(this->visited, emptyVector);
 
@@ -141,6 +137,4 @@ namespace msonlab
 		this->moveNext();
 		return dfs_it;
 	}
-
-
 }

@@ -14,7 +14,7 @@ namespace msonlab {
 			virtual void determineCosts(const lw::lwgraph &graph, vector<unsigned>& costs) const;
 		public:
 			CriticalPathSchedulingAlgorithm() = default;
-			CriticalPathSchedulingAlgorithm(exemplar e) { SchedulingAlgorithmBuilder::add_scheduling_algorithm(this); }
+			CriticalPathSchedulingAlgorithm(exemplar) { SchedulingAlgorithmBuilder::add_scheduling_algorithm(this); }
 			virtual SchedulingAlgorithmPtr build(OptionsPtr) const;
 			virtual ~CriticalPathSchedulingAlgorithm() = default;
 		};

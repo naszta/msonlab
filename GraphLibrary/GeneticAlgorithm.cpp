@@ -48,7 +48,7 @@ namespace msonlab {
 			auto &nodes = graph.nodes();
 			unsigned timeCounter = 0;
 			unsigned taskCounter = 0;
-			size_t graphSize = graph.size();
+			size_t graphSize = graph.order();
 			std::map<unsigned, unsigned> count;
 			auto inputNodes = graph.inodes();
 			std::queue < unsigned > free(std::deque< unsigned >(inputNodes.begin(), inputNodes.end()));
@@ -189,7 +189,7 @@ namespace msonlab {
 			auto greedy_solution = this->greedySolution(graph);
 
 			// create first solution
-			auto result = std::make_shared<SchedulingResult<const lw::lwnode*>>(options.getNumberOfPus(), graph.size());
+			auto result = std::make_shared<SchedulingResult<const lw::lwnode*>>(options.getNumberOfPus(), graph.order());
 			size_t currentLevelSize = 0;
 			// counter of the task in the mapping
 			unsigned counter = 0;
@@ -217,10 +217,10 @@ namespace msonlab {
 
 			// the number of solutions to generate
 			counter = options.getPopMaxSize() - 1;
-			const size_t num_nodes = graph.size();
+			const size_t num_nodes = graph.order();
 			for (; counter > 0; --counter)
 			{
-				auto sol = std::make_shared<SchedulingResult<const lw::lwnode*>>(options.getNumberOfPus(), graph.size());
+				auto sol = std::make_shared<SchedulingResult<const lw::lwnode*>>(options.getNumberOfPus(), graph.order());
 				for (unsigned int i = 0; i < num_nodes; ++i)
 				{
 					// accessing private member

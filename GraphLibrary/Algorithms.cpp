@@ -23,7 +23,7 @@ namespace msonlab {
 
 			//	size_t added = outputNodes.size();
 			//	//NodeVect::iterator it;
-			//	unsigned graphSize = graph.size();
+			//	unsigned graphSize = graph.order();
 			//	for (int level = 0; added < graphSize; ++level) {
 			//		result.push_back(vector<NodeType>());
 			//		for (auto act : result[level])
@@ -221,8 +221,8 @@ namespace msonlab {
 			//template <class GraphType>
 			//void createDependencyVector(const GraphType &graph, vector<int>& dependencies)
 			//{
-			//	if (dependencies.size() != graph.size()) {
-			//		dependencies.resize(graph.size());
+			//	if (dependencies.size() != graph.order()) {
+			//		dependencies.resize(graph.order());
 			//	}
 
 			//	for (auto node : graph.nodes()) {
@@ -231,11 +231,11 @@ namespace msonlab {
 			//}
 
 			void list_nodes(const Graph &graph, vector<NodePtr>& nodes) {
-				if (nodes.size() != graph.numberOfNodes()) {
-					nodes.resize(graph.numberOfNodes());
+				if (nodes.size() != graph.order()) {
+					nodes.resize(graph.order());
 				}
 
-				for (auto& node : graph.getNodes()) {
+				for (auto& node : graph.nodes()) {
 					nodes[node->id()] = node;
 				}
 			}
@@ -247,7 +247,7 @@ namespace msonlab {
 					g2->addNode(node->clone());
 				}
 
-				unsigned id = g->numberOfNodes();
+				unsigned id = g->order();
 
 				BFSIterator itr(*g);
 

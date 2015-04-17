@@ -14,13 +14,13 @@ namespace msonlab {
 		public:
 			lwgraph() = delete;
 			lwgraph(const Graph&);
-			size_t size() const { return _nodes.size(); }
+			size_t order() const { return _nodes.size(); }
+			size_t size() const { return _edges; }
 			size_t input_size() const;
 
 			const vector<unsigned>& inodes() const { return _inodes; }
 			const vector<const lwnode*>& onodes() const { return _onodes; }
 			const vector<lwnode>& nodes() const { return _nodes;  }
-			size_t edge_size() const { return _edges; }
 
 		private:
 			vector<lwnode> _nodes;

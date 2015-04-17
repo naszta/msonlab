@@ -34,15 +34,15 @@ namespace msonlab {
 
 		void CoffmanGrahamSchedulingAlgorithm::determineCosts(const lwgraph &graph, vector<unsigned>& costs) const 
 		{
-			if (costs.size() != graph.size()) {
-				costs.resize(graph.size());
+			if (costs.size() != graph.order()) {
+				costs.resize(graph.order());
 			}
 
 			vector<vector<const lwnode*>> levels;
 			graph::algorithms::partialTopologicalSort<lwgraph, const lwnode*>(graph, levels);
 
 			int counter = 0;
-			auto nodes = graph.size() - 1;
+			//auto nodes = graph.order() - 1;
 			for (const auto& node : levels[0]) {
 				costs[node->id()] = counter;
 				++counter;

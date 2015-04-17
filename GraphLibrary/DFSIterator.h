@@ -15,11 +15,9 @@ namespace msonlab
 	*/
 	class DFSIterator final : public GraphIterator
 	{
-		NodeSet explored;
-		NodeSet discovered;
 		vector<bool> visited;
 		stack<const NodePtr, vector<const NodePtr>> to_visit;
-		// This method chooses the next node and steps there
+		// Finds the next node
 		virtual bool moveNext();
 		virtual bool clear();
 	public:
@@ -31,7 +29,6 @@ namespace msonlab
 		bool operator!=(const DFSIterator& it) const;
 		DFSIterator& operator++(); // prefix
 		DFSIterator operator++(int); // postfix
-		bool hasMoreNode();
 		bool skipActNode();
 	};
 }

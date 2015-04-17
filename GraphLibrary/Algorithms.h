@@ -118,8 +118,8 @@ namespace msonlab {
 
 				size_t added = outputNodes.size();
 				//NodeVect::iterator it;
-				unsigned graphSize = graph.size();
-				for (int level = 0; added < graphSize; ++level) {
+				unsigned order = graph.order();
+				for (int level = 0; added < order; ++level) {
 					result.push_back(vector<NodeType>());
 					for (auto act : result[level])
 					{
@@ -152,8 +152,8 @@ namespace msonlab {
 			template <class GraphType>
 			void createDependencyVector(const GraphType &graph, vector<int>& dependencies)
 			{
-				if (dependencies.size() != graph.size()) {
-					dependencies.resize(graph.size());
+				if (dependencies.size() != graph.order()) {
+					dependencies.resize(graph.order());
 				}
 
 				for (auto node : graph.nodes()) {

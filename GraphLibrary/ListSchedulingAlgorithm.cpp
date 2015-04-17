@@ -20,8 +20,8 @@ namespace msonlab {
 
 		void ListSchedulingAlgorithm::determineCosts(const lwgraph &graph, vector<unsigned>& costs) const 
 		{
-			if (costs.size() != graph.size()) {
-				costs.resize(graph.size());
+			if (costs.size() != graph.order()) {
+				costs.resize(graph.order());
 			}
 
 			// the cost is simply the computation time.
@@ -34,12 +34,12 @@ namespace msonlab {
 			vector<vector<const lwnode*>> levels;
 			graph::algorithms::partialTopologicalSort<lwgraph, const lwnode*>(graph, levels);
 
-			NodeVect hwnodes(hwgraph.size());
+			NodeVect hwnodes(hwgraph.order());
 			for (const auto& hwnode : hwgraph.nodes()) {
 				hwnodes[hwnode->id()] = hwnode;
 			}
 
-			auto tasks = graph.size();
+			auto tasks = graph.order();
 			vector<unsigned> costs(tasks);
 
 			// determine the costs of the nodes

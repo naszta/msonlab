@@ -87,7 +87,7 @@ void printGraph(const Graph &graph) {
 	}
 }
 
-int main(int argc, char *argv[])
+int old_main(int argc, char *argv[])
 {
 	// create example instances.
 	exemplar e{};

@@ -28,7 +28,7 @@ namespace msonlab
 		GraphIterator(NodePtr node, NodePtr end);
 		GraphIterator();
 		GraphIterator(const GraphIterator& it);
-		GraphIterator& operator=(const GraphIterator& it);
+		//GraphIterator& operator=(const GraphIterator& it);
 		bool operator==(const GraphIterator& it) const;
 		bool operator!=(const GraphIterator& it) const;
 		NodePtr operator*() const;

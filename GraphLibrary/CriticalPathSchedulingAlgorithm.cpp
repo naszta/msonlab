@@ -24,8 +24,8 @@ namespace msonlab {
 
 		void CriticalPathSchedulingAlgorithm::determineCosts(const lw::lwgraph &graph, vector<unsigned>& costs) const 
 		{
-			if (costs.size() != graph.size()) {
-				costs.resize(graph.size());
+			if (costs.size() != graph.order()) {
+				costs.resize(graph.order());
 			}
 			
 			vector<vector<const lw::lwnode*>> levels;

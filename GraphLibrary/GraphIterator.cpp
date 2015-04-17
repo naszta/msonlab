@@ -27,20 +27,6 @@ namespace msonlab
 		}
 	}
 
-	GraphIterator& GraphIterator::operator=(const GraphIterator& it)
-	{
-		if (this != &it)
-		{
-			this->clear();
-			this->node = it.node;
-			this->end = it.end;
-
-			this->inputNodes = it.inputNodes;
-		}
-
-		return *this;
-	}
-
 	// Compares by pointer
 	bool GraphIterator::operator==(const GraphIterator& it) const
 	{

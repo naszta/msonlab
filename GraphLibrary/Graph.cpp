@@ -70,28 +70,19 @@ namespace msonlab
 		}
 	}
 
-	size_t Graph::size() const
-	{
+	size_t Graph::order() const {
 		return _nodes.size();
 	}
 
-	size_t Graph::numberOfNodes() const
-	{
-		return _nodes.size();
-	}
-
-	size_t Graph::numberOfEdges() const
-	{
+	size_t Graph::size() const {
 		return _edges.size();
 	}
 
-	const NodeVect& Graph::getNodes() const
-	{
+	const NodeVect& Graph::getNodes() const {
 		return _nodes;
 	}
 
-	const EdgeVect& Graph::getEdges() const
-	{
+	const EdgeVect& Graph::getEdges() const {
 		return _edges;
 	}
 
