@@ -20,7 +20,7 @@ namespace GraphLibraryTest
 		{
 			auto g = msonlab::graph::creator::createSample();
 			unsigned counter = 0;
-			for (auto node : g.bfs()) {
+			for (const auto &node : g.bfs()) {
 				++counter;
 			}
 
@@ -37,14 +37,19 @@ namespace GraphLibraryTest
 				last_depth = current_depth;
 			}
 
-			for (auto node : g.bfs()) {
-
-			}
+			int node_order[] { 1};
 
 		}
 
 		TEST_METHOD(TestDFSIterator)
 		{
+			auto g = msonlab::graph::creator::createSample();
+			unsigned counter = 0;
+			for (const auto &node : g.dfs()) {
+				++counter;
+			}
+
+			Assert::AreEqual(g.size(), counter, L"Iterated nodes and order of graph doesn't match", LINE_INFO());
 
 		}
 

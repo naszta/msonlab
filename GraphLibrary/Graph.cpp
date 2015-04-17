@@ -143,37 +143,23 @@ namespace msonlab
 		return ptrGraph;
 	}
 
-	BFSIterator Graph::bfsIteratorBegin() const
-	{
-		BFSIterator bfsIT(*this);
-		return bfsIT;
-	}
-
-	BFSIterator Graph::bfsIteratorEnd() const
-	{
-		BFSIterator bfsIt(this->iteratorEnd);
-		return bfsIt;
-	}
-
-	DFSIterator Graph::dfsIteratorBegin()
-	{
-		DFSIterator dfsIT(*this);
-		return dfsIT;
-	}
-
-	DFSIterator Graph::dfsIteratorEnd()
-	{
-		DFSIterator dfsIt(this->iteratorEnd);
-		return dfsIt;
-	}
-
 	Graph::bfs_iterator::bfs_iterator(const Graph& g_) : graph(g_) {}
 
-	BFSIterator Graph::bfs_iterator::begin() {
-		return graph.bfsIteratorBegin();
+	BFSIterator Graph::bfs_iterator::begin() const{
+		return BFSIterator(graph);
 	}
 
-	BFSIterator Graph::bfs_iterator::end() {
-		return graph.bfsIteratorEnd();
+	BFSIterator Graph::bfs_iterator::end() const{
+		return BFSIterator(graph.iteratorEnd);
+	}
+
+	Graph::dfs_iterator::dfs_iterator(const Graph& g_) : graph(g_) {}
+
+	DFSIterator Graph::dfs_iterator::begin() const{
+		return DFSIterator(graph);
+	}
+
+	DFSIterator Graph::dfs_iterator::end() const{
+		return DFSIterator(graph.iteratorEnd);
 	}
 }
