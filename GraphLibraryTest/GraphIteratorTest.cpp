@@ -37,8 +37,12 @@ namespace GraphLibraryTest
 				last_depth = current_depth;
 			}
 
-			int node_order[] { 1};
-
+			unsigned node_order[] { 0, 4, 6, 8, 1, 2, 5, 3, 7  };
+			unsigned index = 0;
+			for (const auto &node : g.bfs()) {
+				Assert::AreEqual(node_order[index], node->id(), L"Node doesn't match " + index, LINE_INFO());
+				++index;
+			}
 		}
 
 		TEST_METHOD(TestDFSIterator)
@@ -51,6 +55,12 @@ namespace GraphLibraryTest
 
 			Assert::AreEqual(g.size(), counter, L"Iterated nodes and order of graph doesn't match", LINE_INFO());
 
+			unsigned node_order[] { 7, 6, 8, 3, 5, 2, 1, 4, 0 };
+			unsigned index = 0;
+			for (const auto &node : g.dfs()) {
+				Assert::AreEqual(node_order[index], node->id(), L"Node doesn't match " + index, LINE_INFO());
+				++index;
+			}
 		}
 
 	};

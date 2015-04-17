@@ -13,28 +13,31 @@ namespace msonlab
 	}
 
 	DFSIterator::DFSIterator(const Graph& g)
+		: to_visit(stack<const NodePtr, vector<const NodePtr>>(g.getInputNodes())),
+		visited(vector<bool>(g.size(), false))
 	{
 		// end of the iterator is unique for every graph
 		// but the same for every iterator on the same graph
 		this->end = g.iteratorEnd;
 
 		// adding input nodes to the queue.
-		NodeVect inputNodesVect = g.getInputNodes();
-		if (inputNodesVect.size() > 0)
-		{
-			NodeVect::iterator it = inputNodesVect.begin();
-			this->toDiscover.push(*it);
-			this->node = *it;
-			++it; // can skip first from the queue
-			for (; it != inputNodesVect.end(); ++it)
-			{
-				this->inputNodes.push(*it);
-			}
-		}
-		else
-		{
-			this->node = this->end;
-		}
+		//NodeVect inputNodesVect = g.getInputNodes();
+		//this->to_visit = stack(g.getInputNodes());
+		//if (inputNodesVect.size() > 0)
+		//{
+		//	NodeVect::iterator it = inputNodesVect.begin();
+		//	this->to_visit.push(*it);
+		//	this->node = *it;
+		//	++it; // can skip first from the queue
+		//	for (; it != inputNodesVect.end(); ++it)
+		//	{
+		//		this->inputNodes.push(*it);
+		//	}
+		//}
+		//else
+		//{
+		//	this->node = this->end;
+		//}
 
 		this->moveNext();
 	}
@@ -52,12 +55,16 @@ namespace msonlab
 	{
 		if (this != &it)
 		{
-			GraphIterator::operator=(it);
+			this->clear();
+			this->node = it.node;
+			this->end = it.end;
+			this->inputNodes = it.inputNodes;
 
 			// copy state
-			this->explored = it.explored;
-			this->discovered = it.discovered;
-			this->toDiscover = it.toDiscover;
+			//this->explored = it.explored;
+			//this->discovered = it.discovered;
+			this->to_visit = it.to_visit;
+			this->visited = it.visited;
 		}
 
 		return *this;
@@ -69,63 +76,43 @@ namespace msonlab
 
 	bool DFSIterator::moveNext()
 	{
-		if (this->node == this->end)
-		{
+		// nothing to do, when it points to end
+		if (this->node == this->end) {
 			return false;
 		}
 
-		NodePtr tempNode = this->node;
-		bool explored = false;
-		while (!explored)
-		{
-			while (this->toDiscover.empty())
-			{
-				if (this->inputNodes.empty())
-				{
-					// no more node to visit
-					this->node = this->end;
-					return false;
-				}
-
-				this->toDiscover.push(this->inputNodes.front());
-				this->inputNodes.pop();
-			}
-
-			tempNode = this->toDiscover.top();
-
-			this->discovered.insert(tempNode);
-			EdgeVect neighbours = tempNode->getSuccessors();
-			EdgeVect::const_iterator cit;
-			explored = true;
-			for(cit = neighbours.cbegin(); cit != neighbours.cend(); ++cit)
-			{
-				if (this->discovered.count((*cit)->getTo()) == 0)
-				{
-					this->toDiscover.push((*cit)->getTo());
-					explored = false;
-				}
-			}
-
-			if (explored)
-			{
-				this->explored.insert(tempNode);
-				this->node = tempNode;
-				this->toDiscover.pop();
-			}	
+		if (this->to_visit.empty()) {
+			this->node = this->end;
+			return false;
 		}
 
-		return explored;
+		this->node = this->to_visit.top();
+		this->to_visit.pop();
+		// set the node as visited
+		this->visited[this->node->id()] = 1;
+
+		const auto& neighbours = this->node->getSuccessors();
+		for (const auto& edge : neighbours) {
+			// add the node to the stack if it is not yet visited
+			if (!this->visited[edge->getToId()]) {
+				this->to_visit.push(edge->getTo());
+			}
+		}
+
+		return true;
 	}
 
 	bool DFSIterator::clear()
 	{
 		this->node = this->end;
-		stack<NodePtr> emptyStack;
-		std::swap(this->toDiscover, emptyStack);
+		stack<const NodePtr, NodeVect> emptyStack;
+		std::swap(this->to_visit, emptyStack);
 		NodeSet emptySet;
 		std::swap(this->discovered, emptySet);
 		NodeSet emptySet2;
 		std::swap(this->explored, emptySet2);
+		vector<bool> emptyVector;
+		std::swap(this->visited, emptyVector);
 
 		return true;
 	}

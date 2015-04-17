@@ -13,11 +13,12 @@ namespace msonlab
 	/*
 	* Class iterates over the Graph as DFS.
 	*/
-	class DFSIterator : public GraphIterator
+	class DFSIterator final : public GraphIterator
 	{
 		NodeSet explored;
 		NodeSet discovered;
-		stack<NodePtr> toDiscover;
+		vector<bool> visited;
+		stack<const NodePtr, vector<const NodePtr>> to_visit;
 		// This method chooses the next node and steps there
 		virtual bool moveNext();
 		virtual bool clear();
