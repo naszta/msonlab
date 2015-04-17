@@ -45,8 +45,10 @@ namespace msonlab
 	{
 		if (this != &it)
 		{
-			GraphIterator::operator=(it);
-
+			this->clear();
+			this->node = it.node;
+			this->end = it.end;
+			this->inputNodes = it.inputNodes;
 			// copy state
 			this->visited = it.visited;
 			this->to_visit = it.to_visit;
