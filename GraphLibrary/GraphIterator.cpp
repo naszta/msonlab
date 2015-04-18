@@ -46,10 +46,10 @@ namespace msonlab
 
 	// Sets the start node of the BFS
 	// It is the responsibility of the caller that startnode is part of base graph of this iterator
-	bool GraphIterator::setStartNode(NodePtr startNode)
+	void GraphIterator::setStartNode(NodePtr startNode)
 	{
 		this->clear();
 		this->node = startNode;
-		return this->moveNext();
+		this->moveNext();
 	}
 }

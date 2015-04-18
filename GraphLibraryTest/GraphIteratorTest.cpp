@@ -45,6 +45,22 @@ namespace GraphLibraryTest
 			}
 		}
 
+		TEST_METHOD(TestBFSIteratorSkipNode)
+		{
+			auto g = msonlab::graph::creator::createSample();
+			unsigned node_order[] { 0, 4, 6, 1, 2, 5, 3, 7  };
+			unsigned index = 0;
+			msonlab::BFSIterator end_it{ g.bfs().end() };
+			for (auto it = g.bfs().begin(); it != end_it; ++it) {
+				Assert::AreEqual(node_order[index], (*it)->id(), L"Node doesn't match " + index, LINE_INFO());
+				++index;
+				// skipping node id 8
+				if ((*it)->id() == 6) {
+					it.skipChildren();
+				}
+			}
+		}
+
 		TEST_METHOD(TestDFSIterator)
 		{
 			auto g = msonlab::graph::creator::createSample();
@@ -63,5 +79,20 @@ namespace GraphLibraryTest
 			}
 		}
 
+		TEST_METHOD(TestDFSIteratorSkipNode)
+		{
+			auto g = msonlab::graph::creator::createSample();
+			unsigned node_order[] { 7, 6, 3, 5, 2, 1, 4, 0 };
+			unsigned index = 0;
+			msonlab::DFSIterator end_it{ g.dfs().end() };
+			for (auto it = g.dfs().begin(); it != end_it; ++ it) {
+				Assert::AreEqual(node_order[index], (*it)->id(), L"Node doesn't match " + index, LINE_INFO());
+				++index;
+				// skipping node id 8
+				if ((*it)->id() == 6) {
+					it.skipChildren();
+				}
+			}
+		}
 	};
 }

@@ -137,7 +137,7 @@ namespace msonlab {
 					{
 						if (modified.count(*bfsItr) > 0 || topologicalOrderMap[*bfsItr] > maxNodeTopValue)
 						{
-							bfsItr.skipActNode();
+							bfsItr.skipChildren();
 						}
 						else
 						{

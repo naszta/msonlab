@@ -1,25 +1,22 @@
-#pragma once
+#ifndef DFS_ITERATOR_H
+#define DFS_ITERATOR_H
+
 #include "GraphIterator.h"
-#include <queue>
-#include <set>
 #include <stack>
 
 namespace msonlab
 {
-	using std::queue;
-	using std::set;
 	using std::stack;
 
-	/*
-	* Class iterates over the Graph as DFS.
-	*/
+	// Iterates over the Graph as DFS.
 	class DFSIterator final : public GraphIterator
 	{
 		vector<bool> visited;
+		vector<bool> discovered;
 		stack<const NodePtr, vector<const NodePtr>> to_visit;
-		// Finds the next node
-		virtual bool moveNext();
-		virtual bool clear();
+		// Moves the iterator to the next node
+		virtual void moveNext();
+		virtual void clear();
 	public:
 		DFSIterator(NodePtr endPtr);
 		DFSIterator(const Graph& g);
@@ -29,6 +26,8 @@ namespace msonlab
 		bool operator!=(const DFSIterator& it) const;
 		DFSIterator& operator++(); // prefix
 		DFSIterator operator++(int); // postfix
-		bool skipActNode();
+		void skipChildren();
 	};
 }
+
+#endif

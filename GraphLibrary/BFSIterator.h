@@ -3,12 +3,10 @@
 
 #include "GraphIterator.h"
 #include <queue>
-#include <set>
 
 namespace msonlab
 {
 	using std::queue;
-	using std::set;
 	using std::pair;
 
 	/*
@@ -17,10 +15,11 @@ namespace msonlab
 	class BFSIterator final : public GraphIterator
 	{
 		queue<pair<NodePtr, unsigned>> to_visit; // nodes to visit
-		set<NodePtr> visited; // visited nodes
+		//set<NodePtr> visited; // visited nodes
+		vector<bool> visited;
 		// This method chooses the next node and steps there
-		bool moveNext() override;
-		bool clear() override;
+		void moveNext() override;
+		void clear() override;
 		unsigned current_depth;
 	public:
 		BFSIterator(NodePtr endPtr);
@@ -29,7 +28,7 @@ namespace msonlab
 		BFSIterator& operator=(const BFSIterator& it);
 		BFSIterator& operator++(); // prefix
 		BFSIterator operator++(int); // postfix
-		bool skipActNode();
+		void skipChildren();
 		bool hasMoreNode();
 		unsigned depth() { return current_depth; }
 	};

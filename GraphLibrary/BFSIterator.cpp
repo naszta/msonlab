@@ -7,7 +7,8 @@ namespace msonlab
 	{
 	}
 
-	BFSIterator::BFSIterator(const Graph& g)
+	BFSIterator::BFSIterator(const Graph& g) :
+		visited(vector<bool>(g.order(), false))
 	{
 		// end of the iterator is unique for every graph
 		// but the same for every iterator on the same graph
@@ -63,15 +64,15 @@ namespace msonlab
 
 	// steps to the next node
 	// return true if there are any node to visit; otherwise false.
-	bool BFSIterator::moveNext()
+	void BFSIterator::moveNext()
 	{
 		// find a node that haven't been visited yet
-		while (visited.count(node) > 0)
+		while(visited[node->id()])
 		{
 			if (node == end || to_visit.empty())
 			{
 				// use the next input node
-				if (this->inputNodes.size() > 0)
+				if (!this->inputNodes.empty())
 				{
 					this->node = this->inputNodes.front();
 					this->inputNodes.pop();
@@ -79,7 +80,7 @@ namespace msonlab
 				else
 				{
 					this->node = this->end;
-					return false;
+					return;
 				}
 			}
 			else
@@ -93,34 +94,30 @@ namespace msonlab
 		}
 
 		// add node to visited
-		visited.insert(node);
+		visited[node->id()] = 1;
 
 		// adding neighbours to the toVisit queue
 		const EdgeVect &neighbours = node->getSuccessors();
 		for (auto& edge : neighbours)
 		{
-			if (visited.count(edge->getTo()) == 0)
+			if (!visited[edge->getToId()])
 			{
 				to_visit.push(make_pair(edge->getTo(), current_depth +1));
 			}
 		}
-
-		return true;
 	}
 
 	// Clears the state of the visitor
-	bool BFSIterator::clear()
+	void BFSIterator::clear()
 	{
 		this->node = this->end;
 		this->current_depth = 0;
 		std::queue<pair<NodePtr, unsigned>> emptyQueue;
 		std::swap(this->to_visit, emptyQueue);
-		std::set<NodePtr> emptySet;
-		std::swap(this->visited, emptySet);
+		std::vector<bool> emptyVector;
+		std::swap(this->visited, emptyVector);
 		std::queue<NodePtr> emptyInputQueue;
 		std::swap(this->inputNodes, emptyInputQueue);
-
-		return true;
 	}
 
 	/**
@@ -147,19 +144,12 @@ namespace msonlab
 
 	// Marks the neighbours of the actual node visited
 	// so the bfs will skip them
-	bool BFSIterator::skipActNode()
+	void BFSIterator::skipChildren()
 	{
 		// adding neighbours to visited set
-		EdgeVect::const_iterator it;
 		EdgeVect neighbours = node->getSuccessors();
-		for (it = neighbours.cbegin(); it != neighbours.cend(); ++it)
-		{
-			if (visited.count((*it)->getTo()) == 0)
-			{
-				visited.insert((*it)->getTo());
-			}
+		for (const auto& edge : neighbours) {
+			visited[edge->getToId()] = true;
 		}
-
-		return true;
 	}
 }
