@@ -51,7 +51,7 @@ namespace msonlab {
 			/// @param changed Set of changed nodes.
 			/// @param needed Set of nodes those values are needed.
 			/// @return The graph to rerun.
-			Graph&& computeChangedGraph(const Graph &graph, NodeSet changed, NodeSet needed);
+			Graph computeChangedGraph(const Graph &graph, NodeSet changed, NodeSet needed);
 
 			///
 			/// Creates a dependency vector from the graph.

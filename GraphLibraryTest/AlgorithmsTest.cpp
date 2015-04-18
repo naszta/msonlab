@@ -53,5 +53,25 @@ namespace GraphLibraryTest
 				++layer_id;
 			}
 		}
+
+		TEST_METHOD(TestCreateChangedGraph)
+		{
+			auto g = graph::creator::createQuadrant();
+			const auto& input = g.getInputNodes();
+			const auto& output = g.getOutputNodes();
+			NodePtr changedNode;
+			for (const auto& node : input) {
+				if (node->id() == 2) changedNode = node;
+			}
+
+			NodeSet changed{ changedNode };
+			NodeSet needed{ output.begin(), output.end() };
+
+			auto subgraph = computeChangedGraph(g, changed, needed);
+			size_t expected_nodes = 14;
+			Assert::AreEqual(expected_nodes, subgraph.order(), L"Sub-Graph has a different order.", LINE_INFO());
+			size_t expected_edges = 15;
+			Assert::AreEqual(expected_edges, g.size(), L"Sub-Graph has a different size.", LINE_INFO());
+		}
 	};
 }

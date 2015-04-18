@@ -76,7 +76,7 @@ namespace msonlab {
 				return order;
 			}
 
-			Graph&& computeChangedGraph(const Graph &graph, NodeSet changed, NodeSet needed)
+			Graph computeChangedGraph(const Graph &graph, NodeSet changed, NodeSet needed)
 			{
 				NodeVect topsort = topologicalSort(graph);
 				NodeSet::iterator it;
@@ -97,11 +97,12 @@ namespace msonlab {
 				// stops if topological number is bigger than
 				// the maximum of needed
 				NodeSet modified;
-				BFSIterator bfsItr(graph);
+				auto bfsItr = graph.bfs().begin();
+				auto bfsEndItr = graph.bfs().end();
 				for (it = changed.cbegin(); it != changed.cend(); ++it)
 				{
 					bfsItr.setStartNode(*it);
-					for (; bfsItr.hasMoreNode(); ++bfsItr)
+					for (; bfsItr != bfsEndItr; ++bfsItr)
 					{
 						if (modified.count(*bfsItr) > 0 || topologicalOrderMap[*bfsItr] > maxNodeTopValue)
 						{
@@ -157,7 +158,7 @@ namespace msonlab {
 					}
 				}
 
-				return std::move(changedgraph);
+				return changedgraph;
 			}
 
 			//template <class NodeType>

@@ -114,7 +114,7 @@ namespace msonlab
 		this->current_depth = 0;
 		std::queue<pair<NodePtr, unsigned>> emptyQueue;
 		std::swap(this->to_visit, emptyQueue);
-		std::vector<bool> emptyVector;
+		std::vector<bool> emptyVector(this->visited.size(), false);
 		std::swap(this->visited, emptyVector);
 		std::queue<NodePtr> emptyInputQueue;
 		std::swap(this->inputNodes, emptyInputQueue);
