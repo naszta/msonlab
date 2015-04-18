@@ -148,7 +148,7 @@ namespace msonlab {
 			SolutionSetPtr p;
 			if (options.getInitialSolution().compare("cp") == 0) {
 				vector<vector<const lw::lwnode*>> levels;
-				graph::algorithms::partialTopologicalSort<lw::lwgraph, const lw::lwnode*>(graph, levels);
+				graph::algorithms::constructLayeredOrder<lw::lwgraph, const lw::lwnode*>(graph, levels);
 				size_t numLevels = levels.size();
 				vector<unsigned> levelingLimits;
 				unsigned limits = 0;
@@ -178,7 +178,7 @@ namespace msonlab {
 		SolutionSetPtr GeneticAlgorithm::generateRndSolution(const lw::lwgraph &graph, const Options &options) const
 		{
 			vector<vector<const lw::lwnode*>> levels;
-			graph::algorithms::partialTopologicalSort<lw::lwgraph, const lw::lwnode*>(graph, levels);
+			graph::algorithms::constructLayeredOrder<lw::lwgraph, const lw::lwnode*>(graph, levels);
 			size_t numLevels = levels.size();
 			vector<unsigned> levelingLimits;
 

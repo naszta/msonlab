@@ -2,7 +2,7 @@
 #include "BFSIterator.h"
 #include <queue>
 #include <set>
-//#include <map>
+#include <map>
 #include <memory>
 
 namespace msonlab {
@@ -10,40 +10,8 @@ namespace msonlab {
 		namespace algorithms {
 			using std::queue;
 			using std::set;
-			//using std::map;
+			using std::map;
 			using std::unique_ptr;
-
-			// creates partial topological order starting with the outputs
-			//template <class GraphType, class NodeType>
-			//void partialTopologicalSort(const GraphType &graph, vector<vector<NodeType>>& result)
-			//{
-			//	const vector<NodeType>& outputNodes = graph.onodes();
-			//	result.push_back(outputNodes);
-			//	std::map< NodeType, unsigned> count;
-
-			//	size_t added = outputNodes.size();
-			//	//NodeVect::iterator it;
-			//	unsigned graphSize = graph.order();
-			//	for (int level = 0; added < graphSize; ++level) {
-			//		result.push_back(vector<NodeType>());
-			//		for (auto act : result[level])
-			//		{
-			//			vector<NodeType> predecessors = act->nodes();
-			//			//for (size_t i = 0; i < predecessors.size(); ++i)
-			//			for (auto pre_node : predecessors)
-			//			{
-			//				count[pre_node]++;
-			//				if (pre_node.s_size() == count[pre_node])
-			//				{
-			//					result[level + 1].push_back(pre_node);
-			//					++added;
-			//				}
-			//			}
-			//		}
-			//	}
-
-			//	return result;
-			//}
 
 			// creates partial topological order starting with the inputs
 			vector<NodeVect> partialTopologicalSortFromBottom(const Graph &graph)

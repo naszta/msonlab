@@ -12,13 +12,13 @@ namespace msonlab {
 			{
 				auto id = hwnode->id();
 				_nodes[id] = lwnode(id, hwnode->cptime(),
-					hwnode->getPredecessorsSize(), hwnode->getSuccessorsSize());
+					hwnode->getPredecessorsSize(), hwnode->s_size());
 			}
 
 			for (auto hwnode : hwnodes)
 			{
 				auto id = hwnode->id();
-				if (hwnode->getSuccessorsSize() == 0)
+				if (hwnode->s_size() == 0)
 				{
 					_onodes.push_back(&_nodes[id]);
 				}

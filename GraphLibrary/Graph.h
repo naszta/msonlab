@@ -44,6 +44,7 @@ namespace msonlab
 
 		NodeVect getInputNodes() const; // gets the input nodes
 		NodeVect getOutputNodes() const; // gets the output nodes
+		NodeVect onodes() const { return getOutputNodes(); }
 
 		GraphPtr getPartialGraphByEdgeType(Edge::EdgeTypeEnum _edgeType) const;
 

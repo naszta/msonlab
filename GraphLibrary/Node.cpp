@@ -95,7 +95,7 @@ namespace msonlab
 		return ret;
 	}
 
-	size_t Node::getSuccessorsSize() const
+	size_t Node::s_size() const
 	{
 		return _successors.size();
 	}

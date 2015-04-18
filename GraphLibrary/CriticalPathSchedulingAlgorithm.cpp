@@ -29,7 +29,7 @@ namespace msonlab {
 			}
 			
 			vector<vector<const lw::lwnode*>> levels;
-			graph::algorithms::partialTopologicalSort<lw::lwgraph, const lw::lwnode*>(graph, levels);
+			graph::algorithms::constructLayeredOrder<lw::lwgraph, const lw::lwnode*>(graph, levels);
 
 			// finding the max time needed to compute (distance)
 			// O(|V| + |E|)

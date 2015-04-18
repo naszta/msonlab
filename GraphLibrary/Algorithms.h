@@ -6,12 +6,10 @@
 #include "Graph.h"
 #include "lwgraph.h"
 #include <vector>
-#include <map>
 
 namespace msonlab {
 	namespace graph {
 		namespace algorithms {
-			using std::map;
 			using std::vector;
 			using msonlab::Graph;
 
@@ -24,8 +22,7 @@ namespace msonlab {
 			/// @param graph The input graph.
 			/// @return vector of vectors containing the nodes.
 			template <class GraphType, class NodeType>
-			void partialTopologicalSort(const GraphType &graph, vector<vector<NodeType>>& result);
-			//vector<NodeVect> partialTopologicalSort(const lw::lwgraph &graph);
+			void constructLayeredOrder(const GraphType &graph, vector<vector<NodeType>>& result);
 
 			///
 			/// Splits the nodes of the graph into levels.
@@ -101,31 +98,28 @@ namespace msonlab {
 			/// @return The execution time.
 			int scheduleGreedy(const Graph &graph, int pus);
 
-			///
-			/// Creates a new graph, with the transitive dependecies removed.
-			/// 
-			/// 
+			// Creates a new graph, with the transitive dependecies removed.
 			GraphPtr transitive_reduction(const GraphPtr&);
 
-//#include "Algorithms.cpp"
-
+			// constructs a layered order from the graph into the result vector starting with the output nodes
 			template <class GraphType, class NodeType>
-			void partialTopologicalSort(const GraphType &graph, vector<vector<NodeType>>& result)
+			void constructLayeredOrder(const GraphType &graph, vector<vector<NodeType>>& result)
 			{
 				const auto& outputNodes = graph.onodes();
 				result.push_back(outputNodes);
-				map< unsigned, unsigned> count;
 
+				// counts the processed nodes
 				size_t added = outputNodes.size();
-				//NodeVect::iterator it;
+				// the number of nodes in the graph
 				unsigned order = graph.order();
+				vector < unsigned > count (order, 0);
 				for (int level = 0; added < order; ++level) {
+					// add new layer
 					result.push_back(vector<NodeType>());
 					for (auto act : result[level])
 					{
 						const auto &predecessors = act->predecessors();
-						//for (size_t i = 0; i < predecessors.size(); ++i)
-						for (auto pre_node : predecessors)
+						for (const auto& pre_node : predecessors)
 						{
 							count[pre_node->id()]++;
 							if (pre_node->s_size() == count[pre_node->id()])
@@ -149,6 +143,7 @@ namespace msonlab {
 				dependencies[node->id()] = -1;
 			}
 
+			// creates a vector containing the number of dependencies for each node
 			template <class GraphType>
 			void createDependencyVector(const GraphType &graph, vector<int>& dependencies)
 			{

@@ -41,7 +41,7 @@ namespace msonlab
 		EdgeVect::iterator getPredecessorBegin();
 		EdgeVect::iterator getPredecessorEnd();
 		const EdgeVect& getSuccessors() const;
-		size_t getSuccessorsSize() const;
+		size_t s_size() const;
 
 		std::string getIdString() const;
 

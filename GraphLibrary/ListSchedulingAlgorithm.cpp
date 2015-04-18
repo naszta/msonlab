@@ -32,7 +32,7 @@ namespace msonlab {
 		{
 			lwgraph graph(hwgraph);
 			vector<vector<const lwnode*>> levels;
-			graph::algorithms::partialTopologicalSort<lwgraph, const lwnode*>(graph, levels);
+			graph::algorithms::constructLayeredOrder<lwgraph, const lwnode*>(graph, levels);
 
 			NodeVect hwnodes(hwgraph.order());
 			for (const auto& hwnode : hwgraph.nodes()) {

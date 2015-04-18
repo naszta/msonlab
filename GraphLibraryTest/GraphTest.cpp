@@ -27,13 +27,27 @@ namespace GraphLibraryTest
 		{
 			auto g = msonlab::graph::creator::createSample();
 			size_t expected_nodes = 9;
-			Assert::AreEqual(expected_nodes, g.order(), L"Graph has a different size.", LINE_INFO());
-			const auto& edges = g.getEdges();
+			Assert::AreEqual(expected_nodes, g.order(), L"Graph has a different order.", LINE_INFO());
 			size_t expected_edges = 8;
+			Assert::AreEqual(expected_edges, g.size(), L"Graph has a different size.", LINE_INFO());
+			const auto& edges = g.getEdges();
 			Assert::AreEqual(expected_edges, edges.size(), L"Graph has different number of edges.", LINE_INFO());
 			const auto& nodes = g.nodes();
 			Assert::AreEqual(expected_nodes, nodes.size(), L"Graph has different number of nodes.", LINE_INFO());
 			
+		}
+
+		TEST_METHOD(TestQuadrantGraph)
+		{
+			auto g = msonlab::graph::creator::createQuadrant();
+			size_t expected_nodes = 19;
+			Assert::AreEqual(expected_nodes, g.order(), L"Graph has a different order.", LINE_INFO());
+			size_t expected_edges = 23;
+			Assert::AreEqual(expected_edges, g.size(), L"Graph has a different size.", LINE_INFO());
+			const auto& edges = g.getEdges();
+			Assert::AreEqual(expected_edges, edges.size(), L"Graph has different number of edges.", LINE_INFO());
+			const auto& nodes = g.nodes();
+			Assert::AreEqual(expected_nodes, nodes.size(), L"Graph has different number of nodes.", LINE_INFO());
 		}
 
 	};
