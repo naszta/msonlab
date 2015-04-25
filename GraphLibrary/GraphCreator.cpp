@@ -244,30 +244,8 @@ namespace msonlab {
 				msonlab::EdgePtr e22(new msonlab::Edge(40, L"e22", 0, add_toDivide2, y2));
 				msonlab::EdgePtr e23(new msonlab::Edge(41, L"e23", 0, divide_1_2a, y2));
 
-				Graph graph;
-				graph.addEdge(e1);
-				graph.addEdge(e2);
-				graph.addEdge(e3);
-				graph.addEdge(e4);
-				graph.addEdge(e5);
-				graph.addEdge(e6);
-				graph.addEdge(e7);
-				graph.addEdge(e8);
-				graph.addEdge(e9);
-				graph.addEdge(e10);
-				graph.addEdge(e11);
-				graph.addEdge(e12);
-				graph.addEdge(e13);
-				graph.addEdge(e14);
-				graph.addEdge(e15);
-				graph.addEdge(e16);
-				graph.addEdge(e17);
-				graph.addEdge(e18);
-				graph.addEdge(e19);
-				graph.addEdge(e20);
-				graph.addEdge(e21);
-				graph.addEdge(e22);
-				graph.addEdge(e23);
+				Graph graph{ e1, e2, e3, e4, e5, e6, e7, e8, e9, e10, e11,
+				e12, e13, e14, e15, e16, e17, e18, e19, e20, e21, e22, e23};
 
 				return std::move(graph);
 			}
@@ -299,22 +277,11 @@ namespace msonlab {
 
 				msonlab::EdgePtr e8(new msonlab::Edge(16, L"e8", 0, cd, res));
 
-				Graph graph;
-				graph.addEdge(e1);
-				graph.addEdge(e2);
-				graph.addEdge(e3);
-				graph.addEdge(e4);
-				graph.addEdge(e5);
-				graph.addEdge(e6);
-				graph.addEdge(e7);
-				graph.addEdge(e8);
-
+				Graph graph{e1, e2, e3, e4, e5, e6, e7, e8};
 				return std::move(graph);
 			}
 
 			Graph createTest() {
-				Graph graph;
-
 				NodePtr node0 = make_shared<NodeConstant>(0, L"0", make_shared<types::DataType>(5));
 				NodePtr node1 = make_shared<NodeConstant>(1, L"1", make_shared<types::DataType>(2));
 				NodePtr node2 = make_shared<NodeAdd>(2, L"2", make_shared<types::DataType>(3));
@@ -342,22 +309,8 @@ namespace msonlab {
 				EdgePtr edge15 = make_shared<Edge>(24, L"e89", nullptr, node2, node8);
 				EdgePtr edge16 = make_shared<Edge>(25, L"e07", nullptr, node0, node7);
 
-				graph.addEdge(edge1);
-				graph.addEdge(edge2);
-				graph.addEdge(edge3);
-				graph.addEdge(edge4);
-				graph.addEdge(edge5);
-				graph.addEdge(edge6);
-				graph.addEdge(edge7);
-				graph.addEdge(edge8);
-				graph.addEdge(edge9);
-				graph.addEdge(edge10);
-				graph.addEdge(edge11);
-				graph.addEdge(edge12);
-				graph.addEdge(edge13);
-				graph.addEdge(edge14);
-				graph.addEdge(edge15);
-				graph.addEdge(edge16);
+				Graph graph{ edge1, edge2, edge3, edge4, edge5, edge6, edge7, edge8,
+					edge9, edge10, edge11, edge12, edge13, edge14, edge15, edge16 };
 				return std::move(graph);
 			}
 
@@ -392,23 +345,7 @@ namespace msonlab {
 				EdgePtr ci = make_shared<Edge>(21, L"CI", edge_value, nodeC, nodeI);
 				EdgePtr cj = make_shared<Edge>(22, L"CJ", edge_value, nodeC, nodeJ);
 
-				Graph graph;
-				graph.addEdge(gh);
-				graph.addEdge(dg);
-				graph.addEdge(eg);
-				graph.addEdge(fg);
-				graph.addEdge(ad);
-				graph.addEdge(ae);
-				graph.addEdge(af);
-				graph.addEdge(be);
-				graph.addEdge(bf);
-				graph.addEdge(bi);
-				graph.addEdge(bj);
-				graph.addEdge(ce);
-				graph.addEdge(cf);
-				graph.addEdge(ci);
-				graph.addEdge(cj);
-
+				Graph graph{gh, dg, eg, fg, ad, ae, af, be, bf, bi, bj, ce, cf, ci, cj};
 				return std::move(graph);
 			}
 		}

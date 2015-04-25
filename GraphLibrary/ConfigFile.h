@@ -6,6 +6,8 @@
 #include <sstream>
 #include <map>
 #include <fstream>
+#include <exception>
+#include <stdexcept>
 
 namespace msonlab 
 {
@@ -53,9 +55,7 @@ namespace msonlab
 
 		void printConfigFormatError(const std::string &error) 
 		{
-			std::cout << error;
-			std::cin.ignore();
-			std::cin.get();
+			throw std::invalid_argument(error);
 		}
 
 		void removeComment(std::string &line) const

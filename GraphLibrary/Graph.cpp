@@ -4,6 +4,8 @@
 #include "DFSIterator.h"
 #include "NodeTest.h"
 
+#include <stdexcept>
+
 namespace msonlab
 {
 
@@ -23,9 +25,31 @@ namespace msonlab
 		swap(iteratorEnd, other.iteratorEnd);
 	}
 
+	Graph::Graph(std::initializer_list<EdgePtr> edges_)
+		: iteratorEnd(std::make_shared<NodeTest>(0, L"0", nullptr, 0))
+	{
+		for (const auto& edge : edges_)
+			this->addEdge(edge);
+	}
+
 	bool Graph::addNode(NodePtr toAdd)
 	{
-		msonlab::NodeVect::iterator it;
+		auto id = toAdd->id();
+		ensureSize(id);
+		
+		if (_nodes[id] == toAdd) {
+			return false;
+		}
+
+		if (_nodes[id] != nullptr) {
+			throw std::invalid_argument("id already exists in graph");
+		}
+
+		_nodes[id] = toAdd;
+
+		return true;
+
+		/*msonlab::NodeVect::iterator it;
 		it = std::find(_nodes.begin(), _nodes.end(), toAdd);
 
 		if (it != _nodes.end())
@@ -39,7 +63,7 @@ namespace msonlab
 		{
 			throw Exceptions::FailedToAddNodeException("Failed to add the node to the graph!");
 			return false;
-		}
+		}*/
 	}
 
 	bool Graph::addEdge(EdgePtr toAdd)
@@ -66,7 +90,6 @@ namespace msonlab
 		else
 		{
 			throw Exceptions::FailedToAddEdgeException("Failed to add the edge to the graph!");
-			return false;
 		}
 	}
 
@@ -152,5 +175,11 @@ namespace msonlab
 
 	DFSIterator Graph::dfs_iterator::end() const{
 		return DFSIterator(graph.iteratorEnd);
+	}
+
+	void Graph::ensureSize(size_t size) {
+		if (_nodes.size() < size + 1) {
+			_nodes.resize(size + 1);
+		}
 	}
 }

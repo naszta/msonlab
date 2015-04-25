@@ -34,6 +34,10 @@ namespace GraphLibraryTest
 			Assert::AreEqual(expected_edges, edges.size(), L"Graph has different number of edges.", LINE_INFO());
 			const auto& nodes = g.nodes();
 			Assert::AreEqual(expected_nodes, nodes.size(), L"Graph has different number of nodes.", LINE_INFO());
+			unsigned id = 0;
+			for (const auto& node : nodes) {
+				Assert::AreEqual(id++, node->id(), L"Node order is not by id.", LINE_INFO());
+			}
 			
 		}
 
@@ -48,6 +52,15 @@ namespace GraphLibraryTest
 			Assert::AreEqual(expected_edges, edges.size(), L"Graph has different number of edges.", LINE_INFO());
 			const auto& nodes = g.nodes();
 			Assert::AreEqual(expected_nodes, nodes.size(), L"Graph has different number of nodes.", LINE_INFO());
+			unsigned id = 0;
+			for (const auto& node : nodes) {
+				Assert::AreEqual(id++, node->id(), L"Node order is not by id.", LINE_INFO());
+			}
+		}
+
+		TEST_METHOD(TestRandomGraph)
+		{
+
 		}
 
 	};

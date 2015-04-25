@@ -26,11 +26,17 @@ namespace msonlab
 		friend class BFSIterator;
 		friend class DFSIterator;
 
+		void ensureSize(size_t size);
+
 	public:
-		Graph(); // empty constructor
+		// constructs an empty graph
+		Graph();
+		// constructs a graph from the list of edges.
+		Graph(std::initializer_list<EdgePtr> edges_);
 		Graph(const Graph& other) = delete; // copy constructor
 		Graph(Graph&& other);
 		Graph& operator=(const Graph& other) = delete; // assignment operator
+		Graph& operator=(const Graph&& other);
 
 		bool addNode(NodePtr toAdd); // adds a node to the graph
 		bool addEdge(EdgePtr toAdd); // adds an edge to the graph
@@ -62,6 +68,7 @@ namespace msonlab
 			dfs_iterator& operator=(const dfs_iterator&) = delete;
 			DFSIterator begin() const;
 			DFSIterator end() const;
+
 		private:
 			const Graph& graph;
 		};
@@ -74,5 +81,4 @@ namespace msonlab
 			return dfs_iterator(*this);
 		}
 	};
-
 }

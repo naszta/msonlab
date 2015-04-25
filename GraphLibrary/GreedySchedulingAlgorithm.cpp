@@ -14,6 +14,10 @@ namespace msonlab {
 
 		SchedulingResultPtr<const NodePtr> GreedySchedulingAlgorithm::schedule(const Graph &graph, const Options &options) const
 		{
+			if (graph.order() == 0) {
+				return std::make_shared<SchedulingResult<const NodePtr>>(vector < unsigned > {}, vector < const NodePtr > {}, 0);
+			}
+
 			lwgraph lwg(graph);
 			const auto &nodes = lwg.nodes();
 
@@ -27,7 +31,9 @@ namespace msonlab {
 			auto tasks = graph.order();
 
 			// counts the available inputs of the nodess
-			std::map< unsigned, int> count;
+			//std::map< unsigned, int> count;
+			vector<int> count(graph.order());
+			vector<unsigned> FT(options.getNumberOfPus(), 0);
 
 			// list of input nodes
 			const auto &inputNodes = lwg.inodes();
@@ -37,24 +43,19 @@ namespace msonlab {
 			
 			vector<unsigned> mapping(tasks);
 			NodeVect scheduling(tasks);
-
+			// todo rewrite this
 			while (taskCounter < lwg.order())
 			{
-				//vector< NodePtr > scheduled_nodes;
 				vector<unsigned> scheduled_node_ids;
-				int limit = options.getNumberOfPus();
-				while (!free.empty() && limit > 0)
-				{
-					auto node_id = free.front();
-					mapping[taskCounter] = limit - 1;
-					scheduling[taskCounter] = hwnodes[node_id];
-
-					scheduled_node_ids.push_back(node_id);
-					free.pop();
-					--limit;
-					taskCounter++;
-				}
-				++timeCounter;
+				auto min_PU_it = std::min_element(FT.begin(), FT.end());
+				auto min_PU_id = min_PU_it - FT.begin();
+				auto node_id = free.front();
+				mapping[taskCounter] = min_PU_id;
+				scheduling[taskCounter] = hwnodes[node_id];
+				FT[min_PU_id] += hwnodes[node_id]->cptime();
+				scheduled_node_ids.push_back(node_id);
+				free.pop();
+				taskCounter++;
 
 				// if all the nodes are scheduled, stop the algo
 				if (taskCounter == graph.order())
@@ -63,20 +64,15 @@ namespace msonlab {
 				}
 
 				// udpate the free queue
-				//for (size_t i = 0; i < scheduled_nodes.size(); ++i)
-				for (auto scheduled_node_id : scheduled_node_ids)
+				const auto& node = nodes[node_id];
+				// iterate over the successors
+				for (size_t i = 0; i < node.s_size(); ++i)
 				{
-					const auto& node = nodes[scheduled_node_id];
-
-					// iterate over the successors
-					for (size_t i = 0; i < node.s_size(); ++i)
+					const auto suc_node = node.get_successor(i);
+					auto processed_successors = ++count[suc_node->id()];
+					if (suc_node->p_size() == processed_successors)
 					{
-						const auto suc_node = node.get_successor(i);
-						auto processed_successors = ++count[suc_node->id()];
-						if (suc_node->p_size() == processed_successors)
-						{
-							free.push(suc_node->id());
-						}
+						free.push(suc_node->id());
 					}
 				}
 			}

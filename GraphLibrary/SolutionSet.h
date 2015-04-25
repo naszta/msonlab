@@ -60,7 +60,7 @@ namespace msonlab {
 			// The vector of the solutions
 			vector<SchedulingResultPtr<const lw::lwnode*>> solution;
 			// Orders the enqueued solutions by the fitnesses
-			std::priority_queue<SchedulingResultPtr<const NodePtr>, vector<SchedulingResultPtr<const lw::lwnode*>>, SchedulingResultComparator> newGeneration;
+			std::priority_queue<SchedulingResultPtr<const lw::lwnode*>, vector<SchedulingResultPtr<const lw::lwnode*>>, SchedulingResultComparator> newGeneration;
 			const size_t POPMAXSIZE;
 			const size_t KEEP;
 			const size_t KEEPBEST;

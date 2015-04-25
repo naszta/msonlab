@@ -34,6 +34,7 @@ namespace msonlab
 
 	class IProcessable
 	{
+		friend class Graph;
 	protected:
 		unsigned int _id;
 		types::LabelType label;

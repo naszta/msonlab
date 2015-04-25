@@ -25,14 +25,14 @@ namespace msonlab {
 			}
 
 			// the cost is simply the computation time.
-			std::transform(begin(graph.nodes()), end(graph.nodes()), costs.begin(), [](const lwnode &node) { return node.cptime(); });
+			std::transform(begin(graph.nodes()), end(graph.nodes()), begin(costs), [](const lwnode &node) { return node.cptime(); });
 		}
 
 		SchedulingResultPtr<const NodePtr> ListSchedulingAlgorithm::schedule(const Graph &hwgraph, const Options &options) const
 		{
 			lwgraph graph(hwgraph);
 			vector<vector<const lwnode*>> levels;
-			graph::algorithms::constructLayeredOrder<lwgraph, const lwnode*>(graph, levels);
+			graph::algorithms::constructLayeredOrder(graph, levels);
 
 			NodeVect hwnodes(hwgraph.order());
 			for (const auto& hwnode : hwgraph.nodes()) {
@@ -48,7 +48,7 @@ namespace msonlab {
 
 			// counts the number of dependencies of each graph
 			vector<int> dependencies(tasks);
-			graph::algorithms::createDependencyVector<lw::lwgraph>(graph, dependencies);
+			graph::algorithms::createDependencyVector(graph, dependencies);
 
 			int comm = options.getCommOverhead();
 			vector<unsigned> mapping(tasks);
@@ -62,11 +62,11 @@ namespace msonlab {
 			int next = 0; // next scheduled node
 			for (unsigned i = 0; i < tasks; ++i) {
 				next = this->findNextToSchedule(dependencies, costs);
-				const lw::lwnode* actNode = &graph.nodes()[next];
+				const lw::lwnode& actNode = graph.nodes()[next];
 
 				// calculating data arrival time
-				size_t predecessorSize = actNode->p_size();
-				for (const auto& predecessor : actNode->predecessors())
+				size_t predecessorSize = actNode.p_size();
+				for (const auto& predecessor : actNode.predecessors())
 				{
 					unsigned id = predecessor->id();
 					for (unsigned actPU = 0; actPU < options.getNumberOfPus(); ++actPU) {
@@ -81,13 +81,13 @@ namespace msonlab {
 
 				int pu = std::distance(begin(DAT), std::min_element(begin(DAT), end(DAT)));
 				ST[next] = DAT[pu];
-				FT[next] = ST[next] + actNode->cptime();
+				FT[next] = ST[next] + actNode.cptime();
 				RT[pu] = FT[next];
 				idPuMapping[next] = pu;
 				mapping[i] = pu;
-				scheduling[i] = hwnodes[actNode->id()];
+				scheduling[i] = hwnodes[actNode.id()];
 
-				graph::algorithms::computeNextFreeNodes<const lw::lwnode*>(dependencies, actNode);
+				graph::algorithms::computeNextFreeNodes<const lw::lwnode*>(dependencies, &actNode);
 			}
 
 			auto a = SchedulingResult < const NodePtr >(std::move(mapping), std::move(scheduling), 0);
