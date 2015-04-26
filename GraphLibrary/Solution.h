@@ -1,7 +1,7 @@
 #pragma once	
 
 #include "Options.h"
-#include "lwnode.h"
+#include "litenode.h"
 #include <ostream>
 #include <vector>
 #include <memory>
@@ -19,7 +19,7 @@ namespace msonlab {
 		{
 		private:
 			// the scheduling part, escribes the order of the tasks
-			vector<const lw::lwnode*> _scheduling;
+			vector<const lite::litenode*> _scheduling;
 
 			// the mapping part, maps the task to PUs.
 			vector<unsigned> _mapping;
@@ -67,7 +67,7 @@ namespace msonlab {
 			}
 			
 			const vector<unsigned>& mapping() const { return _mapping; }
-			const vector<const lw::lwnode*>& scheduling() const { return _scheduling; }
+			const vector<const lite::litenode*>& scheduling() const { return _scheduling; }
 			// number of scheduled nodes
 			size_t size() const { return _scheduling.size(); }
 

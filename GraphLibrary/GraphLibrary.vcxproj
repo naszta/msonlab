@@ -106,8 +106,8 @@
     <ClCompile Include="ListSchedulingAlgorithm.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="lwnode.cpp" />
-    <ClCompile Include="lwgraph.cpp" />
+    <ClCompile Include="litenode.cpp" />
+    <ClCompile Include="litegraph.cpp" />
     <ClCompile Include="NodeTest.cpp" />
     <ClCompile Include="SchedulingAlgorithm.cpp" />
     <ClCompile Include="SchedulingAlgorithmBuilder.cpp" />
@@ -163,8 +163,8 @@
     <ClInclude Include="ListSchedulingAlgorithm.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
     </ClInclude>
-    <ClInclude Include="lwgraph.h" />
-    <ClInclude Include="lwnode.h" />
+    <ClInclude Include="litegraph.h" />
+    <ClInclude Include="litenode.h" />
     <ClInclude Include="NodeTest.h" />
     <ClInclude Include="SchedulingAlgorithmBuilder.h" />
     <ClInclude Include="SchedulingHelper.h" />

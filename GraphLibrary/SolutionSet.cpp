@@ -8,17 +8,17 @@
 
 namespace msonlab {
 	namespace scheduling {
-		bool solutionCompare(SchedulingResultPtr<const lw::lwnode*> a, SchedulingResultPtr<const lw::lwnode*> b)
+		bool solutionCompare(SchedulingResultPtr<const lite::litenode*> a, SchedulingResultPtr<const lite::litenode*> b)
 		{
 			return a->fitness() > b->fitness();
 		}
 
 		SolutionSet::SolutionSet(size_t keepSize, size_t popMaxSize, size_t keepBest) : 
-			solution(vector<SchedulingResultPtr<const lw::lwnode*>>(keepSize)), POPMAXSIZE(popMaxSize), KEEP(keepSize), KEEPBEST(keepBest)
+			solution(vector<SchedulingResultPtr<const lite::litenode*>>(keepSize)), POPMAXSIZE(popMaxSize), KEEP(keepSize), KEEPBEST(keepBest)
 		{
 		}
 
-		SolutionSet::SolutionSet(const vector<SchedulingResultPtr<const lw::lwnode*>>& sol, size_t keepSize, size_t popMaxSize, size_t keepBest) : solution(sol), POPMAXSIZE(popMaxSize), KEEP(keepSize), KEEPBEST(keepBest)
+		SolutionSet::SolutionSet(const vector<SchedulingResultPtr<const lite::litenode*>>& sol, size_t keepSize, size_t popMaxSize, size_t keepBest) : solution(sol), POPMAXSIZE(popMaxSize), KEEP(keepSize), KEEPBEST(keepBest)
 		{
 			this->solution.resize(KEEP);
 		}
@@ -37,7 +37,7 @@ namespace msonlab {
 		//}
 
 		// adds a new offspring to the population
-		void SolutionSet::addOffspring(SchedulingResultPtr<const lw::lwnode*> offspring)
+		void SolutionSet::addOffspring(SchedulingResultPtr<const lite::litenode*> offspring)
 		{
 			this->newGeneration.push(offspring);
 		}
@@ -68,13 +68,13 @@ namespace msonlab {
 		}
 
 		// Gets a random solution from the set
-		SchedulingResultPtr<const lw::lwnode*> SolutionSet::getParent() const
+		SchedulingResultPtr<const lite::litenode*> SolutionSet::getParent() const
 		{
 			return this->solution[rand() % solution.size()];
 		}
 
 		// Gets the best solution from the population
-		SchedulingResultPtr<const lw::lwnode*> SolutionSet::best() const
+		SchedulingResultPtr<const lite::litenode*> SolutionSet::best() const
 		{
 			return solution[0];
 		}

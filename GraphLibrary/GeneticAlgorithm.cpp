@@ -1,8 +1,8 @@
 #include "GeneticAlgorithm.h"
 #include "Algorithms.h"
 #include "CriticalPathSchedulingAlgorithm.h"
-#include "lwgraph.h"
-#include "lwnode.h"
+#include "litegraph.h"
+#include "litenode.h"
 #include <cstdlib>
 #include <ctime>
 #include <set>
@@ -43,7 +43,7 @@ namespace msonlab {
 		///
 		/// @param The input graph.
 		/// @return The constructed solution.
-		SchedulingResultPtr<const lw::lwnode*> GeneticAlgorithm::greedySolution(const lw::lwgraph &graph) const
+		SchedulingResultPtr<const lite::litenode*> GeneticAlgorithm::greedySolution(const lite::litegraph &graph) const
 		{
 			auto &nodes = graph.nodes();
 			unsigned timeCounter = 0;
@@ -54,7 +54,7 @@ namespace msonlab {
 			std::queue < unsigned > free(std::deque< unsigned >(inputNodes.begin(), inputNodes.end()));
 
 			vector<unsigned> mapping(graphSize);
-			vector<const lw::lwnode*> scheduling(graphSize);
+			vector<const lite::litenode*> scheduling(graphSize);
 
 			while (taskCounter < graphSize)
 			{
@@ -94,7 +94,7 @@ namespace msonlab {
 				}
 			}
 			
-			auto result = std::make_shared<SchedulingResult<const lw::lwnode*>>(mapping, scheduling);
+			auto result = std::make_shared<SchedulingResult<const lite::litenode*>>(mapping, scheduling);
 			fitness(result);
 			return result;
 		}
@@ -108,8 +108,8 @@ namespace msonlab {
 		SchedulingResultPtr<const NodePtr> GeneticAlgorithm::schedule(const Graph &graph, const Options &options) const
 		{
 			// the light weight graph
-			lw::lwgraph lwg(graph);
-			SolutionSetPtr set = this->generateInitialSolution(lwg, options);
+			lite::litegraph liteg(graph);
+			SolutionSetPtr set = this->generateInitialSolution(liteg, options);
 			set->limit();
 
 			bool doOrderCrossover = options.getFitnessStrategy().compare("reschedule") != 0;
@@ -129,10 +129,10 @@ namespace msonlab {
 			vector<const NodePtr> scheduling{ best->size() };
 			const auto& hwnodes = graph.getNodes();
 			unsigned position = 0;
-			for (const auto& lwnode : best->scheduling()){
+			for (const auto& litenode : best->scheduling()){
 				// linear search
 				for (const auto& hwnode : hwnodes) {
-					if (hwnode->id() == lwnode->id()) {
+					if (hwnode->id() == litenode->id()) {
 						scheduling[position] = hwnode;
 						++position;
 						break;
@@ -143,12 +143,12 @@ namespace msonlab {
 			return std::make_shared<SchedulingResult<const NodePtr>>(best->mapping(), scheduling, best->fitness());
 		}
 
-		SolutionSetPtr GeneticAlgorithm::generateInitialSolution(const lw::lwgraph &graph, const Options &options) const
+		SolutionSetPtr GeneticAlgorithm::generateInitialSolution(const lite::litegraph &graph, const Options &options) const
 		{
 			SolutionSetPtr p;
 			if (options.getInitialSolution().compare("cp") == 0) {
-				vector<vector<const lw::lwnode*>> levels;
-				graph::algorithms::constructLayeredOrder<lw::lwgraph, const lw::lwnode*>(graph, levels);
+				vector<vector<const lite::litenode*>> levels;
+				graph::algorithms::constructLayeredOrder<lite::litegraph, const lite::litenode*>(graph, levels);
 				size_t numLevels = levels.size();
 				vector<unsigned> levelingLimits;
 				unsigned limits = 0;
@@ -175,10 +175,10 @@ namespace msonlab {
 		/// 
 		/// @param graph The input graph.
 		/// @return The generated population.
-		SolutionSetPtr GeneticAlgorithm::generateRndSolution(const lw::lwgraph &graph, const Options &options) const
+		SolutionSetPtr GeneticAlgorithm::generateRndSolution(const lite::litegraph &graph, const Options &options) const
 		{
-			vector<vector<const lw::lwnode*>> levels;
-			graph::algorithms::constructLayeredOrder<lw::lwgraph, const lw::lwnode*>(graph, levels);
+			vector<vector<const lite::litenode*>> levels;
+			graph::algorithms::constructLayeredOrder<lite::litegraph, const lite::litenode*>(graph, levels);
 			size_t numLevels = levels.size();
 			vector<unsigned> levelingLimits;
 
@@ -189,7 +189,7 @@ namespace msonlab {
 			auto greedy_solution = this->greedySolution(graph);
 
 			// create first solution
-			auto result = std::make_shared<SchedulingResult<const lw::lwnode*>>(options.getNumberOfPus(), graph.order());
+			auto result = std::make_shared<SchedulingResult<const lite::litenode*>>(options.getNumberOfPus(), graph.order());
 			size_t currentLevelSize = 0;
 			// counter of the task in the mapping
 			unsigned counter = 0;
@@ -220,7 +220,7 @@ namespace msonlab {
 			const size_t num_nodes = graph.order();
 			for (; counter > 0; --counter)
 			{
-				auto sol = std::make_shared<SchedulingResult<const lw::lwnode*>>(options.getNumberOfPus(), graph.order());
+				auto sol = std::make_shared<SchedulingResult<const lite::litenode*>>(options.getNumberOfPus(), graph.order());
 				for (unsigned int i = 0; i < num_nodes; ++i)
 				{
 					// accessing private member
@@ -243,7 +243,7 @@ namespace msonlab {
 		}
 
 		// Generate the solution using the scheduling created by the CP scheduler
-		SolutionSetPtr GeneticAlgorithm::generateCPSolution(const lw::lwgraph &graph, const Options &options) const {
+		SolutionSetPtr GeneticAlgorithm::generateCPSolution(const lite::litegraph &graph, const Options &options) const {
 			// TODO: refactor this method
 			//cVect solution;
 			//auto set = std::make_shared<SolutionSet>(options.getKeepSize(), options.getPopMaxSize(), options.getKeepBest());
@@ -275,7 +275,7 @@ namespace msonlab {
 		// This is not thread safe.
 		/// @param solution which's fitness is calculated.
 		/// @return The fitness of the solution.
-		unsigned int GeneticAlgorithm::fitness(SchedulingResultPtr<const lw::lwnode*> solution) const
+		unsigned int GeneticAlgorithm::fitness(SchedulingResultPtr<const lite::litenode*> solution) const
 		{
 			// fitness is zero if it has never been calculated before.
 			if (solution->fitness() > 0) {
@@ -292,9 +292,9 @@ namespace msonlab {
 		/// @param father One parent of the offspring.
 		/// @param mother Another parent of the offspring.
 		/// @return the offspring.
-		SchedulingResultPtr<const lw::lwnode*> GeneticAlgorithm::crossoverMap(SchedulingResultPtr<const lw::lwnode*> father, SchedulingResultPtr<const lw::lwnode*> mother) const
+		SchedulingResultPtr<const lite::litenode*> GeneticAlgorithm::crossoverMap(SchedulingResultPtr<const lite::litenode*> father, SchedulingResultPtr<const lite::litenode*> mother) const
 		{
-			auto offspring = std::make_shared<SchedulingResult<const lw::lwnode*>>(*father);
+			auto offspring = std::make_shared<SchedulingResult<const lite::litenode*>>(*father);
 			uint crossoverPoint = rand() % father->_mapping.size();
 			std::copy(mother->_mapping.begin() + crossoverPoint, mother->_mapping.end(), offspring->_mapping.begin() + crossoverPoint);
 
@@ -307,9 +307,9 @@ namespace msonlab {
 		/// @param father One parent of the offspring.
 		/// @param mother Another parent of the offspring.
 		/// @return the offspring.
-		SchedulingResultPtr<const lw::lwnode*> GeneticAlgorithm::crossoverOrder(SchedulingResultPtr<const lw::lwnode*> father, SchedulingResultPtr<const lw::lwnode*> mother, const vector<unsigned>& levelingLimits) const
+		SchedulingResultPtr<const lite::litenode*> GeneticAlgorithm::crossoverOrder(SchedulingResultPtr<const lite::litenode*> father, SchedulingResultPtr<const lite::litenode*> mother, const vector<unsigned>& levelingLimits) const
 		{
-			auto offspring = std::make_shared<SchedulingResult<const lw::lwnode*>>(*father);
+			auto offspring = std::make_shared<SchedulingResult<const lite::litenode*>>(*father);
 			uint crossoverPoint = rand() % levelingLimits.size();
 
 			std::copy(mother->_scheduling.begin() + levelingLimits[crossoverPoint], mother->_scheduling.end(), offspring->_scheduling.begin() + levelingLimits[crossoverPoint]);
@@ -325,7 +325,7 @@ namespace msonlab {
 		/// and the number of mutation points are [MutationRate].
 		///
 		/// @param offspring solution to mutate
-		void GeneticAlgorithm::mutateMapping(SchedulingResultPtr<const lw::lwnode*> offspring) const
+		void GeneticAlgorithm::mutateMapping(SchedulingResultPtr<const lite::litenode*> offspring) const
 		{
 			int position = rand() % offspring->_mapping.size();
 			int mutation = rand() % (offspring->pus() - 1) + 1; // to ensure the mapping changes
@@ -342,7 +342,7 @@ namespace msonlab {
 		/// In case of a mutation a level is choosen and shuffled.
 		///
 		/// @param offspring The solution to mutate.
-		void GeneticAlgorithm::mutateSheduling(SchedulingResultPtr<const lw::lwnode*> offspring, const vector<unsigned>& levelingLimits) const
+		void GeneticAlgorithm::mutateSheduling(SchedulingResultPtr<const lite::litenode*> offspring, const vector<unsigned>& levelingLimits) const
 		{
 			size_t position = rand() % levelingLimits.size();
 			auto begin = offspring->_scheduling.begin() + levelingLimits[position];
@@ -366,7 +366,7 @@ namespace msonlab {
 				auto father = set->getParent();
 				auto mother = set->getParent();
 				int crossoverType = rand() % 2;
-				SchedulingResultPtr<const lw::lwnode*> offspring = nullptr;
+				SchedulingResultPtr<const lite::litenode*> offspring = nullptr;
 				if (crossoverType == 0 || !doOrderCrossover) {
 					offspring = crossoverMap(father, mother);
 				}
@@ -400,11 +400,11 @@ namespace msonlab {
 		// parallel task to calculate the fitness of one solution
 		// TODO Change SolutionPtr to SchedulingResultPtr
 		class fitness_calculator : public tbb::task {
-			const SchedulingResultPtr<const lw::lwnode*> solution;
+			const SchedulingResultPtr<const lite::litenode*> solution;
 			const FitnessStrategy &strategy;
 			const OptionsPtr options;
 		public:
-			fitness_calculator(const SchedulingResultPtr<const lw::lwnode*> sol, const FitnessStrategy &strat, const OptionsPtr opt)
+			fitness_calculator(const SchedulingResultPtr<const lite::litenode*> sol, const FitnessStrategy &strat, const OptionsPtr opt)
 				: solution(sol), strategy(strat), options(opt) {}
 
 			tbb::task* execute() {
@@ -429,14 +429,14 @@ namespace msonlab {
 			tbb::task* execute() {
 				// the total number of tasks created
 				set_ref_count(offsprings + 1);
-				vector<SchedulingResultPtr<const lw::lwnode*>> new_solutions;
+				vector<SchedulingResultPtr<const lite::litenode*>> new_solutions;
 				for (; offsprings > 0; --offsprings)
 				{
 					auto father = set->getParent();
 					auto mother = set->getParent();
 					int crossoverType = rand() % 2;
-					SchedulingResultPtr<const lw::lwnode*> offspring = nullptr;
-					// always mapping crossover, if order is not allowed
+					SchedulingResultPtr<const lite::litenode*> offspring = nullptr;
+					// aliteays mapping crossover, if order is not allowed
 					if (crossoverType == 0 || !doOrderCrossover) {
 						offspring = alg.crossoverMap(father, mother);
 					}
@@ -506,7 +506,7 @@ namespace msonlab {
 
 		// EXPERIMENTAL
 
-		void GeneticAlgorithm::swapMutateScheduling(SchedulingResultPtr<const lw::lwnode*> offspring) const
+		void GeneticAlgorithm::swapMutateScheduling(SchedulingResultPtr<const lite::litenode*> offspring) const
 		{
 			unsigned rate = rand() % 100;
 			if (rate < options->getScheduleMutationRate())

@@ -126,7 +126,7 @@ namespace msonlab {
 				unsigned commOverhead = options.getCommOverhead();
 				// const vector references
 				const vector<unsigned>& mapping = solution.mapping();
-				const vector<const lw::lwnode*>& scheduling = solution.scheduling();
+				const vector<const lite::litenode*>& scheduling = solution.scheduling();
 				auto tasks = scheduling.size();
 				vector<uint> ST(tasks); // start time of the tasks
 				vector<uint> FT(tasks); // finish time of the tasks
@@ -162,7 +162,7 @@ namespace msonlab {
 					idPuMapping[actId] = actPU;
 
 					// calculating data arrival time
-					const vector<const lw::lwnode*>& preds = actNode->predecessors();
+					const vector<const lite::litenode*>& preds = actNode->predecessors();
 					for (auto n : preds)
 					{
 						uint id = n->id();
@@ -244,7 +244,7 @@ namespace msonlab {
 				uint length = *std::max_element(FT.begin(), FT.end());
 
 				// collecting the nodes
-				vector<const lw::lwnode*> nodes(tasks);
+				vector<const lite::litenode*> nodes(tasks);
 				vector<pair<unsigned, unsigned>> STS;
 				for (size_t i = 0; i < tasks; ++i)
 				{

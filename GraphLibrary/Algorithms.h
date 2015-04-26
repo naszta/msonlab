@@ -4,7 +4,7 @@
 
 
 #include "Graph.h"
-#include "lwgraph.h"
+#include "litegraph.h"
 #include <vector>
 
 namespace msonlab {
@@ -151,7 +151,7 @@ namespace msonlab {
 					dependencies.resize(graph.order());
 				}
 
-				for (auto node : graph.nodes()) {
+				for (const auto& node : graph.nodes()) {
 					dependencies[node.id()] = static_cast<int>(node.p_size());
 				}
 			}

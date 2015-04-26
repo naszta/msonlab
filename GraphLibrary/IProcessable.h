@@ -15,12 +15,12 @@ namespace msonlab
 	class Node;
 	class Edge;
 	class IProcessable;
-	namespace lw {
-		class lwnode;
+	namespace lite {
+		class litenode;
 	}
 	
-	typedef const lw::lwnode* LWNodePtr;
-	typedef vector<const lw::lwnode*> LWNodeVect;
+	typedef const lite::litenode* LWNodePtr;
+	typedef vector<const lite::litenode*> LWNodeVect;
 
 	typedef std::shared_ptr<IProcessable> IProcessablePtr;
 	typedef vector<std::shared_ptr<IProcessable>> IProcessableVect;

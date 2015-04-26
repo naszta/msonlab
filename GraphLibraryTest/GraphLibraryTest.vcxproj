@@ -98,6 +98,7 @@
     <ClCompile Include="AlgorithmsTest.cpp" />
     <ClCompile Include="GraphIteratorTest.cpp" />
     <ClCompile Include="GreedySchedulingAlgorithmTest.cpp" />
+    <ClCompile Include="ListSchedulingAlgorithmTest.cpp" />
     <ClCompile Include="OptionsTest.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

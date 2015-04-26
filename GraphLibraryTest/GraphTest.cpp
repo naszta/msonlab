@@ -60,8 +60,14 @@ namespace GraphLibraryTest
 
 		TEST_METHOD(TestRandomGraph)
 		{
-
+			size_t expected_nodes = 42;
+			auto g = msonlab::graph::creator::createRandom(expected_nodes, 35, 8, 2);
+			const auto& nodes = g.nodes();
+			Assert::AreEqual(expected_nodes, nodes.size(), L"Graph has different number of nodes.", LINE_INFO());
+			unsigned id = 0;
+			for (const auto& node : nodes) {
+				Assert::AreEqual(id++, node->id(), L"Node order is not by id.", LINE_INFO());
+			}
 		}
-
 	};
 }

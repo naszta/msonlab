@@ -5,54 +5,52 @@
 #include <algorithm>
 #include <vector>
 
-namespace msonlab {
-	namespace scheduling {
+namespace msonlab { namespace scheduling {
 
-		using std::shared_ptr;
-		using namespace msonlab;
+	using std::shared_ptr;
+	using namespace msonlab;
 
-		//virtual constructor
-		SchedulingAlgorithmPtr CriticalPathSchedulingAlgorithm::build(OptionsPtr opt) const
+	//virtual constructor
+	SchedulingAlgorithmPtr CriticalPathSchedulingAlgorithm::build(OptionsPtr opt) const
+	{
+		if (opt->getAlgorithm().compare("criticalPath") == 0)
 		{
-			if (opt->getAlgorithm().compare("criticalPath") == 0)
-			{
-				return std::move(std::make_unique<CriticalPathSchedulingAlgorithm>());
-			}
-
-			return nullptr;
+			return std::move(std::make_unique<CriticalPathSchedulingAlgorithm>());
 		}
 
-		void CriticalPathSchedulingAlgorithm::determineCosts(const lw::lwgraph &graph, vector<unsigned>& costs) const 
-		{
-			if (costs.size() != graph.order()) {
-				costs.resize(graph.order());
-			}
+		return nullptr;
+	}
+
+	void CriticalPathSchedulingAlgorithm::determineCosts(const lite::litegraph &graph, vector<unsigned>& costs) const 
+	{
+		if (costs.size() != graph.order()) {
+			costs.resize(graph.order());
+		}
 			
-			vector<vector<const lw::lwnode*>> levels;
-			graph::algorithms::constructLayeredOrder<lw::lwgraph, const lw::lwnode*>(graph, levels);
+		vector<vector<const lite::litenode*>> layers;
+		graph::algorithms::constructLayeredOrder<lite::litegraph, const lite::litenode*>(graph, layers);
 
-			// finding the max time needed to compute (distance)
-			// O(|V| + |E|)
+		// finding the max time needed to compute (distance)
+		// O(|V| + |E|)
 
-			for (auto node : levels[0])
+		for (const auto& node : layers[0])
+		{
+			costs[node->id()] = node->cptime();
+		}
+
+		for (size_t i = 1; i < layers.size(); ++i)
+		{
+			for (const auto& node : layers[i])
 			{
-				costs[node->id()] = node->cptime();
-			}
-
-			for (size_t i = 1; i < levels.size(); ++i)
-			{
-				for (auto node : levels[i])
-				{
-					unsigned max = 0;
-					for (auto successor : node->successors()) {
-						if (costs[successor->id()] > max) {
-							max = costs[successor->id()];
-						}
+				unsigned max = 0;
+				for (const auto& successor : node->successors()) {
+					if (costs[successor->id()] > max) {
+						max = costs[successor->id()];
 					}
-
-					costs[node->id()] = i + max + node->cptime();
 				}
+
+				costs[node->id()] = i + max + node->cptime();
 			}
 		}
 	}
-}
+}}

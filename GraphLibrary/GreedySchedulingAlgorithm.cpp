@@ -1,5 +1,5 @@
 #include "GreedySchedulingAlgorithm.h"
-#include "lwgraph.h"
+#include "litegraph.h"
 #include "SchedulingHelper.h"
 #include <map>
 #include <queue>
@@ -8,7 +8,7 @@
 namespace msonlab {
 	namespace scheduling {
 
-		using namespace msonlab::lw;
+		using namespace msonlab::lite;
 
 		//GreedySchedulingAlgorithm GreedySchedulingAlgorithm::example{ exemplar() };
 
@@ -18,8 +18,8 @@ namespace msonlab {
 				return std::make_shared<SchedulingResult<const NodePtr>>(vector < unsigned > {}, vector < const NodePtr > {}, 0);
 			}
 
-			lwgraph lwg(graph);
-			const auto &nodes = lwg.nodes();
+			litegraph liteg(graph);
+			const auto &nodes = liteg.nodes();
 
 			NodeVect hwnodes(graph.order());
 			for (const auto& hwnode : graph.nodes()) {
@@ -36,7 +36,7 @@ namespace msonlab {
 			vector<unsigned> FT(options.getNumberOfPus(), 0);
 
 			// list of input nodes
-			const auto &inputNodes = lwg.inodes();
+			const auto &inputNodes = liteg.inodes();
 
 			// the ready to process nodes, initialized with the input nodes
 			std::queue < unsigned > free(std::deque< unsigned >(inputNodes.begin(), inputNodes.end()));
@@ -44,7 +44,7 @@ namespace msonlab {
 			vector<unsigned> mapping(tasks);
 			NodeVect scheduling(tasks);
 			// todo rewrite this
-			while (taskCounter < lwg.order())
+			while (taskCounter < liteg.order())
 			{
 				vector<unsigned> scheduled_node_ids;
 				auto min_PU_it = std::min_element(FT.begin(), FT.end());

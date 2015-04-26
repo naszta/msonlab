@@ -17,9 +17,9 @@ namespace msonlab {
 		LoadBalanceFitnessStrategy LoadBalanceFitnessStrategy::example { Examplar() };
 
 
-		unsigned int LengthFitnessStartegy::fitness(const SchedulingResult<const lw::lwnode*> &solution, const OptionsPtr options) const
+		unsigned int LengthFitnessStartegy::fitness(const SchedulingResult<const lite::litenode*> &solution, const OptionsPtr options) const
 		{
-			return computeLength<SchedulingResult<const lw::lwnode*>>(solution, *options);
+			return computeLength<SchedulingResult<const lite::litenode*>>(solution, *options);
 		}
 
 		FSPtr LengthFitnessStartegy::build(string name) const
@@ -31,7 +31,7 @@ namespace msonlab {
 			return nullptr;
 		}
 
-		unsigned int RescheduleIdleTimeFitnessStartegy::fitness(const SchedulingResult<const lw::lwnode*> &solution, const OptionsPtr options) const
+		unsigned int RescheduleIdleTimeFitnessStartegy::fitness(const SchedulingResult<const lite::litenode*> &solution, const OptionsPtr options) const
 		{
 			// this must change the solution, that could be problematic, think about it ...
 			//Solution &s = const_cast<Solution &>(solution);
@@ -49,7 +49,7 @@ namespace msonlab {
 			return nullptr;
 		}
 
-		unsigned int PUUsageFitnessStrategy::fitness(const SchedulingResult<const lw::lwnode*> &solution, const OptionsPtr options) const
+		unsigned int PUUsageFitnessStrategy::fitness(const SchedulingResult<const lite::litenode*> &solution, const OptionsPtr options) const
 		{
 			unsigned length = computeLength(solution, *options);
 
@@ -73,7 +73,7 @@ namespace msonlab {
 			return nullptr;
 		}
 
-		unsigned int LoadBalanceFitnessStrategy::fitness(const SchedulingResult<const lw::lwnode*> &solution, const OptionsPtr options) const
+		unsigned int LoadBalanceFitnessStrategy::fitness(const SchedulingResult<const lite::litenode*> &solution, const OptionsPtr options) const
 		{
 			vector<unsigned> RT(options->getNumberOfPus());
 			int length = computeLengthAndRT(solution, *options, RT);

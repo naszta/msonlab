@@ -21,7 +21,7 @@ namespace msonlab {
 		class SchedulingResultComparator
 		{
 		public:
-			bool operator() (const SchedulingResultPtr<const lw::lwnode*>& a, const SchedulingResultPtr<const lw::lwnode*> &b) const
+			bool operator() (const SchedulingResultPtr<const lite::litenode*>& a, const SchedulingResultPtr<const lite::litenode*> &b) const
 			{
 				return a->fitness() > b->fitness();
 			}
@@ -31,21 +31,21 @@ namespace msonlab {
 		{
 		public:
 			SolutionSet(const size_t keepSize, const size_t popMaxSize, const size_t keepBest);
-			SolutionSet(const vector<SchedulingResultPtr<const lw::lwnode*>>& sol, const size_t keepSize, const size_t popMaxSize, const size_t keepBest);
+			SolutionSet(const vector<SchedulingResultPtr<const lite::litenode*>>& sol, const size_t keepSize, const size_t popMaxSize, const size_t keepBest);
 			SolutionSet(const SolutionSet&& set);
 
 			//const vector<SchedulingResultLWPtr>& getSolutionSet() const;
 
 			// Gets a random solution from the population.
-			SchedulingResultPtr<const lw::lwnode*> getParent() const;
+			SchedulingResultPtr<const lite::litenode*> getParent() const;
 			// Adds a new offspring to the population
-			void addOffspring(const SchedulingResultPtr<const lw::lwnode*> offspring);
+			void addOffspring(const SchedulingResultPtr<const lite::litenode*> offspring);
 			// Adds one year to the age of all the solution
 			void ageSolutions();
 			// Limits the number of solutions to the initial, keeping the ones with the highest fitness
 			void limit();
 			// Gets one solution with the best fitness in the population.
-			SchedulingResultPtr<const lw::lwnode*> best() const;
+			SchedulingResultPtr<const lite::litenode*> best() const;
 
 			// Sets the levels' size's.
 			void setLevelSize(const vector<size_t>& sizes);
@@ -58,9 +58,9 @@ namespace msonlab {
 			// Contains the size of the graph's levels
 			vector<size_t> levelSize;
 			// The vector of the solutions
-			vector<SchedulingResultPtr<const lw::lwnode*>> solution;
+			vector<SchedulingResultPtr<const lite::litenode*>> solution;
 			// Orders the enqueued solutions by the fitnesses
-			std::priority_queue<SchedulingResultPtr<const lw::lwnode*>, vector<SchedulingResultPtr<const lw::lwnode*>>, SchedulingResultComparator> newGeneration;
+			std::priority_queue<SchedulingResultPtr<const lite::litenode*>, vector<SchedulingResultPtr<const lite::litenode*>>, SchedulingResultComparator> newGeneration;
 			const size_t POPMAXSIZE;
 			const size_t KEEP;
 			const size_t KEEPBEST;

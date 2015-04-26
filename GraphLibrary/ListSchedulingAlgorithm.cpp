@@ -3,13 +3,13 @@
 #include "SchedulingResult.h"
 #include "SchedulingHelper.h"
 #include <algorithm>
-#include "lwgraph.h"
-#include "lwnode.h"
+#include "litegraph.h"
+#include "litenode.h"
 
 namespace msonlab {
 	namespace scheduling {
 
-		using namespace lw;
+		using namespace lite;
 
 		// costs matches the node id to the cost of the task
 		// the higher the cost of the node, the sooner it should be executed
@@ -18,20 +18,24 @@ namespace msonlab {
 			return graph::algorithms::findMaxCostWithoutDependency(dependencies, costs);
 		}
 
-		void ListSchedulingAlgorithm::determineCosts(const lwgraph &graph, vector<unsigned>& costs) const 
+		void ListSchedulingAlgorithm::determineCosts(const litegraph &graph, vector<unsigned>& costs) const 
 		{
 			if (costs.size() != graph.order()) {
 				costs.resize(graph.order());
 			}
 
 			// the cost is simply the computation time.
-			std::transform(begin(graph.nodes()), end(graph.nodes()), begin(costs), [](const lwnode &node) { return node.cptime(); });
+			std::transform(begin(graph.nodes()), end(graph.nodes()), begin(costs), [](const litenode &node) { return node.cptime(); });
 		}
 
 		SchedulingResultPtr<const NodePtr> ListSchedulingAlgorithm::schedule(const Graph &hwgraph, const Options &options) const
 		{
-			lwgraph graph(hwgraph);
-			vector<vector<const lwnode*>> levels;
+			if (hwgraph.order() == 0) {
+				return std::make_shared<SchedulingResult<const NodePtr>>(vector < unsigned > {}, vector < const NodePtr > {}, 0);
+			}
+
+			litegraph graph(hwgraph);
+			vector<vector<const litenode*>> levels;
 			graph::algorithms::constructLayeredOrder(graph, levels);
 
 			NodeVect hwnodes(hwgraph.order());
@@ -45,6 +49,10 @@ namespace msonlab {
 			// determine the costs of the nodes
 			// the higher cost means earlier execution
 			this->determineCosts(graph, costs);
+			for (size_t i = 0; i < graph.order(); ++i)
+			{
+				std::wcout << i << " " << hwnodes[i]->getLabel() << " => " << costs[i] << std::endl;
+			}
 
 			// counts the number of dependencies of each graph
 			vector<int> dependencies(tasks);
@@ -62,7 +70,7 @@ namespace msonlab {
 			int next = 0; // next scheduled node
 			for (unsigned i = 0; i < tasks; ++i) {
 				next = this->findNextToSchedule(dependencies, costs);
-				const lw::lwnode& actNode = graph.nodes()[next];
+				const lite::litenode& actNode = graph.nodes()[next];
 
 				// calculating data arrival time
 				size_t predecessorSize = actNode.p_size();
@@ -87,14 +95,28 @@ namespace msonlab {
 				mapping[i] = pu;
 				scheduling[i] = hwnodes[actNode.id()];
 
-				graph::algorithms::computeNextFreeNodes<const lw::lwnode*>(dependencies, &actNode);
+				graph::algorithms::computeNextFreeNodes<const lite::litenode*>(dependencies, &actNode);
 			}
 
-			auto a = SchedulingResult < const NodePtr >(std::move(mapping), std::move(scheduling), 0);
+			// find last finish time
+			auto last_finish = *std::max_element(begin(FT), end(FT));
+
+			//auto a = SchedulingResult < const NodePtr >(std::move(mapping), std::move(scheduling), 0);
 			auto result = std::make_shared<SchedulingResult<const NodePtr>>(std::move(mapping), std::move(scheduling), 0);
 			auto length = computeLength<SchedulingResult<const NodePtr>>(*result, options);
+			std::cout << "LF=" << last_finish << ", length=" << length << std::endl;
 			result->fitness(length);
 			return result;
+		}
+
+		SchedulingAlgorithmPtr ListSchedulingAlgorithm::build(OptionsPtr opt) const
+		{
+			if (opt->getAlgorithm().compare("list") == 0)
+			{
+				return std::move(std::make_unique<ListSchedulingAlgorithm>());
+			}
+
+			return nullptr;
 		}
 	}
 }

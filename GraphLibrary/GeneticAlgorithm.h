@@ -6,7 +6,7 @@
 #include "SchedulingAlgorithm.h"
 #include "SchedulingAlgorithmBuilder.h"
 #include "FitnessStrategy.h"
-#include "lwgraph.h"
+#include "litegraph.h"
 #include "SchedulingResult.h"
 
 // GeneticAlgoritm implementation for project laboratory
@@ -40,30 +40,30 @@ namespace msonlab {
 			FSPtr fsstrategy;
 
 			// entry method for generating initial solution
-			SolutionSetPtr generateInitialSolution(const lw::lwgraph &graph, const Options &options) const;
+			SolutionSetPtr generateInitialSolution(const lite::litegraph &graph, const Options &options) const;
 			// generate a soulution set based on CP methods
-			SolutionSetPtr generateCPSolution(const lw::lwgraph &graph, const Options &options) const;
+			SolutionSetPtr generateCPSolution(const lite::litegraph &graph, const Options &options) const;
 			// generate a solution set randomly
-			SolutionSetPtr generateRndSolution(const lw::lwgraph &graph, const Options &options) const;
+			SolutionSetPtr generateRndSolution(const lite::litegraph &graph, const Options &options) const;
 
 			// crossover operations
-			SchedulingResultPtr<const lw::lwnode*> crossoverMap(SchedulingResultPtr<const lw::lwnode*> father, SchedulingResultPtr<const lw::lwnode*> mother) const;// TODO
-			SchedulingResultPtr<const lw::lwnode*> crossoverOrder(SchedulingResultPtr<const lw::lwnode*> father, SchedulingResultPtr<const lw::lwnode*> mother, const vector<unsigned>& levelingLimits) const;// TODO
+			SchedulingResultPtr<const lite::litenode*> crossoverMap(SchedulingResultPtr<const lite::litenode*> father, SchedulingResultPtr<const lite::litenode*> mother) const;// TODO
+			SchedulingResultPtr<const lite::litenode*> crossoverOrder(SchedulingResultPtr<const lite::litenode*> father, SchedulingResultPtr<const lite::litenode*> mother, const vector<unsigned>& levelingLimits) const;// TODO
 			
 			// mutation operations
-			void mutateMapping(SchedulingResultPtr<const lw::lwnode*> offspring) const;// TODO
-			void mutateSheduling(SchedulingResultPtr<const lw::lwnode*> offspring, const vector<unsigned>& levelingLimits) const;// TODO
+			void mutateMapping(SchedulingResultPtr<const lite::litenode*> offspring) const;// TODO
+			void mutateSheduling(SchedulingResultPtr<const lite::litenode*> offspring, const vector<unsigned>& levelingLimits) const;// TODO
 
 			void simulateMating(const SolutionSetPtr& set, int offsprings, bool doOrderCrossover) const;// TODO
-			unsigned int fitness(SchedulingResultPtr<const lw::lwnode*> solution) const; // TODO
+			unsigned int fitness(SchedulingResultPtr<const lite::litenode*> solution) const; // TODO
 
 			void parallelSimulateMating(SolutionSetPtr& set, int offsprings, bool doOrderCrossover) const;// TODO
 			friend class round_simulator;
 
 			// Gets a greedy solution for the given graph
-			SchedulingResultPtr<const lw::lwnode*> greedySolution(const lw::lwgraph &graph) const;
+			SchedulingResultPtr<const lite::litenode*> greedySolution(const lite::litegraph &graph) const;
 			// experimental
-			void swapMutateScheduling(SchedulingResultPtr<const lw::lwnode*> offspring) const;
+			void swapMutateScheduling(SchedulingResultPtr<const lite::litenode*> offspring) const;
 		};
 	}
 }

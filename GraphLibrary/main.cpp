@@ -52,17 +52,17 @@ Graph initRandomGraph(const Options &options)
 	return createRandom(options.getGraphSize(), options.getGraphEdgeProb(), options.getGraphWidening(), options.getNumberOfPus());
 }
 
-#include "lwgraph.h"
+#include "litegraph.h"
 #include "NodeTest.h"
 
-void printGraph(const lw::lwgraph &graph) {
-	std::cout << "lwgraph" << std::endl;
+void printGraph(const lite::litegraph &graph) {
+	std::cout << "litegraph" << std::endl;
 	const auto& nodes = graph.nodes();
 	for (const auto& node : nodes) {
 		std::cout << "Node: " << node.id() << " | " << node.successors().size() << " : " << node.predecessors().size() << std::endl;
 	}
 	std::cout << std::endl;
-	std::cout << "lwgraph inodes" << std::endl;
+	std::cout << "litegraph inodes" << std::endl;
 	std::cout << std::endl;
 
 	const auto& inodes = graph.inodes();
@@ -106,7 +106,7 @@ int old_main(int argc, char *argv[])
 	// get graph
 	//Graph graph = initRandomGraph(*options);
 	Graph graph = initGraph();
-	lw::lwgraph lwgr(graph);
+	lite::litegraph litegr(graph);
 
 	// choosing algorithm	
 	SchedulingAlgorithmPtr alg = SchedulingAlgorithmBuilder::find_sceduling_algorithm(options);

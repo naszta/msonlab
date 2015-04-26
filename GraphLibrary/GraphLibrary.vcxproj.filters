@@ -168,12 +168,6 @@
     <ClInclude Include="NodeTest.h">
       <Filter>Header Files\Node</Filter>
     </ClInclude>
-    <ClInclude Include="lwnode.h">
-      <Filter>Header Files\lite</Filter>
-    </ClInclude>
-    <ClInclude Include="lwgraph.h">
-      <Filter>Header Files\lite</Filter>
-    </ClInclude>
     <ClInclude Include="SchedulingResult.h">
       <Filter>Header Files\Scheduling</Filter>
     </ClInclude>
@@ -191,6 +185,12 @@
     </ClInclude>
     <ClInclude Include="Id.h">
       <Filter>Header Files\Graph</Filter>
+    </ClInclude>
+    <ClInclude Include="litegraph.h">
+      <Filter>Header Files\lite</Filter>
+    </ClInclude>
+    <ClInclude Include="litenode.h">
+      <Filter>Header Files\lite</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -299,12 +299,6 @@
     <ClCompile Include="SchedulingAlgorithm.cpp">
       <Filter>Source Files\Scheduling</Filter>
     </ClCompile>
-    <ClCompile Include="lwnode.cpp">
-      <Filter>Source Files\lite</Filter>
-    </ClCompile>
-    <ClCompile Include="lwgraph.cpp">
-      <Filter>Source Files\lite</Filter>
-    </ClCompile>
     <ClCompile Include="ListSchedulingAlgorithm.cpp">
       <Filter>Source Files\Scheduling</Filter>
     </ClCompile>
@@ -322,6 +316,12 @@
     </ClCompile>
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="litegraph.cpp">
+      <Filter>Source Files\lite</Filter>
+    </ClCompile>
+    <ClCompile Include="litenode.cpp">
+      <Filter>Source Files\lite</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
