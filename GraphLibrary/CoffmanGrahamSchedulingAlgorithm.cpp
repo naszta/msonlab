@@ -12,7 +12,7 @@ namespace msonlab { namespace scheduling {
 	using msonlab::lite::litegraph;
 	using msonlab::lite::litenode;
 
-	// lexigraphically compare
+	// lexigraphically compare - comparing vector of integers. If they are the same, decision is made according to the id of the node.
 	bool vector_lexicographic(const pair<vector<unsigned>, const litenode*>& a, const pair<vector<unsigned>, const litenode*>& b)
 	{
 		size_t limit = std::min(a.first.size(), b.first.size());
@@ -23,35 +23,43 @@ namespace msonlab { namespace scheduling {
 			return a.first[i] < b.first[i];
 		}
 
-		return a.first.size() ==  b.first.size() ? a.second->id() > b.second->id() 
-													: a.first.size() < b.first.size();
+		return a.first.size() == b.first.size() ? a.second->cptime() > b.second->cptime() 
+												: a.first.size() < b.first.size();
 	}
 
+	// function used for sorting in decreasing order
 	bool decreasing(const unsigned& a, const unsigned& b) {
 		return a > b;
 	}
 
-	void CoffmanGrahamSchedulingAlgorithm::determineCosts(const litegraph &graph, vector<unsigned>& costs) const 
+	void CoffmanGrahamSchedulingAlgorithm::determineCosts(const litegraph &graph, vector<unsigned>& costs) const
 	{
 		if (costs.size() != graph.order()) {
 			costs.resize(graph.order());
 		}
 
-		vector<vector<const litenode*>> levels;
-		graph::algorithms::constructLayeredOrder<litegraph, const litenode*>(graph, levels);
+		vector<vector<const litenode*>> layers;
+		graph::algorithms::constructLayeredOrder<litegraph, const litenode*>(graph, layers);
 
-		int counter = 0;
-		for (const auto& node : levels[0]) {
-			costs[node->id()] = counter;
-			++counter;
+		// order the first layer decreasing by computation time, so
+		// node with higher computation time receives higher priority
+		std::sort(begin(layers[0]), end(layers[0]), [](const litenode* n1, const litenode* n2)
+		{return n1->cptime() > n2->cptime(); });
+		// we can safely set the priorities of the output nodes, because no other nodes 
+		unsigned priority = 0;
+		for (const auto& node : layers[0]) {
+			costs[node->id()] = priority;
+			++priority;
 		}
 
-		// over all levels
-		for (size_t i = 1; i < levels.size(); ++i) {
+		// Setting the priority laer by layer
+		// A node in the n+1th layer have to have higher rank, than
+		// a node in the nth layer, because we place a node as close
+		// to the output nodes as possible.
+		for (size_t i = 1; i < layers.size(); ++i) {
 			vector<pair<vector<unsigned>, const lite::litenode*>> order;
-			unsigned top = 1;
-			if (levels[i].size() > 1) {
-				for (auto& node : levels[i]) {
+			if (layers[i].size() > 1) {
+				for (auto& node : layers[i]) {
 					vector<unsigned> norder;
 					// iterate over the successors
 					for (auto successor : node->successors()) {
@@ -66,13 +74,14 @@ namespace msonlab { namespace scheduling {
 
 				std::sort(order.begin(), order.end(), vector_lexicographic);
 				for (auto& pair : order) {
-					costs[pair.second->id()] = counter;
-					++counter;
+					costs[pair.second->id()] = priority;
+					++priority;
 				}
 			}
+			// if there is only one the priority is unambigous
 			else {
-				costs[levels[i][0]->id()] = counter;
-				++counter;
+				costs[layers[i][0]->id()] = priority;
+				++priority;
 			}
 		}
 	}

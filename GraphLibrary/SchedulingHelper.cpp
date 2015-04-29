@@ -1,5 +1,8 @@
 //#include "SchedulingHelper.h"
 #include <vector>
+#include <ostream>
+#include <stdexcept>
+#include <sstream>
 
 #include "Options.h"
 #include "Solution.h"
@@ -267,36 +270,76 @@ namespace msonlab {
 				return length;
 			}
 
-			// a helper method for development
-			// fast checks, whether is solution is correct or not
-			template<typename SolutionType>
-			bool is_correct(const SolutionType &solution)
+		// a helper method for development
+		// fast checks, whether is solution is correct or not
+		template<typename SolutionType>
+		bool is_correct(const SolutionType &solution)
+		{
+			// ensure there is no duplication in the scheduling
+			const auto& scheduling = solution.scheduling();
+			vector<bool> scheduled(scheduling.size(), false);
+			for (const auto& node : scheduling)
 			{
-				// ensure there is no duplication in the scheduling
-				const auto& scheduling = solution.scheduling();
-				vector<bool> scheduled(scheduling.size(), false);
-				for (const auto& node : scheduling)
-				{
-					// ensure there is no duplication
-					if (scheduled[node->id()]) {
-						std::cout << node->id() << "scheduled twice\n";
-						return false;
-					}
-
-					const auto& preds = node->predecessors();
-					for (auto pred_node : preds)
-					{
-						if (!scheduled[pred_node->id()])
-						{
-							std::cout << pred_node->id() << " is not scheduled before " << node->id() << std::endl;
-							return false;
-						}
-					}
-
-					scheduled[node->id()] = true;
+				// ensure there is no duplication
+				if (scheduled[node->id()]) {
+					std::stringstream ss;
+					ss << node->id() << "scheduled twice!";
+					throw std::logic_error(ss.str());
 				}
 
-				return true;
+				const auto& preds = node->predecessors();
+				for (auto pred_node : preds)
+				{
+					if (!scheduled[pred_node->id()])
+					{
+						std::stringstream ss;
+						ss << pred_node->id() << " is not scheduled before " << node->id();
+						throw std::logic_error(ss.str());
+					}
+				}
+
+				scheduled[node->id()] = true;
 			}
+
+			return true;
+		}
+
+		template<typename SolutionType>
+		void write_solution(const SolutionType &solution, const Options& options, std::ostream& os) {
+			vector<unsigned> ST;
+			auto length = computeLengthAndST(solution, options, ST);
+			
+			const auto& scheduling = solution.scheduling();
+			const auto TASKS = scheduling.size();
+			vector<vector<unsigned>> table(options.getNumberOfPus());
+			for (auto& e : table)
+				e = vector<unsigned>(length, TASKS);
+
+			unsigned task_counter = 0;
+			const auto& mapping = solution.mapping();
+			for (const auto& node : scheduling)
+			{
+				const auto id = node->id();
+				for (unsigned n = ST[id]; n < ST[id] + node->cptime(); ++n)
+				{
+					table[mapping[task_counter]][n] = id;
+				}
+				++task_counter;
+			}
+
+			os << "length = " << length << std::endl;
+			for (const auto& line : table) {
+				for (const auto elem : line) {
+					if (elem == TASKS) {
+						os << "  ";
+					}
+					else  {
+						os << elem << " ";
+					}
+				}
+				os << std::endl;
+			}
+			os << std::endl;
+		}
 	}
 }

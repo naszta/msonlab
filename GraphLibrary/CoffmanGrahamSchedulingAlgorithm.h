@@ -13,7 +13,7 @@ namespace msonlab {
 			virtual void determineCosts(const lite::litegraph& graph, vector<unsigned>& costs) const;
 		public:
 			CoffmanGrahamSchedulingAlgorithm() = default;
-			CoffmanGrahamSchedulingAlgorithm(exemplar e) { SchedulingAlgorithmBuilder::add_scheduling_algorithm(this); }
+			CoffmanGrahamSchedulingAlgorithm(exemplar) { SchedulingAlgorithmBuilder::add_scheduling_algorithm(this); }
 			virtual SchedulingAlgorithmPtr build(OptionsPtr) const;
 			virtual ~CoffmanGrahamSchedulingAlgorithm() = default;
 		};

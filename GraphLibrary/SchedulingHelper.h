@@ -41,6 +41,9 @@ namespace msonlab {
 
 		template<typename SolutionType>
 		bool is_correct(const SolutionType &sol);
+
+		template<typename SolutionType>
+		void write_solution(const SolutionType &solution, const Options& options, std::ostream& os);
 	}
 }
 
