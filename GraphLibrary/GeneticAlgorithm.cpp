@@ -43,7 +43,7 @@ namespace msonlab {
 		///
 		/// @param The input graph.
 		/// @return The constructed solution.
-		SchedulingResultPtr<const lite::litenode*> GeneticAlgorithm::greedySolution(const lite::litegraph &graph) const
+		SchedulingResultPtr<const lite::litenode*> GeneticAlgorithm::greedySolution(const lite::litegraph &graph, const Options& options) const
 		{
 			auto &nodes = graph.nodes();
 			unsigned timeCounter = 0;
@@ -59,7 +59,7 @@ namespace msonlab {
 			while (taskCounter < graphSize)
 			{
 				vector< unsigned > scheduled_node_ids;
-				int limit = options->getNumberOfPus();
+				int limit = options.getNumberOfPus();
 				while (!free.empty() && limit > 0)
 				{
 					auto node_id = free.front();
@@ -113,16 +113,17 @@ namespace msonlab {
 			set->limit();
 
 			bool doOrderCrossover = options.getFitnessStrategy().compare("reschedule") != 0;
-			for (size_t i = 0; i < options.getNumberOfYears(); ++i)
-			{
-				if (options.isParallel()) {
-					parallelSimulateMating(set, options.getPopMaxSize(), doOrderCrossover);
+			if (options.isParallel()) {
+				for (size_t i = 0; i < options.getNumberOfYears(); ++i) {
+					parallelSimulateMating(set, options.getPopMaxSize(), doOrderCrossover, options);
+					set->limit();
 				}
-				else {
-					simulateMating(set, options.getPopMaxSize(), doOrderCrossover);
+			}
+			else {
+				for (size_t i = 0; i < options.getNumberOfYears(); ++i) {
+					simulateMating(set, options.getPopMaxSize(), doOrderCrossover, options);
+					set->limit();
 				}
-
-				set->limit();
 			}
 
 			auto best = set->best();
@@ -186,7 +187,7 @@ namespace msonlab {
 			auto set = std::make_shared<SolutionSet>(options.getKeepSize(), options.getPopMaxSize(), options.getKeepBest());
 
 			// add a greedy solution to the set
-			auto greedy_solution = this->greedySolution(graph);
+			auto greedy_solution = this->greedySolution(graph, options);
 
 			// create first solution
 			auto result = std::make_shared<SchedulingResult<const lite::litenode*>>(options.getNumberOfPus(), graph.order());
@@ -359,7 +360,7 @@ namespace msonlab {
 		///
 		/// @param population A set of solutions to choose the parents from.
 		/// @param offsprings The number of offsprings to generate.
-		void GeneticAlgorithm::simulateMating(const SolutionSetPtr& set, int offsprings, bool doOrderCrossover) const
+		void GeneticAlgorithm::simulateMating(const SolutionSetPtr& set, int offsprings, bool doOrderCrossover, const Options& options) const
 		{
 			for (; offsprings > 0; --offsprings)
 			{
@@ -374,11 +375,11 @@ namespace msonlab {
 					offspring = crossoverOrder(father, mother, set->getLevels());
 				}
 
-				if ((rand() % 100) < options->getMapMutationRate()) {
+				if (static_cast<unsigned>(rand() % 100) < options.getMapMutationRate()) {
 					mutateMapping(offspring);
 				}
 
-				if ((rand() % 100) < options->getScheduleMutationRate()) {
+				if (static_cast<unsigned>(rand() % 100) < options.getScheduleMutationRate()) {
 					mutateSheduling(offspring, set->getLevels());
 				}
 
@@ -416,15 +417,17 @@ namespace msonlab {
 
 		//  parallel task to simulate a round
 		class round_simulator : public tbb::task {
+			round_simulator(const round_simulator& rs) = delete;
 			const GeneticAlgorithm& alg;
+			const Options& options;
 			SolutionSetPtr& set;
 			// number of offsprings to generate
 			int offsprings;
 			// if true, the scheduling orders might be crossoverd; otherwise they don't
 			bool doOrderCrossover;
 		public:
-			round_simulator(const GeneticAlgorithm& genalg, SolutionSetPtr& set, int offsprings, bool doOrderCrossover) :
-				alg(genalg), set(set), offsprings(offsprings), doOrderCrossover(doOrderCrossover) {}
+			round_simulator(const GeneticAlgorithm& genalg, const Options& options, SolutionSetPtr& set, int offsprings, bool doOrderCrossover) :
+				alg(genalg), options(options), set(set), offsprings(offsprings), doOrderCrossover(doOrderCrossover) {}
 
 			tbb::task* execute() {
 				// the total number of tasks created
@@ -444,11 +447,11 @@ namespace msonlab {
 						offspring = alg.crossoverOrder(father, mother, set->getLevels());
 					}
 
-					if ((rand() % 100) < alg.options->getMapMutationRate()) {
+					if (static_cast<unsigned>(rand() % 100) < options.getMapMutationRate()) {
 						alg.mutateMapping(offspring);
 					}
 
-					if ((rand() % 100) < alg.options->getScheduleMutationRate()) {
+					if (static_cast<unsigned>(rand() % 100) < options.getScheduleMutationRate()) {
 						alg.mutateSheduling(offspring, set->getLevels());
 					}
 
@@ -468,41 +471,14 @@ namespace msonlab {
 			}
 		};
 
-		void GeneticAlgorithm::parallelSimulateMating(SolutionSetPtr& set, int offsprings, bool doOrderCrossover) const
+		void GeneticAlgorithm::parallelSimulateMating(SolutionSetPtr& set, int offsprings, bool doOrderCrossover, const Options& options) const
 		{
 			/* This is the TBB runtime... */
 			tbb::task_scheduler_init init;
 
-			round_simulator& rs = *new(tbb::task::allocate_root()) round_simulator(*this, set, offsprings, doOrderCrossover);
+			round_simulator& rs = *new(tbb::task::allocate_root()) round_simulator(*this, options, set, offsprings, doOrderCrossover);
 			tbb::task::spawn_root_and_wait(rs);
 		}
-
-		///
-		/// Transform the mapping and scheduling into one vector.
-		///
-		/// Assumes that the id's of the tasks are from 0 to n-1, where n is the number
-		/// nodes in the graph.
-		///
-		/// @param c the solution to transform
-		/// @param result the result vector.
-		//void GeneticAlgorithm::transfromResult(SolutionPtr c, vector<unsigned>& result) {
-		//	auto mapping = c.mapping();
-		//	auto scheduling = c.getScheduling();
-		//	size_t tasks = scheduling.size();
-		//	size_t edges = c->edges;
-		//	if (result.size() != tasks + edges) {
-		//		result.resize(tasks + edges);
-		//	}
-
-		//	for (unsigned i = 0; i < tasks; ++i) {
-		//		result[scheduling[i]->getId()] = mapping[i];
-		//		NodePtr node = scheduling[i];
-		//		for (auto it = node->getPredecessorBegin(); it != node->getPredecessorEnd(); ++it)
-		//		{
-		//			result[(*it)->getId()] = mapping[i];
-		//		}
-		//	}
-		//}
 
 		// EXPERIMENTAL
 

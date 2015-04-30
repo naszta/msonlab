@@ -32,7 +32,7 @@ namespace msonlab {
 
 			// counts the available inputs of the nodess
 			//std::map< unsigned, int> count;
-			vector<int> count(graph.order());
+			vector<unsigned> count(graph.order());
 			vector<unsigned> FT(options.getNumberOfPus(), 0);
 
 			// list of input nodes

@@ -1,5 +1,7 @@
 #include <iostream>
 #include <vector>
+#include <memory>
+#include <stdexcept>
 
 #include "../GraphLibrary/Graph.h"
 #include "../GraphLibrary/Node.h"
@@ -11,6 +13,7 @@
 #include "../GraphLibrary/litegraph.h"
 #include "../GraphLibrary/GreedySchedulingAlgorithm.h"
 #include "../GraphLibrary/GeneticAlgorithm.h"
+#include "../GraphLibrary/SchedulingHelper.h"
 #include "../GraphLibrary/FitnessStrategy.h"
 #include "../GraphLibrary/ListSchedulingAlgorithm.h"
 #include "../GraphLibrary/CriticalPathSchedulingAlgorithm.h"
@@ -25,13 +28,25 @@ using namespace msonlab::scheduling;
 void run(const SchedulingAlgorithm& alg, const Graph& graph, const Options& options)
 {
 	auto result = alg.schedule(graph, options);
-	result->printSolution(std::cout);
+	try {
+		is_correct(*result);
+		write_solution(*result, options, std::cout);
+	}
+	catch (std::logic_error& e) {
+		std::cout << e.what() << std::endl;
+	}
+	
 }
 
 // to try out features of the GraphLibrary
 int main(int argc, char *argv[]){
-	Graph graph = graph::creator::createSample();
+	Graph graph = graph::creator::createQuadrant();
 	Options options{ "Options.cfg" };
+	{
+		std::cout << "greedy" << std::endl;
+		GreedySchedulingAlgorithm alg{};
+		run(alg, graph, options);
+	}
 	{
 		std::cout << "list" << std::endl;
 		ListSchedulingAlgorithm alg{};
@@ -48,8 +63,8 @@ int main(int argc, char *argv[]){
 		run(alg, graph, options);
 	}
 	{
-		std::cout << "coffmangraham" << std::endl;
-		GeneticAlgorithm alg{ options, LengthFitnessStartegy{} };
+		std::cout << "genetic" << std::endl;
+		GeneticAlgorithm alg{ std::make_shared<Options>(options), std::make_unique<LengthFitnessStartegy>() };
 		run(alg, graph, options);
 	}
 }
