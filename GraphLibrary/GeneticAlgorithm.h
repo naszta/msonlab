@@ -29,14 +29,13 @@ namespace msonlab {
 			// constructor for the example instance
 			GeneticAlgorithm(exemplar) { SchedulingAlgorithmBuilder::add_scheduling_algorithm(this); }
 			// contructor for normal use
-			GeneticAlgorithm(OptionsPtr, FSPtr);
+			GeneticAlgorithm(FSPtr);
 			// schedule the given graph with the given options
 			virtual SchedulingResultPtr<const NodePtr> schedule(const Graph& graph, const Options &options) const override;
 		private:
 			typedef unsigned int uint;
 
 			// algorithm parameters
-			OptionsPtr options;
 			FSPtr fsstrategy;
 
 			// entry method for generating initial solution
@@ -55,7 +54,7 @@ namespace msonlab {
 			void mutateSheduling(SchedulingResultPtr<const lite::litenode*> offspring, const vector<unsigned>& levelingLimits) const;// TODO
 
 			void simulateMating(const SolutionSetPtr& set, int offsprings, bool doOrderCrossover, const Options& options) const;// TODO
-			unsigned int fitness(SchedulingResultPtr<const lite::litenode*> solution) const; // TODO
+			unsigned int fitness(SchedulingResultPtr<const lite::litenode*> solution, const Options& options) const; // TODO
 
 			void parallelSimulateMating(SolutionSetPtr& set, int offsprings, bool doOrderCrossover, const Options& options) const;// TODO
 			friend class round_simulator;
@@ -63,7 +62,7 @@ namespace msonlab {
 			// Gets a greedy solution for the given graph
 			SchedulingResultPtr<const lite::litenode*> greedySolution(const lite::litegraph &graph, const Options& options) const;
 			// experimental
-			void swapMutateScheduling(SchedulingResultPtr<const lite::litenode*> offspring) const;
+			void swapMutateScheduling(SchedulingResultPtr<const lite::litenode*> offspring, const Options& options) const;
 		};
 	}
 }

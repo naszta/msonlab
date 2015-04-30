@@ -64,7 +64,7 @@ int main(int argc, char *argv[]){
 	}
 	{
 		std::cout << "genetic" << std::endl;
-		GeneticAlgorithm alg{ std::make_shared<Options>(options), std::make_unique<LengthFitnessStartegy>() };
+		GeneticAlgorithm alg{ std::make_unique<LengthFitnessStartegy>() };
 		run(alg, graph, options);
 	}
 }
