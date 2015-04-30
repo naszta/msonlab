@@ -3,20 +3,18 @@
 
 #include "ListSchedulingAlgorithm.h"
 
-namespace msonlab {
-	namespace scheduling {
+namespace msonlab { namespace scheduling {
 
-		using namespace msonlab;
+	using namespace msonlab;
 
-		class CoffmanGrahamSchedulingAlgorithm : public ListSchedulingAlgorithm
-		{
-			virtual void determineCosts(const lite::litegraph& graph, vector<unsigned>& costs) const;
-		public:
-			CoffmanGrahamSchedulingAlgorithm() = default;
-			CoffmanGrahamSchedulingAlgorithm(exemplar) { SchedulingAlgorithmBuilder::add_scheduling_algorithm(this); }
-			virtual SchedulingAlgorithmPtr build(OptionsPtr) const;
-			virtual ~CoffmanGrahamSchedulingAlgorithm() = default;
-		};
-	}
-}
+	class CoffmanGrahamSchedulingAlgorithm : public ListSchedulingAlgorithm
+	{
+		virtual void determineCosts(const lite::litegraph& graph, vector<unsigned>& costs) const;
+	public:
+		CoffmanGrahamSchedulingAlgorithm() = default;
+		CoffmanGrahamSchedulingAlgorithm(exemplar) { SchedulingAlgorithmBuilder::add_scheduling_algorithm(this); }
+		virtual SchedulingAlgorithmPtr build(const Options&) const;
+		virtual ~CoffmanGrahamSchedulingAlgorithm() = default;
+	};
+}}
 #endif

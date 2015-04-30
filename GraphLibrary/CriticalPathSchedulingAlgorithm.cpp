@@ -11,18 +11,16 @@ namespace msonlab { namespace scheduling {
 	using namespace msonlab;
 
 	//virtual constructor
-	SchedulingAlgorithmPtr CriticalPathSchedulingAlgorithm::build(OptionsPtr opt) const
-	{
-		if (opt->getAlgorithm().compare("criticalPath") == 0)
-		{
+	SchedulingAlgorithmPtr CriticalPathSchedulingAlgorithm::build(const Options& opt) const {
+		if (opt.getAlgorithm().compare("criticalPath") == 0) {
+			DEBUGLN("Initializing CriticalPathSchedulingAlgorithm.");
 			return std::move(std::make_unique<CriticalPathSchedulingAlgorithm>());
 		}
 
 		return nullptr;
 	}
 
-	void CriticalPathSchedulingAlgorithm::determineCosts(const lite::litegraph &graph, vector<unsigned>& costs) const 
-	{
+	void CriticalPathSchedulingAlgorithm::determineCosts(const lite::litegraph &graph, vector<unsigned>& costs) const {
 		if (costs.size() != graph.order()) {
 			costs.resize(graph.order());
 		}
@@ -33,15 +31,12 @@ namespace msonlab { namespace scheduling {
 		// finding the max time needed to compute (distance)
 		// O(|V| + |E|)
 
-		for (const auto& node : layers[0])
-		{
+		for (const auto& node : layers[0]) {
 			costs[node->id()] = node->cptime();
 		}
 
-		for (size_t i = 1; i < layers.size(); ++i)
-		{
-			for (const auto& node : layers[i])
-			{
+		for (size_t i = 1; i < layers.size(); ++i) {
+			for (const auto& node : layers[i]) {
 				unsigned max = 0;
 				for (const auto& successor : node->successors()) {
 					if (costs[successor->id()] > max) {

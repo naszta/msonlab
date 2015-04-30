@@ -25,7 +25,7 @@ namespace msonlab {
 		{
 		public:
 			// build function for creating instance
-			virtual SchedulingAlgorithmPtr build(OptionsPtr) const override;
+			virtual SchedulingAlgorithmPtr build(const Options&) const override;
 			// constructor for the example instance
 			GeneticAlgorithm(exemplar) { SchedulingAlgorithmBuilder::add_scheduling_algorithm(this); }
 			// contructor for normal use

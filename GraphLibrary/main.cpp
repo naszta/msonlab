@@ -100,7 +100,7 @@ int old_main(int argc, char *argv[])
 	srand(161803);
 
 	// loading GA configuration
-	OptionsPtr options = std::make_shared<const Options>("Options.cfg");
+	Options options{ "Options.cfg" };
 	//Options options{ "Options.cfg" };
 
 	// get graph
@@ -118,7 +118,7 @@ int old_main(int argc, char *argv[])
 	SchedulingResultPtr<const NodePtr> best;
 	try {
 		if (alg != nullptr) {
-			best = alg->schedule(graph, *options);
+			best = alg->schedule(graph, options);
 			best->printSolution(std::cout);
 		}
 		else

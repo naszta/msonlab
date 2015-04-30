@@ -25,11 +25,12 @@ namespace msonlab { namespace scheduling {
 	//GeneticAlgorithm GeneticAlgorithm::example{ exemplar() };
 		
 	//virtual constructor
-	SchedulingAlgorithmPtr GeneticAlgorithm::build(OptionsPtr opt) const
+	SchedulingAlgorithmPtr GeneticAlgorithm::build(const Options& opt) const
 	{
-		if (opt->getAlgorithm().compare("genetic") == 0)
+		if (opt.getAlgorithm().compare("genetic") == 0)
 		{
-			auto fs = FitnessStrategy::find_fitness_strategy(opt->getFitnessStrategy());
+			DEBUG("Initializing GeneticAlgorithm with ");
+			auto fs = FitnessStrategy::find_fitness_strategy(opt.getFitnessStrategy());
 			return std::move(std::make_unique<GeneticAlgorithm>(std::move(fs)));
 		}
 

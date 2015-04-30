@@ -3,21 +3,19 @@
 
 #include "ListSchedulingAlgorithm.h"
 
-namespace msonlab {
-	namespace scheduling {
+namespace msonlab { namespace scheduling {
 
-		using namespace msonlab;
+	using namespace msonlab;
 
-		class CriticalPathSchedulingAlgorithm : public ListSchedulingAlgorithm
-		{
-		protected:
-			virtual void determineCosts(const lite::litegraph &graph, vector<unsigned>& costs) const;
-		public:
-			CriticalPathSchedulingAlgorithm() = default;
-			CriticalPathSchedulingAlgorithm(exemplar) { SchedulingAlgorithmBuilder::add_scheduling_algorithm(this); }
-			virtual SchedulingAlgorithmPtr build(OptionsPtr) const;
-			virtual ~CriticalPathSchedulingAlgorithm() = default;
-		};
-	}
-}
+	class CriticalPathSchedulingAlgorithm : public ListSchedulingAlgorithm
+	{
+	protected:
+		virtual void determineCosts(const lite::litegraph &graph, vector<unsigned>& costs) const;
+	public:
+		CriticalPathSchedulingAlgorithm() = default;
+		CriticalPathSchedulingAlgorithm(exemplar) { SchedulingAlgorithmBuilder::add_scheduling_algorithm(this); }
+		virtual SchedulingAlgorithmPtr build(const Options&) const;
+		virtual ~CriticalPathSchedulingAlgorithm() = default;
+	};
+}}
 #endif

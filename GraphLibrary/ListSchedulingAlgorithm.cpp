@@ -13,8 +13,7 @@ namespace msonlab { namespace scheduling {
 
 	// costs matches the node id to the cost of the task
 	// the higher the cost of the node, the sooner it should be executed
-	unsigned ListSchedulingAlgorithm::findNextToSchedule(const vector<int>& dependencies, const vector<unsigned>& costs) const
-	{
+	unsigned ListSchedulingAlgorithm::findNextToSchedule(const vector<int>& dependencies, const vector<unsigned>& costs) const {
 		return graph::algorithms::findMaxCostWithoutDependency(dependencies, costs);
 	}
 
@@ -65,17 +64,15 @@ namespace msonlab { namespace scheduling {
 			const auto& actNode = graph.nodes()[next];
 
 			// calculating data arrival time
-			size_t predecessorSize = actNode.p_size();
+			//size_t predecessorSize = actNode.p_size();
 			if (actNode.predecessors().empty()) {
 				DAT = RT;
 			}
 			else {
 				std::fill(begin(DAT), end(DAT), 0);
-				for (const auto& predecessor : actNode.predecessors())
-				{
+				for (const auto& predecessor : actNode.predecessors()) {
 					unsigned id = predecessor->id();
-					for (unsigned actPU = 0; actPU < options.getNumberOfPus(); ++actPU)
-					{
+					for (unsigned actPU = 0; actPU < options.getNumberOfPus(); ++actPU) {
 						if (idPuMapping[id] == MAX_PU)
 							throw std::logic_error("Non-scheduled predecessor");
 						unsigned dat = FT[id] + (actPU != idPuMapping[id] ? comm : 0);
@@ -100,10 +97,9 @@ namespace msonlab { namespace scheduling {
 		return std::make_shared<SchedulingResult<const NodePtr>>(std::move(mapping), std::move(scheduling), last_finish);
 	}
 
-	SchedulingAlgorithmPtr ListSchedulingAlgorithm::build(OptionsPtr opt) const
-	{
-		if (opt->getAlgorithm().compare("list") == 0)
-		{
+	SchedulingAlgorithmPtr ListSchedulingAlgorithm::build(const Options& opt) const {
+		if (opt.getAlgorithm().compare("list") == 0) {
+			DEBUGLN("Initializing ListSchedulingAlgorithm.");
 			return std::move(std::make_unique<ListSchedulingAlgorithm>());
 		}
 
