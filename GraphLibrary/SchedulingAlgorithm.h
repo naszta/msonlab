@@ -3,7 +3,6 @@
 
 #include <string>
 #include <memory>
-#include "Solution.h"
 #include "SchedulingResult.h"
 #include "Graph.h"
 

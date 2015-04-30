@@ -162,9 +162,6 @@
     <ClInclude Include="ListSchedulingAlgorithm.h">
       <Filter>Header Files\Scheduling</Filter>
     </ClInclude>
-    <ClInclude Include="Solution.h">
-      <Filter>Header Files\Scheduling</Filter>
-    </ClInclude>
     <ClInclude Include="NodeTest.h">
       <Filter>Header Files\Node</Filter>
     </ClInclude>
@@ -289,9 +286,6 @@
     </ClCompile>
     <ClCompile Include="GraphCreator.cpp">
       <Filter>Source Files\Graph</Filter>
-    </ClCompile>
-    <ClCompile Include="Solution.cpp">
-      <Filter>Source Files\Scheduling</Filter>
     </ClCompile>
     <ClCompile Include="NodeTest.cpp">
       <Filter>Source Files\Node</Filter>

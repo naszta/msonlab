@@ -17,8 +17,7 @@ namespace msonlab { namespace scheduling {
 	public:
 		GreedySchedulingAlgorithm() = default;
 		GreedySchedulingAlgorithm(exemplar) { SchedulingAlgorithmBuilder::add_scheduling_algorithm(this); }
-		//SolutionPtr schedule(const Graph &graph, OptionsPtr options) const;
-		SchedulingResultPtr<const NodePtr> schedule(const Graph &graph, const	Options &options) const;
+		SchedulingResultPtr<const NodePtr> schedule(const Graph &graph, const Options &options) const;
 		virtual SchedulingAlgorithmPtr build(const Options&) const;
 		virtual ~GreedySchedulingAlgorithm() = default;
 	};

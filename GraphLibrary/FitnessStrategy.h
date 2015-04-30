@@ -1,7 +1,6 @@
 #ifndef GRAPHLIB_FITNESSSTRATEGY_H
 #define GRAPHLIB_FITNESSSTRATEGY_H
 
-#include "Solution.h"
 #include "Options.h"
 #include "SchedulingResult.h"
 #include "litenode.h"

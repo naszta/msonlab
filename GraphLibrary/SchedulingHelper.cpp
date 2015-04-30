@@ -6,11 +6,11 @@
 #include <iomanip>
 
 #include "Options.h"
-#include "Solution.h"
 
 namespace msonlab { namespace scheduling {
 	using std::pair;
 	using std::make_pair;
+	using std::vector;
 
 	typedef pair<unsigned, unsigned> puu;
 

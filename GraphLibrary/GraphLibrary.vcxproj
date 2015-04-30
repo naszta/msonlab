@@ -113,7 +113,6 @@
     <ClCompile Include="SchedulingAlgorithmBuilder.cpp" />
     <ClCompile Include="SchedulingHelper.cpp" />
     <ClCompile Include="SchedulingResult.cpp" />
-    <ClCompile Include="Solution.cpp" />
     <ClCompile Include="DFSIterator.cpp" />
     <ClCompile Include="Edge.cpp" />
     <ClCompile Include="FitnessStrategy.cpp">
@@ -169,7 +168,6 @@
     <ClInclude Include="SchedulingAlgorithmBuilder.h" />
     <ClInclude Include="SchedulingHelper.h" />
     <ClInclude Include="SchedulingResult.h" />
-    <ClInclude Include="Solution.h" />
     <ClInclude Include="ConfigFile.h" />
     <ClInclude Include="DFSIterator.h" />
     <ClInclude Include="Edge.h" />
