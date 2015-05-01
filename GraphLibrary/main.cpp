@@ -119,7 +119,7 @@ int old_main(int argc, char *argv[])
 	try {
 		if (alg != nullptr) {
 			best = alg->schedule(graph, options);
-			best->printSolution(std::cout);
+			write_mapping_scheduling(*best, std::cout);
 		}
 		else
 			std::cout << "Algorithm not found." << std::endl;

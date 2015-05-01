@@ -42,6 +42,9 @@ namespace msonlab { namespace scheduling {
 
 	template<typename SolutionType>
 	void write_solution(const SolutionType &solution, const Options& options, std::ostream& os);
+
+	template<typename SolutionType>
+	void write_mapping_scheduling(const SolutionType&, std::ostream&);
 }}
 
 #include "SchedulingHelper.cpp"

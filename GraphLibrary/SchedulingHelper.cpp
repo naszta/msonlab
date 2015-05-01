@@ -342,4 +342,23 @@ namespace msonlab { namespace scheduling {
 		}
 		os << std::endl;
 	}
+
+	template<typename SolutionType>
+	void write_mapping_scheduling(const SolutionType& solution, std::ostream& os) {
+		const auto& mapping = solution.mapping();
+		const auto& scheduling = solution.scheduling();
+		for (size_t i = 0; i < mapping.size(); ++i)
+		{
+			os << mapping[i] << " ";
+		}
+
+		os << " | ";
+
+		for (size_t i = 0; i < scheduling.size(); ++i)
+		{
+			os << scheduling[i]->id() << " ";
+		}
+
+		os << "| length = " << solution.fitness() << std::endl;
+	}
 }}
