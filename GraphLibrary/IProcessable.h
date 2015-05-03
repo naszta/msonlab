@@ -14,6 +14,7 @@ namespace msonlab
 {
 	class Node;
 	class Edge;
+	class Graph;
 	class IProcessable;
 	namespace lite {
 		class litenode;
@@ -32,9 +33,15 @@ namespace msonlab
 	typedef std::shared_ptr<Edge> EdgePtr;
 	typedef vector<std::shared_ptr<Edge>> EdgeVect;
 
+	namespace graph {
+		namespace algorithms {
+		Graph computeChangedGraph(const Graph &graph, NodeSet changed, NodeSet needed);
+	}}
+
 	class IProcessable
 	{
 		friend class Graph;
+		friend Graph graph::algorithms::computeChangedGraph(const Graph &graph, NodeSet changed, NodeSet needed);
 	protected:
 		unsigned int _id;
 		types::LabelType label;

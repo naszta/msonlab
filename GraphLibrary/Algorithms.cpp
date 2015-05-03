@@ -127,6 +127,11 @@ namespace msonlab {
 
 				// collecting modified nodes
 				Graph changedgraph;
+				EdgeVect newEdges;
+				NodeVect newNodes;
+				// mapping the old node id-s to the new one
+				vector<unsigned> idMapping(graph.order(), graph.order()+1);
+				unsigned id_counter = 0;
 
 				while (!toVisit.empty())
 				{
@@ -144,16 +149,39 @@ namespace msonlab {
 					} while (visited.count(node) > 0);
 
 					EdgeVect neighbours = node->getPredecessors();
-					for (eIt = neighbours.begin(); eIt != neighbours.end(); ++eIt)
+					for (const auto& edge : neighbours)
 					{
-						if (changed.count((*eIt)->getTo()) == 0)
+						if (changed.count(edge->getTo()) == 0)
 						{
-							changedgraph.addEdge(*eIt);
+							NodePtr to = nullptr;
+							if (idMapping[edge->getToId()] > graph.order()) {
+								// new node not yet created
+								to = edge->getTo()->clone();
+								to->_id = id_counter++;
+								newNodes.push_back(to);
+								idMapping[edge->getToId()] = to->id();
+							}
+							else {
+								to = newNodes[idMapping[edge->getToId()]];
+							}
+							NodePtr from = nullptr;
+							if (idMapping[edge->getFromId()] > graph.order()) {
+								// new node not yet created
+								from = edge->getFrom()->clone();
+								from->_id = id_counter++;
+								newNodes.push_back(from);
+								idMapping[edge->getFromId()] = from->id();
+							}
+							else {
+								from = newNodes[idMapping[edge->getFromId()]];
+							}
+							auto newEdge = std::make_shared<Edge>(edge->id(), edge->getLabel(), edge->getValue(), from, to);
+							changedgraph.addEdge(newEdge);
 						}
 
-						if (modified.count((*eIt)->getFrom()) > 0)
+						if (modified.count(edge->getFrom()) > 0)
 						{
-							toVisit.push((*eIt)->getFrom());
+							toVisit.push(edge->getFrom());
 						}
 
 					}

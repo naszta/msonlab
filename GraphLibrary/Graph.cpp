@@ -48,28 +48,22 @@ namespace msonlab
 		_nodes[id] = toAdd;
 
 		return true;
-
-		/*msonlab::NodeVect::iterator it;
-		it = std::find(_nodes.begin(), _nodes.end(), toAdd);
-
-		if (it != _nodes.end())
-			return false;
-
-		it = _nodes.insert(_nodes.end(), toAdd);
-
-		if (*it == toAdd)
-			return true;
-		else
-		{
-			throw Exceptions::FailedToAddNodeException("Failed to add the node to the graph!");
-			return false;
-		}*/
 	}
+
+	struct id_compare : public std::unary_function<EdgePtr, bool>
+	{
+		explicit id_compare(unsigned baseid) : baseid(baseid) {}
+		bool operator() (const EdgePtr &arg)
+		{
+			return baseid == arg->id();
+		}
+		unsigned baseid;
+	};
 
 	bool Graph::addEdge(EdgePtr toAdd)
 	{
 		msonlab::EdgeVect::iterator it;
-		it = std::find(_edges.begin(), _edges.end(), toAdd);
+		it = std::find_if(_edges.begin(), _edges.end(), id_compare(toAdd->id()));
 
 		if (it != _edges.end())
 			return false;
