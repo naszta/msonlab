@@ -161,7 +161,6 @@ namespace msonlab
 
 	}
 
-
 	// exchange
 
 	DOMElement* Edge::serialize(DOMDocument* xmlDocument, std::string yedDataKeyName, std::string typeKeyName, std::string customDataKey)

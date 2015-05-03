@@ -3,8 +3,8 @@
   * Date: 2014.07.17 13:21
   * Author: Zoltan
   */
-#ifndef GRAPHLIB_SCHEDULINGHELPER_H
-#define GRAPHLIB_SCHEDULINGHELPER_H
+#ifndef GRAPHLIB_SCHEDULINGUTILS_H
+#define GRAPHLIB_SCHEDULINGUTILS_H
 
 #include <vector>
 
@@ -35,6 +35,7 @@ namespace msonlab { namespace scheduling {
 		vector<unsigned>& ST, vector<unsigned>& RT);
 
 	template<typename SolutionType>
+
 	unsigned computeLengthAndReuseIdleTime(SolutionType& solution, const Options& options);
 
 	template<typename SolutionType>
@@ -47,6 +48,6 @@ namespace msonlab { namespace scheduling {
 	void write_mapping_scheduling(const SolutionType&, std::ostream&);
 }}
 
-#include "SchedulingHelper.cpp"
+#include "SchedulingUtils.cpp"
 
 #endif

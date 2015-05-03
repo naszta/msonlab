@@ -1,5 +1,5 @@
 #include "FitnessStrategy.h"
-#include "SchedulingHelper.h"
+#include "SchedulingUtils.h"
 #include <algorithm>
 #include <numeric>
 
@@ -32,8 +32,9 @@ namespace msonlab { namespace scheduling {
 	unsigned int RescheduleIdleTimeFitnessStartegy::fitness(const SchedulingResult<const lite::litenode*> &solution, const Options& options) const
 	{
 		// this must change the solution, that could be problematic, think about it ...
-		//Solution &s = const_cast<Solution &>(solution);
-		//return msonlab::scheduling::computeLengthAndReuseIdleTime<Solution>(s, *options);
+		// a result should only be accessed from one thread at a time.
+		SchedulingResult<const lite::litenode*>&s = const_cast<SchedulingResult<const lite::litenode*>&>(solution);
+		return msonlab::scheduling::computeLengthAndReuseIdleTime(s, options);
 			
 		return 0;
 	}

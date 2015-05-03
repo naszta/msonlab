@@ -13,8 +13,7 @@
 #include "tbb\task_scheduler_init.h"
 #include "tbb\task.h"
 
-//temp
-#include "SchedulingHelper.h"
+#include "SchedulingUtils.h"
 
 namespace msonlab { namespace scheduling {
 
@@ -93,7 +92,7 @@ namespace msonlab { namespace scheduling {
 			}
 		}
 			
-		auto result = std::make_shared<SchedulingResult<const lite::litenode*>>(mapping, scheduling);
+		auto result = std::make_shared<SchedulingResult<const lite::litenode*>>(mapping, scheduling, 0, options.getNumberOfPus());
 		fitness(result, options);
 		return result;
 	}
@@ -114,12 +113,14 @@ namespace msonlab { namespace scheduling {
 		bool doOrderCrossover = options.getFitnessStrategy().compare("reschedule") != 0;
 		if (options.isParallel()) {
 			for (size_t i = 0; i < options.getNumberOfYears(); ++i) {
+				//DEBUGLN("Round " << i << " Best: " << set->best()->fitness());
 				parallelSimulateMating(set, options.getPopMaxSize(), doOrderCrossover, options);
 				set->limit();
 			}
 		}
 		else {
 			for (size_t i = 0; i < options.getNumberOfYears(); ++i) {
+				//DEBUGLN("Round " << i << " Best: " << set->best()->fitness());
 				simulateMating(set, options.getPopMaxSize(), doOrderCrossover, options);
 				set->limit();
 			}
@@ -140,7 +141,7 @@ namespace msonlab { namespace scheduling {
 			}
 		}
 
-		return std::make_shared<SchedulingResult<const NodePtr>>(best->mapping(), scheduling, best->fitness());
+		return std::make_shared<SchedulingResult<const NodePtr>>(best->mapping(), scheduling, best->fitness(), options.getNumberOfPus());
 	}
 
 	SolutionSetPtr GeneticAlgorithm::generateInitialSolution(const lite::litegraph &graph, const Options &options) const
@@ -187,7 +188,7 @@ namespace msonlab { namespace scheduling {
 
 		// add a greedy solution to the set
 		auto greedy_solution = this->greedySolution(graph, options);
-
+		set->addOffspring(greedy_solution);
 		// create first solution
 		auto result = std::make_shared<SchedulingResult<const lite::litenode*>>(options.getNumberOfPus(), graph.order());
 		size_t currentLevelSize = 0;
@@ -210,13 +211,13 @@ namespace msonlab { namespace scheduling {
 			currentLevelSize += levels[i - 1].size();
 		}
 			
-		auto initialFitness = fitness(result, options);
+		auto initialFitness = fitness(greedy_solution, options);
 		DEBUGLN("SolutionSet created. Initial fitness : " << initialFitness);
 		set->addOffspring(result);
 		set->setLevelSize(levelingLimits);
 
 		// the number of solutions to generate
-		counter = options.getPopMaxSize() - 1;
+		counter = options.getPopMaxSize() - 2;
 		const size_t num_nodes = graph.order();
 		for (; counter > 0; --counter)
 		{
@@ -246,8 +247,8 @@ namespace msonlab { namespace scheduling {
 	SolutionSetPtr GeneticAlgorithm::generateCPSolution(const lite::litegraph &graph, const Options &options) const {
 		// TODO: refactor this method
 		//cVect solution;
-		//auto set = std::make_shared<SolutionSet>(options.getKeepSize(), options.getPopMaxSize(), options.getKeepBest());
-		//CriticalPathSchedulingAlgorithm cpAlg;
+		auto set = std::make_shared<SolutionSet>(options.getKeepSize(), options.getPopMaxSize(), options.getKeepBest());
+		CriticalPathSchedulingAlgorithm cpAlg;
 		//auto greedy = greedySolution(graph);
 		//set->addOffspring(greedy);
 		//SolutionPtr cpC = nullptr;
@@ -361,7 +362,7 @@ namespace msonlab { namespace scheduling {
 	/// @param offsprings The number of offsprings to generate.
 	void GeneticAlgorithm::simulateMating(const SolutionSetPtr& set, int offsprings, bool doOrderCrossover, const Options& options) const
 	{
-		for (; offsprings > 0; --offsprings)
+		for (; offsprings > 0;)
 		{
 			auto father = set->getParent();
 			auto mother = set->getParent();
@@ -374,25 +375,22 @@ namespace msonlab { namespace scheduling {
 				offspring = crossoverOrder(father, mother, set->getLevels());
 			}
 
-			if (static_cast<unsigned>(rand() % 100) < options.getMapMutationRate()) {
-				mutateMapping(offspring);
-			}
+			for (unsigned i = 0; i < offspring->size() / 20; ++i) {
+				if (static_cast<unsigned>(rand() % 100) < options.getMapMutationRate()) {
+					mutateMapping(offspring);
+				}
 
-			if (static_cast<unsigned>(rand() % 100) < options.getScheduleMutationRate()) {
-				mutateSheduling(offspring, set->getLevels());
-			}
+				if (static_cast<unsigned>(rand() % 100) < options.getScheduleMutationRate()) {
+					mutateSheduling(offspring, set->getLevels());
+				}
 
-			if (!is_correct(*offspring)){
-				cout << "Error" << endl;
 			}
 				
 			unsigned cost = fitness(offspring, options);
-			if (cost == UINT32_MAX) {
-				cout << "Error" << endl;
-			}
 			// cost is UINT32_MAX it has a defect
 			if (cost < UINT32_MAX) {
 				set->addOffspring(offspring);
+				--offsprings;
 			}
 		}
 	}

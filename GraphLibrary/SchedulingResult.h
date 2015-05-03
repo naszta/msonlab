@@ -20,11 +20,14 @@ namespace msonlab { namespace scheduling {
 	class SchedulingResult
 	{
 	public:
+
+		using node_type = NodeType;
+
 		// constructors
 		SchedulingResult(unsigned pus_, unsigned tasks_);
 		SchedulingResult(const vector<NodeType> &scheduling_);
-		SchedulingResult(const vector<unsigned> &mapping_, const vector<NodeType> &scheduling_, unsigned fitness_ = 0);
-		SchedulingResult(vector<unsigned>&& mapping_, vector<NodeType> &&scheduling_, unsigned fitness_ = 0);
+		SchedulingResult(const vector<unsigned> &mapping_, const vector<NodeType> &scheduling_, unsigned fitness_, unsigned pus_);
+		SchedulingResult(vector<unsigned>&& mapping_, vector<NodeType> &&scheduling_, unsigned fitness_, unsigned pus_);
 		SchedulingResult(const SchedulingResult<NodeType> &result_) = default;
 		SchedulingResult(const SchedulingResult<NodeType> &&result_);
 
@@ -76,20 +79,20 @@ namespace msonlab { namespace scheduling {
 	//template
 
 	template < typename NodeType >
-	SchedulingResult<NodeType>::SchedulingResult(const vector<unsigned>& mapping_, const vector<NodeType> &scheduling_, unsigned fitness_)
-		: _mapping(mapping_), _scheduling(scheduling_), _fitness(fitness_), _pus(mapping_.size())
+	SchedulingResult<NodeType>::SchedulingResult(const vector<unsigned>& mapping_, const vector<NodeType> &scheduling_, unsigned fitness_, unsigned pus_)
+		: _mapping(mapping_), _scheduling(scheduling_), _fitness(fitness_), _pus(pus_)
 	{
 	}
 
 	template < typename NodeType >
-	SchedulingResult<NodeType>::SchedulingResult(vector<unsigned> &&mapping_, vector<NodeType> &&scheduling_, unsigned fitness_)
-		: _mapping(mapping_), _scheduling(scheduling_), _fitness(fitness_), _pus(mapping_.size())
+	SchedulingResult<NodeType>::SchedulingResult(vector<unsigned> &&mapping_, vector<NodeType> &&scheduling_, unsigned fitness_, unsigned pus_)
+		: _mapping(mapping_), _scheduling(scheduling_), _fitness(fitness_), _pus(pus_)
 	{
 	}
 
 	template < typename NodeType >
 	SchedulingResult<NodeType>::SchedulingResult(const SchedulingResult<NodeType> &&result_)
-		: _mapping(result_.mapping), _scheduling(result_.scheduling), _fitness(result_.fitness), _pus(result_.mapping.size())
+		: _mapping(result_.mapping), _scheduling(result_.scheduling), _fitness(result_.fitness), _pus(result_._pus)
 	{
 	}
 

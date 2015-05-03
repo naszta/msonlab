@@ -3,7 +3,7 @@
 #include "ListSchedulingAlgorithm.h"
 #include "Algorithms.h"
 #include "SchedulingResult.h"
-#include "SchedulingHelper.h"
+#include "SchedulingUtils.h"
 #include "litegraph.h"
 #include "litenode.h"
 
@@ -30,7 +30,7 @@ namespace msonlab { namespace scheduling {
 	SchedulingResultPtr<const NodePtr> ListSchedulingAlgorithm::schedule(const Graph &hwgraph, const Options &options) const
 	{
 		if (hwgraph.order() == 0) {
-			return std::make_shared<SchedulingResult<const NodePtr>>(vector < unsigned > {}, vector < const NodePtr > {}, 0);
+			return std::make_shared<SchedulingResult<const NodePtr>>(vector < unsigned > {}, vector < const NodePtr > {}, 0, options.getNumberOfPus());
 		}
 
 		litegraph graph(hwgraph);
@@ -94,7 +94,7 @@ namespace msonlab { namespace scheduling {
 
 		// find last finish time
 		auto last_finish = *std::max_element(begin(FT), end(FT));
-		return std::make_shared<SchedulingResult<const NodePtr>>(std::move(mapping), std::move(scheduling), last_finish);
+		return std::make_shared<SchedulingResult<const NodePtr>>(std::move(mapping), std::move(scheduling), last_finish, options.getNumberOfPus());
 	}
 
 	SchedulingAlgorithmPtr ListSchedulingAlgorithm::build(const Options& opt) const {

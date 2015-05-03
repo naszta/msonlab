@@ -64,8 +64,6 @@ namespace msonlab
 		{
 			throw msonlab::Exceptions::StillNotReadyForProcessException("This processable element is not yet ready for processing!");
 		}
-
-		return ret;
 	}
 
 	// compile

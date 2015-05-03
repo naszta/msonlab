@@ -1,4 +1,3 @@
-//#include "SchedulingHelper.h"
 #include <vector>
 #include <ostream>
 #include <stdexcept>
@@ -122,7 +121,7 @@ namespace msonlab { namespace scheduling {
 	}
 
 	template<typename SolutionType>
-	unsigned int computeLengthAndReuseIdleTime(SolutionType &solution, const Options& options)
+	unsigned int computeLengthAndReuseIdleTime(SolutionType& solution, const Options& options)
 	{
 		typedef unsigned int uint;
 
@@ -130,7 +129,7 @@ namespace msonlab { namespace scheduling {
 		// const vector references
 		const vector<unsigned>& mapping = solution.mapping();
 		const vector<const lite::litenode*>& scheduling = solution.scheduling();
-		auto tasks = scheduling.size();
+		const auto tasks = scheduling.size();
 		vector<uint> ST(tasks); // start time of the tasks
 		vector<uint> FT(tasks); // finish time of the tasks
 		vector<uint> RT(options.getNumberOfPus()); // ready time of the pus
@@ -140,7 +139,7 @@ namespace msonlab { namespace scheduling {
 		// start the with the first node in the list
 		uint actId = scheduling[0]->id();
 		ST[actId] = 0; // start time is 0
-		FT[actId] = ST[actId] + scheduling[0]->cptime(); // task length, TODO: create a distribution
+		FT[actId] = ST[actId] + scheduling[0]->cptime(); // task length
 		idPuMapping[actId] = mapping[0];
 		RT[mapping[0]] = FT[actId];
 
@@ -260,11 +259,16 @@ namespace msonlab { namespace scheduling {
 		// sort taks by start time
 		std::sort(STS.begin(), STS.end());
 
+		using NodeType = typename SolutionType::node_type;
+
+		vector<unsigned> new_mapping(tasks);
+		vector<NodeType> new_scheduling(tasks);
+
 		// updating the scheduling and mapping
 		for (size_t i = 0; i < tasks; ++i)
 		{
-			solution._scheduling[i] = nodes[STS[i].second];
-			solution._mapping[i] = idPuMapping[STS[i].second];
+			new_scheduling[i] = nodes[STS[i].second];
+			new_mapping[i] = idPuMapping[STS[i].second];
 		}
 
 		return length;

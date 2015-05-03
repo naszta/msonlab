@@ -4,6 +4,7 @@
 #include <set>
 #include <map>
 #include <memory>
+#include <climits>
 
 namespace msonlab {
 	namespace graph {
@@ -174,10 +175,10 @@ namespace msonlab {
 
 			unsigned findMaxCostWithoutDependency(const vector<int>& dependencies, const vector<unsigned>& costs)
 			{
-				unsigned id = -1;
+				unsigned id = UINT_MAX;
 				unsigned max = 0;
 				for (unsigned i = 0; i < costs.size(); ++i) {
-					if (dependencies[i] == 0 && (id == -1 || costs[i] > max)) {
+					if (dependencies[i] == 0 && (id == UINT_MAX || costs[i] > max)) {
 						id = i;
 						max = costs[i];
 					}
@@ -185,19 +186,6 @@ namespace msonlab {
 
 				return id;
 			}
-
-			// sets the number of dependencies of each node in to the passed vector
-			//template <class GraphType>
-			//void createDependencyVector(const GraphType &graph, vector<int>& dependencies)
-			//{
-			//	if (dependencies.size() != graph.order()) {
-			//		dependencies.resize(graph.order());
-			//	}
-
-			//	for (auto node : graph.nodes()) {
-			//		dependencies[node.id()] = static_cast<int>(node.p_size());
-			//	}
-			//}
 
 			void list_nodes(const Graph &graph, vector<NodePtr>& nodes) {
 				if (nodes.size() != graph.order()) {

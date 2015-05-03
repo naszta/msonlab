@@ -1,6 +1,6 @@
 #include "GreedySchedulingAlgorithm.h"
 #include "litegraph.h"
-#include "SchedulingHelper.h"
+#include "SchedulingUtils.h"
 #include <map>
 #include <queue>
 #include <deque>
@@ -12,7 +12,7 @@ namespace msonlab { namespace scheduling {
 	SchedulingResultPtr<const NodePtr> GreedySchedulingAlgorithm::schedule(const Graph &graph, const Options &options) const
 	{
 		if (graph.order() == 0) {
-			return std::make_shared<SchedulingResult<const NodePtr>>(vector < unsigned > {}, vector < const NodePtr > {}, 0);
+			return std::make_shared<SchedulingResult<const NodePtr>>(vector < unsigned > {}, vector < const NodePtr > {}, 0, options.getNumberOfPus());
 		}
 
 		litegraph liteg(graph);
@@ -74,7 +74,7 @@ namespace msonlab { namespace scheduling {
 		}
 
 		// calculate fitness here
-		auto result = std::make_shared<SchedulingResult<const NodePtr>>(std::move(mapping), std::move(scheduling), 0);
+		auto result = std::make_shared<SchedulingResult<const NodePtr>>(std::move(mapping), std::move(scheduling), 0, options.getNumberOfPus());
 		auto length = computeLength<SchedulingResult<const NodePtr>>(*result, options);
 		result->fitness(length);
 		return result;

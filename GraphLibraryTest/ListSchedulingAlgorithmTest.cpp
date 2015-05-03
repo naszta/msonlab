@@ -6,7 +6,7 @@
 #include "../GraphLibrary/Graph.h"
 #include "../GraphLibrary/GraphCreator.h"
 #include "../GraphLibrary/ListSchedulingAlgorithm.h"
-#include "../GraphLibrary/SchedulingHelper.h"
+#include "../GraphLibrary/SchedulingUtils.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace msonlab;
@@ -77,10 +77,10 @@ namespace GraphLibraryTest
 
 			auto expected = graph.order();
 			Assert::AreEqual(expected, result->size(), L"Result's size and graph order not equal", LINE_INFO());
-			unsigned expected_fitness = 52;
+			unsigned expected_fitness = 48;
 			Assert::AreEqual(expected_fitness, result->fitness(), L"Result's fitness is not the expected.", LINE_INFO());
 
-			Assert::AreEqual(vector < unsigned > {0, 1, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0},
+			Assert::AreEqual(vector < unsigned > {0, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1},
 				result->mapping(), L"Result's mapping is not empty.", LINE_INFO());
 		}
 

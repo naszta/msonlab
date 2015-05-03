@@ -46,9 +46,7 @@
     <LinkIncremental>true</LinkIncremental>
     <TargetExt>.lib</TargetExt>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <TargetExt>.lib</TargetExt>
-  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level4</WarningLevel>
@@ -111,7 +109,7 @@
     <ClCompile Include="NodeTest.cpp" />
     <ClCompile Include="SchedulingAlgorithm.cpp" />
     <ClCompile Include="SchedulingAlgorithmBuilder.cpp" />
-    <ClCompile Include="SchedulingHelper.cpp" />
+    <ClCompile Include="SchedulingUtils.cpp" />
     <ClCompile Include="SchedulingResult.cpp" />
     <ClCompile Include="DFSIterator.cpp" />
     <ClCompile Include="Edge.cpp" />
@@ -166,7 +164,7 @@
     <ClInclude Include="litenode.h" />
     <ClInclude Include="NodeTest.h" />
     <ClInclude Include="SchedulingAlgorithmBuilder.h" />
-    <ClInclude Include="SchedulingHelper.h" />
+    <ClInclude Include="SchedulingUtils.h" />
     <ClInclude Include="SchedulingResult.h" />
     <ClInclude Include="ConfigFile.h" />
     <ClInclude Include="DFSIterator.h" />

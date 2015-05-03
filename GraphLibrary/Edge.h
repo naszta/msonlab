@@ -2,7 +2,6 @@
 #include "Global.h"
 #include "IProcessable.h"
 
-
 namespace msonlab
 {
 	class Edge : public IProcessable
@@ -13,6 +12,8 @@ namespace msonlab
 	protected:
 		NodePtr from;
 		NodePtr to;
+		//std::weak_ptr<Node> from;
+		//std::weak_ptr<Node> to;
 
 		bool paramReady;
 

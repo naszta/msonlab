@@ -11,6 +11,7 @@ namespace msonlab {
 			Graph createQuadrant();
 			Graph createSample();
 			Graph createTest();
+			Graph createOneEdge();
 			Graph createCoffmanExample(unsigned);
 		}
 	}

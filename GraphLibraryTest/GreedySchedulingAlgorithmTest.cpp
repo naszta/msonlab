@@ -6,7 +6,7 @@
 #include "../GraphLibrary/Graph.h"
 #include "../GraphLibrary/GraphCreator.h"
 #include "../GraphLibrary/GreedySchedulingAlgorithm.h"
-#include "../GraphLibrary/SchedulingHelper.h"
+#include "../GraphLibrary/SchedulingUtils.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace msonlab;

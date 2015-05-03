@@ -250,6 +250,14 @@ namespace msonlab {
 				return std::move(graph);
 			}
 
+			Graph createOneEdge() {
+				auto data = make_shared<types::DataType>(4);
+				auto a = make_shared<msonlab::NodeConstant>(0, L"a", data);
+				auto b = make_shared<msonlab::NodeConstant>(1, L"b", data);
+				auto e1 = make_shared<msonlab::Edge>(9, L"e1", data, a, b);
+				return Graph{ e1 };
+			}
+
 			Graph createSample() {
 				msonlab::NodePtr a(new msonlab::NodeConstant(0, L"a", make_shared<types::DataType>(2)));
 				msonlab::NodePtr b(new msonlab::NodeConstant(1, L"b", make_shared<types::DataType>(3)));

@@ -141,9 +141,6 @@
     <ClInclude Include="SolutionSet.h">
       <Filter>Header Files\Scheduling\Genetic</Filter>
     </ClInclude>
-    <ClInclude Include="SchedulingHelper.h">
-      <Filter>Header Files\Scheduling</Filter>
-    </ClInclude>
     <ClInclude Include="FitnessStrategy.h">
       <Filter>Header Files\Scheduling\Genetic</Filter>
     </ClInclude>
@@ -188,6 +185,9 @@
     </ClInclude>
     <ClInclude Include="litenode.h">
       <Filter>Header Files\lite</Filter>
+    </ClInclude>
+    <ClInclude Include="SchedulingUtils.h">
+      <Filter>Header Files\Scheduling</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -269,9 +269,6 @@
     <ClCompile Include="SolutionSet.cpp">
       <Filter>Source Files\Scheduling\Genetic</Filter>
     </ClCompile>
-    <ClCompile Include="SchedulingHelper.cpp">
-      <Filter>Source Files\Scheduling</Filter>
-    </ClCompile>
     <ClCompile Include="FitnessStrategy.cpp">
       <Filter>Source Files\Scheduling\Genetic</Filter>
     </ClCompile>
@@ -316,6 +313,9 @@
     </ClCompile>
     <ClCompile Include="litenode.cpp">
       <Filter>Source Files\lite</Filter>
+    </ClCompile>
+    <ClCompile Include="SchedulingUtils.cpp">
+      <Filter>Source Files\Scheduling</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
