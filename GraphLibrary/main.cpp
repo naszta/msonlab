@@ -19,7 +19,7 @@
 XERCES_CPP_NAMESPACE_USE
 
 #define MEASURE 1
-#define WAIT 1
+#define WAIT 0
 
 using namespace msonlab;
 using namespace msonlab::scheduling;
@@ -55,8 +55,8 @@ int main(int argc, char *argv[])
 	Options::oPtr options = std::make_shared<const Options>("Options.cfg");
 
 	// get graph
-	//Graph graph = initRandomGraph(options);
-	auto graph = initGraph();
+	Graph graph = initRandomGraph(options);
+	//auto graph = initGraph();
 
 	// choosing algorithm
 	SchedulingAlgorithm::ptr alg = SchedulingAlgorithm::find_sceduling_algorithm(options);
