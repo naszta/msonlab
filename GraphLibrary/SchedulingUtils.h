@@ -35,8 +35,7 @@ namespace msonlab { namespace scheduling {
 		vector<unsigned>& ST, vector<unsigned>& RT);
 
 	template<typename SolutionType>
-
-	unsigned computeLengthAndReuseIdleTime(SolutionType& solution, const Options& options);
+	SolutionType computeLengthAndReuseIdleTime(SolutionType& solution, const Options& options);
 
 	template<typename SolutionType>
 	bool is_correct(const SolutionType &sol);

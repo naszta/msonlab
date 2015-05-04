@@ -25,7 +25,7 @@ namespace msonlab {	namespace scheduling {
 	{
 		static vector<FitnessStrategy*> examplars;
 	public:
-		virtual unsigned int fitness(const SchedulingResult<const lite::litenode*> &SolutionType, const Options& options) const = 0;
+		virtual unsigned int fitness(SchedulingResult<const lite::litenode*> &SolutionType, const Options& options) const = 0;
 		virtual FSPtr build(string name) const = 0;
 
 		static void add_fitness_strategy(FitnessStrategy* fs) { examplars.push_back(fs); }
@@ -44,7 +44,7 @@ namespace msonlab {	namespace scheduling {
 	public:
 		LengthFitnessStartegy() = default;
 		LengthFitnessStartegy(Examplar) { FitnessStrategy::add_fitness_strategy(this); }
-		unsigned int fitness(const SchedulingResult<const lite::litenode*> &solution, const Options& options) const;
+		unsigned int fitness(SchedulingResult<const lite::litenode*> &solution, const Options& options) const;
 		FSPtr build(string name) const; 
 	};
 
@@ -53,8 +53,9 @@ namespace msonlab {	namespace scheduling {
 	{
 		static RescheduleIdleTimeFitnessStartegy example;
 	public:
+		RescheduleIdleTimeFitnessStartegy() = default;
 		RescheduleIdleTimeFitnessStartegy(Examplar) { FitnessStrategy::add_fitness_strategy(this); }
-		virtual unsigned int fitness(const SchedulingResult<const lite::litenode*> &solution, const Options& options) const;
+		virtual unsigned int fitness(SchedulingResult<const lite::litenode*> &solution, const Options& options) const;
 		virtual FSPtr build(string name) const;
 	};
 
@@ -63,7 +64,7 @@ namespace msonlab {	namespace scheduling {
 		static PUUsageFitnessStrategy example;
 	public:
 		PUUsageFitnessStrategy(Examplar) { FitnessStrategy::add_fitness_strategy(this); }
-		virtual unsigned int fitness(const SchedulingResult<const lite::litenode*> &solution, const Options& options) const;
+		virtual unsigned int fitness(SchedulingResult<const lite::litenode*> &solution, const Options& options) const;
 		virtual FSPtr build(string name) const;
 	};
 
@@ -72,7 +73,7 @@ namespace msonlab {	namespace scheduling {
 		static LoadBalanceFitnessStrategy example;
 	public:
 		LoadBalanceFitnessStrategy(Examplar) { FitnessStrategy::add_fitness_strategy(this); }
-		virtual unsigned int fitness(const SchedulingResult<const lite::litenode*> &solution, const Options& options) const;
+		virtual unsigned int fitness(SchedulingResult<const lite::litenode*> &solution, const Options& options) const;
 		virtual FSPtr build(string name) const;
 	};
 

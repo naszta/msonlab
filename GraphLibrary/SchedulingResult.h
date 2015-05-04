@@ -63,6 +63,8 @@ namespace msonlab { namespace scheduling {
 		unsigned _pus;
 
 		// scheduling algorithms for setting the result
+		friend class FitnessStrategy;
+		friend class RescheduleIdleTimeFitnessStartegy;
 		friend class GeneticAlgorithm;
 		friend class GreedySchedulingAlgorithm;
 		friend class ListSchedulingAlgorithm;
@@ -92,7 +94,7 @@ namespace msonlab { namespace scheduling {
 
 	template < typename NodeType >
 	SchedulingResult<NodeType>::SchedulingResult(const SchedulingResult<NodeType> &&result_)
-		: _mapping(result_.mapping), _scheduling(result_.scheduling), _fitness(result_.fitness), _pus(result_._pus)
+		: _mapping(std::move(result_._mapping)), _scheduling(std::move(result_._scheduling)), _fitness(result_._fitness), _pus(result_._pus)
 	{
 	}
 

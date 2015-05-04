@@ -11,44 +11,44 @@ namespace msonlab { namespace scheduling {
 	vector<FitnessStrategy*> FitnessStrategy::examplars;
 		
 	LengthFitnessStartegy LengthFitnessStartegy::example{ Examplar{} };
-	//RescheduleIdleTimeFitnessStartegy RescheduleIdleTimeFitnessStartegy::example{ Examplar() };
+	RescheduleIdleTimeFitnessStartegy RescheduleIdleTimeFitnessStartegy::example{ Examplar{} };
 	PUUsageFitnessStrategy PUUsageFitnessStrategy::example{ Examplar{} };
 	LoadBalanceFitnessStrategy LoadBalanceFitnessStrategy::example{ Examplar{} };
 
 
-	unsigned int LengthFitnessStartegy::fitness(const SchedulingResult<const lite::litenode*> &solution, const Options& options) const {
+	unsigned int LengthFitnessStartegy::fitness(SchedulingResult<const lite::litenode*> &solution, const Options& options) const {
 		return computeLength<SchedulingResult<const lite::litenode*>>(solution, options);
 	}
 
 	FSPtr LengthFitnessStartegy::build(string name) const {
 		if (name.compare("length") == 0) {
 			DEBUGLN("LengthFitnessStrategy.");
-			return make_unique<LengthFitnessStartegy>(Examplar());
+			return make_unique<LengthFitnessStartegy>();
 		}
 
 		return nullptr;
 	}
 
-	unsigned int RescheduleIdleTimeFitnessStartegy::fitness(const SchedulingResult<const lite::litenode*> &solution, const Options& options) const
+	unsigned int RescheduleIdleTimeFitnessStartegy::fitness(SchedulingResult<const lite::litenode*> &solution, const Options& options) const
 	{
-		// this must change the solution, that could be problematic, think about it ...
-		// a result should only be accessed from one thread at a time.
-		SchedulingResult<const lite::litenode*>&s = const_cast<SchedulingResult<const lite::litenode*>&>(solution);
-		return msonlab::scheduling::computeLengthAndReuseIdleTime(s, options);
-			
-		return 0;
+		auto rescheduled = msonlab::scheduling::computeLengthAndReuseIdleTime(solution, options);
+		solution._mapping = std::move(rescheduled._mapping);
+		solution._scheduling = std::move(rescheduled._scheduling);
+		solution._fitness = rescheduled._fitness;
+		solution._pus = rescheduled._pus;
+		return solution.fitness();
 	}
 
 	FSPtr RescheduleIdleTimeFitnessStartegy::build(string name) const {
 		if (name.compare("reschedule") == 0) {
 			DEBUGLN("RescheduleIdleTimeFitnessStartegy.");
-			return make_unique<RescheduleIdleTimeFitnessStartegy>(Examplar());
+			return make_unique<RescheduleIdleTimeFitnessStartegy>();
 		}
 
 		return nullptr;
 	}
 
-	unsigned int PUUsageFitnessStrategy::fitness(const SchedulingResult<const lite::litenode*> &solution, const Options& options) const {
+	unsigned int PUUsageFitnessStrategy::fitness(SchedulingResult<const lite::litenode*> &solution, const Options& options) const {
 		unsigned length = computeLength(solution, options);
 
 		const auto &scheduling = solution.scheduling();
@@ -71,7 +71,7 @@ namespace msonlab { namespace scheduling {
 		return nullptr;
 	}
 
-	unsigned int LoadBalanceFitnessStrategy::fitness(const SchedulingResult<const lite::litenode*> &solution, const Options& options) const
+	unsigned int LoadBalanceFitnessStrategy::fitness(SchedulingResult<const lite::litenode*> &solution, const Options& options) const
 	{
 		vector<unsigned> RT(options.getNumberOfPus());
 		int length = computeLengthAndRT(solution, options, RT);

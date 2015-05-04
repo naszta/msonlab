@@ -121,7 +121,7 @@ namespace msonlab { namespace scheduling {
 	}
 
 	template<typename SolutionType>
-	unsigned int computeLengthAndReuseIdleTime(SolutionType& solution, const Options& options)
+	SolutionType computeLengthAndReuseIdleTime(SolutionType& solution, const Options& options)
 	{
 		typedef unsigned int uint;
 
@@ -155,6 +155,8 @@ namespace msonlab { namespace scheduling {
 			slots.push_back(vector<pair<uint, uint>>());
 		}
 
+		using NodeType = typename SolutionType::node_type;
+
 		// skipping first task, already computed
 		for (uint i = 1; i < tasks; ++i)
 		{
@@ -170,7 +172,8 @@ namespace msonlab { namespace scheduling {
 				uint id = n->id();
 				if (FT[id] == 0) {
 					// this solutuion is not good
-					return UINT32_MAX;
+					return SchedulingResult<NodeType>(vector <unsigned> {}, vector <NodeType> {}, UINT_MAX, options.getNumberOfPus());
+					//return UINT32_MAX;
 				}
 
 				// check dat for all pus, for possible reschedule
@@ -259,7 +262,7 @@ namespace msonlab { namespace scheduling {
 		// sort taks by start time
 		std::sort(STS.begin(), STS.end());
 
-		using NodeType = typename SolutionType::node_type;
+		
 
 		vector<unsigned> new_mapping(tasks);
 		vector<NodeType> new_scheduling(tasks);
@@ -271,7 +274,8 @@ namespace msonlab { namespace scheduling {
 			new_mapping[i] = idPuMapping[STS[i].second];
 		}
 
-		return length;
+		//solution._fitness = length;
+		return SchedulingResult<NodeType>(new_mapping, new_scheduling, length, options.getNumberOfPus());
 	}
 
 	// a helper method for development

@@ -81,7 +81,7 @@ int main(/*int argc, char *argv[]*/) {
 		}
 		{
 		std::cout << "genetic" << std::endl;
-		GeneticAlgorithm alg{ std::make_unique<LengthFitnessStartegy>() };
+		GeneticAlgorithm alg{ FitnessStrategy::find_fitness_strategy(options.getFitnessStrategy()) };
 		run(alg, graph, options);
 		}
 	}
