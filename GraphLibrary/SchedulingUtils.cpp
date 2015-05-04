@@ -173,7 +173,6 @@ namespace msonlab { namespace scheduling {
 				if (FT[id] == 0) {
 					// this solutuion is not good
 					return SchedulingResult<NodeType>(vector <unsigned> {}, vector <NodeType> {}, UINT_MAX, options.getNumberOfPus());
-					//return UINT32_MAX;
 				}
 
 				// check dat for all pus, for possible reschedule
@@ -194,7 +193,6 @@ namespace msonlab { namespace scheduling {
 			for (unsigned p = 0; p < options.getNumberOfPus(); ++p)
 			{
 				// the start time at pu p
-				//unsigned stp = std::max(RT[p], DAT[p][actId]);
 				for (auto pit = slots[p].begin(); pit != slots[p].end(); ++pit)
 				{
 					// possible first start in this idle time
@@ -261,8 +259,6 @@ namespace msonlab { namespace scheduling {
 
 		// sort taks by start time
 		std::sort(STS.begin(), STS.end());
-
-		
 
 		vector<unsigned> new_mapping(tasks);
 		vector<NodeType> new_scheduling(tasks);

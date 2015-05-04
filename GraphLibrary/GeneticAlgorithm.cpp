@@ -110,19 +110,35 @@ namespace msonlab { namespace scheduling {
 		SolutionSetPtr set = this->generateInitialSolution(liteg, options);
 		set->limit();
 
+		const unsigned MAX_LOAD = options.getPopMaxSize();
 		bool doOrderCrossover = options.getFitnessStrategy().compare("reschedule") != 0;
 		if (options.isParallel()) {
 			for (size_t i = 0; i < options.getNumberOfYears(); ++i) {
-				//DEBUGLN("Round " << i << " Best: " << set->best()->fitness());
+				DEBUGLN("Round " << i << " Best: " << set->best()->fitness() << " Ultimate: " << set->ultimate()->fitness() << " Avg: " << set->averageFittness());
 				parallelSimulateMating(set, options.getPopMaxSize(), doOrderCrossover, options);
 				set->limit();
+				if (set->last_improvement() >= options.maxRoundsWithoutImprovement()) {
+					vector<vector<const lite::litenode*>> levels;
+					graph::algorithms::constructLayeredOrder<lite::litegraph, const lite::litenode*>(liteg, levels);
+					for (int counter = 0; counter < MAX_LOAD; ++counter) {
+						set->addOffspring(createRandomSolution(liteg, options, levels));
+					}
+				}
 			}
 		}
 		else {
 			for (size_t i = 0; i < options.getNumberOfYears(); ++i) {
-				DEBUGLN("Round " << i << " Best: " << set->best()->fitness() << " Ultimate: " << set->ultimate()->fitness());
+				DEBUGLN("Round " << i << " Best: " << set->best()->fitness() << " Ultimate: " << set->ultimate()->fitness() << " Avg: " << set->averageFittness());
 				simulateMating(set, options.getPopMaxSize(), doOrderCrossover, options);
 				set->limit();
+				if (set->last_improvement() >= options.maxRoundsWithoutImprovement()) {
+					vector<vector<const lite::litenode*>> levels;
+					graph::algorithms::constructLayeredOrder<lite::litegraph, const lite::litenode*>(liteg, levels);
+					
+					for (int counter = 0; counter < MAX_LOAD; ++counter) {
+						set->addOffspring(createRandomSolution(liteg, options, levels));
+					}
+				}
 			}
 		}
 
@@ -166,6 +182,34 @@ namespace msonlab { namespace scheduling {
 		}
 
 		return p;
+	}
+
+
+	SchedulingResultPtr<const lite::litenode*> GeneticAlgorithm::createRandomSolution(const lite::litegraph &graph, const Options &options,
+		 vector<vector<const lite::litenode*>>& layers) const 
+	{
+		auto result = std::make_shared<SchedulingResult<const lite::litenode*>>(options.getNumberOfPus(), graph.order());
+		size_t currentLevelSize = 0;
+		// counter of the task in the mapping
+		unsigned counter = 0;
+		for (size_t i = layers.size(); i > 0; --i)
+		{
+			// set mapping for the level
+			for (size_t j = 0; j < layers[i - 1].size(); ++j)
+			{
+				// accessing private member
+				result->_mapping[counter] = j % result->pus();
+				++counter;
+			}
+
+			// random shuffle the level
+			std::random_shuffle(layers[i - 1].begin(), layers[i - 1].end());
+			std::copy(layers[i - 1].begin(), layers[i - 1].end(), result->_scheduling.begin() + currentLevelSize);
+			currentLevelSize += layers[i - 1].size();
+		}
+
+		fitness(result, options);
+		return result;
 	}
 
 	///
@@ -222,26 +266,8 @@ namespace msonlab { namespace scheduling {
 		// the number of solutions to generate
 		counter = options.getPopMaxSize() - set->size();
 		const size_t num_nodes = graph.order();
-		for (; counter > 0; --counter)
-		{
-			auto sol = std::make_shared<SchedulingResult<const lite::litenode*>>(options.getNumberOfPus(), graph.order());
-			for (unsigned int i = 0; i < num_nodes; ++i)
-			{
-				// accessing private member
-				sol->_mapping[i] = rand() % sol->pus();
-			}
-
-			size_t currentPos = 0;
-			for (size_t i = numLevels; i > 0; --i)
-			{
-				std::random_shuffle(levels[i - 1].begin(), levels[i - 1].end());
-				std::copy(levels[i - 1].begin(), levels[i - 1].end(), sol->_scheduling.begin() + currentPos);
-				currentPos += levels[i - 1].size();
-			}
-
-			fitness(sol, options);
-			DEBUGLN("Random fitness " << options.getPopMaxSize() - counter << ": " << sol->fitness());
-			set->addOffspring(sol);
+		for (; counter > 0; --counter) {
+			set->addOffspring(createRandomSolution(graph, options, levels));
 		}
 
 		return set;
@@ -366,7 +392,7 @@ namespace msonlab { namespace scheduling {
 	/// @param offsprings The number of offsprings to generate.
 	void GeneticAlgorithm::simulateMating(const SolutionSetPtr& set, int offsprings, bool doOrderCrossover, const Options& options) const
 	{
-		for (; offsprings > 0;)
+		while (set->size() < options.getPopMaxSize())
 		{
 			auto father = set->getParent();
 			auto mother = set->getParent();
@@ -391,7 +417,6 @@ namespace msonlab { namespace scheduling {
 			}
 				
 			unsigned cost = fitness(offspring, options);
-			DEBUGLN("Offspring fitness: " << cost);
 			// if cost is UINT32_MAX it has a defect
 			if (cost < UINT32_MAX) {
 				set->addOffspring(offspring);

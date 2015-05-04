@@ -48,6 +48,7 @@ namespace msonlab { namespace scheduling {
 		SchedulingResultPtr<const lite::litenode*> best() const { return _best; };
 		SchedulingResultPtr<const lite::litenode*> ultimate() const { return _ultimate; };
 		size_t size() const { return _size; }
+		unsigned last_improvement() const { return _last_improvement; }
 
 		// Sets the levels' size's.
 		void setLevelSize(const vector<size_t>& sizes);
@@ -60,6 +61,7 @@ namespace msonlab { namespace scheduling {
 		SchedulingResultPtr<const lite::litenode*> _best;
 		SchedulingResultPtr<const lite::litenode*> _ultimate;
 		unsigned _size;
+		unsigned _last_improvement;
 		// Contains the size of the graph's levels
 		vector<size_t> levelSize;
 		// The vector of the solutions

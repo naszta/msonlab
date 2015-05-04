@@ -6,23 +6,24 @@
 namespace msonlab { namespace scheduling {
 	Options::Options(const char * configFilePath) {
 		ConfigFile config = ConfigFile(configFilePath);
-		scheduleMutationRate = config.getValueOfKey<unsigned>("scheduleMutationRate");
-		mapMutationRate      = config.getValueOfKey<unsigned>("mapMutationRate");
-		commOverhead         = config.getValueOfKey<unsigned>("commOverhead");
-		taskLength           = config.getValueOfKey<unsigned>("taskLength");
-		popMaxSize           = config.getValueOfKey<unsigned>("popMaxSize");
-		keepSize             = config.getValueOfKey<unsigned>("keepSize");
-		keepBest             = config.getValueOfKey<unsigned>("keepBest");
-		numberOfPus          = config.getValueOfKey<unsigned>("numberOfPus");
-		puGroupSize          = config.getValueOfKey<unsigned>("puGroupSize");
-		graphSize            = config.getValueOfKey<unsigned>("graphSize");
-		graphEdgeProb        = config.getValueOfKey<unsigned>("graphEdgeProb");
-		graphWidening        = config.getValueOfKey<unsigned>("graphWidening");
-		numberOfYears        = config.getValueOfKey<unsigned>("numberOfYears", 100);
-		parallel             = config.getValueOfKey<bool>("parallel", false);
-		algorithm            = config.getValueOfKey<string>("algorithm", "greedy");
-		fitnessStrategy      = config.getValueOfKey<string>("fitnessStrategy", "length");
-		initialSolution      = config.getValueOfKey<string>("initialSolution", "rnd");
+		scheduleMutationRate		= config.getValueOfKey<unsigned>("scheduleMutationRate");
+		mapMutationRate				= config.getValueOfKey<unsigned>("mapMutationRate");
+		commOverhead				= config.getValueOfKey<unsigned>("commOverhead");
+		taskLength					= config.getValueOfKey<unsigned>("taskLength");
+		popMaxSize					= config.getValueOfKey<unsigned>("popMaxSize");
+		keepSize					= config.getValueOfKey<unsigned>("keepSize");
+		keepBest					= config.getValueOfKey<unsigned>("keepBest");
+		numberOfPus					= config.getValueOfKey<unsigned>("numberOfPus");
+		puGroupSize					= config.getValueOfKey<unsigned>("puGroupSize");
+		graphSize					= config.getValueOfKey<unsigned>("graphSize");
+		graphEdgeProb				= config.getValueOfKey<unsigned>("graphEdgeProb");
+		graphWidening				= config.getValueOfKey<unsigned>("graphWidening");
+		numberOfYears				= config.getValueOfKey<unsigned>("numberOfYears", 100);
+		_max_rounds_wo_improvement	= config.getValueOfKey<unsigned>("maxRoundsWithoutImprovement", numberOfYears / 10);
+		parallel					= config.getValueOfKey<bool>("parallel", false);
+		algorithm					= config.getValueOfKey<string>("algorithm", "greedy");
+		fitnessStrategy				= config.getValueOfKey<string>("fitnessStrategy", "length");
+		initialSolution				= config.getValueOfKey<string>("initialSolution", "rnd");
 	}
 
 	Options::Options(const Options& opt, unsigned value)

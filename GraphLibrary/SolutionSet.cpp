@@ -14,11 +14,12 @@ namespace msonlab { namespace scheduling {
 	}
 
 	SolutionSet::SolutionSet(size_t keepSize, size_t popMaxSize, size_t keepBest) :
-		solution(vector<SchedulingResultPtr<const lite::litenode*>>(keepSize)), POPMAXSIZE(popMaxSize), KEEP(keepSize), KEEPBEST(keepBest), _size(0)
+		solution(vector<SchedulingResultPtr<const lite::litenode*>>(keepSize)), POPMAXSIZE(popMaxSize), KEEP(keepSize), KEEPBEST(keepBest), _size(0), _last_improvement(0)
 	{
 	}
 
-	SolutionSet::SolutionSet(const vector<SchedulingResultPtr<const lite::litenode*>>& sol, size_t keepSize, size_t popMaxSize, size_t keepBest) : solution(sol), POPMAXSIZE(popMaxSize), KEEP(keepSize), KEEPBEST(keepBest), _size(0)
+	SolutionSet::SolutionSet(const vector<SchedulingResultPtr<const lite::litenode*>>& sol, size_t keepSize, size_t popMaxSize, size_t keepBest)
+		: solution(sol), POPMAXSIZE(popMaxSize), KEEP(keepSize), KEEPBEST(keepBest),_size(0), _last_improvement(0)
 	{
 		this->solution.resize(KEEP);
 	}
@@ -27,7 +28,7 @@ namespace msonlab { namespace scheduling {
 	SolutionSet::SolutionSet(const SolutionSet&& set)
 		: levelSize(std::move(set.levelSize)), solution(std::move(set.solution)),
 		newGeneration(std::move(set.newGeneration)),
-		POPMAXSIZE(set.POPMAXSIZE), KEEP(set.KEEP), KEEPBEST(set.KEEPBEST), _size(0)
+		POPMAXSIZE(set.POPMAXSIZE), KEEP(set.KEEP), KEEPBEST(set.KEEPBEST), _size(0), _last_improvement(0)
 	{
 	}
 
@@ -62,10 +63,12 @@ namespace msonlab { namespace scheduling {
 		while (!this->newGeneration.empty())
 			this->newGeneration.pop();
 
+		++_last_improvement;
 		this->_size = 0;
 		this->_best = this->solution[0];
 		if (this->_ultimate == nullptr || this->_best->fitness() < this->_ultimate->fitness()) {
 			this->_ultimate = this->_best;
+			_last_improvement = 0;
 		}
 	}
 

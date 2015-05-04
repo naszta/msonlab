@@ -44,6 +44,8 @@ namespace msonlab { namespace scheduling {
 		// generate a solution set randomly
 		SolutionSetPtr generateRndSolution(const lite::litegraph &graph, const Options &options) const;
 
+		SchedulingResultPtr<const lite::litenode*> createRandomSolution(const lite::litegraph &graph, const Options &options, vector<vector<const lite::litenode*>>& layers) const;
+
 		// crossover operations
 		SchedulingResultPtr<const lite::litenode*> crossoverMap(SchedulingResultPtr<const lite::litenode*> father, SchedulingResultPtr<const lite::litenode*> mother) const;// TODO
 		SchedulingResultPtr<const lite::litenode*> crossoverOrder(SchedulingResultPtr<const lite::litenode*> father, SchedulingResultPtr<const lite::litenode*> mother, const vector<unsigned>& levelingLimits) const;// TODO
