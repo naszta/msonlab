@@ -120,13 +120,13 @@ namespace msonlab { namespace scheduling {
 		}
 		else {
 			for (size_t i = 0; i < options.getNumberOfYears(); ++i) {
-				//DEBUGLN("Round " << i << " Best: " << set->best()->fitness());
+				DEBUGLN("Round " << i << " Best: " << set->best()->fitness() << " Ultimate: " << set->ultimate()->fitness());
 				simulateMating(set, options.getPopMaxSize(), doOrderCrossover, options);
 				set->limit();
 			}
 		}
 
-		auto best = set->best();
+		auto best = set->ultimate();
 		vector<const NodePtr> scheduling{ best->size() };
 		const auto& hwnodes = graph.getNodes();
 		unsigned position = 0;
@@ -188,7 +188,8 @@ namespace msonlab { namespace scheduling {
 
 		// add a greedy solution to the set
 		auto greedy_solution = this->greedySolution(graph, options);
-		set->addOffspring(greedy_solution);
+		//set->addOffspring(greedy_solution);
+		DEBUGLN("Greedy fitness " << greedy_solution->fitness());
 		// create first solution
 		auto result = std::make_shared<SchedulingResult<const lite::litenode*>>(options.getNumberOfPus(), graph.order());
 		size_t currentLevelSize = 0;
@@ -212,12 +213,14 @@ namespace msonlab { namespace scheduling {
 		}
 			
 		auto initialFitness = fitness(greedy_solution, options);
+		set->addOffspring(greedy_solution);
 		DEBUGLN("SolutionSet created. Initial fitness : " << initialFitness);
+		fitness(result, options);
 		set->addOffspring(result);
 		set->setLevelSize(levelingLimits);
 
 		// the number of solutions to generate
-		counter = options.getPopMaxSize() - 2;
+		counter = options.getPopMaxSize() - set->size();
 		const size_t num_nodes = graph.order();
 		for (; counter > 0; --counter)
 		{
@@ -237,6 +240,7 @@ namespace msonlab { namespace scheduling {
 			}
 
 			fitness(sol, options);
+			DEBUGLN("Random fitness " << options.getPopMaxSize() - counter << ": " << sol->fitness());
 			set->addOffspring(sol);
 		}
 
@@ -387,7 +391,8 @@ namespace msonlab { namespace scheduling {
 			}
 				
 			unsigned cost = fitness(offspring, options);
-			// cost is UINT32_MAX it has a defect
+			DEBUGLN("Offspring fitness: " << cost);
+			// if cost is UINT32_MAX it has a defect
 			if (cost < UINT32_MAX) {
 				set->addOffspring(offspring);
 				--offsprings;

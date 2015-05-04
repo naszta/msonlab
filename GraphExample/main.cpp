@@ -50,53 +50,41 @@ void run(const SchedulingAlgorithm& alg, const Graph& graph, const Options& opti
 // FIX CIRCULAR DEPENDENCY!
 // to try out features of the GraphLibrary
 int main(/*int argc, char *argv[]*/) {
-	//{
-	//	//Graph graph = graph::creator::createQuadrant();
-	//	Options options{ "Options.cfg" };
-	//	Graph graph = graph::creator::createRandom(options.getGraphSize(), options.getGraphEdgeProb(), options.getGraphWidening(), options.getNumberOfPus());
-	//	//Graph graph = graph::creator::createRandomLeveledDAG(100, 12, 8);
-	//	//srand(161903);
-	//	
-	//	/*
-	//	{
-	//	std::cout << "greedy" << std::endl;
-	//	GreedySchedulingAlgorithm alg{};
-	//	run(alg, graph, options);
-	//	}
-	//	{
-	//	std::cout << "list" << std::endl;
-	//	ListSchedulingAlgorithm alg{};
-	//	run(alg, graph, options);
-	//	}
-	//	{
-	//	std::cout << "criticalpath" << std::endl;
-	//	CriticalPathSchedulingAlgorithm alg{};
-	//	run(alg, graph, options);
-	//	}*/
-	//	{
-	//	std::cout << "coffmangraham" << std::endl;
-	//	CoffmanGrahamSchedulingAlgorithm alg{};
-	//	run(alg, graph, options);
-	//	}
-	//	{
-	//	std::cout << "genetic" << std::endl;
-	//	GeneticAlgorithm alg{ std::make_unique<LengthFitnessStartegy>() };
-	//	run(alg, graph, options);
-	//	}
-	//}
-
-	auto g = graph::creator::createQuadrant();
-	const auto& input = g.getInputNodes();
-	const auto& output = g.getOutputNodes();
-	NodePtr changedNode;
-	for (const auto& node : input) {
-		if (node->id() == 1) changedNode = node;
+	{
+		//Graph graph = graph::creator::createQuadrant();
+		Options options{ "Options.cfg" };
+		Graph graph = graph::creator::createRandom(options.getGraphSize(), options.getGraphEdgeProb(), options.getGraphWidening(), options.getNumberOfPus());
+		//Graph graph = graph::creator::createRandomLeveledDAG(100, 12, 8);
+		//srand(161903);
+		
+		/*
+		{
+		std::cout << "greedy" << std::endl;
+		GreedySchedulingAlgorithm alg{};
+		run(alg, graph, options);
+		}
+		{
+		std::cout << "list" << std::endl;
+		ListSchedulingAlgorithm alg{};
+		run(alg, graph, options);
+		}
+		{
+		std::cout << "criticalpath" << std::endl;
+		CriticalPathSchedulingAlgorithm alg{};
+		run(alg, graph, options);
+		}*/
+		{
+		std::cout << "coffmangraham" << std::endl;
+		CoffmanGrahamSchedulingAlgorithm alg{};
+		run(alg, graph, options);
+		std::cout << std::endl;
+		}
+		{
+		std::cout << "genetic" << std::endl;
+		GeneticAlgorithm alg{ std::make_unique<LengthFitnessStartegy>() };
+		run(alg, graph, options);
+		}
 	}
-
-	NodeSet changed{ changedNode };
-	NodeSet needed{ output.begin(), output.end() };
-
-	auto subgraph = computeChangedGraph(g, changed, needed);
 
 	_CrtDumpMemoryLeaks();
 }

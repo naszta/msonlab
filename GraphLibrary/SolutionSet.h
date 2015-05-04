@@ -36,8 +36,6 @@ namespace msonlab { namespace scheduling {
 
 		SolutionSet& operator=(const SolutionSet&) = delete;
 
-		//const vector<SchedulingResultLWPtr>& getSolutionSet() const;
-
 		// Gets a random solution from the population.
 		SchedulingResultPtr<const lite::litenode*> getParent() const;
 		// Adds a new offspring to the population
@@ -47,7 +45,9 @@ namespace msonlab { namespace scheduling {
 		// Limits the number of solutions to the initial, keeping the ones with the highest fitness
 		void limit();
 		// Gets one solution with the best fitness in the population.
-		SchedulingResultPtr<const lite::litenode*> best() const;
+		SchedulingResultPtr<const lite::litenode*> best() const { return _best; };
+		SchedulingResultPtr<const lite::litenode*> ultimate() const { return _ultimate; };
+		size_t size() const { return _size; }
 
 		// Sets the levels' size's.
 		void setLevelSize(const vector<size_t>& sizes);
@@ -57,6 +57,9 @@ namespace msonlab { namespace scheduling {
 		// Calculates the average fitness of the solutions
 		unsigned averageFittness() const;
 	private:
+		SchedulingResultPtr<const lite::litenode*> _best;
+		SchedulingResultPtr<const lite::litenode*> _ultimate;
+		unsigned _size;
 		// Contains the size of the graph's levels
 		vector<size_t> levelSize;
 		// The vector of the solutions
