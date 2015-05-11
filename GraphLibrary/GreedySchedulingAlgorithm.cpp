@@ -29,7 +29,7 @@ namespace msonlab { namespace scheduling {
 		// counts the available inputs of the nodess
 		//std::map< unsigned, int> count;
 		vector<unsigned> count(graph.order());
-		vector<unsigned> FT(options.getNumberOfPus(), 0);
+		vector<unsigned> RT(options.getNumberOfPus(), 0);
 
 		// list of input nodes
 		const auto &inputNodes = liteg.inodes();
@@ -43,12 +43,11 @@ namespace msonlab { namespace scheduling {
 		while (taskCounter < liteg.order())
 		{
 			vector<unsigned> scheduled_node_ids;
-			auto min_PU_it = std::min_element(FT.begin(), FT.end());
-			auto min_PU_id = min_PU_it - FT.begin();
+			auto min_PU_id = std::distance(std::min_element(RT.begin(), RT.end()), RT.begin());
 			auto node_id = free.front();
 			mapping[taskCounter] = min_PU_id;
 			scheduling[taskCounter] = hwnodes[node_id];
-			FT[min_PU_id] += hwnodes[node_id]->cptime();
+			RT[min_PU_id] += hwnodes[node_id]->cptime();
 			scheduled_node_ids.push_back(node_id);
 			free.pop();
 			taskCounter++;
