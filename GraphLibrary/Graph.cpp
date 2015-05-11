@@ -1,4 +1,3 @@
-#pragma once
 #include "Graph.h"
 #include "BFSIterator.h"
 #include "DFSIterator.h"

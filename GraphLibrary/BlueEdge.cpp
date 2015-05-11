@@ -1,4 +1,3 @@
-#pragma once
 #include "BlueEdge.h"
 #include "Node.h"
 #include "GraphExchanger.h"
@@ -29,21 +28,21 @@ namespace msonlab
 			return;
 		}
 
-		if (from->compile_iteration < compile_iteration)
+		if (getFrom()->compile_iteration < compile_iteration)
 		{
 			// already has value
-			StackRunner::addToken(prog, StackRunner::WAIT, StackRunner::dataToken(new std::pair<StackValue::stackvaluePtr, int>(nullptr, from->id())));
+			StackRunner::addToken(prog, StackRunner::WAIT, StackRunner::dataToken(new std::pair<StackValue::stackvaluePtr, int>(nullptr, getFrom()->id())));
 		}
 		else
 		{
 			// going deeper and calculate predecessor
-			from->compile(thread_id, programs, schedule);
+			getFrom()->compile(thread_id, programs, schedule);
 
 			// if predecessor is placed on another thread, add a wait operation
-			if (schedule.at(from->id()) != thread_id)
+			if (schedule.at(getFrom()->id()) != thread_id)
 			{
 				// predecessor is on another thread, need to create a FutureStackValue
-				StackRunner::addToken(prog, StackRunner::WAIT, StackRunner::dataToken(new std::pair<StackValue::stackvaluePtr, int>(nullptr, from->id())));
+				StackRunner::addToken(prog, StackRunner::WAIT, StackRunner::dataToken(new std::pair<StackValue::stackvaluePtr, int>(nullptr, getFrom()->id())));
 			}
 		}
 

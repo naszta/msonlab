@@ -1,4 +1,5 @@
-#pragma once
+#ifndef STACK_RUNNER_H
+#define STACK_RUNNER_H
 
 #include <utility>
 #include <stack>
@@ -107,3 +108,4 @@ namespace msonlab
 
 	};
 }
+#endif

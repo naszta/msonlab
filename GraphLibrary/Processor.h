@@ -1,4 +1,5 @@
-#pragma once
+#ifndef PROCESSOR_H
+#define PROCESSOR_H
 #include "Graph.h"
 
 namespace msonlab
@@ -15,6 +16,5 @@ namespace msonlab
 		virtual NodeVect process(GraphPtr toProcess);
 		
 	};
-
-
 }
+#endif

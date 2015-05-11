@@ -50,10 +50,14 @@ void run(const SchedulingAlgorithm& alg, const Graph& graph, const Options& opti
 // FIX CIRCULAR DEPENDENCY!
 // to try out features of the GraphLibrary
 int main(/*int argc, char *argv[]*/) {
+	Graph * g;
+	const Node * n;
 	{
-		//Graph graph = graph::creator::createQuadrant();
-		Options options{ "Options.cfg" };
-		Graph graph = graph::creator::createRandom(options.getGraphSize(), options.getGraphEdgeProb(), options.getGraphWidening(), options.getNumberOfPus());
+		Graph graph = graph::creator::createQuadrant();
+		g = &graph;
+		n = &(*(graph.nodes()[0]));
+		//Options options{ "Options.cfg" };*/
+		//Graph graph = graph::creator::createRandom(options.getGraphSize(), options.getGraphEdgeProb(), options.getGraphWidening(), options.getNumberOfPus());
 		//Graph graph = graph::creator::createRandomLeveledDAG(100, 12, 8);
 		//srand(161903);
 		
@@ -74,15 +78,15 @@ int main(/*int argc, char *argv[]*/) {
 		run(alg, graph, options);
 		}*/
 		{
-		std::cout << "coffmangraham" << std::endl;
+		/*std::cout << "coffmangraham" << std::endl;
 		CoffmanGrahamSchedulingAlgorithm alg{};
 		run(alg, graph, options);
-		std::cout << std::endl;
+		std::cout << std::endl;*/
 		}
 		{
-		std::cout << "genetic" << std::endl;
+		/*std::cout << "genetic" << std::endl;
 		GeneticAlgorithm alg{ FitnessStrategy::find_fitness_strategy(options.getFitnessStrategy()) };
-		run(alg, graph, options);
+		run(alg, graph, options);*/
 		}
 	}
 

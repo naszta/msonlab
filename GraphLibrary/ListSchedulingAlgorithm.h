@@ -1,4 +1,6 @@
-#pragma once
+#ifndef LIST_SEDULING_ALGORITHM_H
+#define LIST_SEDULING_ALGORITHM_H
+
 #include "SchedulingAlgorithm.h"
 #include "SchedulingAlgorithmBuilder.h"
 #include "litegraph.h"
@@ -13,3 +15,4 @@ namespace msonlab { namespace scheduling {
 		SchedulingResultPtr<const NodePtr> schedule(const Graph &graph, const Options &options) const override;
 	};
 }}
+#endif

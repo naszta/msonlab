@@ -1,4 +1,3 @@
-#pragma once
 #include "NodeConstant.h"
 #include "Edge.h"
 #include "GraphExchanger.h"

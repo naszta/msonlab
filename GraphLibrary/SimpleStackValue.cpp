@@ -1,4 +1,3 @@
-#pragma once
 #include "SimpleStackValue.h"
 #include "Global.h"
 
@@ -9,7 +8,6 @@
 
 namespace msonlab
 {
-
 	SimpleStackValue::SimpleStackValue(types::DataPtr val)
 	{
 		value = val;

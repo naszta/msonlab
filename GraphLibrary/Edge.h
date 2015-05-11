@@ -1,4 +1,5 @@
-#pragma once
+#ifndef EDGE 
+#define EDGE
 #include "Global.h"
 #include "IProcessable.h"
 
@@ -10,10 +11,10 @@ namespace msonlab
 		enum EdgeTypeEnum { default_edge, blue_edge, red_edge, orange_edge };
 
 	protected:
-		NodePtr from;
-		NodePtr to;
-		//std::weak_ptr<Node> from;
-		//std::weak_ptr<Node> to;
+		//NodePtr from;
+		//NodePtr to;
+		std::weak_ptr<Node> from;
+		std::weak_ptr<Node> to;
 
 		bool paramReady;
 
@@ -50,6 +51,9 @@ namespace msonlab
 		virtual std::string get_target_arrow_style() const;
 		virtual std::string get_line_style() const;
 		virtual std::string get_color() const;
+	private:
+		NodePtr lock_from() const { return from.lock(); }
+		NodePtr lock_to() const { return to.lock(); }
 	};
-
 }
+#endif

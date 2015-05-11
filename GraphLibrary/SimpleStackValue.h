@@ -1,4 +1,5 @@
-#pragma once
+#ifndef SIMPLE_STACK_VALUE_H
+#define SIMPLE_STACK_VALUE_H
 #include "StackValue.h"
 
 namespace msonlab
@@ -17,5 +18,5 @@ namespace msonlab
 
 		std::string to_string();
 	};
-
 }
+#endif

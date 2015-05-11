@@ -1,4 +1,3 @@
-#pragma once
 #include "Processor.h"
 
 namespace msonlab

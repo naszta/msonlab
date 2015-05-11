@@ -1,4 +1,5 @@
-#pragma once
+#ifndef SOLUTION_SET_H
+#define SOLUTION_SET_H
 
 #include <memory>
 #include <vector>
@@ -75,3 +76,4 @@ namespace msonlab { namespace scheduling {
 
 	typedef std::shared_ptr<SolutionSet> SolutionSetPtr;
 }}
+#endif

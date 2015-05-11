@@ -1,4 +1,5 @@
-#pragma once
+#ifndef NODE_MULTIPLY 
+#define NODE_MULTIPLY
 #include "Node.h"
 
 namespace msonlab
@@ -22,3 +23,4 @@ namespace msonlab
 		std::string get_color() const;
 	};
 }
+#endif

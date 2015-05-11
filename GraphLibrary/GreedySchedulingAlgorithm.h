@@ -1,4 +1,5 @@
-#pragma once
+#ifndef GREEDY_SEDULING_ALGORITHM_H
+#define GREEDY_SEDULING_ALGORITHM_H
 
 #include "SchedulingAlgorithm.h"
 #include "SchedulingAlgorithmBuilder.h"
@@ -22,3 +23,4 @@ namespace msonlab { namespace scheduling {
 		virtual ~GreedySchedulingAlgorithm() = default;
 	};
 }}
+#endif

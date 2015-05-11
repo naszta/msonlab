@@ -1,4 +1,5 @@
-#pragma once
+#ifndef GRAPH_EXCHANGER 
+#define GRAPH_EXCHANGER
 
 #include "Graph.h"
 #include "Global.h"
@@ -86,3 +87,4 @@ namespace msonlab
 		bool ExportGraph(const Graph& graph, std::string outputPath) const;
 	};
 }
+#endif

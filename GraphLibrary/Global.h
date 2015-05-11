@@ -1,4 +1,5 @@
-#pragma once
+#ifndef GLOBAL_H
+#define GLOBAL_H
 #include <vector>
 #include <map>
 #include <set>
@@ -121,3 +122,4 @@ namespace msonlab
 
 	}
 }
+#endif

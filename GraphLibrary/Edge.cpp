@@ -1,4 +1,3 @@
-#pragma once
 #include "Edge.h"
 #include "Node.h"
 #include "GraphExchanger.h"
@@ -40,10 +39,11 @@ namespace msonlab
 	{
 		if (isReadyForProcess())
 		{
-			if (setProcessed((*from).getResultValue()))
+			if (setProcessed((*lock_from()).getResultValue()))
 			{
 				IProcessableVect retVal;
 				
+				auto to = lock_to();
 				if((*to).registerParameter())
 					retVal.insert(retVal.begin(), to);
 
@@ -72,6 +72,8 @@ namespace msonlab
 
 	NodePtr Edge::opposite(NodePtr x)
 	{
+		auto to = lock_to();
+		auto from = lock_from();
 		if (to == x)
 			return from;
 		else if (from  == x)
@@ -82,22 +84,22 @@ namespace msonlab
 
 	NodePtr Edge::getFrom() const
 	{
-		return from;
+		return lock_from();
 	}
 
 	NodePtr Edge::getTo() const
 	{
-		return to;
+		return lock_to();
 	}
 
 	unsigned Edge::getFromId() const
 	{
-		return from->id();
+		return lock_from()->id();
 	}
 
 	unsigned Edge::getToId() const
 	{
-		return to->id();
+		return lock_to()->id();
 	}
 
 	std::string Edge::getIdString() const
@@ -125,6 +127,7 @@ namespace msonlab
 			return;
 		}
 
+		auto from = lock_from();
 		if (from->compile_iteration < compile_iteration)
 		{
 			// already has value
@@ -167,8 +170,8 @@ namespace msonlab
 	{
 		DOMElement* newEdge = xmlDocument->createElement(L"edge");
 		newEdge->setAttribute(L"id", XMLString::transcode(getIdString().c_str()));
-		newEdge->setAttribute(L"source", XMLString::transcode(from->getIdString().c_str()));
-		newEdge->setAttribute(L"target", XMLString::transcode(to->getIdString().c_str()));
+		newEdge->setAttribute(L"source", XMLString::transcode(lock_from()->getIdString().c_str()));
+		newEdge->setAttribute(L"target", XMLString::transcode(lock_to()->getIdString().c_str()));
 
 		// create data for YED
 		DOMElement* edgeData = xmlDocument->createElement(L"data");

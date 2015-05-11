@@ -1,4 +1,5 @@
-#pragma once
+#ifndef NODE_SQUARE_ROOT 
+#define NODE_SQUARE_ROOT
 #include "Node.h"
 
 namespace msonlab
@@ -22,3 +23,4 @@ namespace msonlab
 		//unsigned getComputationTime() { return 7; }
 	};
 }
+#endif

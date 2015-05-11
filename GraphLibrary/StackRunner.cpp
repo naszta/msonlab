@@ -1,5 +1,3 @@
-#pragma once
-
 #include "StackRunner.h"
 #include <math.h>
 

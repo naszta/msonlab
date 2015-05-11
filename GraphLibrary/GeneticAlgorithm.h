@@ -1,4 +1,5 @@
-#pragma once
+#ifndef GENETIC_ALGORITHM_H
+#define GENETIC_ALGORITHM_H
 
 #include <memory>
 #include <vector>
@@ -66,3 +67,4 @@ namespace msonlab { namespace scheduling {
 		void swapMutateScheduling(SchedulingResultPtr<const lite::litenode*> offspring, const Options& options) const;
 	};
 }}
+#endif

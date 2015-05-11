@@ -1,4 +1,5 @@
-#pragma once
+#ifndef NODE 
+#define NODE
 #include "IProcessable.h"
 
 namespace msonlab
@@ -71,3 +72,4 @@ namespace msonlab
 	};
 
 }
+#endif

@@ -1,4 +1,5 @@
-#pragma once
+#ifndef BLUE_EDGE 
+#define BLUE_EDGE
 #include "Global.h"
 #include "Edge.h"
 
@@ -21,3 +22,4 @@ namespace msonlab
 	};
 
 }
+#endif

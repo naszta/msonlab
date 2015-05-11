@@ -1,4 +1,5 @@
-#pragma once
+#ifndef IPROCESSABLE_H
+#define IPROCESSABLE_H
 #include "Global.h"
 #include "StackRunner.h"
 #include <string>
@@ -97,5 +98,5 @@ namespace msonlab
 		virtual std::string getTypeString() const;
 		virtual std::string get_custom_data() const;
 	};
-
 }
+#endif

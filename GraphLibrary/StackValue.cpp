@@ -1,4 +1,3 @@
-#pragma once
 #include "StackValue.h"
 #include "Global.h"
 

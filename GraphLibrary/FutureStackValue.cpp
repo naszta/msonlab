@@ -1,7 +1,5 @@
-#pragma once
 #include "FutureStackValue.h"
 #include "Global.h"
-
 
 namespace msonlab
 {
@@ -9,7 +7,6 @@ namespace msonlab
 	{
 		value = val;
 	}
-
 
 	types::DataPtr FutureStackValue::getValue()
 	{
@@ -20,6 +17,4 @@ namespace msonlab
 	{
 
 	}
-
 }
-

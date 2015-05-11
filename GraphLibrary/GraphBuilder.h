@@ -1,4 +1,5 @@
-#pragma once
+#ifndef GRAPH_BUILDER 
+#define GRAPH_BUILDER
 
 #include "Graph.h"
 #include "Global.h"
@@ -27,5 +28,5 @@ namespace msonlab
 		static GraphPtr build();
 
 	};
-
 }
+#endif

@@ -1,4 +1,5 @@
-#pragma once
+#ifndef STACK_COMPILER_H
+#define STACK_COMPILER_H
 
 #include "Graph.h"
 
@@ -17,5 +18,5 @@ namespace msonlab
 		static StackRunner::srPtr getStackProgram(const Graph& graph, unsigned int number_of_threads, StackRunner::scheduleOrder schedule);
 
 	};
-
 }
+#endif

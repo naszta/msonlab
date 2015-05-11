@@ -1,4 +1,3 @@
-#pragma once
 #include "NodeSquareRoot.h"
 #include "Edge.h"
 #include <math.h>

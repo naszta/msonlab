@@ -1,4 +1,5 @@
-#pragma once
+#ifndef MULTIPLIER_EDGE 
+#define MULTIPLIER_EDGE
 #include "Edge.h"
 
 namespace msonlab
@@ -21,3 +22,4 @@ namespace msonlab
 		std::string get_custom_data() const;
 	};
 }
+#endif

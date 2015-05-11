@@ -1,4 +1,3 @@
-#pragma once
 #include "MultiplierEdge.h"
 #include "Node.h"
 #include "GraphExchanger.h"
@@ -19,11 +18,11 @@ namespace msonlab
 		if (isReadyForProcess())
 		{
 			// TODO: static class for operands
-			if (setProcessed((*from).getResultValue()))
+			if (setProcessed((*getFrom()).getResultValue()))
 			{
-				if ((*to).registerParameter())
+				if ((*getTo()).registerParameter())
 				{
-					ret.insert(ret.begin(), (to));
+					ret.insert(ret.begin(), (getTo()));
 				}
 				return ret;
 			}
@@ -51,6 +50,7 @@ namespace msonlab
 			return;
 		}
 
+		auto from = getFrom();
 		if (from->compile_iteration < compile_iteration)
 		{
 			// already has value

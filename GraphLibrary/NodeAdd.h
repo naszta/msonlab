@@ -1,4 +1,5 @@
-#pragma once
+#ifndef NODE_ADD 
+#define NODE_ADD
 #include "Node.h"
 
 namespace msonlab
@@ -21,3 +22,4 @@ namespace msonlab
 		std::string get_color() const;
 	};
 }
+#endif
