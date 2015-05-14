@@ -39,6 +39,7 @@ namespace msonlab
 		Graph(Graph&& other);
 		Graph& operator=(const Graph& other) = delete; // assignment operator
 		Graph& operator=(const Graph&& other);
+		~Graph();
 
 		bool addNode(NodePtr toAdd); // adds a node to the graph
 		bool addEdge(EdgePtr toAdd); // adds an edge to the graph

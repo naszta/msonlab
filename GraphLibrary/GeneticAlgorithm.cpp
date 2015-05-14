@@ -1,6 +1,7 @@
 #include "GeneticAlgorithm.h"
 #include "Algorithms.h"
 #include "CriticalPathSchedulingAlgorithm.h"
+#include "CoffmanGrahamSchedulingAlgorithm.h"
 #include "litegraph.h"
 #include "litenode.h"
 #include <cstdlib>
@@ -114,7 +115,7 @@ namespace msonlab { namespace scheduling {
 		bool doOrderCrossover = options.getFitnessStrategy().compare("reschedule") != 0;
 		if (options.isParallel()) {
 			for (size_t i = 0; i < options.getNumberOfYears(); ++i) {
-				DEBUGLN("Round " << i << " Best: " << set->best()->fitness() << " Ultimate: " << set->ultimate()->fitness() << " Avg: " << set->averageFittness());
+				//DEBUGLN("Round " << i << " Best: " << set->best()->fitness() << " Ultimate: " << set->ultimate()->fitness() << " Avg: " << set->averageFittness());
 				parallelSimulateMating(set, options.getPopMaxSize(), doOrderCrossover, options);
 				set->limit();
 				if (set->last_improvement() >= options.maxRoundsWithoutImprovement()) {
@@ -128,10 +129,11 @@ namespace msonlab { namespace scheduling {
 		}
 		else {
 			for (size_t i = 0; i < options.getNumberOfYears(); ++i) {
-				DEBUGLN("Round " << i << " Best: " << set->best()->fitness() << " Ultimate: " << set->ultimate()->fitness() << " Avg: " << set->averageFittness());
+				//DEBUGLN("Round " << i << " Best: " << set->best()->fitness() << " Ultimate: " << set->ultimate()->fitness() << " Avg: " << set->averageFittness());
 				simulateMating(set, options.getPopMaxSize(), doOrderCrossover, options);
 				set->limit();
 				if (set->last_improvement() >= options.maxRoundsWithoutImprovement()) {
+					set->randomized();
 					vector<vector<const lite::litenode*>> levels;
 					graph::algorithms::constructLayeredOrder<lite::litegraph, const lite::litenode*>(liteg, levels);
 					
@@ -279,26 +281,28 @@ namespace msonlab { namespace scheduling {
 		//cVect solution;
 		auto set = std::make_shared<SolutionSet>(options.getKeepSize(), options.getPopMaxSize(), options.getKeepBest());
 		CriticalPathSchedulingAlgorithm cpAlg;
-		//auto greedy = greedySolution(graph);
-		//set->addOffspring(greedy);
-		//SolutionPtr cpC = nullptr;
-		//auto cpC = cpAlg.schedule(graph, options);
-		//auto initialFitness = fitness(cpC);
-		//set->addOffspring(cpC);
-		//unsigned counter = options.getPopMaxSize() - 1; // CP and greedy
-		//for (; counter > 0; --counter)
-		//{
-		//	auto c = std::make_shared<Solution>(graph.size(), options.getNumberOfPus(), graph.edge_size());
-		//	for (size_t i = 0; i < c->_mapping.size(); ++i) {
-		//		c->_mapping[i] = rand() % c->pus;
-		//	}
+		auto cpC = cpAlg.scheduleLite(graph, options);
+		auto initialFitness = fitness(cpC, options);
+		set->addOffspring(cpC);
+		CoffmanGrahamSchedulingAlgorithm cgAlg;
+		auto cgC = cgAlg.scheduleLite(graph, options);
+		initialFitness = fitness(cgC, options);
+		set->addOffspring(cgC);
+		while (set->size() < options.getPopMaxSize())
+		{
+			vector<unsigned> mapping(graph.order());
+			vector<const lite::litenode*> scheduling(graph.order());
+			for (size_t i = 0; i < mapping.size(); ++i) {
+				mapping[i] = rand() % options.getNumberOfPus();
+			}
 
-		//	std::copy(cpC->_scheduling.begin(), cpC->_scheduling.end(), c->_scheduling.begin());
-		//	fitness(c);
-		//	set->addOffspring(c);
-		//}
+			std::copy(cpC->_scheduling.begin(), cpC->_scheduling.end(), scheduling.begin());
+			auto c = std::make_shared<SchedulingResult<const lite::litenode*>>(std::move(mapping), std::move(scheduling), 0, options.getNumberOfPus());
+			fitness(c, options);
+			set->addOffspring(c);
+		}
 
-		return nullptr;
+		return set;
 	}
 
 	//

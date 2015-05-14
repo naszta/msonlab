@@ -1,9 +1,10 @@
-#ifndef NODE 
-#define NODE
+#ifndef NODE_H
+#define NODE_H
 #include "IProcessable.h"
 
 namespace msonlab
 {
+	using std::weak_ptr;
 	using std::string;
 
 	class Node : public IProcessable
@@ -12,12 +13,15 @@ namespace msonlab
 		EdgeVect _predecessors;
 		EdgeVect _successors;
 
-		NodeVect preNodes;
+		vector<weak_ptr<Node>> preNodes;
 		NodeVect sucNodes;
 		
 		string type_string;
 		int paramCount;
 		unsigned compTime;
+
+		void addPreNode(NodePtr node);
+		void addSucNode(NodePtr node);
 
 	public:
 		Node(unsigned int id_, types::LabelType label_, types::DataPtr value_, string type_string_ = "", unsigned compTime_ = 1);
@@ -32,7 +36,7 @@ namespace msonlab
 		virtual bool resetProcessingState();
 
 		// getting the neighbours skipping the edges
-		const NodeVect& predecessors() const { return preNodes; }
+		NodeVect predecessors() const;
 		const NodeVect& successors() const { return sucNodes; }
 
 		const EdgeVect& getPredecessors() const;
@@ -46,9 +50,6 @@ namespace msonlab
 
 		std::string getIdString() const;
 
-		void addPreNode(NodePtr node);
-		void addSucNode(NodePtr node);
-
 		bool registerPredecessor(EdgePtr _newPredecessor);
 		bool unregisterPredecessor(EdgePtr _newPredecessor);
 
@@ -61,11 +62,13 @@ namespace msonlab
 
 		virtual NodePtr clone() = 0; // change to const
 
+		void releaseNeighbors();
+
 		// compile
 		virtual void compile(int caller_thread, vector<msonlab::StackRunner::program>* programs, StackRunner::scheduleOrder schedule);
 
 		// exchange
-		virtual DOMElement* serialize(DOMDocument* xmlDocument, std::string yedDataKeyName, std::string typeKeyName, std::string customDataKey);
+		//virtual DOMElement* serialize(DOMDocument* xmlDocument, std::string yedDataKeyName, std::string typeKeyName, std::string customDataKey);
 		virtual std::string getTypeString() const;
 		virtual std::string get_shape() const;
 		virtual std::string get_color() const;

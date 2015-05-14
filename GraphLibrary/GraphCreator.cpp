@@ -169,7 +169,10 @@ namespace msonlab {
 						}
 
 						if (node_id == 0) ++node_id;
-						node_id += i;
+						node_id += i + 3;
+						if (node_id >= graph.order()) {
+							node_id = graph.order() - 1;
+						}
 						EdgePtr e = make_shared<Edge>(edge_counter, L"a", make_shared<types::DataType>(i + node_id), nodes[i], nodes[node_id]);
 						++edge_counter;
 						graph.addEdge(e);
@@ -181,9 +184,9 @@ namespace msonlab {
 			}
 
 			Graph createQuadrant(){
-				msonlab::NodePtr a = (make_shared<msonlab::NodeConstant>(0, L"a", make_shared<types::DataType>(4)));
-				msonlab::NodePtr b = (make_shared<msonlab::NodeConstant>(1, L"b", make_shared<types::DataType>(2)));
-				msonlab::NodePtr c = (make_shared<msonlab::NodeConstant>(2, L"c", make_shared<types::DataType>(-5)));
+				msonlab::NodePtr a = make_shared<msonlab::NodeConstant>(0, L"a", make_shared<types::DataType>(4));
+				msonlab::NodePtr b = make_shared<msonlab::NodeConstant>(1, L"b", make_shared<types::DataType>(2));
+				msonlab::NodePtr c = make_shared<msonlab::NodeConstant>(2, L"c", make_shared<types::DataType>(-5));
 
 				msonlab::NodePtr constNumber_1 = (make_shared<msonlab::NodeConstant>(3, L"1", make_shared<types::DataType>(1)));
 				msonlab::NodePtr constNumber_2 = (make_shared<msonlab::NodeConstant>(4, L"2", make_shared<types::DataType>(2)));

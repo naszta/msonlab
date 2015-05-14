@@ -189,6 +189,9 @@
     <ClInclude Include="SchedulingUtils.h">
       <Filter>Header Files\Scheduling</Filter>
     </ClInclude>
+    <ClInclude Include="GraphExchangerUtils.h">
+      <Filter>Header Files\Graph</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="IProcessable.cpp">

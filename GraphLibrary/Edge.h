@@ -46,7 +46,7 @@ namespace msonlab
 		virtual void compile(int caller_thread, vector<msonlab::StackRunner::program>* programs, StackRunner::scheduleOrder schedule);
 
 		// exchange
-		virtual DOMElement* serialize(DOMDocument* xmlDocument, std::string yedDataKeyName, std::string typeKeyName, std::string customDataKey);
+		//virtual DOMElement* serialize(DOMDocument* xmlDocument, std::string yedDataKeyName, std::string typeKeyName, std::string customDataKey);
 		virtual std::string getTypeString() const;
 		virtual std::string get_target_arrow_style() const;
 		virtual std::string get_line_style() const;

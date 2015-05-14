@@ -4,12 +4,12 @@
 #include "StackRunner.h"
 #include <string>
 
-#include <xercesc\util\PlatformUtils.hpp>
-#include <xercesc\dom\DOM.hpp>
-#include <xercesc\framework\LocalFileFormatTarget.hpp>
-#include <xercesc\parsers\XercesDOMParser.hpp>
-#include <xercesc\sax\HandlerBase.hpp>
-XERCES_CPP_NAMESPACE_USE
+//#include <xercesc\util\PlatformUtils.hpp>
+//#include <xercesc\dom\DOM.hpp>
+//#include <xercesc\framework\LocalFileFormatTarget.hpp>
+//#include <xercesc\parsers\XercesDOMParser.hpp>
+//#include <xercesc\sax\HandlerBase.hpp>
+//XERCES_CPP_NAMESPACE_USE
 
 namespace msonlab
 {
@@ -94,7 +94,7 @@ namespace msonlab
 		int compile_iteration;
 
 		// exchange
-		virtual DOMElement* serialize(DOMDocument* xmlDocument, std::string yedDataKeyName, std::string typeKeyName, std::string customDataKey);
+		//virtual DOMElement* serialize(DOMDocument* xmlDocument, std::string yedDataKeyName, std::string typeKeyName, std::string customDataKey);
 		virtual std::string getTypeString() const;
 		virtual std::string get_custom_data() const;
 	};

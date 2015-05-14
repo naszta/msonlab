@@ -31,6 +31,10 @@ namespace msonlab
 			this->addEdge(edge);
 	}
 
+	Graph::~Graph() {
+		
+	}
+
 	bool Graph::addNode(NodePtr toAdd)
 	{
 		auto id = toAdd->id();

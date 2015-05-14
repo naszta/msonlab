@@ -50,6 +50,7 @@ namespace msonlab { namespace scheduling {
 		SchedulingResultPtr<const lite::litenode*> ultimate() const { return _ultimate; };
 		size_t size() const { return _size; }
 		unsigned last_improvement() const { return _last_improvement; }
+		void randomized() { _last_improvement = 0; }
 
 		// Sets the levels' size's.
 		void setLevelSize(const vector<size_t>& sizes);

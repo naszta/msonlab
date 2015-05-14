@@ -39,7 +39,7 @@ namespace GraphLibraryTest
 		{
 			msonlab::Graph graph;
 			ListSchedulingAlgorithm alg{};
-			Options options{ "Options.cfg" };
+			Options options{ "TestOptions.cfg" };
 			auto result = alg.schedule(graph, options);
 			unsigned expected = 0;
 			Assert::AreEqual(expected, result->size(), L"Result is not empty", LINE_INFO());
@@ -52,7 +52,7 @@ namespace GraphLibraryTest
 		{
 			auto graph = msonlab::graph::creator::createSample();
 			ListSchedulingAlgorithm alg{};
-			Options options{ "Options.cfg" };
+			Options options{ "TestOptions.cfg" };
 			auto result = alg.schedule(graph, options);
 			Assert::IsTrue(is_correct(*result), L"Result is not correct", LINE_INFO());
 			auto expected = graph.order();
@@ -71,7 +71,7 @@ namespace GraphLibraryTest
 		{
 			auto graph = msonlab::graph::creator::createQuadrant();
 			ListSchedulingAlgorithm alg{};
-			Options options{ "Options.cfg" };
+			Options options{ "TestOptions.cfg" };
 			auto result = alg.schedule(graph, options);
 			Assert::IsTrue(is_correct(*result), L"Result is not correct", LINE_INFO());
 

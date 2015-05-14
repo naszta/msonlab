@@ -43,11 +43,11 @@ namespace msonlab { namespace scheduling {
 		while (taskCounter < liteg.order())
 		{
 			vector<unsigned> scheduled_node_ids;
-			auto min_PU_id = std::distance(std::min_element(RT.begin(), RT.end()), RT.begin());
+			auto min_PU_id = std::distance(RT.begin(), std::min_element(RT.begin(), RT.end()));
 			auto node_id = free.front();
 			mapping[taskCounter] = min_PU_id;
 			scheduling[taskCounter] = hwnodes[node_id];
-			RT[min_PU_id] += hwnodes[node_id]->cptime();
+			RT[min_PU_id] += nodes[node_id].cptime();
 			scheduled_node_ids.push_back(node_id);
 			free.pop();
 			taskCounter++;

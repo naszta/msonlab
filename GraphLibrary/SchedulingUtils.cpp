@@ -335,10 +335,10 @@ namespace msonlab { namespace scheduling {
 		for (const auto& line : table) {
 			for (const auto elem : line) {
 				if (elem == TASKS) {
-					os << "   ";
+					os << "    ";
 				}
 				else  {
-					os << std::setw(3);
+					os << std::setw(4);
 					os << elem;
 				}
 			}

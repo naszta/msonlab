@@ -20,8 +20,9 @@ namespace msonlab
 		//msonlab::GraphPtr graph;
 
 		bool outputXML(DOMDocument* myDOMDocument, std::string filePath) const;
-
 		void createKeys(DOMDocument* inDocument) const;
+		DOMElement* serializeNode(const NodePtr node, DOMDocument* xmlDocument, std::string yedDataKeyName, std::string typeKeyName, std::string customDataKey) const;
+		DOMElement* serializeEdge(const EdgePtr edge, DOMDocument* xmlDocument, std::string yedDataKeyName, std::string typeKeyName, std::string customDataKey) const;
 
 	public:
 		//GraphExchanger(msonlab::GraphPtr toExchange);

@@ -166,48 +166,48 @@ namespace msonlab
 
 	// exchange
 
-	DOMElement* Edge::serialize(DOMDocument* xmlDocument, std::string yedDataKeyName, std::string typeKeyName, std::string customDataKey)
-	{
-		DOMElement* newEdge = xmlDocument->createElement(L"edge");
-		newEdge->setAttribute(L"id", XMLString::transcode(getIdString().c_str()));
-		newEdge->setAttribute(L"source", XMLString::transcode(lock_from()->getIdString().c_str()));
-		newEdge->setAttribute(L"target", XMLString::transcode(lock_to()->getIdString().c_str()));
+	//DOMElement* Edge::serialize(DOMDocument* xmlDocument, std::string yedDataKeyName, std::string typeKeyName, std::string customDataKey)
+	//{
+	//	DOMElement* newEdge = xmlDocument->createElement(L"edge");
+	//	newEdge->setAttribute(L"id", XMLString::transcode(getIdString().c_str()));
+	//	newEdge->setAttribute(L"source", XMLString::transcode(lock_from()->getIdString().c_str()));
+	//	newEdge->setAttribute(L"target", XMLString::transcode(lock_to()->getIdString().c_str()));
 
-		// create data for YED
-		DOMElement* edgeData = xmlDocument->createElement(L"data");
-		edgeData->setAttribute(L"key", XMLString::transcode(yedDataKeyName.c_str()));
-		newEdge->appendChild(edgeData);
+	//	// create data for YED
+	//	DOMElement* edgeData = xmlDocument->createElement(L"data");
+	//	edgeData->setAttribute(L"key", XMLString::transcode(yedDataKeyName.c_str()));
+	//	newEdge->appendChild(edgeData);
 
-		DOMElement* ple = xmlDocument->createElement(L"y:PolyLineEdge");
-		edgeData->appendChild(ple);
+	//	DOMElement* ple = xmlDocument->createElement(L"y:PolyLineEdge");
+	//	edgeData->appendChild(ple);
 
-		DOMElement* line = xmlDocument->createElement(L"y:LineStyle");
-		line->setAttribute(L"color", XMLString::transcode(get_color().c_str()));
-		line->setAttribute(L"type", XMLString::transcode(get_line_style().c_str()));
-		line->setAttribute(L"width", L"1.0");
-		ple->appendChild(line);
+	//	DOMElement* line = xmlDocument->createElement(L"y:LineStyle");
+	//	line->setAttribute(L"color", XMLString::transcode(get_color().c_str()));
+	//	line->setAttribute(L"type", XMLString::transcode(get_line_style().c_str()));
+	//	line->setAttribute(L"width", L"1.0");
+	//	ple->appendChild(line);
 
-		DOMElement* arrow = xmlDocument->createElement(L"y:Arrows");
-		arrow->setAttribute(L"source", L"none");
-		arrow->setAttribute(L"target", XMLString::transcode(get_target_arrow_style().c_str()));
-		ple->appendChild(arrow);
+	//	DOMElement* arrow = xmlDocument->createElement(L"y:Arrows");
+	//	arrow->setAttribute(L"source", L"none");
+	//	arrow->setAttribute(L"target", XMLString::transcode(get_target_arrow_style().c_str()));
+	//	ple->appendChild(arrow);
 
 
-		// create custom data for deserialization
-		DOMElement* customData = xmlDocument->createElement(L"data");
-		customData->setAttribute(L"key", XMLString::transcode(typeKeyName.c_str()));
-		DOMText* lbl_edgeType = xmlDocument->createTextNode(XMLString::transcode(getTypeString().c_str()));
-		customData->appendChild(lbl_edgeType);
-		newEdge->appendChild(customData);
+	//	// create custom data for deserialization
+	//	DOMElement* customData = xmlDocument->createElement(L"data");
+	//	customData->setAttribute(L"key", XMLString::transcode(typeKeyName.c_str()));
+	//	DOMText* lbl_edgeType = xmlDocument->createTextNode(XMLString::transcode(getTypeString().c_str()));
+	//	customData->appendChild(lbl_edgeType);
+	//	newEdge->appendChild(customData);
 
-		DOMElement* customData2 = xmlDocument->createElement(L"data");
-		customData2->setAttribute(L"key", XMLString::transcode(customDataKey.c_str()));
-		DOMText* lbl_edgeCustomData = xmlDocument->createTextNode(XMLString::transcode(get_custom_data().c_str()));
-		customData2->appendChild(lbl_edgeCustomData);
-		newEdge->appendChild(customData2);
+	//	DOMElement* customData2 = xmlDocument->createElement(L"data");
+	//	customData2->setAttribute(L"key", XMLString::transcode(customDataKey.c_str()));
+	//	DOMText* lbl_edgeCustomData = xmlDocument->createTextNode(XMLString::transcode(get_custom_data().c_str()));
+	//	customData2->appendChild(lbl_edgeCustomData);
+	//	newEdge->appendChild(customData2);
 
-		return newEdge;
-	}
+	//	return newEdge;
+	//}
 
 	std::string Edge::getTypeString() const
 	{

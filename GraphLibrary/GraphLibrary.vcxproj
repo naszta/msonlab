@@ -155,6 +155,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="GeneticAlgorithm.h" />
+    <ClInclude Include="GraphExchangerUtils.h" />
     <ClInclude Include="Id.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="ListSchedulingAlgorithm.h">

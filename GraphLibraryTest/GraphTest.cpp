@@ -1,3 +1,8 @@
+#define _CRTDBG_MAP_ALLOC
+#include <malloc.h>
+#include <stdlib.h>
+#include <crtdbg.h>
+
 #include "stdafx.h"
 #include "CppUnitTest.h"
 
@@ -60,14 +65,21 @@ namespace GraphLibraryTest
 
 		TEST_METHOD(TestRandomGraph)
 		{
-			size_t expected_nodes = 42;
-			auto g = msonlab::graph::creator::createRandom(expected_nodes, 35, 8, 2);
-			const auto& nodes = g.nodes();
-			Assert::AreEqual(expected_nodes, nodes.size(), L"Graph has different number of nodes.", LINE_INFO());
-			unsigned id = 0;
-			for (const auto& node : nodes) {
-				Assert::AreEqual(id++, node->id(), L"Node order is not by id.", LINE_INFO());
+			_CrtMemState s1, s2, s3;
+			_CrtMemCheckpoint(&s1);
+			{
+				size_t expected_nodes = 42;
+				auto g = msonlab::graph::creator::createRandom(expected_nodes, 35, 8, 2);
+				const auto& nodes = g.nodes();
+				Assert::AreEqual(expected_nodes, nodes.size(), L"Graph has different number of nodes.", LINE_INFO());
+				unsigned id = 0;
+				for (const auto& node : nodes) {
+					Assert::AreEqual(id++, node->id(), L"Node order is not by id.", LINE_INFO());
+				}
 			}
+			_CrtMemCheckpoint(&s2);
+			bool leaked = _CrtMemDifference(&s3, &s1, &s2);
+			Assert::IsTrue(!leaked);
 		}
 	};
 }
