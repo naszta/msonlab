@@ -1,6 +1,6 @@
 #include "BlueEdge.h"
 #include "Node.h"
-#include "GraphExchanger.h"
+#include "PersistenceUtils.h"
 
 namespace msonlab
 {
@@ -66,12 +66,12 @@ namespace msonlab
 	// exchange
 	std::string BlueEdge::getTypeString() const
 	{
-		return GraphExchanger::getSupportedEdgeTypeName(GraphExchanger::supportedEdgeType::BLUE);
+		return persistence::edgeTypeToString(persistence::SupportedEdgeType::BLUE);
 	}
 
 	std::string BlueEdge::get_color() const
 	{
-		return "#0000FF";
+		return persistence::edgeTypeToColor(persistence::SupportedEdgeType::BLUE);
 	}
 
 }

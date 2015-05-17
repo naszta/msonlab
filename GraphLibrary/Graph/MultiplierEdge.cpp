@@ -1,6 +1,6 @@
 #include "MultiplierEdge.h"
 #include "Node.h"
-#include "GraphExchanger.h"
+#include "PersistenceUtils.h"
 #include "Executor\SimpleStackValue.h"
 
 namespace msonlab
@@ -96,7 +96,7 @@ namespace msonlab
 	// exchange
 	std::string MultiplierEdge::getTypeString() const
 	{
-		return GraphExchanger::getSupportedEdgeTypeName(GraphExchanger::supportedEdgeType::MULTIPLIER);
+		return persistence::edgeTypeToString(persistence::SupportedEdgeType::MULTIPLIER);
 	}
 
 	std::string MultiplierEdge::get_target_arrow_style() const

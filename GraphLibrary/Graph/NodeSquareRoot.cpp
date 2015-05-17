@@ -1,13 +1,15 @@
 #include "NodeSquareRoot.h"
-#include "Edge.h"
+
 #include <math.h>
-#include "GraphExchanger.h"
+
+#include "Edge.h"
 #include "Executor\SimpleStackValue.h"
+#include "PersistenceUtils.h"
 
 namespace msonlab
 {
 	NodeSquareRoot::NodeSquareRoot(unsigned int _id, types::LabelType _label, types::DataPtr _value)
-		: Node(_id, _label, _value, GraphExchanger::getSupportedNodeTypeName(GraphExchanger::supportedNodeType::SQUAREROOT), 7)
+		: Node(_id, _label, _value, persistence::nodeTypeToString(persistence::SupportedNodeType::SQUAREROOT), 7)
 	{
 	}
 
@@ -128,10 +130,6 @@ namespace msonlab
 	}
 
 	// exchange
-	/*std::string NodeSquareRoot::getTypeString() const
-	{
-		return GraphExchanger::getSupportedNodeTypeName(GraphExchanger::supportedNodeType::SQUAREROOT);
-	}*/
 
 	std::string NodeSquareRoot::get_color() const
 	{

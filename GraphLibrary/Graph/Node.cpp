@@ -1,5 +1,4 @@
 #include "Node.h"
-#include "GraphExchanger.h"
 #include "Edge.h"
 
 namespace msonlab

@@ -1,11 +1,11 @@
 #include "NodeMultiply.h"
 #include "Edge.h"
-#include "GraphExchanger.h"
+#include "PersistenceUtils.h"
 
 namespace msonlab
 {
 	NodeMultiply::NodeMultiply(unsigned int _id, types::LabelType _label, types::DataPtr _value)
-		: Node(_id, _label, _value, GraphExchanger::getSupportedNodeTypeName(GraphExchanger::supportedNodeType::MULTIPLY), 5)
+		: Node(_id, _label, _value, persistence::nodeTypeToString(persistence::SupportedNodeType::MULTIPLY), 5)
 	{
 	}
 

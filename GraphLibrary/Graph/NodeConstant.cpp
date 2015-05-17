@@ -1,12 +1,13 @@
 #include "NodeConstant.h"
+
 #include "Edge.h"
-#include "GraphExchanger.h"
 #include "Executor\SimpleStackValue.h"
+#include "PersistenceUtils.h"
 
 namespace msonlab
 {
 	NodeConstant::NodeConstant(unsigned int _id, types::LabelType _label, types::DataPtr _value)
-		: Node(_id, _label, _value, GraphExchanger::getSupportedNodeTypeName(GraphExchanger::supportedNodeType::CONSTANT), 2)
+		: Node(_id, _label, _value, persistence::nodeTypeToString(persistence::SupportedNodeType::CONSTANT), 2)
 	{
 	}
 

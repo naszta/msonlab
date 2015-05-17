@@ -1,12 +1,14 @@
 #include "NodeAdd.h"
-#include "Edge.h"
-#include "GraphExchanger.h"
+
 #include <memory>
+
+#include "Edge.h"
+#include "PersistenceUtils.h"
 
 namespace msonlab
 {
 	NodeAdd::NodeAdd(unsigned int _id, types::LabelType _label, types::DataPtr _value)
-		: Node(_id, _label, _value, GraphExchanger::getSupportedNodeTypeName(GraphExchanger::supportedNodeType::ADD), 5)
+		: Node(_id, _label, _value, persistence::nodeTypeToString(persistence::SupportedNodeType::ADD), 5)
 	{
 	}
 

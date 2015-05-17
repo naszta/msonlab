@@ -1,11 +1,11 @@
 #include "NodeDivide.h"
 #include "Edge.h"
-#include "GraphExchanger.h"
+#include "PersistenceUtils.h"
 
 namespace msonlab
 {
 	NodeDivide::NodeDivide(unsigned int _id, types::LabelType _label, types::DataPtr _value)
-		: Node(_id, _label, _value, GraphExchanger::getSupportedNodeTypeName(GraphExchanger::supportedNodeType::DIVIDE), 5)
+		: Node(_id, _label, _value, persistence::nodeTypeToString(persistence::SupportedNodeType::DIVIDE), 5)
 	{
 	}
 

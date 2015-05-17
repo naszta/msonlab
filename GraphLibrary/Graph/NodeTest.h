@@ -4,7 +4,6 @@
 #include <memory>
 
 #include "Edge.h"
-#include "GraphExchanger.h"
 #include "Node.h"
 
 namespace msonlab
