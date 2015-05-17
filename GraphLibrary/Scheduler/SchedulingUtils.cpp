@@ -4,7 +4,7 @@
 #include <sstream>
 #include <iomanip>
 
-#include "Options.h"
+#include "../Options.h"
 
 namespace msonlab { namespace scheduling {
 	using std::pair;

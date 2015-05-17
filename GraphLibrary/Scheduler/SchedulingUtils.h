@@ -8,7 +8,7 @@
 
 #include <vector>
 
-#include "Options.h"
+#include "../Options.h"
 
 namespace msonlab { namespace scheduling {
 	using std::vector;

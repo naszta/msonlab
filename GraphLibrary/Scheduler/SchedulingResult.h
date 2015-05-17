@@ -1,12 +1,14 @@
 #ifndef SCHEDULING_RESULT_H
 #define SCHEDULING_RESULT_H
 
-#include "Options.h"
-#include "IProcessable.h"
-#include <ostream>
-#include <vector>
 #include <memory>
+#include <ostream>
 #include <utility>
+#include <vector>
+
+#include "../IProcessable.h"
+#include "../Options.h"
+
 
 /// This class represents a solution
 /// a solution is described with

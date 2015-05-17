@@ -5,8 +5,8 @@
 
 #include "../GraphLibrary/Graph/Graph.h"
 #include "../GraphLibrary/Graph/GraphCreator.h"
-#include "../GraphLibrary/ListSchedulingAlgorithm.h"
-#include "../GraphLibrary/SchedulingUtils.h"
+#include "../GraphLibrary/Scheduler/ListSchedulingAlgorithm.h"
+#include "../GraphLibrary/Scheduler/SchedulingUtils.h"
 
 using namespace msonlab;
 using namespace msonlab::graph;

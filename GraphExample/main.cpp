@@ -16,13 +16,13 @@
 #include "../GraphLibrary/Graph/GraphExchanger.h"
 #include "../GraphLibrary/Algorithms.h"
 #include "../GraphLibrary/litegraph.h"
-#include "../GraphLibrary/GreedySchedulingAlgorithm.h"
-#include "../GraphLibrary/GeneticAlgorithm.h"
-#include "../GraphLibrary/SchedulingUtils.h"
-#include "../GraphLibrary/FitnessStrategy.h"
-#include "../GraphLibrary/ListSchedulingAlgorithm.h"
-#include "../GraphLibrary/CriticalPathSchedulingAlgorithm.h"
-#include "../GraphLibrary/CoffmanGrahamSchedulingAlgorithm.h"
+#include "../GraphLibrary/Scheduler/GreedySchedulingAlgorithm.h"
+#include "../GraphLibrary/Scheduler/GeneticAlgorithm.h"
+#include "../GraphLibrary/Scheduler/SchedulingUtils.h"
+#include "../GraphLibrary/Scheduler/FitnessStrategy.h"
+#include "../GraphLibrary/Scheduler/ListSchedulingAlgorithm.h"
+#include "../GraphLibrary/Scheduler/CriticalPathSchedulingAlgorithm.h"
+#include "../GraphLibrary/Scheduler/CoffmanGrahamSchedulingAlgorithm.h"
 //
 //
 //

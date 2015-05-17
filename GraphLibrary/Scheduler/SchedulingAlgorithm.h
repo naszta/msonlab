@@ -3,8 +3,9 @@
 
 #include <string>
 #include <memory>
+
 #include "SchedulingResult.h"
-#include "Graph/Graph.h"
+#include "../Graph/Graph.h"
 
 namespace msonlab {
 	namespace scheduling {

@@ -66,9 +66,6 @@
     <ClInclude Include="Processor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GreedySchedulingAlgorithm.h">
-      <Filter>Header Files\Scheduling</Filter>
-    </ClInclude>
     <ClInclude Include="ConfigFile.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -77,12 +74,6 @@
     </ClInclude>
     <ClInclude Include="StackRunner.h">
       <Filter>Header Files\Stack</Filter>
-    </ClInclude>
-    <ClInclude Include="Options.h">
-      <Filter>Header Files\Scheduling</Filter>
-    </ClInclude>
-    <ClInclude Include="SchedulingAlgorithm.h">
-      <Filter>Header Files\Scheduling</Filter>
     </ClInclude>
     <ClInclude Include="SimpleStackValue.h">
       <Filter>Header Files\Stack</Filter>
@@ -93,32 +84,8 @@
     <ClInclude Include="FutureStackValue.h">
       <Filter>Header Files\Stack</Filter>
     </ClInclude>
-    <ClInclude Include="SolutionSet.h">
-      <Filter>Header Files\Scheduling\Genetic</Filter>
-    </ClInclude>
-    <ClInclude Include="FitnessStrategy.h">
-      <Filter>Header Files\Scheduling\Genetic</Filter>
-    </ClInclude>
     <ClInclude Include="Algorithms.h">
       <Filter>Header Files\Graph</Filter>
-    </ClInclude>
-    <ClInclude Include="CriticalPathSchedulingAlgorithm.h">
-      <Filter>Header Files\Scheduling</Filter>
-    </ClInclude>
-    <ClInclude Include="CoffmanGrahamSchedulingAlgorithm.h">
-      <Filter>Header Files\Scheduling</Filter>
-    </ClInclude>
-    <ClInclude Include="ListSchedulingAlgorithm.h">
-      <Filter>Header Files\Scheduling</Filter>
-    </ClInclude>
-    <ClInclude Include="SchedulingResult.h">
-      <Filter>Header Files\Scheduling</Filter>
-    </ClInclude>
-    <ClInclude Include="GeneticAlgorithm.h">
-      <Filter>Header Files\Scheduling\Genetic</Filter>
-    </ClInclude>
-    <ClInclude Include="SchedulingAlgorithmBuilder.h">
-      <Filter>Header Files\Scheduling</Filter>
     </ClInclude>
     <ClInclude Include="stdafx.h">
       <Filter>Header Files</Filter>
@@ -134,9 +101,6 @@
     </ClInclude>
     <ClInclude Include="litenode.h">
       <Filter>Header Files\lite</Filter>
-    </ClInclude>
-    <ClInclude Include="SchedulingUtils.h">
-      <Filter>Header Files\Scheduling</Filter>
     </ClInclude>
     <ClInclude Include="Graph\Graph.hpp">
       <Filter>Header Files</Filter>
@@ -192,6 +156,42 @@
     <ClInclude Include="Graph\NodeTest.h">
       <Filter>Header Files\Node</Filter>
     </ClInclude>
+    <ClInclude Include="Scheduler\CoffmanGrahamSchedulingAlgorithm.h">
+      <Filter>Header Files\Scheduling</Filter>
+    </ClInclude>
+    <ClInclude Include="Scheduler\CriticalPathSchedulingAlgorithm.h">
+      <Filter>Header Files\Scheduling</Filter>
+    </ClInclude>
+    <ClInclude Include="Scheduler\GreedySchedulingAlgorithm.h">
+      <Filter>Header Files\Scheduling</Filter>
+    </ClInclude>
+    <ClInclude Include="Scheduler\ListSchedulingAlgorithm.h">
+      <Filter>Header Files\Scheduling</Filter>
+    </ClInclude>
+    <ClInclude Include="Scheduler\SchedulingAlgorithm.h">
+      <Filter>Header Files\Scheduling</Filter>
+    </ClInclude>
+    <ClInclude Include="Scheduler\SchedulingAlgorithmBuilder.h">
+      <Filter>Header Files\Scheduling</Filter>
+    </ClInclude>
+    <ClInclude Include="Scheduler\SchedulingResult.h">
+      <Filter>Header Files\Scheduling</Filter>
+    </ClInclude>
+    <ClInclude Include="Scheduler\SchedulingUtils.h">
+      <Filter>Header Files\Scheduling</Filter>
+    </ClInclude>
+    <ClInclude Include="Scheduler\GeneticAlgorithm.h">
+      <Filter>Header Files\Scheduling\Genetic</Filter>
+    </ClInclude>
+    <ClInclude Include="Scheduler\SolutionSet.h">
+      <Filter>Header Files\Scheduling\Genetic</Filter>
+    </ClInclude>
+    <ClInclude Include="Scheduler\FitnessStrategy.h">
+      <Filter>Header Files\Scheduling\Genetic</Filter>
+    </ClInclude>
+    <ClInclude Include="Options.h">
+      <Filter>Header Files\Scheduling</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="IProcessable.cpp">
@@ -203,17 +203,11 @@
     <ClCompile Include="Processor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GreedySchedulingAlgorithm.cpp">
-      <Filter>Source Files\Scheduling</Filter>
-    </ClCompile>
     <ClCompile Include="StackCompiler.cpp">
       <Filter>Source Files\Stack</Filter>
     </ClCompile>
     <ClCompile Include="StackRunner.cpp">
       <Filter>Source Files\Stack</Filter>
-    </ClCompile>
-    <ClCompile Include="Options.cpp">
-      <Filter>Source Files\Scheduling</Filter>
     </ClCompile>
     <ClCompile Include="SimpleStackValue.cpp">
       <Filter>Source Files\Stack</Filter>
@@ -224,35 +218,8 @@
     <ClCompile Include="FutureStackValue.cpp">
       <Filter>Source Files\Stack</Filter>
     </ClCompile>
-    <ClCompile Include="SolutionSet.cpp">
-      <Filter>Source Files\Scheduling\Genetic</Filter>
-    </ClCompile>
-    <ClCompile Include="FitnessStrategy.cpp">
-      <Filter>Source Files\Scheduling\Genetic</Filter>
-    </ClCompile>
     <ClCompile Include="Algorithms.cpp">
       <Filter>Source Files\Graph</Filter>
-    </ClCompile>
-    <ClCompile Include="CriticalPathSchedulingAlgorithm.cpp">
-      <Filter>Source Files\Scheduling</Filter>
-    </ClCompile>
-    <ClCompile Include="CoffmanGrahamSchedulingAlgorithm.cpp">
-      <Filter>Source Files\Scheduling</Filter>
-    </ClCompile>
-    <ClCompile Include="SchedulingAlgorithm.cpp">
-      <Filter>Source Files\Scheduling</Filter>
-    </ClCompile>
-    <ClCompile Include="ListSchedulingAlgorithm.cpp">
-      <Filter>Source Files\Scheduling</Filter>
-    </ClCompile>
-    <ClCompile Include="SchedulingResult.cpp">
-      <Filter>Source Files\Scheduling</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneticAlgorithm.cpp">
-      <Filter>Source Files\Scheduling\Genetic</Filter>
-    </ClCompile>
-    <ClCompile Include="SchedulingAlgorithmBuilder.cpp">
-      <Filter>Source Files\Scheduling</Filter>
     </ClCompile>
     <ClCompile Include="dllmain.cpp">
       <Filter>Source Files</Filter>
@@ -265,9 +232,6 @@
     </ClCompile>
     <ClCompile Include="litenode.cpp">
       <Filter>Source Files\lite</Filter>
-    </ClCompile>
-    <ClCompile Include="SchedulingUtils.cpp">
-      <Filter>Source Files\Scheduling</Filter>
     </ClCompile>
     <ClCompile Include="Graph\BlueEdge.cpp">
       <Filter>Source Files\Edge</Filter>
@@ -319,6 +283,42 @@
     </ClCompile>
     <ClCompile Include="Graph\NodeTest.cpp">
       <Filter>Source Files\Node</Filter>
+    </ClCompile>
+    <ClCompile Include="Scheduler\CoffmanGrahamSchedulingAlgorithm.cpp">
+      <Filter>Source Files\Scheduling</Filter>
+    </ClCompile>
+    <ClCompile Include="Scheduler\CriticalPathSchedulingAlgorithm.cpp">
+      <Filter>Source Files\Scheduling</Filter>
+    </ClCompile>
+    <ClCompile Include="Scheduler\GreedySchedulingAlgorithm.cpp">
+      <Filter>Source Files\Scheduling</Filter>
+    </ClCompile>
+    <ClCompile Include="Scheduler\ListSchedulingAlgorithm.cpp">
+      <Filter>Source Files\Scheduling</Filter>
+    </ClCompile>
+    <ClCompile Include="Scheduler\SchedulingAlgorithm.cpp">
+      <Filter>Source Files\Scheduling</Filter>
+    </ClCompile>
+    <ClCompile Include="Scheduler\SchedulingAlgorithmBuilder.cpp">
+      <Filter>Source Files\Scheduling</Filter>
+    </ClCompile>
+    <ClCompile Include="Scheduler\SchedulingResult.cpp">
+      <Filter>Source Files\Scheduling</Filter>
+    </ClCompile>
+    <ClCompile Include="Scheduler\SchedulingUtils.cpp">
+      <Filter>Source Files\Scheduling</Filter>
+    </ClCompile>
+    <ClCompile Include="Scheduler\FitnessStrategy.cpp">
+      <Filter>Source Files\Scheduling\Genetic</Filter>
+    </ClCompile>
+    <ClCompile Include="Scheduler\GeneticAlgorithm.cpp">
+      <Filter>Source Files\Scheduling\Genetic</Filter>
+    </ClCompile>
+    <ClCompile Include="Scheduler\SolutionSet.cpp">
+      <Filter>Source Files\Scheduling\Genetic</Filter>
+    </ClCompile>
+    <ClCompile Include="Options.cpp">
+      <Filter>Source Files\Scheduling</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

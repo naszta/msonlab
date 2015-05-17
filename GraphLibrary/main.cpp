@@ -2,18 +2,6 @@
 #include <stdlib.h>
 #include <crtdbg.h>
 
-
-#include "Graph/Graph.h"
-#include "Graph/GraphExchanger.h"
-#include "Graph/GraphCreator.h"
-#include "SchedulingAlgorithm.h"
-#include "GeneticAlgorithm.h"
-#include "GreedySchedulingAlgorithm.h"
-#include "CoffmanGrahamSchedulingAlgorithm.h"
-#include "CriticalPathSchedulingAlgorithm.h"
-#include "Options.h"
-#include "FitnessStrategy.h"
-#include "SchedulingUtils.h"
 #include <chrono>
 #include <memory>
 #include <iostream>
@@ -22,12 +10,24 @@
 #include <cstdlib>     /* srand, rand */
 #include <ctime>       /* time */
 
-#include <xercesc\util\PlatformUtils.hpp>
 #include <xercesc\dom\DOM.hpp>
-#include <xercesc/framework/LocalFileFormatTarget.hpp>
+#include <xercesc\framework\LocalFileFormatTarget.hpp>
 #include <xercesc\parsers\XercesDOMParser.hpp>
 #include <xercesc\sax\HandlerBase.hpp>
+#include <xercesc\util\PlatformUtils.hpp>
 XERCES_CPP_NAMESPACE_USE
+
+#include "Graph/Graph.h"
+#include "Graph/GraphExchanger.h"
+#include "Graph/GraphCreator.h"
+#include "Options.h"
+#include "Scheduler/CoffmanGrahamSchedulingAlgorithm.h"
+#include "Scheduler/CriticalPathSchedulingAlgorithm.h"
+#include "Scheduler/FitnessStrategy.h"
+#include "Scheduler/GeneticAlgorithm.h"
+#include "Scheduler/GreedySchedulingAlgorithm.h"
+#include "Scheduler/SchedulingAlgorithm.h"
+#include "Scheduler/SchedulingUtils.h"
 
 #define MEASURE 1
 #define WAIT 1

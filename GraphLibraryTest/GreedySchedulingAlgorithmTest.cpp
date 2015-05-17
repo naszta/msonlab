@@ -4,8 +4,8 @@
 
 #include "../GraphLibrary/Graph/Graph.h"
 #include "../GraphLibrary/Graph/GraphCreator.h"
-#include "../GraphLibrary/GreedySchedulingAlgorithm.h"
-#include "../GraphLibrary/SchedulingUtils.h"
+#include "../GraphLibrary/Scheduler/GreedySchedulingAlgorithm.h"
+#include "../GraphLibrary/Scheduler/SchedulingUtils.h"
 
 using namespace msonlab;
 using namespace msonlab::graph;

@@ -3,11 +3,11 @@
 
 #include <memory>
 #include <vector>
+#include "../litegraph.h"
 #include "SolutionSet.h"
 #include "SchedulingAlgorithm.h"
 #include "SchedulingAlgorithmBuilder.h"
 #include "FitnessStrategy.h"
-#include "litegraph.h"
 #include "SchedulingResult.h"
 
 // GeneticAlgoritm implementation for project laboratory

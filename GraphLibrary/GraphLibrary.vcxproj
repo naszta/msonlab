@@ -93,11 +93,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Algorithms.cpp" />
-    <ClCompile Include="CoffmanGrahamSchedulingAlgorithm.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
-    </ClCompile>
     <ClCompile Include="dllmain.cpp" />
-    <ClCompile Include="GeneticAlgorithm.cpp" />
     <ClCompile Include="Graph\BFSIterator.cpp" />
     <ClCompile Include="Graph\BlueEdge.cpp" />
     <ClCompile Include="Graph\DFSIterator.cpp" />
@@ -115,32 +111,24 @@
     <ClCompile Include="Graph\NodeMultiply.cpp" />
     <ClCompile Include="Graph\NodeSquareRoot.cpp" />
     <ClCompile Include="Graph\NodeTest.cpp" />
-    <ClCompile Include="ListSchedulingAlgorithm.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
-    </ClCompile>
     <ClCompile Include="litenode.cpp" />
     <ClCompile Include="litegraph.cpp" />
-    <ClCompile Include="SchedulingAlgorithm.cpp" />
-    <ClCompile Include="SchedulingAlgorithmBuilder.cpp" />
-    <ClCompile Include="SchedulingUtils.cpp" />
-    <ClCompile Include="SchedulingResult.cpp" />
-    <ClCompile Include="FitnessStrategy.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
-    </ClCompile>
     <ClCompile Include="FutureStackValue.cpp" />
-    <ClCompile Include="Options.cpp" />
-    <ClCompile Include="GreedySchedulingAlgorithm.cpp" />
-    <ClCompile Include="CriticalPathSchedulingAlgorithm.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
-    </ClCompile>
     <ClCompile Include="IProcessable.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="SolutionSet.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
-    </ClCompile>
+    <ClCompile Include="Options.cpp" />
     <ClCompile Include="Processor.cpp" />
+    <ClCompile Include="Scheduler\CoffmanGrahamSchedulingAlgorithm.cpp" />
+    <ClCompile Include="Scheduler\CriticalPathSchedulingAlgorithm.cpp" />
+    <ClCompile Include="Scheduler\FitnessStrategy.cpp" />
+    <ClCompile Include="Scheduler\GeneticAlgorithm.cpp" />
+    <ClCompile Include="Scheduler\GreedySchedulingAlgorithm.cpp" />
+    <ClCompile Include="Scheduler\ListSchedulingAlgorithm.cpp" />
+    <ClCompile Include="Scheduler\SchedulingAlgorithm.cpp" />
+    <ClCompile Include="Scheduler\SchedulingAlgorithmBuilder.cpp" />
+    <ClCompile Include="Scheduler\SchedulingResult.cpp" />
+    <ClCompile Include="Scheduler\SchedulingUtils.cpp" />
+    <ClCompile Include="Scheduler\SolutionSet.cpp" />
     <ClCompile Include="SimpleStackValue.cpp" />
     <ClCompile Include="StackCompiler.cpp" />
     <ClCompile Include="StackRunner.cpp" />
@@ -149,10 +137,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Algorithms.h" />
-    <ClInclude Include="CoffmanGrahamSchedulingAlgorithm.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
-    </ClInclude>
-    <ClInclude Include="GeneticAlgorithm.h" />
     <ClInclude Include="Graph\BFSIterator.h" />
     <ClInclude Include="Graph\BlueEdge.h" />
     <ClInclude Include="Graph\DFSIterator.h" />
@@ -172,33 +156,25 @@
     <ClInclude Include="Graph\NodeSquareRoot.h" />
     <ClInclude Include="Graph\NodeTest.h" />
     <ClInclude Include="Id.h" />
+    <ClInclude Include="Options.h" />
+    <ClInclude Include="Scheduler\CoffmanGrahamSchedulingAlgorithm.h" />
+    <ClInclude Include="Scheduler\CriticalPathSchedulingAlgorithm.h" />
+    <ClInclude Include="Scheduler\FitnessStrategy.h" />
+    <ClInclude Include="Scheduler\GeneticAlgorithm.h" />
+    <ClInclude Include="Scheduler\GreedySchedulingAlgorithm.h" />
+    <ClInclude Include="Scheduler\ListSchedulingAlgorithm.h" />
+    <ClInclude Include="Scheduler\SchedulingAlgorithm.h" />
+    <ClInclude Include="Scheduler\SchedulingAlgorithmBuilder.h" />
+    <ClInclude Include="Scheduler\SchedulingResult.h" />
+    <ClInclude Include="Scheduler\SchedulingUtils.h" />
+    <ClInclude Include="Scheduler\SolutionSet.h" />
     <ClInclude Include="stdafx.h" />
-    <ClInclude Include="ListSchedulingAlgorithm.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
-    </ClInclude>
     <ClInclude Include="litegraph.h" />
     <ClInclude Include="litenode.h" />
-    <ClInclude Include="SchedulingAlgorithmBuilder.h" />
-    <ClInclude Include="SchedulingUtils.h" />
-    <ClInclude Include="SchedulingResult.h" />
     <ClInclude Include="ConfigFile.h" />
-    <ClInclude Include="FitnessStrategy.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
-    </ClInclude>
     <ClInclude Include="FutureStackValue.h" />
     <ClInclude Include="Global.h" />
-    <ClInclude Include="GreedySchedulingAlgorithm.h" />
-    <ClInclude Include="CriticalPathSchedulingAlgorithm.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
-    </ClInclude>
-    <ClInclude Include="SchedulingAlgorithm.h" />
     <ClInclude Include="IProcessable.h" />
-    <ClInclude Include="Options.h" />
-    <ClInclude Include="SolutionSet.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
-    </ClInclude>
     <ClInclude Include="Processor.h" />
     <ClInclude Include="SimpleStackValue.h" />
     <ClInclude Include="StackCompiler.h" />

@@ -1,7 +1,6 @@
 #ifndef OPTIONS_H
 #define OPTIONS_H
 
-//#include <fstream>
 #include <string>
 
 namespace msonlab { namespace scheduling {

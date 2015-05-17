@@ -1,9 +1,9 @@
 #ifndef LIST_SEDULING_ALGORITHM_H
 #define LIST_SEDULING_ALGORITHM_H
 
+#include "../litegraph.h"
 #include "SchedulingAlgorithm.h"
 #include "SchedulingAlgorithmBuilder.h"
-#include "litegraph.h"
 
 namespace msonlab { namespace scheduling {
 	class ListSchedulingAlgorithm : public SchedulingAlgorithm {
