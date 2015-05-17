@@ -1,8 +1,9 @@
 #ifndef BFS_ITERATOR_H
 #define BFS_ITERATOR_H
 
-#include "GraphIterator.h"
 #include <queue>
+
+#include "GraphIterator.h"
 
 namespace msonlab
 {

@@ -2,7 +2,7 @@
 #define LITE_GRAPH_H
 
 #include <vector>
-#include "Graph.h"
+#include "Graph/Graph.h"
 #include "litenode.h"
 
 namespace msonlab { namespace lite {

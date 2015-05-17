@@ -3,8 +3,8 @@
 
 #include <sstream>
 
-#include "../GraphLibrary/Graph.h"
-#include "../GraphLibrary/GraphCreator.h"
+#include "../GraphLibrary/Graph/Graph.h"
+#include "../GraphLibrary/Graph/GraphCreator.h"
 #include "../GraphLibrary/ListSchedulingAlgorithm.h"
 #include "../GraphLibrary/SchedulingUtils.h"
 

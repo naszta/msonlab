@@ -3,7 +3,7 @@
 
 #include <vector>
 #include <cstddef> // size_t
-#include "Graph.h"
+#include "Graph/Graph.h"
 
 namespace msonlab { namespace lite {
 

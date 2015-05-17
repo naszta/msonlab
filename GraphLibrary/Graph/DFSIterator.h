@@ -1,8 +1,9 @@
 #ifndef DFS_ITERATOR_H
 #define DFS_ITERATOR_H
 
-#include "GraphIterator.h"
 #include <stack>
+
+#include "GraphIterator.h"
 
 namespace msonlab
 {

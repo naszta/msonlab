@@ -1,16 +1,16 @@
 #ifndef GRAPH_BUILDER 
 #define GRAPH_BUILDER
 
+#include "../Global.h"
+#include "BlueEdge.h"
+#include "Edge.h"
 #include "Graph.h"
-#include "Global.h"
+#include "MultiplierEdge.h"
 #include "NodeAdd.h"
 #include "NodeConstant.h"
 #include "NodeDivide.h"
 #include "NodeMultiply.h"
 #include "NodeSquareRoot.h"
-#include "Edge.h"
-#include "BlueEdge.h"
-#include "MultiplierEdge.h"
 
 namespace msonlab
 {

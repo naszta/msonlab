@@ -1,6 +1,6 @@
 #ifndef PROCESSOR_H
 #define PROCESSOR_H
-#include "Graph.h"
+#include "Graph/Graph.h"
 
 namespace msonlab
 {

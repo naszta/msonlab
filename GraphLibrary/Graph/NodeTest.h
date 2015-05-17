@@ -1,9 +1,11 @@
 #ifndef NODE_TEST_H
 #define NODE_TEST_H
-#include "Node.h"
+
+#include <memory>
+
 #include "Edge.h"
 #include "GraphExchanger.h"
-#include <memory>
+#include "Node.h"
 
 namespace msonlab
 {

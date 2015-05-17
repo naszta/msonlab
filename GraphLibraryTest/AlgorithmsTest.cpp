@@ -1,8 +1,9 @@
 #include "stdafx.h"
 #include "GraphLibTestUtils.hpp"
 
-#include "../GraphLibrary/Graph.h"
-#include "../GraphLibrary/GraphCreator.h"
+#include "../GraphLibrary/Graph/Graph.h"
+#include "../GraphLibrary/Graph/Node.h"
+#include "../GraphLibrary/Graph/GraphCreator.h"
 #include "../GraphLibrary/Algorithms.h"
 
 using namespace std;

@@ -1,5 +1,5 @@
 #include "Algorithms.h"
-#include "BFSIterator.h"
+#include "Graph/BFSIterator.h"
 #include <queue>
 #include <set>
 #include <map>

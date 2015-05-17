@@ -9,11 +9,11 @@
 #include <memory>
 #include <stdexcept>
 
-#include "../GraphLibrary/Graph.h"
+#include "../GraphLibrary/Graph/Graph.h"
 //#include "../GraphLibrary/BFSIterator.h"
 //#include "../GraphLibrary/DFSIterator.h"
-#include "../GraphLibrary/GraphCreator.h"
-#include "../GraphLibrary/GraphExchanger.h"
+#include "../GraphLibrary/Graph/GraphCreator.h"
+#include "../GraphLibrary/Graph/GraphExchanger.h"
 #include "../GraphLibrary/Algorithms.h"
 #include "../GraphLibrary/litegraph.h"
 #include "../GraphLibrary/GreedySchedulingAlgorithm.h"

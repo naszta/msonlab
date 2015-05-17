@@ -3,10 +3,10 @@
 
 #include <iostream>
 
-#include "../GraphLibrary/Graph.h"
-#include "../GraphLibrary/BFSIterator.h"
-#include "../GraphLibrary/DFSIterator.h"
-#include "../GraphLibrary/GraphCreator.h"
+#include "../GraphLibrary/Graph/Graph.h"
+#include "../GraphLibrary/Graph/BFSIterator.h"
+#include "../GraphLibrary/Graph/DFSIterator.h"
+#include "../GraphLibrary/Graph/GraphCreator.h"
 
 namespace GraphLibraryTest
 {

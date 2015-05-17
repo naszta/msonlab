@@ -1,6 +1,6 @@
 #ifndef NODE_H
 #define NODE_H
-#include "IProcessable.h"
+#include "../IProcessable.h"
 
 namespace msonlab
 {

@@ -1,10 +1,10 @@
 #include "StackCompiler.h"
-#include "Node.h"
-#include "StackValue.h"
-#include "SimpleStackValue.h"
-#include "FutureStackValue.h"
-#include "BFSIterator.h"
 
+#include "Graph/BFSIterator.h"
+#include "Graph/Node.h"
+#include "FutureStackValue.h"
+#include "SimpleStackValue.h"
+#include "StackValue.h"
 
 namespace msonlab
 {

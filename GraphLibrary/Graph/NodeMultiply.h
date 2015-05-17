@@ -14,8 +14,6 @@ namespace msonlab
 		NodePtr clone();
 		virtual IProcessableVect process();
 
-		//unsigned getComputationTime() { return 5; }
-
 		// compile
 		virtual void compile(int caller_thread, vector<msonlab::StackRunner::program>* programs, StackRunner::scheduleOrder schedule);
 

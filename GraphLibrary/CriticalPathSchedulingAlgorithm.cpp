@@ -1,5 +1,5 @@
 #include "CriticalPathSchedulingAlgorithm.h"
-#include "Edge.h"
+#include "Graph/Edge.h"
 #include "Algorithms.h"
 #include <memory>
 #include <algorithm>

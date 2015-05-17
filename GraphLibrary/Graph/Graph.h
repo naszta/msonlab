@@ -1,10 +1,10 @@
 #ifndef GRAPH 
 #define GRAPH
 
-#include "Global.h"
-#include "IProcessable.h"
-#include "Node.h"
+#include "../Global.h"
+#include "../IProcessable.h"
 #include "Edge.h"
+#include "Node.h"
 
 namespace msonlab
 {

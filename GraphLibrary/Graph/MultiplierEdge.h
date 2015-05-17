@@ -1,5 +1,6 @@
-#ifndef MULTIPLIER_EDGE 
-#define MULTIPLIER_EDGE
+#ifndef GRAPH_MULTIPLIER_EDGE 
+#define GRAPH_MULTIPLIER_EDGE
+
 #include "Edge.h"
 
 namespace msonlab

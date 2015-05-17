@@ -1,16 +1,16 @@
 #ifndef GRAPH_EXCHANGER 
 #define GRAPH_EXCHANGER
 
-#include "Graph.h"
-#include "Global.h"
-#include "GraphBuilder.h"
-
-#include <xercesc\util\PlatformUtils.hpp>
 #include <xercesc\dom\DOM.hpp>
 #include <xercesc\framework\LocalFileFormatTarget.hpp>
 #include <xercesc\parsers\XercesDOMParser.hpp>
 #include <xercesc\sax\HandlerBase.hpp>
+#include <xercesc\util\PlatformUtils.hpp>
 XERCES_CPP_NAMESPACE_USE
+
+#include "../Global.h"
+#include "Graph.h"
+#include "GraphBuilder.h"
 
 namespace msonlab
 {

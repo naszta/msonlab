@@ -1,9 +1,10 @@
 #ifndef GRAPH_ITERATOR_H
 #define GRAPH_ITERATOR_H
 
-#include "Graph.h"
-#include <queue>
 #include <iterator>
+#include <queue>
+
+#include "Graph.h"
 
 namespace msonlab
 {

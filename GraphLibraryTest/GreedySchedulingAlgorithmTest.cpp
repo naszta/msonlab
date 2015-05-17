@@ -2,8 +2,8 @@
 #include "GraphLibTestUtils.hpp"
 #include <sstream>
 
-#include "../GraphLibrary/Graph.h"
-#include "../GraphLibrary/GraphCreator.h"
+#include "../GraphLibrary/Graph/Graph.h"
+#include "../GraphLibrary/Graph/GraphCreator.h"
 #include "../GraphLibrary/GreedySchedulingAlgorithm.h"
 #include "../GraphLibrary/SchedulingUtils.h"
 

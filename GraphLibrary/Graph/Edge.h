@@ -1,7 +1,7 @@
-#ifndef EDGE 
-#define EDGE
-#include "Global.h"
-#include "IProcessable.h"
+#ifndef GRAPH_EDGE_H 
+#define GRAPH_EDGE_H
+#include "../Global.h"
+#include "../IProcessable.h"
 
 namespace msonlab
 {

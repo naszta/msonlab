@@ -1,7 +1,7 @@
 #ifndef STACK_COMPILER_H
 #define STACK_COMPILER_H
 
-#include "Graph.h"
+#include "Graph/Graph.h"
 
 namespace msonlab
 {

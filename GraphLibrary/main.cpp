@@ -3,9 +3,9 @@
 #include <crtdbg.h>
 
 
-#include "Graph.h"
-#include "GraphExchanger.h"
-#include "GraphCreator.h"
+#include "Graph/Graph.h"
+#include "Graph/GraphExchanger.h"
+#include "Graph/GraphCreator.h"
 #include "SchedulingAlgorithm.h"
 #include "GeneticAlgorithm.h"
 #include "GreedySchedulingAlgorithm.h"
@@ -58,7 +58,7 @@ Graph initRandomGraph(const Options &options)
 }
 
 #include "litegraph.h"
-#include "NodeTest.h"
+#include "Graph/NodeTest.h"
 
 void printGraph(const lite::litegraph &graph) {
 	std::cout << "litegraph" << std::endl;
