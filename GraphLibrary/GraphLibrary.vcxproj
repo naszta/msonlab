@@ -156,6 +156,7 @@
     </ClInclude>
     <ClInclude Include="GeneticAlgorithm.h" />
     <ClInclude Include="GraphExchangerUtils.h" />
+    <ClInclude Include="Graph\Graph.hpp" />
     <ClInclude Include="Id.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="ListSchedulingAlgorithm.h">

@@ -72,7 +72,7 @@ int main(/*int argc, char *argv[]*/) {
 		//Graph graph = graph::creator::createRandomLeveledDAG(100, 12, 8);
 		//srand(161903);
 		_CrtMemCheckpoint(&s2);
-		
+		srand(time(NULL));
 		{
 			std::cout << "greedy" << std::endl;
 			GreedySchedulingAlgorithm alg{};

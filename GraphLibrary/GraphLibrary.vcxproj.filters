@@ -192,6 +192,9 @@
     <ClInclude Include="GraphExchangerUtils.h">
       <Filter>Header Files\Graph</Filter>
     </ClInclude>
+    <ClInclude Include="Graph\Graph.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="IProcessable.cpp">

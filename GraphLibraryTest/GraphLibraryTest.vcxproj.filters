@@ -24,6 +24,9 @@
     <ClInclude Include="assertutils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="GraphLibTestUtils.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -45,6 +48,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ListSchedulingAlgorithmTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneticAlgorithmTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CriticalPathSchedulingAlgorithmTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CoffmanGrahamSchedulingAlgorithmTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

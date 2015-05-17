@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "CppUnitTest.h"
+#include "GraphLibTestUtils.hpp"
 
 #include <iostream>
 
@@ -8,16 +8,13 @@
 #include "../GraphLibrary/DFSIterator.h"
 #include "../GraphLibrary/GraphCreator.h"
 
-using namespace Microsoft::VisualStudio::CppUnitTestFramework;
-
 namespace GraphLibraryTest
 {
 	TEST_CLASS(GraphIteratorTest)
 	{
 	public:
-
 		TEST_METHOD(TestBFSIterator)
-		{
+		{ CREATE_MEMORY_SNAPSHOT {
 			auto g = msonlab::graph::creator::createSample();
 			unsigned counter = 0;
 			for (const auto &node : g.bfs()) {
@@ -43,10 +40,10 @@ namespace GraphLibraryTest
 				Assert::AreEqual(node_order[index], node->id(), L"Node doesn't match " + index, LINE_INFO());
 				++index;
 			}
-		}
+		} ASSERT_MEMORY_SNAPSHOT }
 
 		TEST_METHOD(TestBFSIteratorSkipNode)
-		{
+		{ CREATE_MEMORY_SNAPSHOT{
 			auto g = msonlab::graph::creator::createSample();
 			unsigned node_order[] { 0, 4, 6, 1, 2, 5, 3, 7  };
 			unsigned index = 0;
@@ -59,10 +56,10 @@ namespace GraphLibraryTest
 					it.skipChildren();
 				}
 			}
-		}
+		} ASSERT_MEMORY_SNAPSHOT }
 
 		TEST_METHOD(TestDFSIterator)
-		{
+		{ CREATE_MEMORY_SNAPSHOT {
 			auto g = msonlab::graph::creator::createSample();
 			unsigned counter = 0;
 			for (const auto &node : g.dfs()) {
@@ -77,10 +74,10 @@ namespace GraphLibraryTest
 				Assert::AreEqual(node_order[index], node->id(), L"Node doesn't match " + index, LINE_INFO());
 				++index;
 			}
-		}
+		} ASSERT_MEMORY_SNAPSHOT }
 
 		TEST_METHOD(TestDFSIteratorSkipNode)
-		{
+		{ CREATE_MEMORY_SNAPSHOT {
 			auto g = msonlab::graph::creator::createSample();
 			unsigned node_order[] { 7, 6, 3, 5, 2, 1, 4, 0 };
 			unsigned index = 0;
@@ -93,6 +90,6 @@ namespace GraphLibraryTest
 					it.skipChildren();
 				}
 			}
-		}
+		} ASSERT_MEMORY_SNAPSHOT }
 	};
 }

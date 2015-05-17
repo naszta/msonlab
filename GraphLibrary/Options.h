@@ -8,30 +8,6 @@ namespace msonlab { namespace scheduling {
 	using std::string;
 
 	class Options {
-		typedef unsigned int uint;
-		// algorithm parameters
-		uint scheduleMutationRate;
-		uint mapMutationRate; // ?
-		uint popMaxSize; // the max size of the population
-		uint keepSize; // the size of population to be kept
-		uint keepBest; //
-		uint numberOfYears; // number of rounds in genetic alg.
-		uint _max_rounds_wo_improvement; // add random solutions after X rounds without improvement
-		double mc; // rate of mutation
-		bool parallel;
-
-		uint taskLength; // length of tasks
-		uint commOverhead;
-		uint numberOfPus;
-		uint puGroupSize;
-
-		uint graphSize;
-		uint graphEdgeProb;
-		uint graphWidening;
-
-		string initialSolution;
-		string algorithm;
-		string fitnessStrategy;
 	public:
 		Options(const char * configFilePath);
 
@@ -59,6 +35,31 @@ namespace msonlab { namespace scheduling {
 		string getAlgorithm() const { return algorithm; }
 		string getFitnessStrategy() const { return fitnessStrategy; }
 		string getInitialSolution() const { return initialSolution; }
+	private:
+		typedef unsigned int uint;
+		// algorithm parameters
+		uint scheduleMutationRate;
+		uint mapMutationRate; // ?
+		uint popMaxSize; // the max size of the population
+		uint keepSize; // the size of population to be kept
+		uint keepBest; //
+		uint numberOfYears; // number of rounds in genetic alg.
+		uint _max_rounds_wo_improvement; // add random solutions after X rounds without improvement
+		double mc; // rate of mutation
+		bool parallel;
+
+		uint taskLength; // length of tasks
+		uint commOverhead;
+		uint numberOfPus;
+		uint puGroupSize;
+
+		uint graphSize;
+		uint graphEdgeProb;
+		uint graphWidening;
+
+		string initialSolution;
+		string algorithm;
+		string fitnessStrategy;
 	};
 }}
 #endif

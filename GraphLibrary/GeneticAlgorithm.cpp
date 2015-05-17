@@ -106,6 +106,10 @@ namespace msonlab { namespace scheduling {
 	/// @return the best solution the GA finds.
 	SchedulingResultPtr<const NodePtr> GeneticAlgorithm::schedule(const Graph &graph, const Options &options) const
 	{
+		if (graph.order() == 0) {
+			return std::make_shared<SchedulingResult<const NodePtr>>(vector < unsigned > {}, vector < const NodePtr > {}, 0, options.getNumberOfPus());
+		}
+
 		// the light weight graph
 		lite::litegraph liteg(graph);
 		SolutionSetPtr set = this->generateInitialSolution(liteg, options);

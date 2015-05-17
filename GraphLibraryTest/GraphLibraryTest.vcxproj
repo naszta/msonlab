@@ -91,11 +91,15 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="assertutils.h" />
+    <ClInclude Include="GraphLibTestUtils.hpp" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AlgorithmsTest.cpp" />
+    <ClCompile Include="CoffmanGrahamSchedulingAlgorithmTest.cpp" />
+    <ClCompile Include="CriticalPathSchedulingAlgorithmTest.cpp" />
+    <ClCompile Include="GeneticAlgorithmTest.cpp" />
     <ClCompile Include="GraphIteratorTest.cpp" />
     <ClCompile Include="GreedySchedulingAlgorithmTest.cpp" />
     <ClCompile Include="ListSchedulingAlgorithmTest.cpp" />

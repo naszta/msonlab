@@ -9,6 +9,7 @@ namespace msonlab { namespace scheduling {
 
 	class CoffmanGrahamSchedulingAlgorithm : public ListSchedulingAlgorithm
 	{
+	protected:
 		virtual void determineCosts(const lite::litegraph& graph, vector<unsigned>& costs) const;
 	public:
 		CoffmanGrahamSchedulingAlgorithm() = default;

@@ -11,17 +11,9 @@
 #include <thread>
 #include <future>
 
-//#include <xercesc\util\PlatformUtils.hpp>
-//#include <xercesc\dom\DOM.hpp>
-//#include <xercesc\framework\LocalFileFormatTarget.hpp>
-//#include <xercesc\parsers\XercesDOMParser.hpp>
-//#include <xercesc\sax\HandlerBase.hpp>
-//XERCES_CPP_NAMESPACE_USE
-
 using std::vector;
 
-#define PRINT 1
-#if PRINT == 1
+#if _DEBUG
 #define DEBUG(str) std::cout << str
 #define DEBUGLN(str) std::cout << str << std::endl
 #else

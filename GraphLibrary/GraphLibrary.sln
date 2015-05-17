@@ -17,8 +17,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GraphExample", "..\GraphExa
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TryStuff", "TryStuff\TryStuff.vcxproj", "{D90C869C-8130-4BFD-8BFB-993608F3E9EA}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GraphMemoryTest", "..\GraphMemoryTest\GraphMemoryTest.vcxproj", "{16E86412-3846-47C6-9ED1-7746D919304F}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -45,10 +43,6 @@ Global
 		{D90C869C-8130-4BFD-8BFB-993608F3E9EA}.Debug|Win32.Build.0 = Debug|Win32
 		{D90C869C-8130-4BFD-8BFB-993608F3E9EA}.Release|Win32.ActiveCfg = Release|Win32
 		{D90C869C-8130-4BFD-8BFB-993608F3E9EA}.Release|Win32.Build.0 = Release|Win32
-		{16E86412-3846-47C6-9ED1-7746D919304F}.Debug|Win32.ActiveCfg = Debug|Win32
-		{16E86412-3846-47C6-9ED1-7746D919304F}.Debug|Win32.Build.0 = Debug|Win32
-		{16E86412-3846-47C6-9ED1-7746D919304F}.Release|Win32.ActiveCfg = Release|Win32
-		{16E86412-3846-47C6-9ED1-7746D919304F}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
