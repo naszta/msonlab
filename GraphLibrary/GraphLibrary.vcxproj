@@ -94,6 +94,11 @@
   <ItemGroup>
     <ClCompile Include="Algorithms.cpp" />
     <ClCompile Include="dllmain.cpp" />
+    <ClCompile Include="Executor\FutureStackValue.cpp" />
+    <ClCompile Include="Executor\SimpleStackValue.cpp" />
+    <ClCompile Include="Executor\StackCompiler.cpp" />
+    <ClCompile Include="Executor\StackRunner.cpp" />
+    <ClCompile Include="Executor\StackValue.cpp" />
     <ClCompile Include="Graph\BFSIterator.cpp" />
     <ClCompile Include="Graph\BlueEdge.cpp" />
     <ClCompile Include="Graph\DFSIterator.cpp" />
@@ -113,7 +118,6 @@
     <ClCompile Include="Graph\NodeTest.cpp" />
     <ClCompile Include="litenode.cpp" />
     <ClCompile Include="litegraph.cpp" />
-    <ClCompile Include="FutureStackValue.cpp" />
     <ClCompile Include="IProcessable.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Options.cpp" />
@@ -129,14 +133,15 @@
     <ClCompile Include="Scheduler\SchedulingResult.cpp" />
     <ClCompile Include="Scheduler\SchedulingUtils.cpp" />
     <ClCompile Include="Scheduler\SolutionSet.cpp" />
-    <ClCompile Include="SimpleStackValue.cpp" />
-    <ClCompile Include="StackCompiler.cpp" />
-    <ClCompile Include="StackRunner.cpp" />
-    <ClCompile Include="StackValue.cpp" />
     <ClCompile Include="stdafx.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Algorithms.h" />
+    <ClInclude Include="Executor\FutureStackValue.h" />
+    <ClInclude Include="Executor\SimpleStackValue.h" />
+    <ClInclude Include="Executor\StackCompiler.h" />
+    <ClInclude Include="Executor\StackRunner.h" />
+    <ClInclude Include="Executor\StackValue.h" />
     <ClInclude Include="Graph\BFSIterator.h" />
     <ClInclude Include="Graph\BlueEdge.h" />
     <ClInclude Include="Graph\DFSIterator.h" />
@@ -172,14 +177,9 @@
     <ClInclude Include="litegraph.h" />
     <ClInclude Include="litenode.h" />
     <ClInclude Include="ConfigFile.h" />
-    <ClInclude Include="FutureStackValue.h" />
     <ClInclude Include="Global.h" />
     <ClInclude Include="IProcessable.h" />
     <ClInclude Include="Processor.h" />
-    <ClInclude Include="SimpleStackValue.h" />
-    <ClInclude Include="StackCompiler.h" />
-    <ClInclude Include="StackRunner.h" />
-    <ClInclude Include="StackValue.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -2,7 +2,7 @@
 #include "Edge.h"
 #include <math.h>
 #include "GraphExchanger.h"
-#include "SimpleStackValue.h"
+#include "Executor\SimpleStackValue.h"
 
 namespace msonlab
 {

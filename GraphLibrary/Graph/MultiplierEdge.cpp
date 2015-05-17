@@ -1,7 +1,7 @@
 #include "MultiplierEdge.h"
 #include "Node.h"
 #include "GraphExchanger.h"
-#include "SimpleStackValue.h"
+#include "Executor\SimpleStackValue.h"
 
 namespace msonlab
 {

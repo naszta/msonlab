@@ -69,21 +69,6 @@
     <ClInclude Include="ConfigFile.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="StackCompiler.h">
-      <Filter>Header Files\Stack</Filter>
-    </ClInclude>
-    <ClInclude Include="StackRunner.h">
-      <Filter>Header Files\Stack</Filter>
-    </ClInclude>
-    <ClInclude Include="SimpleStackValue.h">
-      <Filter>Header Files\Stack</Filter>
-    </ClInclude>
-    <ClInclude Include="StackValue.h">
-      <Filter>Header Files\Stack</Filter>
-    </ClInclude>
-    <ClInclude Include="FutureStackValue.h">
-      <Filter>Header Files\Stack</Filter>
-    </ClInclude>
     <ClInclude Include="Algorithms.h">
       <Filter>Header Files\Graph</Filter>
     </ClInclude>
@@ -192,6 +177,21 @@
     <ClInclude Include="Options.h">
       <Filter>Header Files\Scheduling</Filter>
     </ClInclude>
+    <ClInclude Include="Executor\FutureStackValue.h">
+      <Filter>Header Files\Stack</Filter>
+    </ClInclude>
+    <ClInclude Include="Executor\SimpleStackValue.h">
+      <Filter>Header Files\Stack</Filter>
+    </ClInclude>
+    <ClInclude Include="Executor\StackCompiler.h">
+      <Filter>Header Files\Stack</Filter>
+    </ClInclude>
+    <ClInclude Include="Executor\StackRunner.h">
+      <Filter>Header Files\Stack</Filter>
+    </ClInclude>
+    <ClInclude Include="Executor\StackValue.h">
+      <Filter>Header Files\Stack</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="IProcessable.cpp">
@@ -202,21 +202,6 @@
     </ClCompile>
     <ClCompile Include="Processor.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="StackCompiler.cpp">
-      <Filter>Source Files\Stack</Filter>
-    </ClCompile>
-    <ClCompile Include="StackRunner.cpp">
-      <Filter>Source Files\Stack</Filter>
-    </ClCompile>
-    <ClCompile Include="SimpleStackValue.cpp">
-      <Filter>Source Files\Stack</Filter>
-    </ClCompile>
-    <ClCompile Include="StackValue.cpp">
-      <Filter>Source Files\Stack</Filter>
-    </ClCompile>
-    <ClCompile Include="FutureStackValue.cpp">
-      <Filter>Source Files\Stack</Filter>
     </ClCompile>
     <ClCompile Include="Algorithms.cpp">
       <Filter>Source Files\Graph</Filter>
@@ -319,6 +304,21 @@
     </ClCompile>
     <ClCompile Include="Options.cpp">
       <Filter>Source Files\Scheduling</Filter>
+    </ClCompile>
+    <ClCompile Include="Executor\FutureStackValue.cpp">
+      <Filter>Source Files\Stack</Filter>
+    </ClCompile>
+    <ClCompile Include="Executor\SimpleStackValue.cpp">
+      <Filter>Source Files\Stack</Filter>
+    </ClCompile>
+    <ClCompile Include="Executor\StackCompiler.cpp">
+      <Filter>Source Files\Stack</Filter>
+    </ClCompile>
+    <ClCompile Include="Executor\StackRunner.cpp">
+      <Filter>Source Files\Stack</Filter>
+    </ClCompile>
+    <ClCompile Include="Executor\StackValue.cpp">
+      <Filter>Source Files\Stack</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

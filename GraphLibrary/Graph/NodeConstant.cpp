@@ -1,7 +1,7 @@
 #include "NodeConstant.h"
 #include "Edge.h"
 #include "GraphExchanger.h"
-#include "SimpleStackValue.h"
+#include "Executor\SimpleStackValue.h"
 
 namespace msonlab
 {

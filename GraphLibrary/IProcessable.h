@@ -1,7 +1,7 @@
 #ifndef IPROCESSABLE_H
 #define IPROCESSABLE_H
 #include "Global.h"
-#include "StackRunner.h"
+#include "Executor\StackRunner.h"
 #include <string>
 
 namespace msonlab
