@@ -10,13 +10,6 @@
 #include <cstdlib>     /* srand, rand */
 #include <ctime>       /* time */
 
-#include <xercesc\dom\DOM.hpp>
-#include <xercesc\framework\LocalFileFormatTarget.hpp>
-#include <xercesc\parsers\XercesDOMParser.hpp>
-#include <xercesc\sax\HandlerBase.hpp>
-#include <xercesc\util\PlatformUtils.hpp>
-XERCES_CPP_NAMESPACE_USE
-
 #include "Graph/Graph.h"
 #include "Graph/GraphExchanger.h"
 #include "Graph/GraphCreator.h"
@@ -94,6 +87,7 @@ void printGraph(const Graph &graph) {
 
 int oldmain(int argc, char *argv[])
 {
+	persistence::GraphExchanger ge;
 	{
 		// create example instances.
 		exemplar e{};
@@ -112,6 +106,7 @@ int oldmain(int argc, char *argv[])
 		// get graph
 		//Graph graph = initRandomGraph(*options);
 		Graph graph = initGraph();
+		ge.ExportGraph(graph, "SomeGraph.graphml");
 		lite::litegraph litegr(graph);
 
 		// choosing algorithm	

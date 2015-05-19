@@ -1,11 +1,11 @@
 #include <algorithm>
 #include <stdexcept>
 #include "ListSchedulingAlgorithm.h"
-#include "Algorithms.h"
+#include "../Algorithms.h"
 #include "SchedulingResult.h"
 #include "SchedulingUtils.h"
-#include "litegraph.h"
-#include "litenode.h"
+#include "../litegraph.h"
+#include "../litenode.h"
 
 namespace msonlab { namespace scheduling {
 

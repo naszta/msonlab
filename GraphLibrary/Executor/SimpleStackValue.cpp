@@ -1,10 +1,10 @@
 #include "SimpleStackValue.h"
-#include "Global.h"
 
 #include <string>
 #include <sstream>
 #include <iomanip>
 
+#include "../Global.h"
 
 namespace msonlab
 {

@@ -1,5 +1,5 @@
 #include "StackValue.h"
-#include "Global.h"
+#include "../Global.h"
 
 namespace msonlab
 {

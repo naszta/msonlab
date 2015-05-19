@@ -1,9 +1,5 @@
 #include "GeneticAlgorithm.h"
-#include "Algorithms.h"
-#include "CriticalPathSchedulingAlgorithm.h"
-#include "CoffmanGrahamSchedulingAlgorithm.h"
-#include "litegraph.h"
-#include "litenode.h"
+
 #include <cstdlib>
 #include <ctime>
 #include <set>
@@ -14,6 +10,11 @@
 #include "tbb\task_scheduler_init.h"
 #include "tbb\task.h"
 
+#include "../Algorithms.h"
+#include "CriticalPathSchedulingAlgorithm.h"
+#include "CoffmanGrahamSchedulingAlgorithm.h"
+#include "../litegraph.h"
+#include "../litenode.h"
 #include "SchedulingUtils.h"
 
 namespace msonlab { namespace scheduling {

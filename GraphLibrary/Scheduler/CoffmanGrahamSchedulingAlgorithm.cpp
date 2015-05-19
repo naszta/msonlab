@@ -1,7 +1,9 @@
 #include "CoffmanGrahamSchedulingAlgorithm.h"
-#include "Algorithms.h"
+
 #include <algorithm>
-#include "litegraph.h"
+
+#include "../Algorithms.h"
+#include "../litegraph.h"
 
 namespace msonlab { namespace scheduling {
 

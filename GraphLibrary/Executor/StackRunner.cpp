@@ -1,7 +1,7 @@
 #include "StackRunner.h"
 #include <math.h>
 
-#include "Global.h"
+#include "../Global.h"
 #include "SimpleStackValue.h"
 #include "FutureStackValue.h"
 

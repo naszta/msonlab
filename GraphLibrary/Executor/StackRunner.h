@@ -6,7 +6,7 @@
 #include <vector>
 #include <memory>
 
-#include "Global.h"
+#include "../Global.h"
 #include "StackValue.h"
 
 namespace msonlab

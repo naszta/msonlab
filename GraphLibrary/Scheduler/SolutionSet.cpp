@@ -5,7 +5,8 @@
 #include <ctime>
 #include <utility>
 #include <stdexcept>
-#include "Global.h"
+
+#include "../Global.h"
 
 namespace msonlab { namespace scheduling {
 	bool solutionCompare(SchedulingResultPtr<const lite::litenode*> a, SchedulingResultPtr<const lite::litenode*> b)

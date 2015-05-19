@@ -1,7 +1,7 @@
 #include "StackCompiler.h"
 
-#include "Graph/BFSIterator.h"
-#include "Graph/Node.h"
+#include "../Graph/BFSIterator.h"
+#include "../Graph/Node.h"
 #include "FutureStackValue.h"
 #include "SimpleStackValue.h"
 #include "StackValue.h"

@@ -1,7 +1,6 @@
 #include "GraphExchanger.h"
 
-namespace msonlab
-{
+namespace msonlab { namespace persistence {
 	class XmlDomErrorHandler : public HandlerBase
 	{
 	public:
@@ -11,10 +10,10 @@ namespace msonlab
 		}
 	};
 
-	//GraphExchanger::GraphExchanger(msonlab::GraphPtr toExchange)
-	//{
-	//	graph = toExchange;
-	//}
+	bool outputXML(DOMDocument* myDOMDocument, std::string filePath);
+	void createKeys(DOMDocument* pDOMDocument);
+	DOMElement* serializeNode(const NodePtr node, DOMDocument* xmlDocument, std::string yedDataKeyName, std::string typeKeyName, std::string customDataKey);
+	DOMElement* serializeEdge(const EdgePtr edge, DOMDocument* xmlDocument, std::string yedDataKeyName, std::string typeKeyName, std::string customDataKey);
 
 	GraphPtr GraphExchanger::ImportGraph(std::string inputPath)
 	{
@@ -189,7 +188,7 @@ namespace msonlab
 		return GraphBuilder::build();
 	}
 
-	void GraphExchanger::createKeys(DOMDocument* pDOMDocument) const
+	void createKeys(DOMDocument* pDOMDocument)
 	{
 		DOMElement* rootElement = pDOMDocument->getDocumentElement();
 
@@ -293,7 +292,7 @@ namespace msonlab
 		return true;
 	}
 
-	bool GraphExchanger::outputXML(DOMDocument* myDOMDocument, std::string filePath) const
+	bool outputXML(DOMDocument* myDOMDocument, std::string filePath)
 	{
 		//Return the first registered implementation that has the desired features. In this case, we are after a DOM implementation that has the LS feature... or Load/Save. 
 		DOMImplementation *implementation = DOMImplementationRegistry::getDOMImplementation(L"LS");
@@ -332,7 +331,7 @@ namespace msonlab
 		return true;
 	}
 
-	DOMElement* GraphExchanger::serializeNode(const NodePtr node, DOMDocument* xmlDocument, std::string yedDataKeyName, std::string typeKeyName, std::string customDataKey) const
+	DOMElement* serializeNode(const NodePtr node, DOMDocument* xmlDocument, std::string yedDataKeyName, std::string typeKeyName, std::string customDataKey)
 	{
 		DOMElement* newNode = xmlDocument->createElement(L"node");
 		newNode->setAttribute(L"id", XMLString::transcode(node->getIdString().c_str()));
@@ -406,7 +405,7 @@ namespace msonlab
 		return newNode;
 	}
 
-	DOMElement* GraphExchanger::serializeEdge(const EdgePtr edge, DOMDocument* xmlDocument, std::string yedDataKeyName, std::string typeKeyName, std::string customDataKey) const
+	DOMElement* serializeEdge(const EdgePtr edge, DOMDocument* xmlDocument, std::string yedDataKeyName, std::string typeKeyName, std::string customDataKey)
 	{
 		DOMElement* newEdge = xmlDocument->createElement(L"edge");
 		newEdge->setAttribute(L"id", XMLString::transcode(edge->getIdString().c_str()));
@@ -448,4 +447,4 @@ namespace msonlab
 
 		return newEdge;
 	}
-}
+}}

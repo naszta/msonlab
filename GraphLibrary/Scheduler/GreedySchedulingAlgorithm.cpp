@@ -1,5 +1,5 @@
 #include "GreedySchedulingAlgorithm.h"
-#include "litegraph.h"
+#include "../litegraph.h"
 #include "SchedulingUtils.h"
 #include <map>
 #include <queue>

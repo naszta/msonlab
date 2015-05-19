@@ -1,6 +1,6 @@
 #ifndef STACK_VALUE_H
 #define STACK_VALUE_H
-#include "Global.h"
+#include "../Global.h"
 
 namespace msonlab
 {
