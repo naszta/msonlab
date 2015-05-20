@@ -93,8 +93,6 @@ namespace msonlab { namespace persistence {
 			}
 		}
 
-		// create id variable
-		unsigned int id = 0;
 		unsigned int node_count = 0;
 
 		// import nodes
@@ -106,11 +104,10 @@ namespace msonlab { namespace persistence {
 			std::string node_type;
 			std::string custom_data;
 			types::LabelType nodegraphics_label;
-			unsigned int node_id = -1;
 
 			std::string id_string = XMLString::transcode(curr_node_xml->getAttribute(XMLString::transcode(std::string("id").c_str())));
 			id_string.erase(0, 1);
-			node_id = atoi(id_string.c_str());
+			unsigned node_id = atoi(id_string.c_str());
 
 			DOMNodeList* data_list = curr_node_xml->getElementsByTagName(XMLString::transcode(std::string("data").c_str()));
 			for (size_t j = 0; j < data_list->getLength(); ++j)
@@ -149,22 +146,19 @@ namespace msonlab { namespace persistence {
 
 			std::string edge_type;
 			std::string custom_data;
-			unsigned int edge_id = -1;
-			unsigned int source_id = -1;
-			unsigned int target_id = -1;
 
 			std::string id_string = XMLString::transcode(curr_edge_xml->getAttribute(XMLString::transcode(std::string("id").c_str())));
 			id_string.erase(0, 1);
-			edge_id = atoi(id_string.c_str());
+			unsigned edge_id = atoi(id_string.c_str());
 			if (!ge_signal) edge_id += node_count;
 
 			std::string source_id_string = XMLString::transcode(curr_edge_xml->getAttribute(XMLString::transcode(std::string("source").c_str())));
 			source_id_string.erase(0, 1);
-			source_id = atoi(source_id_string.c_str());
+			unsigned source_id = atoi(source_id_string.c_str());
 
 			std::string target_id_string = XMLString::transcode(curr_edge_xml->getAttribute(XMLString::transcode(std::string("target").c_str())));
 			target_id_string.erase(0, 1);
-			target_id = atoi(target_id_string.c_str());
+			unsigned target_id = atoi(target_id_string.c_str());
 
 			DOMNodeList* data_list = curr_edge_xml->getElementsByTagName(XMLString::transcode(std::string("data").c_str()));
 			for (size_t j = 0; j < data_list->getLength(); ++j)

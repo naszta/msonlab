@@ -1,7 +1,9 @@
+#ifdef _DEBUG
 #define _CRTDBG_MAP_ALLOC
 #include <malloc.h>
 #include <stdlib.h>
 #include <crtdbg.h>
+#endif
 
 #include <chrono>
 #include <iostream>
@@ -10,8 +12,6 @@
 #include <stdexcept>
 
 #include "../GraphLibrary/Graph/Graph.h"
-//#include "../GraphLibrary/BFSIterator.h"
-//#include "../GraphLibrary/DFSIterator.h"
 #include "../GraphLibrary/Graph/GraphCreator.h"
 #include "../GraphLibrary/Graph/GraphExchanger.h"
 #include "../GraphLibrary/Algorithms.h"
@@ -58,21 +58,30 @@ void run(const SchedulingAlgorithm& alg, const Graph& graph, const Options& opti
 	catch (std::logic_error& e) {
 		std::cout << e.what() << std::endl;
 	}
-	
+	catch (std::exception& e) {
+		std::cout << e.what() << std::endl;
+	}
+	catch (...) {
+		std::cout << "Unknow exception occured." << std::endl;
+	}
 }
-// FIX CIRCULAR DEPENDENCY!
-// to try out features of the GraphLibrary
-int main(/*int argc, char *argv[]*/) {
+
+int main(int argc, char *argv[]) {
+#ifdef _DEBUG
 	_CrtMemState s1, s2, s3, s4;
 	_CrtMemCheckpoint(&s1);
+#endif
+	try
 	{
-		//Graph graph = graph::creator::createQuadrant();
-		Options options{ "Options1.cfg" };
+		std::string config_file_path = "Options.cfg";
+		if (argc > 1) {
+			config_file_path = argv[1];
+		}
+		Options options{ config_file_path.c_str() };
 		Graph graph = graph::creator::createRandom(options.getGraphSize(), options.getGraphEdgeProb(), options.getGraphWidening(), options.getNumberOfPus());
-		//Graph graph = graph::creator::createRandomLeveledDAG(100, 12, 8);
-		//srand(161903);
+		//Graph graph = graph::creator::createQuadrant();
 		_CrtMemCheckpoint(&s2);
-		srand(time(NULL));
+		srand(static_cast<unsigned>(time(NULL)));
 		{
 			std::cout << "greedy" << std::endl;
 			GreedySchedulingAlgorithm alg{};
@@ -100,6 +109,15 @@ int main(/*int argc, char *argv[]*/) {
 			run(alg, graph, options);
 		}
 	}
+	catch (std::exception& e) {
+		std::cout << e.what() << std::endl;
+	}
+	catch (...) {
+		std::cout << "Unknow exception occured." << std::endl;
+	}
+
+#ifdef _DEBUG
+	// Printed in the debug output
 	_CrtMemCheckpoint(&s3);
 	if (_CrtMemDifference(&s4, &s1, &s3)) {
 		_CrtMemDumpStatistics(&s1);
@@ -107,5 +125,5 @@ int main(/*int argc, char *argv[]*/) {
 		_CrtMemDumpStatistics(&s3);
 	}
 	_CrtMemDumpStatistics(&s4);
-	//_CrtDumpMemoryLeaks();
+#endif
 }

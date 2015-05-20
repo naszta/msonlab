@@ -126,7 +126,7 @@ namespace msonlab { namespace scheduling {
 				if (set->last_improvement() >= options.maxRoundsWithoutImprovement()) {
 					vector<vector<const lite::litenode*>> levels;
 					graph::algorithms::constructLayeredOrder<lite::litegraph, const lite::litenode*>(liteg, levels);
-					for (int counter = 0; counter < MAX_LOAD; ++counter) {
+					for (unsigned counter = 0; counter < MAX_LOAD; ++counter) {
 						set->addOffspring(createRandomSolution(liteg, options, levels));
 					}
 				}
@@ -142,7 +142,7 @@ namespace msonlab { namespace scheduling {
 					vector<vector<const lite::litenode*>> levels;
 					graph::algorithms::constructLayeredOrder<lite::litegraph, const lite::litenode*>(liteg, levels);
 					
-					for (int counter = 0; counter < MAX_LOAD; ++counter) {
+					for (unsigned counter = 0; counter < MAX_LOAD; ++counter) {
 						set->addOffspring(createRandomSolution(liteg, options, levels));
 					}
 				}
@@ -272,7 +272,6 @@ namespace msonlab { namespace scheduling {
 
 		// the number of solutions to generate
 		counter = options.getPopMaxSize() - set->size();
-		const size_t num_nodes = graph.order();
 		for (; counter > 0; --counter) {
 			set->addOffspring(createRandomSolution(graph, options, levels));
 		}

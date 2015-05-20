@@ -1,5 +1,5 @@
-#ifndef NODE_TEST_H
-#define NODE_TEST_H
+#ifndef GRAPHLIB_NODE_TEST_H
+#define GRAPHLIB_NODE_TEST_H
 
 #include <memory>
 
@@ -20,7 +20,9 @@ namespace msonlab
 		virtual IProcessableVect process();
 
 		// compile
-		void compile(int caller_thread, vector<msonlab::StackRunner::program>* programs, StackRunner::scheduleOrder schedule) {}
+		void compile(int caller_thread, vector<msonlab::StackRunner::program>* programs, StackRunner::scheduleOrder schedule) {
+			// only used for testing purpose. Not intended to get compiled.
+		}
 
 		// exchange
 		std::string get_color() const;

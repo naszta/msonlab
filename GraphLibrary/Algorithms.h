@@ -1,7 +1,5 @@
-#ifndef GRAPH_ALGORITHMS_H
-#define GRAPH_ALGORITHMS_H
-
-
+#ifndef GRAPHLIB_GRAPH_ALGORITHMS_H
+#define GRAPHLIB_GRAPH_ALGORITHMS_H
 
 #include "Graph/Graph.h"
 #include "litegraph.h"

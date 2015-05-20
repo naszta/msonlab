@@ -267,12 +267,6 @@ namespace msonlab {
 				std::cout << "#" << reductions << " reductions made.\n";
 				return g2;
 			}
-
-			unique_ptr<set<NodePtr>> get_all_dependencies(const NodePtr& node) {
-				auto result = std::make_unique<set<NodePtr>>();
-
-				return result;
-			}
 		}
 	}
 }

@@ -15,8 +15,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GraphExample", "..\GraphExa
 		{C52B8F60-9D85-4A46-9A2E-786880759177} = {C52B8F60-9D85-4A46-9A2E-786880759177}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TryStuff", "TryStuff\TryStuff.vcxproj", "{D90C869C-8130-4BFD-8BFB-993608F3E9EA}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -39,10 +37,6 @@ Global
 		{3A8E86C3-F8DB-452C-904D-F02CFB9806EC}.Release|Win32.ActiveCfg = Release|Win32
 		{3A8E86C3-F8DB-452C-904D-F02CFB9806EC}.Release|Win32.Build.0 = Release|Win32
 		{3A8E86C3-F8DB-452C-904D-F02CFB9806EC}.Release|Win32.Deploy.0 = Release|Win32
-		{D90C869C-8130-4BFD-8BFB-993608F3E9EA}.Debug|Win32.ActiveCfg = Debug|Win32
-		{D90C869C-8130-4BFD-8BFB-993608F3E9EA}.Debug|Win32.Build.0 = Debug|Win32
-		{D90C869C-8130-4BFD-8BFB-993608F3E9EA}.Release|Win32.ActiveCfg = Release|Win32
-		{D90C869C-8130-4BFD-8BFB-993608F3E9EA}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

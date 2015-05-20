@@ -174,12 +174,6 @@ namespace msonlab
 		return res;
 	}
 
-	// compile
-	void Node::compile(int thread_id, vector<msonlab::StackRunner::program>* programs, StackRunner::scheduleOrder schedule)
-	{
-
-	}
-
 	// exchange
 	std::string Node::getTypeString() const
 	{

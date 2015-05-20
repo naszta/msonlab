@@ -17,7 +17,7 @@ namespace msonlab
 		NodeVect sucNodes;
 		
 		string type_string;
-		int paramCount;
+		unsigned paramCount;
 		unsigned compTime;
 
 		void addPreNode(NodePtr node);
@@ -65,7 +65,7 @@ namespace msonlab
 		void releaseNeighbors();
 
 		// compile
-		virtual void compile(int caller_thread, vector<msonlab::StackRunner::program>* programs, StackRunner::scheduleOrder schedule);
+		virtual void compile(int caller_thread, vector<msonlab::StackRunner::program>* programs, StackRunner::scheduleOrder schedule) = 0;
 
 		// exchange
 		//virtual DOMElement* serialize(DOMDocument* xmlDocument, std::string yedDataKeyName, std::string typeKeyName, std::string customDataKey);

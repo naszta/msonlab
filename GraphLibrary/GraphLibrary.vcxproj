@@ -93,7 +93,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Algorithms.cpp" />
-    <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="Executor\FutureStackValue.cpp" />
     <ClCompile Include="Executor\SimpleStackValue.cpp" />
     <ClCompile Include="Executor\StackCompiler.cpp" />
@@ -120,7 +119,6 @@
     <ClCompile Include="litenode.cpp" />
     <ClCompile Include="litegraph.cpp" />
     <ClCompile Include="IProcessable.cpp" />
-    <ClCompile Include="main.cpp" />
     <ClCompile Include="Options.cpp" />
     <ClCompile Include="Processor.cpp" />
     <ClCompile Include="Scheduler\CoffmanGrahamSchedulingAlgorithm.cpp" />

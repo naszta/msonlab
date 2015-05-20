@@ -95,10 +95,10 @@ namespace msonlab
 	}
 
 	// compile
-	void IProcessable::compile(int caller_thread, vector<msonlab::StackRunner::program>* programs, StackRunner::scheduleOrder schedule)
+	/*void IProcessable::compile(int caller_thread, vector<msonlab::StackRunner::program>* programs, StackRunner::scheduleOrder schedule)
 	{
 
-	}
+	}*/
 
 	void IProcessable::set_sync_marker()
 	{

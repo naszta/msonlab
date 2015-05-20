@@ -117,7 +117,7 @@ namespace msonlab
 			// if need to sync but called from the same thread, DUP is needed
 			if (caller_thread != -1)
 			{
-				if (caller_thread == thread_id)
+				if (static_cast<unsigned>(caller_thread) == thread_id)
 				{
 					StackRunner::addToken(prog, StackRunner::DUP, StackRunner::dataToken(new std::pair<StackValue::stackvaluePtr, int>(nullptr, -1)));
 				}

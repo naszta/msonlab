@@ -77,7 +77,7 @@ namespace msonlab
 		bool operator==(const IProcessable& other) const;
 
 		// compile
-		virtual void compile(int caller_thread, vector<msonlab::StackRunner::program>* programs, StackRunner::scheduleOrder schedule);
+		virtual void compile(int caller_thread, vector<msonlab::StackRunner::program>* programs, StackRunner::scheduleOrder schedule) = 0;
 
 		void set_sync_marker();
 		void clear_sync_marker();
