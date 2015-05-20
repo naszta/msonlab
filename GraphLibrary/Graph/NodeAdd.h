@@ -11,12 +11,11 @@ namespace msonlab
 		NodeAdd(const NodeAdd& other);
 
 		NodeAdd& operator=(const NodeAdd& other);
-		NodePtr clone();
+		NodePtr clone() const override;
 
-		virtual IProcessableVect process();
-
+		virtual IProcessableVect process() override;
 		// compile
-		virtual void compile(int caller_thread, vector<msonlab::StackRunner::program>* programs, StackRunner::scheduleOrder schedule);
+		virtual void compile(int caller_thread, vector<msonlab::StackRunner::program>* programs, StackRunner::scheduleOrder schedule) override;
 
 		// exchange
 		std::string get_color() const;

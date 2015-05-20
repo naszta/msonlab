@@ -51,24 +51,17 @@ namespace msonlab
 		std::string getIdString() const;
 
 		bool registerPredecessor(EdgePtr _newPredecessor);
-		bool unregisterPredecessor(EdgePtr _newPredecessor);
-
 		bool registerSuccessor(EdgePtr _newSuccessor);
-		bool unregisterSuccessor(EdgePtr _newSuccessor);
 
 		PlaceEnum getPlace() const;
 
 		virtual unsigned cptime() const { return compTime; }
 
-		virtual NodePtr clone() = 0; // change to const
-
-		void releaseNeighbors();
+		virtual NodePtr clone() const = 0; // change to const
 
 		// compile
 		virtual void compile(int caller_thread, vector<msonlab::StackRunner::program>* programs, StackRunner::scheduleOrder schedule) = 0;
 
-		// exchange
-		//virtual DOMElement* serialize(DOMDocument* xmlDocument, std::string yedDataKeyName, std::string typeKeyName, std::string customDataKey);
 		virtual std::string getTypeString() const;
 		virtual std::string get_shape() const;
 		virtual std::string get_color() const;

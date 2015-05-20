@@ -11,13 +11,11 @@ namespace msonlab
 		NodeDivide(const NodeDivide& other);
 
 		NodeDivide& operator=(const NodeDivide& other);
-		NodePtr clone();
-		virtual IProcessableVect process();
-
-		//unsigned getComputationTime() { return 5; }
+		NodePtr clone() const override;
+		virtual IProcessableVect process() override;
 
 		// compile
-		virtual void compile(int caller_thread, vector<msonlab::StackRunner::program>* programs, StackRunner::scheduleOrder schedule);
+		virtual void compile(int caller_thread, vector<msonlab::StackRunner::program>* programs, StackRunner::scheduleOrder schedule) override;
 
 		// exchange
 		std::string get_color() const;

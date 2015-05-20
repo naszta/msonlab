@@ -15,12 +15,11 @@ namespace msonlab
 		NodeTest(const NodeTest& other);
 
 		NodeTest& operator=(const NodeTest& other);
-		NodePtr clone();
-
-		virtual IProcessableVect process();
+		virtual NodePtr clone() const override;
+		virtual IProcessableVect process() override;
 
 		// compile
-		void compile(int caller_thread, vector<msonlab::StackRunner::program>* programs, StackRunner::scheduleOrder schedule) {
+		void compile(int caller_thread, vector<msonlab::StackRunner::program>* programs, StackRunner::scheduleOrder schedule) override {
 			// only used for testing purpose. Not intended to get compiled.
 		}
 

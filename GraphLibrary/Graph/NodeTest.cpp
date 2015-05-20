@@ -24,7 +24,7 @@ namespace msonlab
 		return *this;
 	}
 
-	NodePtr NodeTest::clone()
+	NodePtr NodeTest::clone() const
 	{
 		return std::make_shared<NodeTest>(*this);
 	}

@@ -11,16 +11,14 @@ namespace msonlab
 		NodeSquareRoot(const NodeSquareRoot& other);
 
 		NodeSquareRoot& operator=(const NodeSquareRoot& other);
-		NodePtr clone();
-		virtual IProcessableVect process();
+		NodePtr clone() const override;
+		virtual IProcessableVect process() override;
 
 		// compile
-		virtual void compile(int caller_thread, vector<msonlab::StackRunner::program>* programs, StackRunner::scheduleOrder schedule);
+		virtual void compile(int caller_thread, vector<msonlab::StackRunner::program>* programs, StackRunner::scheduleOrder schedule) override;
 
 		// exchange
-		std::string get_color() const;
-
-		//unsigned getComputationTime() { return 7; }
+		std::string get_color() const override;
 	};
 }
 #endif

@@ -11,12 +11,12 @@ namespace msonlab
 		NodeConstant(const NodeConstant& other);
 
 		NodeConstant& operator=(const NodeConstant& other);
-		NodePtr clone();
+		NodePtr clone() const override;
 
-		virtual IProcessableVect process();
+		virtual IProcessableVect process() override;
 		
 		// compile
-		virtual void compile(int caller_thread, vector<msonlab::StackRunner::program>* programs, StackRunner::scheduleOrder schedule);
+		virtual void compile(int caller_thread, vector<msonlab::StackRunner::program>* programs, StackRunner::scheduleOrder schedule) override;
 
 		// exchange
 		std::string get_custom_data() const;

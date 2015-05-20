@@ -126,11 +126,6 @@ namespace msonlab
 
 	}
 
-	bool Node::unregisterPredecessor(EdgePtr _newPredecessor)
-	{
-		throw Exceptions::NotImplementedException("Node::unregisterPredecessor function");
-	}
-
 	bool Node::registerSuccessor(EdgePtr _newSuccessor)
 	{
 		msonlab::EdgeVect::iterator it;
@@ -150,12 +145,6 @@ namespace msonlab
 			return false;
 		}
 	}
-
-	bool Node::unregisterSuccessor(EdgePtr _newSuccessor)
-	{
-		throw Exceptions::NotImplementedException("Node::unregisterSuccessor function");
-	}
-
 
 	IProcessable::PlaceEnum Node::getPlace() const
 	{
