@@ -12,7 +12,7 @@ namespace msonlab { namespace scheduling {
 
 	//virtual constructor
 	SchedulingAlgorithmPtr CriticalPathSchedulingAlgorithm::build(const Options& opt) const {
-		if (opt.getAlgorithm().compare("criticalPath") == 0) {
+		if (opt.algorithm().compare("criticalPath") == 0) {
 			DEBUGLN("Initializing CriticalPathSchedulingAlgorithm.");
 			return std::move(std::make_unique<CriticalPathSchedulingAlgorithm>());
 		}

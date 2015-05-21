@@ -91,7 +91,7 @@ namespace msonlab { namespace scheduling {
 	//virtual constructor
 	SchedulingAlgorithmPtr CoffmanGrahamSchedulingAlgorithm::build(const Options& opt) const
 	{
-		if (opt.getAlgorithm().compare("coffman") == 0)
+		if (opt.algorithm().compare("coffman") == 0)
 		{
 			DEBUGLN("Initializing CoffmanGrahamSchedulingAlgorithm.");
 			return std::move(std::make_unique<CoffmanGrahamSchedulingAlgorithm>());

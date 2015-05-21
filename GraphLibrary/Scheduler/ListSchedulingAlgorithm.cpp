@@ -41,15 +41,15 @@ namespace msonlab { namespace scheduling {
 		vector<int> dependencies(TASKS);
 		graph::algorithms::createDependencyVector(graph, dependencies);
 
-		const int comm = options.getCommOverhead();
+		const int comm = options.commOverhead();
 		vector<unsigned> mapping(TASKS);
 		vector<const litenode*> scheduling(TASKS);
 
-		const unsigned MAX_PU = options.getNumberOfPus();
-		vector<unsigned> RT(options.getNumberOfPus());
+		const unsigned MAX_PU = options.numberOfPus();
+		vector<unsigned> RT(options.numberOfPus());
 		vector<unsigned> ST(TASKS); // start time of the tasks
 		vector<unsigned> FT(TASKS); // finish time of the tasks
-		vector<unsigned> DAT(options.getNumberOfPus()); // Data Arrival Time
+		vector<unsigned> DAT(options.numberOfPus()); // Data Arrival Time
 		vector<unsigned> idPuMapping(TASKS, MAX_PU); // idPuMapping[i] = j means that node[i] is processed by pu[j]
 		for (unsigned i = 0; i < TASKS; ++i) {
 			const auto next = this->findNextToSchedule(dependencies, costs);
@@ -64,7 +64,7 @@ namespace msonlab { namespace scheduling {
 				std::fill(begin(DAT), end(DAT), 0);
 				for (const auto& predecessor : actNode.predecessors()) {
 					unsigned id = predecessor->id();
-					for (unsigned actPU = 0; actPU < options.getNumberOfPus(); ++actPU) {
+					for (unsigned actPU = 0; actPU < options.numberOfPus(); ++actPU) {
 						if (idPuMapping[id] == MAX_PU)
 							throw std::logic_error("Non-scheduled predecessor");
 						unsigned dat = FT[id] + (actPU != idPuMapping[id] ? comm : 0);
@@ -86,13 +86,13 @@ namespace msonlab { namespace scheduling {
 
 		// find last finish time
 		auto last_finish = *std::max_element(begin(FT), end(FT));
-		return std::make_shared<SchedulingResult<const litenode*>>(std::move(mapping), std::move(scheduling), last_finish, options.getNumberOfPus());
+		return std::make_shared<SchedulingResult<const litenode*>>(std::move(mapping), std::move(scheduling), last_finish, options.numberOfPus());
 	}
 
 	SchedulingResultPtr<const NodePtr> ListSchedulingAlgorithm::schedule(const Graph &hwgraph, const Options &options) const
 	{
 		if (hwgraph.order() == 0) {
-			return std::make_shared<SchedulingResult<const NodePtr>>(vector < unsigned > {}, vector < const NodePtr > {}, 0, options.getNumberOfPus());
+			return std::make_shared<SchedulingResult<const NodePtr>>(vector < unsigned > {}, vector < const NodePtr > {}, 0, options.numberOfPus());
 		}
 
 		litegraph graph(hwgraph);
@@ -111,15 +111,15 @@ namespace msonlab { namespace scheduling {
 		vector<int> dependencies(TASKS);
 		graph::algorithms::createDependencyVector(graph, dependencies);
 
-		const int comm = options.getCommOverhead();
+		const int comm = options.commOverhead();
 		vector<unsigned> mapping(TASKS);
 		NodeVect scheduling(TASKS);
 
-		const unsigned MAX_PU = options.getNumberOfPus();
-		vector<unsigned> RT(options.getNumberOfPus());
+		const unsigned MAX_PU = options.numberOfPus();
+		vector<unsigned> RT(options.numberOfPus());
 		vector<unsigned> ST(TASKS); // start time of the tasks
 		vector<unsigned> FT(TASKS); // finish time of the tasks
-		vector<unsigned> DAT(options.getNumberOfPus()); // Data Arrival Time
+		vector<unsigned> DAT(options.numberOfPus()); // Data Arrival Time
 		vector<unsigned> idPuMapping(TASKS, MAX_PU); // idPuMapping[i] = j means that node[i] is processed by pu[j]
 		for (unsigned i = 0; i < TASKS; ++i) {
 			const auto next = this->findNextToSchedule(dependencies, costs);
@@ -134,7 +134,7 @@ namespace msonlab { namespace scheduling {
 				std::fill(begin(DAT), end(DAT), 0);
 				for (const auto& predecessor : actNode.predecessors()) {
 					unsigned id = predecessor->id();
-					for (unsigned actPU = 0; actPU < options.getNumberOfPus(); ++actPU) {
+					for (unsigned actPU = 0; actPU < options.numberOfPus(); ++actPU) {
 						if (idPuMapping[id] == MAX_PU)
 							throw std::logic_error("Non-scheduled predecessor");
 						unsigned dat = FT[id] + (actPU != idPuMapping[id] ? comm : 0);
@@ -156,11 +156,11 @@ namespace msonlab { namespace scheduling {
 
 		// find last finish time
 		auto last_finish = *std::max_element(begin(FT), end(FT));
-		return std::make_shared<SchedulingResult<const NodePtr>>(std::move(mapping), std::move(scheduling), last_finish, options.getNumberOfPus());
+		return std::make_shared<SchedulingResult<const NodePtr>>(std::move(mapping), std::move(scheduling), last_finish, options.numberOfPus());
 	}
 
 	SchedulingAlgorithmPtr ListSchedulingAlgorithm::build(const Options& opt) const {
-		if (opt.getAlgorithm().compare("list") == 0) {
+		if (opt.algorithm().compare("list") == 0) {
 			DEBUGLN("Initializing ListSchedulingAlgorithm.");
 			return std::move(std::make_unique<ListSchedulingAlgorithm>());
 		}

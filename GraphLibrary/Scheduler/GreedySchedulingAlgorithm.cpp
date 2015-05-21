@@ -12,7 +12,7 @@ namespace msonlab { namespace scheduling {
 	SchedulingResultPtr<const NodePtr> GreedySchedulingAlgorithm::schedule(const Graph &graph, const Options &options) const
 	{
 		if (graph.order() == 0) {
-			return std::make_shared<SchedulingResult<const NodePtr>>(vector < unsigned > {}, vector < const NodePtr > {}, 0, options.getNumberOfPus());
+			return std::make_shared<SchedulingResult<const NodePtr>>(vector < unsigned > {}, vector < const NodePtr > {}, 0, options.numberOfPus());
 		}
 
 		litegraph liteg(graph);
@@ -29,7 +29,7 @@ namespace msonlab { namespace scheduling {
 		// counts the available inputs of the nodess
 		//std::map< unsigned, int> count;
 		vector<unsigned> count(graph.order());
-		vector<unsigned> RT(options.getNumberOfPus(), 0);
+		vector<unsigned> RT(options.numberOfPus(), 0);
 
 		// list of input nodes
 		const auto &inputNodes = liteg.inodes();
@@ -73,7 +73,7 @@ namespace msonlab { namespace scheduling {
 		}
 
 		// calculate fitness here
-		auto result = std::make_shared<SchedulingResult<const NodePtr>>(std::move(mapping), std::move(scheduling), 0, options.getNumberOfPus());
+		auto result = std::make_shared<SchedulingResult<const NodePtr>>(std::move(mapping), std::move(scheduling), 0, options.numberOfPus());
 		auto length = computeLength<SchedulingResult<const NodePtr>>(*result, options);
 		result->fitness(length);
 		return result;
@@ -81,7 +81,7 @@ namespace msonlab { namespace scheduling {
 
 	//virtual constructor
 	SchedulingAlgorithmPtr GreedySchedulingAlgorithm::build(const Options& opt) const {
-		if (opt.getAlgorithm().compare("greedy") == 0) {
+		if (opt.algorithm().compare("greedy") == 0) {
 			DEBUGLN("Initializing GreedySchedulingAlgorithm.");
 			return std::move(std::make_unique<GreedySchedulingAlgorithm>());
 		}

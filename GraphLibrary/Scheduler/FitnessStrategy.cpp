@@ -52,7 +52,7 @@ namespace msonlab { namespace scheduling {
 		unsigned length = computeLength(solution, options);
 
 		const auto &scheduling = solution.scheduling();
-		unsigned sumUsedTime = length * options.getNumberOfPus();
+		unsigned sumUsedTime = length * options.numberOfPus();
 		unsigned sumWorkTime = 0;
 		for (auto node : scheduling) {
 			sumWorkTime += node->cptime();
@@ -73,9 +73,9 @@ namespace msonlab { namespace scheduling {
 
 	unsigned int LoadBalanceFitnessStrategy::fitness(SchedulingResult<const lite::litenode*> &solution, const Options& options) const
 	{
-		vector<unsigned> RT(options.getNumberOfPus());
+		vector<unsigned> RT(options.numberOfPus());
 		int length = computeLengthAndRT(solution, options, RT);
-		double avg = std::accumulate(RT.begin(), RT.end(), 0) / options.getNumberOfPus();
+		double avg = std::accumulate(RT.begin(), RT.end(), 0) / options.numberOfPus();
 		double load_balance = length / avg;
 		return (unsigned)(load_balance * 1000);
 	}

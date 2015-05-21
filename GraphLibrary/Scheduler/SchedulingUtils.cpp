@@ -20,8 +20,8 @@ namespace msonlab { namespace scheduling {
 		typedef unsigned uint;
 		// const vector references
 
-		unsigned commOverhead = options.getCommOverhead();
-		//unsigned puGroupSize = options.getPuGroupSize();
+		unsigned commOverhead = options.commOverhead();
+		//unsigned puGroupSize = options.puGroupSize();
 		// const vector references
 		const auto& mapping = solution.mapping();
 		const auto& scheduling = solution.scheduling();
@@ -81,7 +81,7 @@ namespace msonlab { namespace scheduling {
 	{
 		typename SolutionType;
 		vector<unsigned> ST(solution.size());
-		vector<unsigned> RT(options.getNumberOfPus());
+		vector<unsigned> RT(options.numberOfPus());
 
 		return doComputeLengthSTAndRT<SolutionType>(solution, options, ST, RT);
 	}
@@ -93,7 +93,7 @@ namespace msonlab { namespace scheduling {
 	{
 		typename SolutionType;
 		ST.resize(solution.size());
-		vector<unsigned> RT(options.getNumberOfPus());
+		vector<unsigned> RT(options.numberOfPus());
 
 		return doComputeLengthSTAndRT<SolutionType>(solution, options, ST, RT);
 	}
@@ -104,7 +104,7 @@ namespace msonlab { namespace scheduling {
 	{
 		typename SolutionType;
 		vector<unsigned> ST(solution.size());
-		RT.resize(options.getNumberOfPus());
+		RT.resize(options.numberOfPus());
 
 		return doComputeLengthSTAndRT<SolutionType>(solution, options, ST, RT);
 	}
@@ -115,7 +115,7 @@ namespace msonlab { namespace scheduling {
 		vector<unsigned>& ST, vector<unsigned>& RT)
 	{
 		ST.resize(solution.size());
-		RT.resize(options.getNumberOfPus());
+		RT.resize(options.numberOfPus());
 
 		return doComputeLengthSTAndRT(solution, options, ST, RT);
 	}
@@ -125,15 +125,15 @@ namespace msonlab { namespace scheduling {
 	{
 		typedef unsigned int uint;
 
-		unsigned commOverhead = options.getCommOverhead();
+		unsigned commOverhead = options.commOverhead();
 		// const vector references
 		const vector<unsigned>& mapping = solution.mapping();
 		const vector<const lite::litenode*>& scheduling = solution.scheduling();
 		const auto tasks = scheduling.size();
 		vector<uint> ST(tasks); // start time of the tasks
 		vector<uint> FT(tasks); // finish time of the tasks
-		vector<uint> RT(options.getNumberOfPus()); // ready time of the pus
-		vector<vector<uint>> DAT(options.getNumberOfPus()); // Data Arrival Time
+		vector<uint> RT(options.numberOfPus()); // ready time of the pus
+		vector<vector<uint>> DAT(options.numberOfPus()); // Data Arrival Time
 		vector<uint> idPuMapping(tasks); // idPuMapping[i] = j means that node[i] is processed by pu[j]
 
 		// start the with the first node in the list
@@ -148,7 +148,7 @@ namespace msonlab { namespace scheduling {
 		// the first vector stores the idle slots for each pu
 		// the second vector stores the idle slots in one pu
 		vector<vector<pair<uint, uint>>> slots;
-		for (unsigned i = 0; i < options.getNumberOfPus(); ++i){
+		for (unsigned i = 0; i < options.numberOfPus(); ++i){
 			DAT[i].resize(tasks);
 			DAT[i][actId] = 0;
 			// initializing with empty vectors
@@ -172,11 +172,11 @@ namespace msonlab { namespace scheduling {
 				uint id = n->id();
 				if (FT[id] == 0) {
 					// this solutuion is not good
-					return SchedulingResult<NodeType>(vector <unsigned> {}, vector <NodeType> {}, UINT_MAX, options.getNumberOfPus());
+					return SchedulingResult<NodeType>(vector <unsigned> {}, vector <NodeType> {}, UINT_MAX, options.numberOfPus());
 				}
 
 				// check dat for all pus, for possible reschedule
-				for (unsigned p = 0; p < options.getNumberOfPus(); ++p)
+				for (unsigned p = 0; p < options.numberOfPus(); ++p)
 				{
 					uint comm = p != idPuMapping[id] ? commOverhead : 0;
 					DAT[p][actId] = std::max(DAT[p][actId], FT[id] + comm);
@@ -190,7 +190,7 @@ namespace msonlab { namespace scheduling {
 			uint pu = actPU;
 			vector<pair<uint, uint>>::iterator min_it;
 			// iterating over every idle time slots
-			for (unsigned p = 0; p < options.getNumberOfPus(); ++p)
+			for (unsigned p = 0; p < options.numberOfPus(); ++p)
 			{
 				// the start time at pu p
 				for (auto pit = slots[p].begin(); pit != slots[p].end(); ++pit)
@@ -271,7 +271,7 @@ namespace msonlab { namespace scheduling {
 		}
 
 		//solution._fitness = length;
-		return SchedulingResult<NodeType>(new_mapping, new_scheduling, length, options.getNumberOfPus());
+		return SchedulingResult<NodeType>(new_mapping, new_scheduling, length, options.numberOfPus());
 	}
 
 	// a helper method for development
@@ -315,7 +315,7 @@ namespace msonlab { namespace scheduling {
 
 		const auto& scheduling = solution.scheduling();
 		const auto TASKS = scheduling.size();
-		vector<vector<unsigned>> table(options.getNumberOfPus());
+		vector<vector<unsigned>> table(options.numberOfPus());
 		for (auto& e : table) {
 			e = vector<unsigned>(length, TASKS);
 		}

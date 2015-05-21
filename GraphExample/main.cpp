@@ -78,7 +78,7 @@ int main(int argc, char *argv[]) {
 			config_file_path = argv[1];
 		}
 		Options options{ config_file_path.c_str() };
-		Graph graph = graph::creator::createRandom(options.getGraphSize(), options.getGraphEdgeProb(), options.getGraphWidening(), options.getNumberOfPus());
+		Graph graph = graph::creator::createRandom(options.graphSize(), options.graphEdgeProb(), options.graphWidening(), options.numberOfPus());
 		//Graph graph = graph::creator::createQuadrant();
 		_CrtMemCheckpoint(&s2);
 		srand(static_cast<unsigned>(time(NULL)));
@@ -105,7 +105,7 @@ int main(int argc, char *argv[]) {
 		}	
 		{
 			std::cout << "genetic" << std::endl;
-			GeneticAlgorithm alg{ FitnessStrategy::find_fitness_strategy(options.getFitnessStrategy()) };
+			GeneticAlgorithm alg{ FitnessStrategy::find_fitness_strategy(options.fitnessStrategy()) };
 			run(alg, graph, options);
 		}
 	}
