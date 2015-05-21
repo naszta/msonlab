@@ -20,8 +20,6 @@ namespace msonlab
 
 		// exchange
 		std::string get_custom_data() const;
-		std::string get_shape() const;
-		std::string get_color() const;
 	};
 }
 #endif

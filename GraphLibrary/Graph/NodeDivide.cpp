@@ -129,16 +129,4 @@ namespace msonlab
 			set_synced();
 		}
 	}
-
-	// exchange
-	/*std::string NodeDivide::getTypeString() const
-	{
-		return GraphExchanger::getSupportedNodeTypeName(GraphExchanger::supportedNodeType::DIVIDE);
-	}*/
-
-	std::string NodeDivide::get_color() const
-	{
-		return "#FF9900";
-	}
-
 }

@@ -122,9 +122,4 @@ namespace msonlab
 		}
 	
 	}
-
-	std::string NodeAdd::get_color() const
-	{
-		return "#00FF00";
-	}
 }

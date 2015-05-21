@@ -330,11 +330,11 @@ namespace msonlab { namespace persistence {
 		DOMElement* newNode = xmlDocument->createElement(L"node");
 		newNode->setAttribute(L"id", XMLString::transcode(node->getIdString().c_str()));
 
-
+		const auto& descriptor = node->descriptor();
 		// create custom data for deserialization
 		DOMElement* customData = xmlDocument->createElement(L"data");
 		customData->setAttribute(L"key", XMLString::transcode(typeKeyName.c_str()));
-		DOMText* lbl_nodeType = xmlDocument->createTextNode(XMLString::transcode(node->getTypeString().c_str()));
+		DOMText* lbl_nodeType = xmlDocument->createTextNode(XMLString::transcode(descriptor.typeString().c_str()));
 		customData->appendChild(lbl_nodeType);
 		newNode->appendChild(customData);
 
@@ -361,7 +361,7 @@ namespace msonlab { namespace persistence {
 		sn->appendChild(geometry);
 
 		DOMElement* fill = xmlDocument->createElement(L"y:Fill");
-		fill->setAttribute(L"color", XMLString::transcode(node->get_color().c_str()));
+		fill->setAttribute(L"color", XMLString::transcode(descriptor.color().c_str()));
 		fill->setAttribute(L"transparent", L"false");
 		sn->appendChild(fill);
 
@@ -393,7 +393,7 @@ namespace msonlab { namespace persistence {
 		sn->appendChild(nodeLabel);
 
 		DOMElement* shp = xmlDocument->createElement(L"y:Shape");
-		shp->setAttribute(L"type", XMLString::transcode(node->get_shape().c_str()));
+		shp->setAttribute(L"type", XMLString::transcode(descriptor.shape().c_str()));
 		sn->appendChild(shp);
 
 		return newNode;

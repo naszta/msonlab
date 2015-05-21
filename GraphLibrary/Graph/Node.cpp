@@ -164,23 +164,23 @@ namespace msonlab
 	}
 
 	// exchange
-	std::string Node::getTypeString() const
-	{
-		if (type_string.empty()) {
-			throw new Exceptions::NodeTypeCanNotBeSerializedException("NodeType can not be serialized. Please use one inherited class for the graph.");
-		}
+	//std::string Node::getTypeString() const
+	//{
+	//	if (type_string.empty()) {
+	//		throw new Exceptions::NodeTypeCanNotBeSerializedException("NodeType can not be serialized. Please use one inherited class for the graph.");
+	//	}
 
-		return type_string;
-	}
+	//	return type_string;
+	//}
 
-	std::string Node::get_shape() const
-	{
-		return "roundrectangle";
-	}
+	//std::string Node::get_shape() const
+	//{
+	//	return "roundrectangle";
+	//}
 
-	std::string Node::get_color() const
-	{
-		return "#FFFFFF";
-	}
+	//std::string Node::get_color() const
+	//{
+	//	return "#FFFFFF";
+	//}
 
 }

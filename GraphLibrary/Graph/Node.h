@@ -16,9 +16,9 @@ namespace msonlab
 	public:
 		NodeDescriptor(string typeString, string color, string shape = "roundrectangle") :
 			_typeString(typeString), _color(color), _shape(shape) {}
-		string typeString() const;
-		string shape() const;
-		string color() const;
+		string typeString() const { return _typeString; }
+		string shape() const { return _shape; }
+		string color() const { return _color; }
 	private:
 		string _typeString;
 		string _shape;
@@ -82,9 +82,9 @@ namespace msonlab
 		// compile
 		virtual void compile(int caller_thread, vector<msonlab::StackRunner::program>* programs, StackRunner::scheduleOrder schedule) = 0;
 
-		virtual std::string getTypeString() const;
-		virtual std::string get_shape() const;
-		virtual std::string get_color() const;
+		//virtual std::string getTypeString() const;
+		//virtual std::string get_shape() const;
+		//virtual std::string get_color() const;
 	};
 
 }

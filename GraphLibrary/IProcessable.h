@@ -88,7 +88,6 @@ namespace msonlab
 
 		// exchange
 		//virtual DOMElement* serialize(DOMDocument* xmlDocument, std::string yedDataKeyName, std::string typeKeyName, std::string customDataKey);
-		virtual std::string getTypeString() const;
 		virtual std::string get_custom_data() const;
 	};
 }

@@ -128,12 +128,4 @@ namespace msonlab
 		}
 
 	}
-
-	// exchange
-
-	std::string NodeSquareRoot::get_color() const
-	{
-		return "#00CCFF";
-	}
-
 }

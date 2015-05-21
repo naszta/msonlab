@@ -123,9 +123,4 @@ namespace msonlab
 			set_synced();
 		}
 	}
-
-	std::string NodeMultiply::get_color() const
-	{
-		return "#FFFF00";
-	}
 }

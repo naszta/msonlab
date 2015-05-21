@@ -121,35 +121,8 @@ namespace msonlab
 	}
 
 	// exchange
-
-	//DOMElement* IProcessable::serialize(DOMDocument* xmlDocument, std::string yedDataKeyName, std::string typeKeyName, std::string customDataKey)
-	//{
-	//	DOMElement* newNode = xmlDocument->createElement(L"node");
-	//	newNode->setAttribute(L"id", XMLString::transcode(getIdString().c_str()));
-
-	//	// create data for YED
-	//	DOMElement* nodeData = xmlDocument->createElement(L"data");
-	//	nodeData->setAttribute(L"key", XMLString::transcode(yedDataKeyName.c_str()));
-	//	newNode->appendChild(nodeData);
-
-	//	// create custom data for deserialization
-	//	DOMElement* customData = xmlDocument->createElement(L"data");
-	//	customData->setAttribute(L"id", XMLString::transcode(typeKeyName.c_str()));
-	//	newNode->appendChild(customData);
-
-	//	return newNode;
-	//}
-
-	std::string IProcessable::getTypeString() const
-	{
-		throw new Exceptions::NodeTypeCanNotBeSerializedException("IProcessable can not be serialized. Please use one inherited class for the graph.");
-		//GraphExchanger::getSupportedNodeTypeName(GraphExchanger::supportedNodeType::ADD);
-	}
-
 	std::string IProcessable::get_custom_data() const
 	{
 		return "";
 	}
-
-
 }

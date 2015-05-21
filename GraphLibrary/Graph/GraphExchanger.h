@@ -20,12 +20,6 @@ namespace msonlab { namespace persistence {
 
 	class GraphExchanger
 	{
-	private:
-		//bool outputXML(DOMDocument* myDOMDocument, std::string filePath) const;
-		//void createKeys(DOMDocument* inDocument) const;
-		/*DOMElement* serializeNode(const NodePtr node, DOMDocument* xmlDocument, std::string yedDataKeyName, std::string typeKeyName, std::string customDataKey) const;
-		DOMElement* serializeEdge(const EdgePtr edge, DOMDocument* xmlDocument, std::string yedDataKeyName, std::string typeKeyName, std::string customDataKey) const;*/
-
 	public:
 		static GraphPtr ImportGraph(std::string inputPath);
 		bool ExportGraph(const Graph& graph, std::string outputPath) const;

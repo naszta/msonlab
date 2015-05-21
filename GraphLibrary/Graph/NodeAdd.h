@@ -16,9 +16,6 @@ namespace msonlab
 		virtual IProcessableVect process() override;
 		// compile
 		virtual void compile(int caller_thread, vector<msonlab::StackRunner::program>* programs, StackRunner::scheduleOrder schedule) override;
-
-		// exchange
-		std::string get_color() const;
 	};
 }
 #endif

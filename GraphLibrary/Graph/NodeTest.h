@@ -22,9 +22,6 @@ namespace msonlab
 		void compile(int caller_thread, vector<msonlab::StackRunner::program>* programs, StackRunner::scheduleOrder schedule) override {
 			// only used for testing purpose. Not intended to get compiled.
 		}
-
-		// exchange
-		std::string get_color() const;
 	};
 }
 #endif

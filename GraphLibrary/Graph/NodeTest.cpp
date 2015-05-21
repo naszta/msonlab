@@ -34,10 +34,4 @@ namespace msonlab
 		IProcessableVect ret;
 		return ret;
 	}
-
-	// green + blue
-	std::string NodeTest::get_color() const
-	{
-		return "#00FFFF";
-	}
 }

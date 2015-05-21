@@ -95,16 +95,6 @@ namespace msonlab
 		}
 	}
 
-	std::string NodeConstant::get_shape() const
-	{
-		return "ellipse";
-	}
-
-	std::string NodeConstant::get_color() const
-	{
-		return "#CC99FF";
-	}
-
 	std::string NodeConstant::get_custom_data() const
 	{
 		return std::to_string(*value);
