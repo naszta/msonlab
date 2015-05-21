@@ -5,7 +5,7 @@
 namespace msonlab
 {
 	BlueEdge::BlueEdge(unsigned int _id, types::LabelType _label, types::DataPtr _value, NodePtr _from, NodePtr _to)
-		: Edge(_id, _label, _value, _from, _to)
+		: Edge(_id, _label, _value, _from, _to, EdgeDescriptor("BLUE", "#0000FF", "line", "standard"))
 	{
 	}
 
@@ -62,16 +62,4 @@ namespace msonlab
 			set_synced();
 		}
 	}
-
-	// exchange
-	std::string BlueEdge::getTypeString() const
-	{
-		return persistence::edgeTypeToString(persistence::SupportedEdgeType::BLUE);
-	}
-
-	std::string BlueEdge::get_color() const
-	{
-		return persistence::edgeTypeToColor(persistence::SupportedEdgeType::BLUE);
-	}
-
 }

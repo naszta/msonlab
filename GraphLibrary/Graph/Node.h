@@ -46,7 +46,7 @@ namespace msonlab
 		Node(const Node& other);
 		virtual ~Node() = default;
 		virtual Node& operator=(const Node& other);
-		const NodeDescriptor& descriptor() { return _descriptor; }
+		const NodeDescriptor& descriptor() const { return _descriptor; }
 
 		bool registerParameter();
 
@@ -73,9 +73,7 @@ namespace msonlab
 		bool registerSuccessor(EdgePtr _newSuccessor);
 
 		PlaceEnum getPlace() const;
-
 		virtual unsigned cptime() const { return compTime; }
-
 		virtual NodePtr clone() const = 0; // change to const
 
 		// compile

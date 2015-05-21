@@ -4,12 +4,13 @@
 
 namespace msonlab
 {
-	Edge::Edge(unsigned int _id, types::LabelType _label, types::DataPtr _value, NodePtr _from, NodePtr _to)
-		: IProcessable(_id, _label, _value), from(_from), to(_to), paramReady(false)
+	Edge::Edge(unsigned int id_, types::LabelType label_, types::DataPtr value_, NodePtr from_, NodePtr to_,
+		EdgeDescriptor descriptor_)
+		: IProcessable(id_, label_, value_), from(from_), to(to_), paramReady(false), _descriptor(descriptor_)
 	{
 	}
 
-	Edge::Edge(const Edge& other) : IProcessable(other)
+	Edge::Edge(const Edge& other) : IProcessable(other), _descriptor(other._descriptor)
 	{
 		if (this != &other)
 		{
@@ -24,6 +25,7 @@ namespace msonlab
 		this->paramReady = other.paramReady;
 		this->from = other.from;
 		this->to = other.to;
+		this->_descriptor = other._descriptor;
 
 		return *this;
 	}
@@ -163,29 +165,4 @@ namespace msonlab
 		}
 
 	}
-
-	// exchange
-
-	std::string Edge::getTypeString() const
-	{
-		return persistence::edgeTypeToString(persistence::SupportedEdgeType::SIMPLE);
-	}
-
-	std::string Edge::get_target_arrow_style() const
-	{
-		// plain, standard
-		return "standard";
-	}
-
-	std::string Edge::get_line_style() const
-	{
-		// line, dotted, dashed_dotted
-		return "line";
-	}
-
-	std::string Edge::get_color() const
-	{
-		return persistence::edgeTypeToColor(persistence::SupportedEdgeType::SIMPLE);
-	}
-
 }

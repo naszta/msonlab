@@ -1,18 +1,37 @@
 #ifndef GRAPH_EDGE_H 
 #define GRAPH_EDGE_H
+
+#include <string>
+
 #include "../Global.h"
 #include "../IProcessable.h"
 
 namespace msonlab
 {
+	using std::string;
+	// Descripes a node in terms of persistence and visualization
+	class EdgeDescriptor
+	{
+	public:
+		class EdgeDescriptor(string typeString, string color, string lineStyle, string targetArrowStyle) :
+			_typeString(typeString), _color(color), _lineStyle(lineStyle), _targetArrowStyle(targetArrowStyle) {}
+		string typeString() const { return _typeString; }
+		string lineStyle() const { return _lineStyle; }
+		string targetArrowStyle() const { return _targetArrowStyle; }
+		string color() const { return _color; }
+	private:
+		string _color;
+		string _typeString;
+		string _targetArrowStyle;
+		string _lineStyle;
+	};
+
 	class Edge : public IProcessable
 	{
 	public:
 		enum EdgeTypeEnum { default_edge, blue_edge, red_edge, orange_edge };
 
 	protected:
-		//NodePtr from;
-		//NodePtr to;
 		std::weak_ptr<Node> from;
 		std::weak_ptr<Node> to;
 
@@ -20,10 +39,13 @@ namespace msonlab
 
 		EdgeTypeEnum edgeType;
 	public:
-		Edge(unsigned int _id, types::LabelType _label, types::DataPtr _value, NodePtr _from, NodePtr _to);
+		Edge(unsigned int id_, types::LabelType label_, types::DataPtr value_, NodePtr from_, NodePtr to_, 
+			EdgeDescriptor descriptor_ = EdgeDescriptor("SIMPLE", "#000000", "line", "standard"));
 		Edge(const Edge& other);
 		Edge& operator=(const Edge& other);
 		virtual ~Edge() = default;
+
+		const EdgeDescriptor& descriptor() const { return _descriptor; }
 
 		bool registerParameter();
 
@@ -45,15 +67,10 @@ namespace msonlab
 		// compile
 		virtual void compile(int caller_thread, vector<msonlab::StackRunner::program>* programs, StackRunner::scheduleOrder schedule);
 
-		// exchange
-		//virtual DOMElement* serialize(DOMDocument* xmlDocument, std::string yedDataKeyName, std::string typeKeyName, std::string customDataKey);
-		virtual std::string getTypeString() const;
-		virtual std::string get_target_arrow_style() const;
-		virtual std::string get_line_style() const;
-		virtual std::string get_color() const;
 	private:
 		NodePtr lock_from() const { return from.lock(); }
 		NodePtr lock_to() const { return to.lock(); }
+		EdgeDescriptor _descriptor;
 	};
 }
 #endif

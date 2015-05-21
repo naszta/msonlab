@@ -406,6 +406,7 @@ namespace msonlab { namespace persistence {
 		newEdge->setAttribute(L"source", XMLString::transcode(edge->getFrom()->getIdString().c_str()));
 		newEdge->setAttribute(L"target", XMLString::transcode(edge->getTo()->getIdString().c_str()));
 
+		const EdgeDescriptor& descriptor = edge->descriptor();
 		// create data for YED
 		DOMElement* edgeData = xmlDocument->createElement(L"data");
 		edgeData->setAttribute(L"key", XMLString::transcode(yedDataKeyName.c_str()));
@@ -415,21 +416,21 @@ namespace msonlab { namespace persistence {
 		edgeData->appendChild(ple);
 
 		DOMElement* line = xmlDocument->createElement(L"y:LineStyle");
-		line->setAttribute(L"color", XMLString::transcode(edge->get_color().c_str()));
-		line->setAttribute(L"type", XMLString::transcode(edge->get_line_style().c_str()));
+		line->setAttribute(L"color", XMLString::transcode(descriptor.color().c_str()));
+		line->setAttribute(L"type", XMLString::transcode(descriptor.lineStyle().c_str()));
 		line->setAttribute(L"width", L"1.0");
 		ple->appendChild(line);
 
 		DOMElement* arrow = xmlDocument->createElement(L"y:Arrows");
 		arrow->setAttribute(L"source", L"none");
-		arrow->setAttribute(L"target", XMLString::transcode(edge->get_target_arrow_style().c_str()));
+		arrow->setAttribute(L"target", XMLString::transcode(descriptor.targetArrowStyle().c_str()));
 		ple->appendChild(arrow);
 
 
 		// create custom data for deserialization
 		DOMElement* customData = xmlDocument->createElement(L"data");
 		customData->setAttribute(L"key", XMLString::transcode(typeKeyName.c_str()));
-		DOMText* lbl_edgeType = xmlDocument->createTextNode(XMLString::transcode(edge->getTypeString().c_str()));
+		DOMText* lbl_edgeType = xmlDocument->createTextNode(XMLString::transcode(descriptor.typeString().c_str()));
 		customData->appendChild(lbl_edgeType);
 		newEdge->appendChild(customData);
 

@@ -6,7 +6,7 @@
 namespace msonlab
 {
 	MultiplierEdge::MultiplierEdge(unsigned int _id, types::LabelType _label, types::DataPtr _value, NodePtr _from, NodePtr _to, types::DataType _multiplier)
-		: Edge(_id, _label, _value, _from, _to)
+		: Edge(_id, _label, _value, _from, _to, EdgeDescriptor("MULTIPLIER", "#00000", "line", "plain"))
 	{
 		multiplier = _multiplier;
 	}
@@ -94,17 +94,6 @@ namespace msonlab
 	}
 
 	// exchange
-	std::string MultiplierEdge::getTypeString() const
-	{
-		return persistence::edgeTypeToString(persistence::SupportedEdgeType::MULTIPLIER);
-	}
-
-	std::string MultiplierEdge::get_target_arrow_style() const
-	{
-		// plain, standard
-		return "plain";
-	}
-
 	std::string MultiplierEdge::get_custom_data() const
 	{
 		return std::to_string(multiplier);
