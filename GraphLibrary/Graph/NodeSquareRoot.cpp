@@ -9,7 +9,7 @@
 namespace msonlab
 {
 	NodeSquareRoot::NodeSquareRoot(unsigned int _id, types::LabelType _label, types::DataPtr _value)
-		: Node(_id, _label, _value, persistence::nodeTypeToString(persistence::SupportedNodeType::SQUAREROOT), 7)
+		: Node(_id, _label, _value, NodeDescriptor("SQUAREROOT", "#00CCFF"), 7)
 	{
 	}
 

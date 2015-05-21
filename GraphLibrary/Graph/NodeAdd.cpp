@@ -8,7 +8,7 @@
 namespace msonlab
 {
 	NodeAdd::NodeAdd(unsigned int _id, types::LabelType _label, types::DataPtr _value)
-		: Node(_id, _label, _value, persistence::nodeTypeToString(persistence::SupportedNodeType::ADD), 5)
+		: Node(_id, _label, _value, NodeDescriptor("ADD", "#00FF00"), 5)
 	{
 	}
 

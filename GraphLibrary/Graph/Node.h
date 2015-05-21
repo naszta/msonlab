@@ -1,11 +1,29 @@
 #ifndef NODE_H
 #define NODE_H
+#include <string>
+
 #include "../IProcessable.h"
+
 
 namespace msonlab
 {
 	using std::weak_ptr;
 	using std::string;
+
+	// Descripes a node in terms of persistence and visualization
+	class NodeDescriptor
+	{
+	public:
+		NodeDescriptor(string typeString, string color, string shape = "roundrectangle") :
+			_typeString(typeString), _color(color), _shape(shape) {}
+		string typeString() const;
+		string shape() const;
+		string color() const;
+	private:
+		string _typeString;
+		string _shape;
+		string _color;
+	};
 
 	class Node : public IProcessable
 	{
@@ -16,6 +34,7 @@ namespace msonlab
 		vector<weak_ptr<Node>> preNodes;
 		NodeVect sucNodes;
 		
+		NodeDescriptor _descriptor;
 		string type_string;
 		unsigned paramCount;
 		unsigned compTime;
@@ -24,10 +43,11 @@ namespace msonlab
 		void addSucNode(NodePtr node);
 
 	public:
-		Node(unsigned int id_, types::LabelType label_, types::DataPtr value_, string type_string_ = "", unsigned compTime_ = 1);
+		Node(unsigned int id_, types::LabelType label_, types::DataPtr value_, NodeDescriptor descriptor_, unsigned compTime_ = 1);
 		Node(const Node& other);
 		virtual ~Node() = default;
 		virtual Node& operator=(const Node& other);
+		const NodeDescriptor& descriptor() { return _descriptor; }
 
 		bool registerParameter();
 

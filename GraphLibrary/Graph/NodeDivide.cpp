@@ -5,7 +5,7 @@
 namespace msonlab
 {
 	NodeDivide::NodeDivide(unsigned int _id, types::LabelType _label, types::DataPtr _value)
-		: Node(_id, _label, _value, persistence::nodeTypeToString(persistence::SupportedNodeType::DIVIDE), 5)
+		: Node(_id, _label, _value, NodeDescriptor("DIVIDE", "#FF9900"), 5)
 	{
 	}
 

@@ -3,12 +3,12 @@
 
 namespace msonlab
 {
-	Node::Node(unsigned int id_, types::LabelType label_, types::DataPtr value_, string type_string_, unsigned compTime_)
-		: IProcessable(id_, label_, value_), type_string(type_string_), paramCount(0), compTime(compTime_)
+	Node::Node(unsigned int id_, types::LabelType label_, types::DataPtr value_, NodeDescriptor descriptor_, unsigned compTime_)
+		: IProcessable(id_, label_, value_), _descriptor(descriptor_), paramCount(0), compTime(compTime_)
 	{
 	}
 
-	Node::Node(const Node& other) : IProcessable(other)
+	Node::Node(const Node& other) : IProcessable(other), _descriptor(other._descriptor)
 	{
 		if (this != &other)
 		{

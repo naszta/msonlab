@@ -5,7 +5,7 @@
 namespace msonlab
 {
 	NodeTest::NodeTest(unsigned int _id, types::LabelType _label, types::DataPtr _value, unsigned comp_time)
-		: Node(_id, _label, _value, persistence::nodeTypeToString(persistence::SupportedNodeType::ADD), comp_time)
+		: Node(_id, _label, _value, NodeDescriptor("TEST", "#00FFFF"), comp_time)
 	{
 	}
 

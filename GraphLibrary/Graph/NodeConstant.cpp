@@ -7,7 +7,7 @@
 namespace msonlab
 {
 	NodeConstant::NodeConstant(unsigned int _id, types::LabelType _label, types::DataPtr _value)
-		: Node(_id, _label, _value, persistence::nodeTypeToString(persistence::SupportedNodeType::CONSTANT), 2)
+		: Node(_id, _label, _value, NodeDescriptor("CONSTANT", "#CC99FF", "ellipse"), 2)
 	{
 	}
 
