@@ -35,7 +35,6 @@ namespace msonlab
 		NodeVect sucNodes;
 		
 		NodeDescriptor _descriptor;
-		string type_string;
 		unsigned paramCount;
 		unsigned compTime;
 
@@ -81,11 +80,6 @@ namespace msonlab
 
 		// compile
 		virtual void compile(int caller_thread, vector<msonlab::StackRunner::program>* programs, StackRunner::scheduleOrder schedule) = 0;
-
-		//virtual std::string getTypeString() const;
-		//virtual std::string get_shape() const;
-		//virtual std::string get_color() const;
 	};
-
 }
 #endif

@@ -22,7 +22,7 @@ namespace msonlab
 		IProcessable::operator=(other);
 
 		this->paramCount = other.paramCount;
-		this->type_string = other.type_string;
+		this->_descriptor = other._descriptor;
 		this->compTime = other.compTime;
 
 		return *this;
@@ -162,25 +162,4 @@ namespace msonlab
 			res.push_back(weak_node.lock());
 		return res;
 	}
-
-	// exchange
-	//std::string Node::getTypeString() const
-	//{
-	//	if (type_string.empty()) {
-	//		throw new Exceptions::NodeTypeCanNotBeSerializedException("NodeType can not be serialized. Please use one inherited class for the graph.");
-	//	}
-
-	//	return type_string;
-	//}
-
-	//std::string Node::get_shape() const
-	//{
-	//	return "roundrectangle";
-	//}
-
-	//std::string Node::get_color() const
-	//{
-	//	return "#FFFFFF";
-	//}
-
 }
