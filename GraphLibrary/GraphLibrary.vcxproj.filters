@@ -192,9 +192,6 @@
     <ClInclude Include="Executor\StackValue.h">
       <Filter>Header Files\Stack</Filter>
     </ClInclude>
-    <ClInclude Include="Graph\PersistenceUtils.h">
-      <Filter>Header Files\Graph</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="IProcessable.cpp">
@@ -316,9 +313,6 @@
     </ClCompile>
     <ClCompile Include="Executor\StackValue.cpp">
       <Filter>Source Files\Stack</Filter>
-    </ClCompile>
-    <ClCompile Include="Graph\PersistenceUtils.cpp">
-      <Filter>Source Files\Graph</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -115,7 +115,6 @@
     <ClCompile Include="Graph\NodeMultiply.cpp" />
     <ClCompile Include="Graph\NodeSquareRoot.cpp" />
     <ClCompile Include="Graph\NodeTest.cpp" />
-    <ClCompile Include="Graph\PersistenceUtils.cpp" />
     <ClCompile Include="litenode.cpp" />
     <ClCompile Include="litegraph.cpp" />
     <ClCompile Include="IProcessable.cpp" />
@@ -159,7 +158,6 @@
     <ClInclude Include="Graph\NodeMultiply.h" />
     <ClInclude Include="Graph\NodeSquareRoot.h" />
     <ClInclude Include="Graph\NodeTest.h" />
-    <ClInclude Include="Graph\PersistenceUtils.h" />
     <ClInclude Include="Id.h" />
     <ClInclude Include="Options.h" />
     <ClInclude Include="Scheduler\CoffmanGrahamSchedulingAlgorithm.h" />

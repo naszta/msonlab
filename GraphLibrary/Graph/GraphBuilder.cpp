@@ -1,5 +1,12 @@
 #include "GraphBuilder.h"
 
+#include "BlueEdge.h"
+#include "MultiplierEdge.h"
+#include "NodeAdd.h"
+#include "NodeConstant.h"
+#include "NodeDivide.h"
+#include "NodeMultiply.h"
+#include "NodeSquareRoot.h"
 
 namespace msonlab
 {
@@ -78,17 +85,14 @@ namespace msonlab
 		GraphBuilder::edges.clear();
 	}
 
-	GraphPtr GraphBuilder::build()
+	Graph GraphBuilder::build()
 	{
-		GraphPtr ret = std::make_unique<Graph>();
+		Graph ret{};
 		for (auto e : GraphBuilder::edges)
 		{
-			ret->addEdge(e.second);
+			ret.addEdge(e.second);
 		}
 
-		return ret;
+		return std::move(ret);
 	}
-
-
-
 }

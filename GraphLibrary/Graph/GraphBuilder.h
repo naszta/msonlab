@@ -1,16 +1,13 @@
 #ifndef GRAPH_BUILDER 
 #define GRAPH_BUILDER
 
+#include <string>
+
 #include "../Global.h"
-#include "BlueEdge.h"
 #include "Edge.h"
 #include "Graph.h"
-#include "MultiplierEdge.h"
-#include "NodeAdd.h"
-#include "NodeConstant.h"
-#include "NodeDivide.h"
-#include "NodeMultiply.h"
-#include "NodeSquareRoot.h"
+#include "Node.h"
+
 
 namespace msonlab
 {
@@ -25,7 +22,7 @@ namespace msonlab
 		static void add_edge(unsigned int id, unsigned int source_id, unsigned int target_id, std::string edge_type, std::string custom_data);
 
 		static void reset();
-		static GraphPtr build();
+		static Graph build();
 
 	};
 }

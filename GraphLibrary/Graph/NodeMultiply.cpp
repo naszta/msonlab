@@ -1,6 +1,5 @@
 #include "NodeMultiply.h"
 #include "Edge.h"
-#include "PersistenceUtils.h"
 
 namespace msonlab
 {

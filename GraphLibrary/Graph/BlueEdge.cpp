@@ -1,6 +1,5 @@
 #include "BlueEdge.h"
 #include "Node.h"
-#include "PersistenceUtils.h"
 
 namespace msonlab
 {

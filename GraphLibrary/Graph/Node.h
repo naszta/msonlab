@@ -4,7 +4,6 @@
 
 #include "../IProcessable.h"
 
-
 namespace msonlab
 {
 	using std::weak_ptr;

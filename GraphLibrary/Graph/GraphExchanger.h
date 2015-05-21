@@ -13,16 +13,9 @@ XERCES_CPP_NAMESPACE_USE
 #include "../Global.h"
 #include "Graph.h"
 #include "GraphBuilder.h"
-#include "PersistenceUtils.h"
 
 namespace msonlab { namespace persistence {
-
-
-	class GraphExchanger
-	{
-	public:
-		static GraphPtr ImportGraph(std::string inputPath);
-		bool ExportGraph(const Graph& graph, std::string outputPath) const;
-	};
+	Graph ImportGraph(std::string inputPath);
+	bool ExportGraph(const Graph& graph, std::string outputPath);
 } }
 #endif

@@ -15,7 +15,7 @@ namespace msonlab { namespace persistence {
 	DOMElement* serializeNode(const NodePtr node, DOMDocument* xmlDocument, std::string yedDataKeyName, std::string typeKeyName, std::string customDataKey);
 	DOMElement* serializeEdge(const EdgePtr edge, DOMDocument* xmlDocument, std::string yedDataKeyName, std::string typeKeyName, std::string customDataKey);
 
-	GraphPtr GraphExchanger::ImportGraph(std::string inputPath)
+	Graph ImportGraph(std::string inputPath)
 	{
 		// reset GraphBuilder
 		GraphBuilder::reset();
@@ -71,7 +71,7 @@ namespace msonlab { namespace persistence {
 			k_EdgeType.length() == 0 || k_edge_CustomData.length() == 0)
 		{
 			std::cout << "At least one key not found. Correct the input XML to the correct format and try again." << std::endl;
-			return nullptr;
+			return Graph{};
 		}
 
 		// check for "msonlab::GraphExchanger" comment in the document
@@ -179,7 +179,7 @@ namespace msonlab { namespace persistence {
 		if (doc) doc->release();
 		XMLPlatformUtils::Terminate();
 
-		return GraphBuilder::build();
+		return std::move(GraphBuilder::build());
 	}
 
 	void createKeys(DOMDocument* pDOMDocument)
@@ -230,7 +230,7 @@ namespace msonlab { namespace persistence {
 
 	}
 
-	bool GraphExchanger::ExportGraph(const Graph& graph, std::string outputPath) const
+	bool ExportGraph(const Graph& graph, std::string outputPath) 
 	{
 		XMLPlatformUtils::Initialize();
 
