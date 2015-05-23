@@ -192,6 +192,9 @@
     <ClInclude Include="Executor\StackValue.h">
       <Filter>Header Files\Stack</Filter>
     </ClInclude>
+    <ClInclude Include="Scheduler\ParallelGeneticAlgorithm.h">
+      <Filter>Header Files\Scheduling\Genetic</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="IProcessable.cpp">
@@ -313,6 +316,9 @@
     </ClCompile>
     <ClCompile Include="Executor\StackValue.cpp">
       <Filter>Source Files\Stack</Filter>
+    </ClCompile>
+    <ClCompile Include="Scheduler\ParallelGeneticAlgorithm.cpp">
+      <Filter>Source Files\Scheduling\Genetic</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

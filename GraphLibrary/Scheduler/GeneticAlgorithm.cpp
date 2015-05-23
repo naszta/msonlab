@@ -22,13 +22,11 @@ namespace msonlab { namespace scheduling {
 	GeneticAlgorithm::GeneticAlgorithm(FSPtr strategy)
 		: fsstrategy(std::move(strategy))
 	{}
-
-	//GeneticAlgorithm GeneticAlgorithm::example{ exemplar() };
 		
 	//virtual constructor
 	SchedulingAlgorithmPtr GeneticAlgorithm::build(const Options& opt) const
 	{
-		if (opt.algorithm().compare("genetic") == 0)
+		if (opt.algorithm().compare("genetic") == 0 && !opt.isParallel())
 		{
 			DEBUG("Initializing GeneticAlgorithm with ");
 			auto fs = FitnessStrategy::find_fitness_strategy(opt.fitnessStrategy());
@@ -113,43 +111,27 @@ namespace msonlab { namespace scheduling {
 
 		// the light weight graph
 		lite::litegraph liteg(graph);
-		SolutionSetPtr set = this->generateInitialSolution(liteg, options);
-		set->limit();
+		auto set = this->generateInitialSolution(liteg, options);
+		set.limit();
 
 		const unsigned MAX_LOAD = options.popMaxSize();
 		bool doOrderCrossover = options.fitnessStrategy().compare("reschedule") != 0;
-		if (options.isParallel()) {
-			for (size_t i = 0; i < options.numberOfYears(); ++i) {
-				//DEBUGLN("Round " << i << " Best: " << set->best()->fitness() << " Ultimate: " << set->ultimate()->fitness() << " Avg: " << set->averageFittness());
-				parallelSimulateMating(set, options.popMaxSize(), doOrderCrossover, options);
-				set->limit();
-				if (set->last_improvement() >= options.maxRoundsWithoutImprovement()) {
-					vector<vector<const lite::litenode*>> levels;
-					graph::algorithms::constructLayeredOrder<lite::litegraph, const lite::litenode*>(liteg, levels);
-					for (unsigned counter = 0; counter < MAX_LOAD; ++counter) {
-						set->addOffspring(createRandomSolution(liteg, options, levels));
-					}
-				}
-			}
-		}
-		else {
-			for (size_t i = 0; i < options.numberOfYears(); ++i) {
-				//DEBUGLN("Round " << i << " Best: " << set->best()->fitness() << " Ultimate: " << set->ultimate()->fitness() << " Avg: " << set->averageFittness());
-				simulateMating(set, options.popMaxSize(), doOrderCrossover, options);
-				set->limit();
-				if (set->last_improvement() >= options.maxRoundsWithoutImprovement()) {
-					set->randomized();
-					vector<vector<const lite::litenode*>> levels;
-					graph::algorithms::constructLayeredOrder<lite::litegraph, const lite::litenode*>(liteg, levels);
+		for (size_t i = 0; i < options.numberOfYears(); ++i) {
+			//DEBUGLN("Round " << i << " Best: " << set->best()->fitness() << " Ultimate: " << set->ultimate()->fitness() << " Avg: " << set->averageFittness());
+			simulateMating(set, options.popMaxSize(), doOrderCrossover, options);
+			set.limit();
+			if (set.last_improvement() >= options.maxRoundsWithoutImprovement()) {
+				set.randomized();
+				vector<vector<const lite::litenode*>> levels;
+				graph::algorithms::constructLayeredOrder<lite::litegraph, const lite::litenode*>(liteg, levels);
 					
-					for (unsigned counter = 0; counter < MAX_LOAD; ++counter) {
-						set->addOffspring(createRandomSolution(liteg, options, levels));
-					}
+				for (unsigned counter = 0; counter < MAX_LOAD; ++counter) {
+					set.addOffspring(createRandomSolution(liteg, options, levels));
 				}
 			}
 		}
 
-		auto best = set->ultimate();
+		auto best = set.ultimate();
 		vector<const NodePtr> scheduling{ best->size() };
 		const auto& hwnodes = graph.getNodes();
 		unsigned position = 0;
@@ -167,9 +149,8 @@ namespace msonlab { namespace scheduling {
 		return std::make_shared<SchedulingResult<const NodePtr>>(best->mapping(), scheduling, best->fitness(), options.numberOfPus());
 	}
 
-	SolutionSetPtr GeneticAlgorithm::generateInitialSolution(const lite::litegraph &graph, const Options &options) const
+	SolutionSet GeneticAlgorithm::generateInitialSolution(const lite::litegraph &graph, const Options &options) const
 	{
-		SolutionSetPtr p;
 		if (options.initialSolution().compare("cp") == 0) {
 			vector<vector<const lite::litenode*>> levels;
 			graph::algorithms::constructLayeredOrder<lite::litegraph, const lite::litenode*>(graph, levels);
@@ -181,14 +162,15 @@ namespace msonlab { namespace scheduling {
 				limits += levels[i - 1].size();
 				levelingLimits.push_back(limits);
 			}
-			p = this->generateCPSolution(graph, options);
-			p->setLevelSize(levelingLimits);
+			SolutionSet set (this->generateCPSolution(graph, options));
+			set.setLevelSize(levelingLimits);
+			return std::move(set);
 		}
 		else {
-			p = this->generateRndSolution(graph, options);
+			return std::move(this->generateRndSolution(graph, options));
 		}
 
-		return p;
+		//return p;
 	}
 
 
@@ -227,7 +209,7 @@ namespace msonlab { namespace scheduling {
 	/// 
 	/// @param graph The input graph.
 	/// @return The generated population.
-	SolutionSetPtr GeneticAlgorithm::generateRndSolution(const lite::litegraph &graph, const Options &options) const
+	SolutionSet GeneticAlgorithm::generateRndSolution(const lite::litegraph &graph, const Options &options) const
 	{
 		vector<vector<const lite::litenode*>> levels;
 		graph::algorithms::constructLayeredOrder<lite::litegraph, const lite::litenode*>(graph, levels);
@@ -235,7 +217,7 @@ namespace msonlab { namespace scheduling {
 		vector<unsigned> levelingLimits;
 
 		// create the set with the given parameters
-		auto set = std::make_shared<SolutionSet>(options.keepSize(), options.popMaxSize(), options.keepBest());
+		auto set = SolutionSet(options.keepSize(), options.popMaxSize(), options.keepBest());
 
 		// add a greedy solution to the set
 		auto greedy_solution = this->greedySolution(graph, options);
@@ -264,36 +246,35 @@ namespace msonlab { namespace scheduling {
 		}
 			
 		auto initialFitness = fitness(greedy_solution, options);
-		set->addOffspring(greedy_solution);
+		set.addOffspring(greedy_solution);
 		DEBUGLN("SolutionSet created. Initial fitness : " << initialFitness);
 		fitness(result, options);
-		set->addOffspring(result);
-		set->setLevelSize(levelingLimits);
+		set.addOffspring(result);
+		set.setLevelSize(levelingLimits);
 
 		// the number of solutions to generate
-		counter = options.popMaxSize() - set->size();
+		counter = options.popMaxSize() - set.size();
 		for (; counter > 0; --counter) {
-			set->addOffspring(createRandomSolution(graph, options, levels));
+			set.addOffspring(createRandomSolution(graph, options, levels));
 		}
 
-		return set;
+		return std::move(set);
 	}
 
 	// Generate the solution using the scheduling created by the CP scheduler
-	SolutionSetPtr GeneticAlgorithm::generateCPSolution(const lite::litegraph &graph, const Options &options) const {
-		// TODO: refactor this method
-		//cVect solution;
-		auto set = std::make_shared<SolutionSet>(options.keepSize(), options.popMaxSize(), options.keepBest());
+	SolutionSet GeneticAlgorithm::generateCPSolution(const lite::litegraph &graph, const Options &options) const {
+		auto set = SolutionSet(options.keepSize(), options.popMaxSize(), options.keepBest());
+
 		CriticalPathSchedulingAlgorithm cpAlg;
 		auto cpC = cpAlg.scheduleLite(graph, options);
 		auto initialFitness = fitness(cpC, options);
-		set->addOffspring(cpC);
+		set.addOffspring(cpC);
+
 		CoffmanGrahamSchedulingAlgorithm cgAlg;
 		auto cgC = cgAlg.scheduleLite(graph, options);
 		initialFitness = fitness(cgC, options);
-		set->addOffspring(cgC);
-		while (set->size() < options.popMaxSize())
-		{
+		set.addOffspring(cgC);
+		while (set.size() < options.popMaxSize()) {
 			vector<unsigned> mapping(graph.order());
 			vector<const lite::litenode*> scheduling(graph.order());
 			for (size_t i = 0; i < mapping.size(); ++i) {
@@ -303,10 +284,10 @@ namespace msonlab { namespace scheduling {
 			std::copy(cpC->_scheduling.begin(), cpC->_scheduling.end(), scheduling.begin());
 			auto c = std::make_shared<SchedulingResult<const lite::litenode*>>(std::move(mapping), std::move(scheduling), 0, options.numberOfPus());
 			fitness(c, options);
-			set->addOffspring(c);
+			set.addOffspring(c);
 		}
 
-		return set;
+		return std::move(set);
 	}
 
 	//
@@ -398,19 +379,19 @@ namespace msonlab { namespace scheduling {
 	///
 	/// @param population A set of solutions to choose the parents from.
 	/// @param offsprings The number of offsprings to generate.
-	void GeneticAlgorithm::simulateMating(const SolutionSetPtr& set, int offsprings, bool doOrderCrossover, const Options& options) const
+	void GeneticAlgorithm::simulateMating(SolutionSet& set, int offsprings, bool doOrderCrossover, const Options& options) const
 	{
-		while (set->size() < options.popMaxSize())
+		while (set.size() < options.popMaxSize())
 		{
-			auto father = set->getParent();
-			auto mother = set->getParent();
+			auto father = set.getParent();
+			auto mother = set.getParent();
 			int crossoverType = rand() % 2;
 			SchedulingResultPtr<const lite::litenode*> offspring = nullptr;
 			if (crossoverType == 0 || !doOrderCrossover) {
 				offspring = crossoverMap(father, mother);
 			}
 			else {
-				offspring = crossoverOrder(father, mother, set->getLevels());
+				offspring = crossoverOrder(father, mother, set.getLevels());
 			}
 
 			for (unsigned i = 0; i < offspring->size() / 20; ++i) {
@@ -419,7 +400,7 @@ namespace msonlab { namespace scheduling {
 				}
 
 				if (static_cast<unsigned>(rand() % 100) < options.scheduleMutationRate()) {
-					mutateSheduling(offspring, set->getLevels());
+					mutateSheduling(offspring, set.getLevels());
 				}
 
 			}
@@ -427,92 +408,10 @@ namespace msonlab { namespace scheduling {
 			unsigned cost = fitness(offspring, options);
 			// if cost is UINT32_MAX it has a defect
 			if (cost < UINT32_MAX) {
-				set->addOffspring(offspring);
+				set.addOffspring(offspring);
 				--offsprings;
 			}
 		}
-	}
-
-	// parallel task to calculate the fitness of one solution
-	// TODO Change SolutionPtr to SchedulingResultPtr
-	class fitness_calculator : public tbb::task {
-		const SchedulingResultPtr<const lite::litenode*> solution;
-		const FitnessStrategy &strategy;
-		const Options& options;
-	public:
-		fitness_calculator(const SchedulingResultPtr<const lite::litenode*> sol, const FitnessStrategy &strat, const Options& opt)
-			: solution(sol), strategy(strat), options(opt) {}
-
-		tbb::task* execute() {
-			unsigned f = strategy.fitness(*solution, options);
-			solution->fitness(f);
-			return nullptr;
-		}
-	};
-
-	//  parallel task to simulate a round
-	class round_simulator : public tbb::task {
-		round_simulator(const round_simulator& rs) = delete;
-		const GeneticAlgorithm& alg;
-		const Options& options;
-		SolutionSetPtr& set;
-		// number of offsprings to generate
-		int offsprings;
-		// if true, the scheduling orders might be crossoverd; otherwise they don't
-		bool doOrderCrossover;
-	public:
-		round_simulator(const GeneticAlgorithm& genalg, const Options& options, SolutionSetPtr& set, int offsprings, bool doOrderCrossover) :
-			alg(genalg), options(options), set(set), offsprings(offsprings), doOrderCrossover(doOrderCrossover) {}
-
-		tbb::task* execute() {
-			// the total number of tasks created
-			set_ref_count(offsprings + 1);
-			vector<SchedulingResultPtr<const lite::litenode*>> new_solutions;
-			for (; offsprings > 0; --offsprings)
-			{
-				auto father = set->getParent();
-				auto mother = set->getParent();
-				int crossoverType = rand() % 2;
-				SchedulingResultPtr<const lite::litenode*> offspring = nullptr;
-				// aliteays mapping crossover, if order is not allowed
-				if (crossoverType == 0 || !doOrderCrossover) {
-					offspring = alg.crossoverMap(father, mother);
-				}
-				else {
-					offspring = alg.crossoverOrder(father, mother, set->getLevels());
-				}
-
-				if (static_cast<unsigned>(rand() % 100) < options.mapMutationRate()) {
-					alg.mutateMapping(offspring);
-				}
-
-				if (static_cast<unsigned>(rand() % 100) < options.scheduleMutationRate()) {
-					alg.mutateSheduling(offspring, set->getLevels());
-				}
-
-				new_solutions.push_back(offspring);
-				fitness_calculator& fc = *new(allocate_child()) fitness_calculator(offspring, *alg.fsstrategy.get(), options);
-				spawn(fc);
-			}
-
-			wait_for_all();
-			for (const auto& offspring : new_solutions) {
-				if (offspring->fitness() < INT32_MAX)
-				{
-					set->addOffspring(offspring);
-				}
-			}
-			return nullptr;
-		}
-	};
-
-	void GeneticAlgorithm::parallelSimulateMating(SolutionSetPtr& set, int offsprings, bool doOrderCrossover, const Options& options) const
-	{
-		/* This is the TBB runtime... */
-		tbb::task_scheduler_init init;
-
-		round_simulator& rs = *new(tbb::task::allocate_root()) round_simulator(*this, options, set, offsprings, doOrderCrossover);
-		tbb::task::spawn_root_and_wait(rs);
 	}
 
 	// EXPERIMENTAL

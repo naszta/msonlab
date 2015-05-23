@@ -23,6 +23,8 @@ namespace msonlab { namespace scheduling {
 
 	class GeneticAlgorithm : public SchedulingAlgorithm
 	{
+		friend class ParallelGeneticAlgorithm;
+		friend class round_simulator;
 	public:
 		// build function for creating instance
 		virtual SchedulingAlgorithmPtr build(const Options&) const override;
@@ -32,6 +34,8 @@ namespace msonlab { namespace scheduling {
 		GeneticAlgorithm(FSPtr);
 		// schedule the given graph with the given options
 		virtual SchedulingResultPtr<const NodePtr> schedule(const Graph& graph, const Options &options) const override;
+		// descturctor
+		virtual ~GeneticAlgorithm() {}
 	private:
 		typedef unsigned int uint;
 
@@ -39,12 +43,13 @@ namespace msonlab { namespace scheduling {
 		FSPtr fsstrategy;
 
 		// entry method for generating initial solution
-		SolutionSetPtr generateInitialSolution(const lite::litegraph &graph, const Options &options) const;
+		SolutionSet generateInitialSolution(const lite::litegraph &graph, const Options &options) const;
 		// generate a soulution set based on CP methods
-		SolutionSetPtr generateCPSolution(const lite::litegraph &graph, const Options &options) const;
+		SolutionSet generateCPSolution(const lite::litegraph &graph, const Options &options) const;
 		// generate a solution set randomly
-		SolutionSetPtr generateRndSolution(const lite::litegraph &graph, const Options &options) const;
+		SolutionSet generateRndSolution(const lite::litegraph &graph, const Options &options) const;
 
+		// creates one random solution
 		SchedulingResultPtr<const lite::litenode*> createRandomSolution(const lite::litegraph &graph, const Options &options, vector<vector<const lite::litenode*>>& layers) const;
 
 		// crossover operations
@@ -55,11 +60,10 @@ namespace msonlab { namespace scheduling {
 		void mutateMapping(SchedulingResultPtr<const lite::litenode*> offspring) const;// TODO
 		void mutateSheduling(SchedulingResultPtr<const lite::litenode*> offspring, const vector<unsigned>& levelingLimits) const;// TODO
 
-		void simulateMating(const SolutionSetPtr& set, int offsprings, bool doOrderCrossover, const Options& options) const;// TODO
+		virtual void simulateMating(SolutionSet& set, int offsprings, bool doOrderCrossover, const Options& options) const;
 		unsigned int fitness(SchedulingResultPtr<const lite::litenode*> solution, const Options& options) const; // TODO
 
-		void parallelSimulateMating(SolutionSetPtr& set, int offsprings, bool doOrderCrossover, const Options& options) const;// TODO
-		friend class round_simulator;
+		//void parallelSimulateMating(SolutionSetPtr& set, int offsprings, bool doOrderCrossover, const Options& options) const;// TODO
 
 		// Gets a greedy solution for the given graph
 		SchedulingResultPtr<const lite::litenode*> greedySolution(const lite::litegraph &graph, const Options& options) const;

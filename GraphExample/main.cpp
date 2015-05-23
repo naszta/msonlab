@@ -18,6 +18,7 @@
 #include "../GraphLibrary/litegraph.h"
 #include "../GraphLibrary/Scheduler/GreedySchedulingAlgorithm.h"
 #include "../GraphLibrary/Scheduler/GeneticAlgorithm.h"
+#include "../GraphLibrary/Scheduler/ParallelGeneticAlgorithm.h"
 #include "../GraphLibrary/Scheduler/SchedulingUtils.h"
 #include "../GraphLibrary/Scheduler/FitnessStrategy.h"
 #include "../GraphLibrary/Scheduler/ListSchedulingAlgorithm.h"
@@ -106,6 +107,11 @@ int main(int argc, char *argv[]) {
 		{
 			std::cout << "genetic" << std::endl;
 			GeneticAlgorithm alg{ FitnessStrategy::find_fitness_strategy(options.fitnessStrategy()) };
+			run(alg, graph, options);
+		}
+		{
+			std::cout << "parallel genetic" << std::endl;
+			ParallelGeneticAlgorithm alg{ FitnessStrategy::find_fitness_strategy(options.fitnessStrategy()) };
 			run(alg, graph, options);
 		}
 	}

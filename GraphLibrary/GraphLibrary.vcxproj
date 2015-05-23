@@ -126,6 +126,7 @@
     <ClCompile Include="Scheduler\GeneticAlgorithm.cpp" />
     <ClCompile Include="Scheduler\GreedySchedulingAlgorithm.cpp" />
     <ClCompile Include="Scheduler\ListSchedulingAlgorithm.cpp" />
+    <ClCompile Include="Scheduler\ParallelGeneticAlgorithm.cpp" />
     <ClCompile Include="Scheduler\SchedulingAlgorithm.cpp" />
     <ClCompile Include="Scheduler\SchedulingAlgorithmBuilder.cpp" />
     <ClCompile Include="Scheduler\SchedulingResult.cpp" />
@@ -166,6 +167,7 @@
     <ClInclude Include="Scheduler\GeneticAlgorithm.h" />
     <ClInclude Include="Scheduler\GreedySchedulingAlgorithm.h" />
     <ClInclude Include="Scheduler\ListSchedulingAlgorithm.h" />
+    <ClInclude Include="Scheduler\ParallelGeneticAlgorithm.h" />
     <ClInclude Include="Scheduler\SchedulingAlgorithm.h" />
     <ClInclude Include="Scheduler\SchedulingAlgorithmBuilder.h" />
     <ClInclude Include="Scheduler\SchedulingResult.h" />
