@@ -88,22 +88,22 @@ int main(int argc, char *argv[]) {
 			GreedySchedulingAlgorithm alg{};
 			run(alg, graph, options);
 		}
-		{
-			std::cout << "list" << std::endl;
-			ListSchedulingAlgorithm alg{};
-			run(alg, graph, options);
-		}
-		{
-			std::cout << "criticalpath" << std::endl;
-			CriticalPathSchedulingAlgorithm alg{};
-			run(alg, graph, options);
-		}
-		{
-			std::cout << "coffmangraham" << std::endl;
-			CoffmanGrahamSchedulingAlgorithm alg{};
-			run(alg, graph, options);
-			std::cout << std::endl;
-		}	
+		//{
+		//	std::cout << "list" << std::endl;
+		//	ListSchedulingAlgorithm alg{};
+		//	run(alg, graph, options);
+		//}
+		//{
+		//	std::cout << "criticalpath" << std::endl;
+		//	CriticalPathSchedulingAlgorithm alg{};
+		//	run(alg, graph, options);
+		//}
+		//{
+		//	std::cout << "coffmangraham" << std::endl;
+		//	CoffmanGrahamSchedulingAlgorithm alg{};
+		//	run(alg, graph, options);
+		//	std::cout << std::endl;
+		//}	
 		{
 			std::cout << "genetic" << std::endl;
 			GeneticAlgorithm alg{ FitnessStrategy::find_fitness_strategy(options.fitnessStrategy()) };

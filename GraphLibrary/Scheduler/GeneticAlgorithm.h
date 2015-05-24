@@ -21,6 +21,8 @@ namespace msonlab { namespace scheduling {
 	using std::shared_ptr;
 	using std::unique_ptr;
 
+	using node = const lite::litenode*;
+
 	class GeneticAlgorithm : public SchedulingAlgorithm
 	{
 		friend class ParallelGeneticAlgorithm;

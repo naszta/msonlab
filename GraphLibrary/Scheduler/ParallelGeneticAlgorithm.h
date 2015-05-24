@@ -19,6 +19,7 @@ namespace msonlab { namespace scheduling {
 		virtual ~ParallelGeneticAlgorithm() {}
 	private:
 		friend class round_simulator;
+		
 
 		virtual void simulateMating(SolutionSet& set, int offsprings, bool doOrderCrossover, const Options& options) const override;
 	};
