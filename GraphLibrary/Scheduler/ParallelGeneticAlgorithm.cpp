@@ -57,34 +57,37 @@ namespace msonlab { namespace scheduling {
 		// the place to put the result
 		vector<SchedulingResultPtr<node>>& solutions;
 		size_t position;
+		size_t max_position;
 	public:
-		round_simulator(const ParallelGeneticAlgorithm& genalg, const Options& options, SolutionSet& set, vector<SchedulingResultPtr<node>>& solutions, size_t position, bool doOrderCrossover) :
-			alg(genalg), options(options), set(set), solutions(solutions), position(position), doOrderCrossover(doOrderCrossover) {}
+		round_simulator(const ParallelGeneticAlgorithm& genalg, const Options& options, SolutionSet& set, vector<SchedulingResultPtr<node>>& solutions, size_t position, size_t max_position, bool doOrderCrossover) :
+			alg(genalg), options(options), set(set), solutions(solutions), position(position), max_position(max_position), doOrderCrossover(doOrderCrossover) {}
 
 		tbb::task* execute() {
-			auto father = set.getParent();
-			auto mother = set.getParent();
-			int crossoverType = rand() % 2;
-			SchedulingResultPtr<node> solution = nullptr;
-			// aliteays mapping crossover, if order is not allowed
-			if (crossoverType == 0 || !doOrderCrossover) {
-				solution = alg.crossoverMap(father, mother);
-			}
-			else {
-				solution = alg.crossoverOrder(father, mother, set.getLevels());
-			}
+			for (; position <= max_position; ++position) {
+				auto father = set.getParent();
+				auto mother = set.getParent();
+				int crossoverType = rand() % 2;
+				SchedulingResultPtr<node> solution = nullptr;
+				// aliteays mapping crossover, if order is not allowed
+				if (crossoverType == 0 || !doOrderCrossover) {
+					solution = alg.crossoverMap(father, mother);
+				}
+				else {
+					solution = alg.crossoverOrder(father, mother, set.getLevels());
+				}
 
-			if (static_cast<unsigned>(rand() % 100) < options.mapMutationRate()) {
-				alg.mutateMapping(solution);
-			}
+				if (static_cast<unsigned>(rand() % 100) < options.mapMutationRate()) {
+					alg.mutateMapping(solution);
+				}
 
-			if (static_cast<unsigned>(rand() % 100) < options.scheduleMutationRate()) {
-				alg.mutateSheduling(solution, set.getLevels());
-			}
+				if (static_cast<unsigned>(rand() % 100) < options.scheduleMutationRate()) {
+					alg.mutateSheduling(solution, set.getLevels());
+				}
 
-			unsigned f = alg.fsstrategy->fitness(*solution, options);
-			solution->fitness(f);
-			solutions[position] = solution;
+				unsigned f = alg.fsstrategy->fitness(*solution, options);
+				solution->fitness(f);
+				solutions[position] = solution;
+			}
 			return nullptr;
 		}
 	};
@@ -106,11 +109,23 @@ namespace msonlab { namespace scheduling {
 			set_ref_count(offsprings + 1);
 			vector<SchedulingResultPtr<node>> new_solutions(offsprings);
 
-			for (size_t i = 0; i < static_cast<size_t>(offsprings); ++i) {
-				// pass a scheduling result ptr to it.
-				round_simulator& round = *new(allocate_child()) round_simulator(alg, options, set, new_solutions, i, doOrderCrossover);
+			const unsigned PUS = 4;
+			unsigned prev = 0;
+			unsigned slice = offsprings / PUS;
+			
+			for (size_t i = 0; i < PUS; ++i) {
+				unsigned to = i == PUS - 1 ? offsprings - 1 : prev + slice - 1;
+				round_simulator& round = *new(allocate_child()) round_simulator(alg, options, set, new_solutions, prev, to, doOrderCrossover);
+				prev = prev + slice;
 				spawn(round);
 			}
+
+
+			//for (size_t i = 0; i < static_cast<size_t>(offsprings); ++i) {
+			//	// pass a scheduling result ptr to it.
+			//	round_simulator& round = *new(allocate_child()) round_simulator(alg, options, set, new_solutions, i, doOrderCrossover);
+			//	spawn(round);
+			//}
 			wait_for_all();
 			for (const auto& r : new_solutions) {
 				if (r->fitness() < UINT32_MAX) {

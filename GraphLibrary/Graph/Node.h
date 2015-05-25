@@ -9,6 +9,8 @@ namespace msonlab
 	using std::weak_ptr;
 	using std::string;
 
+	using NodeId = unsigned;
+
 	// Descripes a node in terms of persistence and visualization
 	class NodeDescriptor
 	{

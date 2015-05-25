@@ -14,6 +14,8 @@
 #include "../GraphLibrary/Graph/Graph.h"
 #include "../GraphLibrary/Graph/GraphCreator.h"
 #include "../GraphLibrary/Graph/GraphExchanger.h"
+#include "../GraphLibrary/Graph/Function.h"
+#include "../GraphLibrary/Graph/FunctionBuilder.h"
 #include "../GraphLibrary/Algorithms.h"
 #include "../GraphLibrary/litegraph.h"
 #include "../GraphLibrary/Scheduler/GreedySchedulingAlgorithm.h"
@@ -41,6 +43,7 @@ using namespace std;
 using namespace msonlab;
 using namespace msonlab::lite;
 using namespace msonlab::graph::algorithms;
+using namespace msonlab::graph::function;
 using namespace msonlab::scheduling;
 
 std::chrono::time_point<std::chrono::high_resolution_clock> startCHRONO, finishCHRONO;
@@ -67,7 +70,7 @@ void run(const SchedulingAlgorithm& alg, const Graph& graph, const Options& opti
 	}
 }
 
-int main(int argc, char *argv[]) {
+int run_algorithms(int argc, char *argv[]) {
 #ifdef _DEBUG
 	_CrtMemState s1, s2, s3, s4;
 	_CrtMemCheckpoint(&s1);
@@ -88,22 +91,22 @@ int main(int argc, char *argv[]) {
 			GreedySchedulingAlgorithm alg{};
 			run(alg, graph, options);
 		}
-		//{
-		//	std::cout << "list" << std::endl;
-		//	ListSchedulingAlgorithm alg{};
-		//	run(alg, graph, options);
-		//}
-		//{
-		//	std::cout << "criticalpath" << std::endl;
-		//	CriticalPathSchedulingAlgorithm alg{};
-		//	run(alg, graph, options);
-		//}
-		//{
-		//	std::cout << "coffmangraham" << std::endl;
-		//	CoffmanGrahamSchedulingAlgorithm alg{};
-		//	run(alg, graph, options);
-		//	std::cout << std::endl;
-		//}	
+		{
+			std::cout << "list" << std::endl;
+			ListSchedulingAlgorithm alg{};
+			run(alg, graph, options);
+		}
+		{
+			std::cout << "criticalpath" << std::endl;
+			CriticalPathSchedulingAlgorithm alg{};
+			run(alg, graph, options);
+		}
+		{
+			std::cout << "coffmangraham" << std::endl;
+			CoffmanGrahamSchedulingAlgorithm alg{};
+			run(alg, graph, options);
+			std::cout << std::endl;
+		}	
 		{
 			std::cout << "genetic" << std::endl;
 			GeneticAlgorithm alg{ FitnessStrategy::find_fitness_strategy(options.fitnessStrategy()) };
@@ -132,4 +135,12 @@ int main(int argc, char *argv[]) {
 	}
 	_CrtMemDumpStatistics(&s4);
 #endif
+	return 0;
+}
+
+int main(int argc, char *argv[]) {
+	FunctionBuilder fb("ADD");
+	auto result = fb.build();
+	cout << result->evaluate({ 1, 2, 3 }) << endl;
+	return 0;
 }

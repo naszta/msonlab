@@ -19,23 +19,11 @@
     <Filter Include="Source Files\Scheduling">
       <UniqueIdentifier>{b07ff3d8-cdfd-4880-99e7-a0a25c0ef1d2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Node">
-      <UniqueIdentifier>{0500ca1e-baeb-40cf-8209-1d4b2ce4ceba}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Scheduling\Genetic">
       <UniqueIdentifier>{7f7cc1a5-9891-47a2-80c2-87601e595dd9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Edge">
-      <UniqueIdentifier>{d2470f26-a193-4cf6-a1b0-07eb0fc34f26}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Graph">
       <UniqueIdentifier>{5cad580b-f435-4678-8c72-76b0e644c5ab}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Edge">
-      <UniqueIdentifier>{392fdbf6-c75b-4760-b702-ceb4b26c52a0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Node">
-      <UniqueIdentifier>{cf8ee208-cb72-48e2-9218-05b890f7b71f}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Graph">
       <UniqueIdentifier>{28d3598e-d145-4f14-a8be-72a0541bff86}</UniqueIdentifier>
@@ -49,10 +37,40 @@
     <Filter Include="Source Files\Stack">
       <UniqueIdentifier>{12755bff-b42f-4456-8a35-f836cca53806}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\lite">
+    <Filter Include="Header Files\Graph\Edge">
+      <UniqueIdentifier>{d2470f26-a193-4cf6-a1b0-07eb0fc34f26}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Graph\Node">
+      <UniqueIdentifier>{0500ca1e-baeb-40cf-8209-1d4b2ce4ceba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Graph\Function">
+      <UniqueIdentifier>{0567b22a-5eb9-4aa6-bb9a-dd99bcfb9865}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Graph\Utils">
+      <UniqueIdentifier>{1c2949a1-71cc-4c69-bc96-7c3f0d2862b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Graph\Iterator">
+      <UniqueIdentifier>{22322a8f-e191-4458-b8f5-e7775925703b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Graph\Edge">
+      <UniqueIdentifier>{392fdbf6-c75b-4760-b702-ceb4b26c52a0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Graph\Node">
+      <UniqueIdentifier>{cf8ee208-cb72-48e2-9218-05b890f7b71f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Graph\Iterator">
+      <UniqueIdentifier>{98188438-1c7b-469b-8eaf-4a65a3e78f46}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Graph\Function">
+      <UniqueIdentifier>{1d95eae5-26da-499a-b2ca-c7322a46bac2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Graph\Utils">
+      <UniqueIdentifier>{56cd1f46-21be-4fda-9e99-f4bf2cda2503}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Graph\lite">
       <UniqueIdentifier>{4c27055f-ae70-4bd4-886c-4b9265d50605}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\lite">
+    <Filter Include="Header Files\Graph\lite">
       <UniqueIdentifier>{c93b8df0-9dd5-40cf-9312-efc668d395a4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -69,9 +87,6 @@
     <ClInclude Include="ConfigFile.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Algorithms.h">
-      <Filter>Header Files\Graph</Filter>
-    </ClInclude>
     <ClInclude Include="stdafx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -82,64 +97,46 @@
       <Filter>Header Files\Graph</Filter>
     </ClInclude>
     <ClInclude Include="litegraph.h">
-      <Filter>Header Files\lite</Filter>
+      <Filter>Header Files\Graph\lite</Filter>
     </ClInclude>
     <ClInclude Include="litenode.h">
-      <Filter>Header Files\lite</Filter>
+      <Filter>Header Files\Graph\lite</Filter>
     </ClInclude>
     <ClInclude Include="Graph\Graph.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Graph\BlueEdge.h">
-      <Filter>Header Files\Edge</Filter>
+      <Filter>Header Files\Graph\Edge</Filter>
     </ClInclude>
     <ClInclude Include="Graph\Edge.h">
-      <Filter>Header Files\Edge</Filter>
+      <Filter>Header Files\Graph\Edge</Filter>
     </ClInclude>
     <ClInclude Include="Graph\MultiplierEdge.h">
-      <Filter>Header Files\Edge</Filter>
-    </ClInclude>
-    <ClInclude Include="Graph\BFSIterator.h">
-      <Filter>Header Files\Graph</Filter>
-    </ClInclude>
-    <ClInclude Include="Graph\DFSIterator.h">
-      <Filter>Header Files\Graph</Filter>
+      <Filter>Header Files\Graph\Edge</Filter>
     </ClInclude>
     <ClInclude Include="Graph\Graph.h">
       <Filter>Header Files\Graph</Filter>
     </ClInclude>
-    <ClInclude Include="Graph\GraphBuilder.h">
-      <Filter>Header Files\Graph</Filter>
-    </ClInclude>
-    <ClInclude Include="Graph\GraphCreator.h">
-      <Filter>Header Files\Graph</Filter>
-    </ClInclude>
-    <ClInclude Include="Graph\GraphExchanger.h">
-      <Filter>Header Files\Graph</Filter>
-    </ClInclude>
-    <ClInclude Include="Graph\GraphIterator.h">
-      <Filter>Header Files\Graph</Filter>
-    </ClInclude>
     <ClInclude Include="Graph\Node.h">
-      <Filter>Header Files\Node</Filter>
+      <Filter>Header Files\Graph\Node</Filter>
     </ClInclude>
     <ClInclude Include="Graph\NodeAdd.h">
-      <Filter>Header Files\Node</Filter>
+      <Filter>Header Files\Graph\Node</Filter>
     </ClInclude>
     <ClInclude Include="Graph\NodeConstant.h">
-      <Filter>Header Files\Node</Filter>
+      <Filter>Header Files\Graph\Node</Filter>
     </ClInclude>
     <ClInclude Include="Graph\NodeDivide.h">
-      <Filter>Header Files\Node</Filter>
+      <Filter>Header Files\Graph\Node</Filter>
     </ClInclude>
     <ClInclude Include="Graph\NodeMultiply.h">
-      <Filter>Header Files\Node</Filter>
+      <Filter>Header Files\Graph\Node</Filter>
     </ClInclude>
     <ClInclude Include="Graph\NodeSquareRoot.h">
-      <Filter>Header Files\Node</Filter>
+      <Filter>Header Files\Graph\Node</Filter>
     </ClInclude>
     <ClInclude Include="Graph\NodeTest.h">
-      <Filter>Header Files\Node</Filter>
+      <Filter>Header Files\Graph\Node</Filter>
     </ClInclude>
     <ClInclude Include="Scheduler\CoffmanGrahamSchedulingAlgorithm.h">
       <Filter>Header Files\Scheduling</Filter>
@@ -195,6 +192,33 @@
     <ClInclude Include="Scheduler\ParallelGeneticAlgorithm.h">
       <Filter>Header Files\Scheduling\Genetic</Filter>
     </ClInclude>
+    <ClInclude Include="Graph\Function.h">
+      <Filter>Header Files\Graph\Function</Filter>
+    </ClInclude>
+    <ClInclude Include="Graph\BFSIterator.h">
+      <Filter>Header Files\Graph\Iterator</Filter>
+    </ClInclude>
+    <ClInclude Include="Graph\DFSIterator.h">
+      <Filter>Header Files\Graph\Iterator</Filter>
+    </ClInclude>
+    <ClInclude Include="Graph\GraphIterator.h">
+      <Filter>Header Files\Graph\Iterator</Filter>
+    </ClInclude>
+    <ClInclude Include="Graph\GraphBuilder.h">
+      <Filter>Header Files\Graph\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Graph\GraphCreator.h">
+      <Filter>Header Files\Graph\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Graph\GraphExchanger.h">
+      <Filter>Header Files\Graph\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Algorithms.h">
+      <Filter>Header Files\Graph\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Graph\FunctionBuilder.h">
+      <Filter>Header Files\Graph\Function</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="IProcessable.cpp">
@@ -203,68 +227,47 @@
     <ClCompile Include="Processor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Algorithms.cpp">
-      <Filter>Source Files\Graph</Filter>
-    </ClCompile>
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="litegraph.cpp">
-      <Filter>Source Files\lite</Filter>
+      <Filter>Source Files\Graph\lite</Filter>
     </ClCompile>
     <ClCompile Include="litenode.cpp">
-      <Filter>Source Files\lite</Filter>
+      <Filter>Source Files\Graph\lite</Filter>
     </ClCompile>
     <ClCompile Include="Graph\BlueEdge.cpp">
-      <Filter>Source Files\Edge</Filter>
+      <Filter>Source Files\Graph\Edge</Filter>
     </ClCompile>
     <ClCompile Include="Graph\Edge.cpp">
-      <Filter>Source Files\Edge</Filter>
+      <Filter>Source Files\Graph\Edge</Filter>
     </ClCompile>
     <ClCompile Include="Graph\MultiplierEdge.cpp">
-      <Filter>Source Files\Edge</Filter>
-    </ClCompile>
-    <ClCompile Include="Graph\BFSIterator.cpp">
-      <Filter>Source Files\Graph</Filter>
-    </ClCompile>
-    <ClCompile Include="Graph\DFSIterator.cpp">
-      <Filter>Source Files\Graph</Filter>
+      <Filter>Source Files\Graph\Edge</Filter>
     </ClCompile>
     <ClCompile Include="Graph\Graph.cpp">
       <Filter>Source Files\Graph</Filter>
     </ClCompile>
-    <ClCompile Include="Graph\GraphBuilder.cpp">
-      <Filter>Source Files\Graph</Filter>
-    </ClCompile>
-    <ClCompile Include="Graph\GraphCreator.cpp">
-      <Filter>Source Files\Graph</Filter>
-    </ClCompile>
-    <ClCompile Include="Graph\GraphExchanger.cpp">
-      <Filter>Source Files\Graph</Filter>
-    </ClCompile>
-    <ClCompile Include="Graph\GraphIterator.cpp">
-      <Filter>Source Files\Graph</Filter>
-    </ClCompile>
     <ClCompile Include="Graph\Node.cpp">
-      <Filter>Source Files\Node</Filter>
+      <Filter>Source Files\Graph\Node</Filter>
     </ClCompile>
     <ClCompile Include="Graph\NodeAdd.cpp">
-      <Filter>Source Files\Node</Filter>
+      <Filter>Source Files\Graph\Node</Filter>
     </ClCompile>
     <ClCompile Include="Graph\NodeConstant.cpp">
-      <Filter>Source Files\Node</Filter>
+      <Filter>Source Files\Graph\Node</Filter>
     </ClCompile>
     <ClCompile Include="Graph\NodeDivide.cpp">
-      <Filter>Source Files\Node</Filter>
+      <Filter>Source Files\Graph\Node</Filter>
     </ClCompile>
     <ClCompile Include="Graph\NodeMultiply.cpp">
-      <Filter>Source Files\Node</Filter>
+      <Filter>Source Files\Graph\Node</Filter>
     </ClCompile>
     <ClCompile Include="Graph\NodeSquareRoot.cpp">
-      <Filter>Source Files\Node</Filter>
+      <Filter>Source Files\Graph\Node</Filter>
     </ClCompile>
     <ClCompile Include="Graph\NodeTest.cpp">
-      <Filter>Source Files\Node</Filter>
+      <Filter>Source Files\Graph\Node</Filter>
     </ClCompile>
     <ClCompile Include="Scheduler\CoffmanGrahamSchedulingAlgorithm.cpp">
       <Filter>Source Files\Scheduling</Filter>
@@ -319,6 +322,33 @@
     </ClCompile>
     <ClCompile Include="Scheduler\ParallelGeneticAlgorithm.cpp">
       <Filter>Source Files\Scheduling\Genetic</Filter>
+    </ClCompile>
+    <ClCompile Include="Graph\BFSIterator.cpp">
+      <Filter>Source Files\Graph\Iterator</Filter>
+    </ClCompile>
+    <ClCompile Include="Graph\DFSIterator.cpp">
+      <Filter>Source Files\Graph\Iterator</Filter>
+    </ClCompile>
+    <ClCompile Include="Graph\GraphIterator.cpp">
+      <Filter>Source Files\Graph\Iterator</Filter>
+    </ClCompile>
+    <ClCompile Include="Algorithms.cpp">
+      <Filter>Source Files\Graph\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Graph\GraphBuilder.cpp">
+      <Filter>Source Files\Graph\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Graph\GraphExchanger.cpp">
+      <Filter>Source Files\Graph\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Graph\GraphCreator.cpp">
+      <Filter>Source Files\Graph\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Graph\Function.cpp">
+      <Filter>Source Files\Graph\Function</Filter>
+    </ClCompile>
+    <ClCompile Include="Graph\FunctionBuilder.cpp">
+      <Filter>Source Files\Graph\Function</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

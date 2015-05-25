@@ -9,6 +9,9 @@
 namespace msonlab
 {
 	using std::string;
+
+	using EdgeId = unsigned;
+
 	// Descripes a node in terms of persistence and visualization
 	class EdgeDescriptor
 	{

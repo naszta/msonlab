@@ -102,6 +102,8 @@
     <ClCompile Include="Graph\BlueEdge.cpp" />
     <ClCompile Include="Graph\DFSIterator.cpp" />
     <ClCompile Include="Graph\Edge.cpp" />
+    <ClCompile Include="Graph\Function.cpp" />
+    <ClCompile Include="Graph\FunctionBuilder.cpp" />
     <ClCompile Include="Graph\Graph.cpp" />
     <ClCompile Include="Graph\GraphBuilder.cpp" />
     <ClCompile Include="Graph\GraphCreator.cpp" />
@@ -145,6 +147,8 @@
     <ClInclude Include="Graph\BlueEdge.h" />
     <ClInclude Include="Graph\DFSIterator.h" />
     <ClInclude Include="Graph\Edge.h" />
+    <ClInclude Include="Graph\Function.h" />
+    <ClInclude Include="Graph\FunctionBuilder.h" />
     <ClInclude Include="Graph\Graph.h" />
     <ClInclude Include="Graph\Graph.hpp" />
     <ClInclude Include="Graph\GraphBuilder.h" />

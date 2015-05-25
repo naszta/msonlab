@@ -99,6 +99,7 @@
     <ClCompile Include="AlgorithmsTest.cpp" />
     <ClCompile Include="CoffmanGrahamSchedulingAlgorithmTest.cpp" />
     <ClCompile Include="CriticalPathSchedulingAlgorithmTest.cpp" />
+    <ClCompile Include="FunctionBuilderTest.cpp" />
     <ClCompile Include="GeneticAlgorithmTest.cpp" />
     <ClCompile Include="GraphIteratorTest.cpp" />
     <ClCompile Include="GreedySchedulingAlgorithmTest.cpp" />
